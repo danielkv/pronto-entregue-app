@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
-import {  SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import {Icon} from 'react-native-elements';
 
 import Button from '../components/button';

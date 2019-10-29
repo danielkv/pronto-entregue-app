@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
 import Header from '../../navigation/header';
 import Cart from './cart';
@@ -15,7 +15,7 @@ const cartRoutes = createStackNavigator({
 }, {
 	defaultNavigationOptions : {
 		header : (props) => <Header {...props} />,
-		title:'Carrinho'
+		title:'Carrinho',
 	},
 	initialRouteName :'Cart'
 });

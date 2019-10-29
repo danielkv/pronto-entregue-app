@@ -1,6 +1,8 @@
 // NavigationService.js
 
-import { NavigationActions, StackActions, DrawerActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
+import {  DrawerActions } from 'react-navigation-drawer';
+import {  StackActions } from 'react-navigation-stack';
 
 let _navigator;
 let _drawerComponent;

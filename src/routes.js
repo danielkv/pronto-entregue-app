@@ -1,5 +1,7 @@
 import React from 'react';
-import { createDrawerNavigator, createAppContainer, createStackNavigator} from 'react-navigation';
+import {  createAppContainer} from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import {  createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
