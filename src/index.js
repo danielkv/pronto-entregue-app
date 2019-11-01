@@ -3,17 +3,23 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import apolloClient from './services/server';
 import { ApolloProvider } from "@apollo/react-hooks";
 
-import { Container } from "./styles";
-import Routes from './routes';
+import { ThemeProvider } from 'react-native-elements';
 
-export default function RootRoutes() {
+//import theme from './theme';
+import { Container } from "./styles";
+import RootRoutes from './rootRoutes';
+import theme from './theme';
+
+export default function App() {
 	return (
-		<ApolloProvider client={apolloClient}>
-			<SafeAreaProvider>
-				<Container>
-					<Routes/>
-				</Container>
-			</SafeAreaProvider>
-		</ApolloProvider>
+		<SafeAreaProvider>
+			<ApolloProvider client={apolloClient}>
+				<ThemeProvider theme={theme}>
+					<Container>
+						<RootRoutes />
+					</Container>
+				</ThemeProvider>
+			</ApolloProvider>
+		</SafeAreaProvider>
  	);
 }

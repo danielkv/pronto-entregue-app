@@ -103,9 +103,11 @@ export const GET_COMPANY_BRANCHES = gql`
 			branches {
 				id
 				name
-				active
-				last_month_revenue
-				createdAt
+				address {
+					id
+					city
+					state
+				}
 			}
 		}
 	}

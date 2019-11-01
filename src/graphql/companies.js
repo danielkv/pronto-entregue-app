@@ -58,6 +58,6 @@ export const GET_USER_COMPANIES = gql`
 
 export const GET_SELECTED_COMPANY = gql`
 	{
-		selectedCompany @client
+		selectedCompany
 	}
 `;

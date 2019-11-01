@@ -1,23 +1,23 @@
 import React from 'react';
-import {View} from 'react-native'
-import { useSafeArea } from 'react-native-safe-area-context';
-import { NavigationNativeContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './pages/home';
+import CategoryScreen from './pages/category';
+import header from './components/header';
+import theme from './theme';
 
-import SplashScreen from "./pages/splashScreen";
-
+const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-export default function RootRoutes() {
-	const insets = useSafeArea();
-	
+export default function Routes() {
 	return (
-		<View style={{flex:1, paddingTop: insets.top, paddingBottom: insets.bottom}}>
-			<NavigationNativeContainer>
-				<Stack.Navigator headerMode='none' screenOptions={{cardStyle: {backgroundColor: 'transparent'}}}>
-					<Stack.Screen name="SplashScreen" component={SplashScreen} />
-				</Stack.Navigator>
-			</NavigationNativeContainer>
-		</View>
- 	);
+		<Drawer.Navigator>
+			<Drawer.Screen name='Pages'>
+				{()=>(<Stack.Navigator screenOptions={{header:header, headerTransparent:true, cardStyle: {backgroundColor: theme.colors.primary}}}>
+					<Stack.Screen name='HomeScreen' component={HomeScreen} options={{title:''}} />
+					<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{title:'Produtos'}} />
+				</Stack.Navigator>)}
+			</Drawer.Screen>
+		</Drawer.Navigator>
+	);
 }

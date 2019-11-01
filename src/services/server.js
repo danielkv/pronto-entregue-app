@@ -1,13 +1,15 @@
 import { ApolloClient } from "apollo-client";
-import { createHttpLink } from 'apollo-link-http';
-import { ApolloLink, from } from 'apollo-link';
+import { HttpLink } from 'apollo-link-http';
+import { ApolloLink } from 'apollo-link';
 import { InMemoryCache } from "apollo-cache-inmemory";
+
+import resolvers from '../resolvers';
 import {GET_USER_TOKEN, IS_USER_LOGGED_IN} from '../graphql/authentication';
 import { GET_SELECTED_COMPANY } from "../graphql/companies";
 import { GET_SELECTED_BRANCH } from "../graphql/branches";
 
-const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://localhost:4000/graphql';
-const httpLink = createHttpLink({ uri: host });
+const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://192.168.234.2:4000/graphql';
+const httpLink = new HttpLink({ uri: host });
 
 const cache = new InMemoryCache({});
 
@@ -46,7 +48,8 @@ const authLink = new ApolloLink((operation, forward)=> {
 
 const client = new ApolloClient({
 	cache,
-	link : from([authLink, httpLink])
+	link : ApolloLink.from([authLink, httpLink]),
+	resolvers
 });
 
 client.onResetStore(()=>cache.writeData({data:initialData}));

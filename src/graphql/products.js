@@ -30,7 +30,6 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 			id
 			name
 		}
-		action @client
 		options (filter:$filter) {
 			id
 			name
@@ -42,7 +41,6 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 			active
 			max_select_restrain_other
 			order
-			action @client
 		}
 	}
 `;
