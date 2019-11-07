@@ -1,13 +1,14 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-export const SEARCH_BRANCH_PRODUCTS = gql`
+export const GET_CATEGORY_PRODUCTS = gql`
 	query ($search:String!) {
-		searchBranchProducts(search:$search) {
+		category(id:$id) {
 			id
 			name
-			category {
+			product {
 				id
 				name
+				price
 			}
 		}
 	}
@@ -19,7 +20,6 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 		name
 		active
 		type
-		order
 		min_select
 		max_select
 		groupRestrained {
@@ -38,9 +38,7 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 				id
 				name
 			}
-			active
 			max_select_restrain_other
-			order
 		}
 	}
 `;

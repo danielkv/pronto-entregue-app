@@ -6,9 +6,15 @@ export const GET_CATEGORY = gql`
 			id
 			name
 			description
-			order
-			active
 			image
+			products {
+				id
+				name
+				image
+				description
+				price
+				options_qty
+			}
 		}
 	}
 `;
@@ -22,10 +28,6 @@ export const GET_BRANCH_CATEGORIES = gql`
 				id
 				name
 				image
-				order
-				products_qty
-				createdAt
-				active
 			}
 		}
 	}

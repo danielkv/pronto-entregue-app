@@ -23,7 +23,7 @@ export default function Home({navigation}) {
 
 	const renderCategory = ({item:{id, name, image}}) => {
 		return (
-			<Category onPress={()=>{navigation.navigate('CategoryScreen')}}>
+			<Category onPress={()=>{navigation.navigate('CategoryScreen', {category_id:id, headerTitle:name})}}>
 				<CategoryImage source={{uri:image}} />
 				<CategoryTitle>{name}</CategoryTitle>
 			</Category>
