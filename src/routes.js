@@ -7,13 +7,14 @@ import theme from './theme';
 import HomeScreen from './pages/home';
 import CategoryScreen from './pages/category';
 import ProductScreen from './pages/product';
+import DrawerContent from './components/drawerContent';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 export default function Routes() {
 	return (
-		<Drawer.Navigator>
+		<Drawer.Navigator contentComponent={props => <DrawerContent {...props} />}>
 			<Drawer.Screen name='Pages'>
 				{()=>(
 					<Stack.Navigator

@@ -26,7 +26,8 @@ module.exports = {
 	  "no-param-reassign": ["error", { "props": false }],
 	  "import/prefer-default-export" : 0,
 	  "no-trailing-spaces": ['error', {skipBlankLines:true, ignoreComments:true}],
-	  "object-curly-newline": ["error", { multiline: true, consistent: true }]
+	  "object-curly-newline": ["error", { multiline: true, consistent: true }],
+	  "react/jsx-props-no-spreading": 0,
 	},
 	'globals': {
 	  "fetch": false

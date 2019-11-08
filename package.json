@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "lint": "eslint *.js **/*.js",
+    "lint": "eslint *.js ./src/*.js",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",

@@ -39,5 +39,19 @@ export default {
 		inputContainerStyle: {
 			borderBottomColor: '#000',
 		}
+	},
+	Button: {
+		buttonStyle: {
+			backgroundColor: '#fff',
+		},
+		titleStyle: {
+			color: '#FF7C03',
+		},
+	},
+	Divider: {
+		style: {
+			height: 2,
+			marginVertical: 10,
+		}
 	}
 }
