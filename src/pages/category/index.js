@@ -31,11 +31,11 @@ export default function category({ navigation }) {
 	const products = !loadingCategory && categoryData && categoryData.category ? categoryData.category.products : [];
 
 	const renderProductItem = ({ item: { id, name, description, image, options_qty, price } }) => {
-		const openProduct = () => { navigation.navigate('Product', { product_id: id }) };
+		const openProduct = () => { navigation.navigate('ProductScreen', { product_id: id }) };
 		const buttonIcon = options_qty ? 'page-next-outline' : 'cart-plus';
 		const buttonTitle = options_qty ? 'Ver opções' : 'Colocar no carrinho';
 		const buttonPrice = options_qty ? null : price;
-		const buttonAction = options_qty ? openProduct : () => { /* Cart.addToCart(item, 1); */ }
+		const buttonAction = options_qty ? openProduct : () => {}
 		
 		return (
 			<ProductContainer onPress={openProduct}>
