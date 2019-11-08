@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Alert } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,15 +18,14 @@ import {
 	CartButtonContainer,
 	GroupsContainer
 } from './styles';
-import { calculateProductPrice } from '../../utils/products';
+import { calculateProductPrice, checkProductRules } from '../../utils/products';
 
 import Inline from './inline';
 import Panel from './panel';
 
 export default function Product() {
 	const route = useRoute();
-	// const {product_id} = route.params;
-	const product_id = 3;
+	const { product_id } = route.params;
 	const [product, setProduct] = useState(null);
 
 	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: product_id } });
@@ -48,6 +48,14 @@ export default function Product() {
 		setProduct(newProduct);
 	}, [product, setProduct]);
 
+	const handleCartButtonPress = () => {
+		try {
+			checkProductRules(product);
+		} catch (err) {
+			Alert.alert(err.message);
+		}
+	}
+
 	if (loadingProduct || !product) return <LoadingBlock />;
 
 	return (
@@ -67,13 +75,14 @@ export default function Product() {
 				</HeaderContainer>
 
 				<GroupsContainer>
-					{/* <Inline optionsGroups={product.options_groups} onItemSelect={handleItemSelect} /> */}
-					<Panel optionsGroups={product.options_groups} onItemSelect={handleItemSelect} />
+					{product.type === 'inline'
+						? <Inline optionsGroups={product.options_groups} onItemSelect={handleItemSelect} />
+						: <Panel optionsGroups={product.options_groups} onItemSelect={handleItemSelect} />}
 				</GroupsContainer>
 
 			</ProductContainer>
 			<CartButtonContainer>
-				<CartButton title='Adicionar ao Carrinho' forceShowPrice price={totalPrice} icon='cart' />
+				<CartButton title='Adicionar ao Carrinho' forceShowPrice onPress={handleCartButtonPress} price={totalPrice} icon='cart' />
 			</CartButtonContainer>
 		</Container>
 	);

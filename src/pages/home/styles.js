@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { ImageBackground } from 'react-native';
-import {vh, vw} from 'react-native-expo-viewport-units';
+import { vh, vw } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
 import theme from '../../theme';
 
@@ -65,4 +65,3 @@ export const CategoryTitle = styled(Text)`
 	background-color:#000;
 	border-radius:20px;
 `;
-

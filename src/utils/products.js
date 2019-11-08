@@ -21,23 +21,54 @@ export const calculateOrderPrice = (products, initialValue = 0) => {
 
 export function getOptionNewState(group, option) {
 	if (option.selected) return false;
+	
+	return checkGroupRules(group, 1);
+}
+
+export function checkGroupRules(group, selectionOffset = 0) {
 	let { max_select } = group;
-
-	// Check if max_select option is restrained by other option
-	/* if (option.restrainedBy) {
-
-	} */
-	
+	const { min_select } = group;
 	const selectedOptions = group.options.filter(opt=>opt.selected);
-	if (group.type === 'single') {
-		if (selectedOptions.length) throw new Error('Você pode selecionar apenas uma opção');
-		return true;
+	const selectionLength = selectedOptions.length + selectionOffset;
+
+	// Check restraining group max selection
+	if (group.restrainedBy && group.restrainedBy.options) {
+		const otherOption = group.restrainedBy.options[0];
+		max_select = otherOption.max_select_restrain_other;
 	}
 	
-	if (group.type === 'multi') {
-		if (selectedOptions.length === max_select) throw new Error(`Você pode selecionar apenas ${max_select} opções`);
-		return true;
+	// Check the min selection rule
+	if (min_select !== 0 && selectionLength < min_select) {
+		throw new Error(`Você deve selecionar no mínimo ${min_select} ${min_select > 1 ? 'opções' : 'opção'} em ${group.name}`)
 	}
 
-	throw new Error('Ocorreu algum erro');
+	// Check the max selection rule
+	if (max_select !== 0 && selectionLength > max_select) {
+		if (max_select === 1) throw new Error(`Você pode selecionar apenas 1 opção em ${group.name}`);
+		throw new Error(`Você pode selecionar apenas ${max_select} opções em ${group.name}`);
+	}
+	
+	// if all rules above match, return true
+	return true;
+}
+
+export function getGroupRestrainingRules(optionsGroups, selectedGroup) {
+	if (selectedGroup.restrainedBy) {
+		const otherGroup = optionsGroups.find(group=>group.id === selectedGroup.restrainedBy.id);
+		if (!otherGroup) throw new Error('Não foi possível encontrar o grupo anterior');
+
+		const otherGroupSelectedOptions = otherGroup.options.filter(opt=>opt.selected);
+		if (!otherGroupSelectedOptions.length) throw new Error(`Primeiro selecione: ${otherGroup.name}`);
+
+		return { ...selectedGroup, restrainedBy: { ...otherGroup, options: otherGroupSelectedOptions } }
+	}
+	return selectedGroup;
+}
+
+export function checkProductRules(product) {
+	product.options_groups.forEach((group)=>{
+		const groupWithRules = getGroupRestrainingRules(product.options_groups, group);
+		checkGroupRules(groupWithRules);
+	});
+	return true;
 }

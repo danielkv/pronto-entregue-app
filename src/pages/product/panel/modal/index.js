@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { TouchableOpacity, View, Alert } from 'react-native';
 import { cloneDeep } from 'lodash';
-import { Icon } from 'react-native-elements';
+import { Icon, Input } from 'react-native-elements';
 
 import { calculateOptionsGroupPrice, getOptionNewState } from '../../../../utils/products';
 import Option from '../../option';
@@ -19,12 +19,12 @@ import {
 
 export default function modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);
-	// const [price, setPrice] = useState(0);
+	const [search, setSearch] = useState('');
 
 	useEffect(()=>{
 		return () => {
 			setOptionGroup(null);
-			// setPrice(0);
+			setSearch('');
 		}
 	}, []);
 
@@ -66,15 +66,17 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 				</ModalConfirm>
 			</ModalHeader>
 			<ModalContent>
-				{/* <SearchContainer></SearchContainer> */}
+				{optionGroup.options.length >= 10 && (
+					<SearchContainer>
+						<Input value={search} onChangeText={(text)=>{ setSearch(text.toLowerCase()) }} placeholder='Buscar' />
+					</SearchContainer>
+				)}
 				<OptionsContainer>
-					{optionGroup.options.map((option, optionIndex)=>(
+					{optionGroup.options.filter(opt=>opt.name.toLowerCase().search(search) !== -1).map((option, optionIndex)=>(
 						<Option
 							key={optionIndex}
-							title={option.name}
-							price={option.price}
+							option={option}
 							type={optionGroup.type}
-							selected={option.selected}
 							onPress={handlePressOption(optionIndex)}
 						/>
 					))}

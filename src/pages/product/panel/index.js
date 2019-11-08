@@ -1,18 +1,26 @@
 import React, { useCallback, useState } from 'react';
+import { Alert } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
 
+import { getGroupRestrainingRules } from '../../../utils/products';
 import Group from './group';
 import { Container } from './styles';
 import GroupModal from './modal';
 
 function Panel({ optionsGroups, onItemSelect }) {
-	const [selectedOptionGroupIndex, setSelectedOptionGroupIndex] = useState(null);
+	const [selectedOptionGroup, setSelectedOptionGroup] = useState(null);
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const handlePressGroup = useCallback((groupIndex) => () => {
-		setModalOpen(true);
-		setSelectedOptionGroupIndex(groupIndex);
+		try {
+			const group = getGroupRestrainingRules(optionsGroups, optionsGroups[groupIndex]);
+
+			setModalOpen(true);
+			setSelectedOptionGroup(group);
+		} catch (err) {
+			Alert.alert(err.message);
+		}
 	}, [optionsGroups]);
 
 	const handleCloseModal = () => {
@@ -20,10 +28,11 @@ function Panel({ optionsGroups, onItemSelect }) {
 	}
 
 	const handleConfirmModal = useCallback((newOptionGroup) => {
-		optionsGroups[selectedOptionGroupIndex] = newOptionGroup;
+		const groupIndex = optionsGroups.findIndex(group=>group.id === newOptionGroup.id);
+		optionsGroups[groupIndex] = newOptionGroup;
 		onItemSelect(optionsGroups);
 		handleCloseModal();
-	}, [optionsGroups, selectedOptionGroupIndex]);
+	}, [optionsGroups]);
 
 	return (
 		<Container>
@@ -36,7 +45,7 @@ function Panel({ optionsGroups, onItemSelect }) {
 			))}
 			<Modal
 				isVisible={modalOpen}
-				onModalHide={()=>setSelectedOptionGroupIndex(null)}
+				onModalHide={()=>setSelectedOptionGroup(null)}
 				onSwipeComplete={handleCloseModal}
 				onBackButtonPress={handleCloseModal}
 				onBackdropPress={handleCloseModal}
@@ -45,7 +54,7 @@ function Panel({ optionsGroups, onItemSelect }) {
 				style={{ marginLeft: vw(10), marginRight: 0, marginVertical: 0 }}
 				swipeDirection='right'
 			>
-				<GroupModal optionGroup={optionsGroups[selectedOptionGroupIndex]} confirmModal={handleConfirmModal} closeModal={handleCloseModal} />
+				<GroupModal optionGroup={selectedOptionGroup} confirmModal={handleConfirmModal} closeModal={handleCloseModal} />
 			</Modal>
 		</Container>
 	);

@@ -1,12 +1,12 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import apolloClient from './services/server';
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import { ThemeProvider } from 'react-native-elements';
+import apolloClient from './services/server';
 
-//import theme from './theme';
-import { Container } from "./styles";
+// import theme from './theme';
+import { Container } from './styles';
 import RootRoutes from './rootRoutes';
 import theme from './theme';
 
@@ -21,5 +21,5 @@ export default function App() {
 				</ThemeProvider>
 			</ApolloProvider>
 		</SafeAreaProvider>
- 	);
+	);
 }

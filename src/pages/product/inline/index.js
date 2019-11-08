@@ -23,10 +23,8 @@ function Inline({ optionsGroups, onItemSelect }) {
 						{group.options.map((option, optionIndex) => (
 							<Option
 								key={optionIndex}
-								title={option.name}
-								price={option.price}
+								option={option}
 								type={group.type}
-								selected={option.selected}
 								onPress={handlePressOption(groupIndex, optionIndex)}
 							/>
 						))}

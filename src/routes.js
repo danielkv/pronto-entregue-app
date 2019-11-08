@@ -15,11 +15,16 @@ export default function Routes() {
 	return (
 		<Drawer.Navigator>
 			<Drawer.Screen name='Pages'>
-				{()=>(<Stack.Navigator initialRouteName='ProductScreen' screenOptions={{header:header, headerTransparent:true, cardStyle: {backgroundColor: theme.colors.primary}}}>
-					<Stack.Screen name='HomeScreen' component={HomeScreen} options={{title:''}} />
-					<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{title:'Produtos'}} />
-					<Stack.Screen name='ProductScreen' component={ProductScreen} options={{title:'Produto'}} />
-				</Stack.Navigator>)}
+				{()=>(
+					<Stack.Navigator
+						initialRouteName='HomeScreen'
+						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.colors.primary } }}
+					>
+						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
+						<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{ title: 'Produtos' }} />
+						<Stack.Screen name='ProductScreen' component={ProductScreen} options={{ title: 'Produto' }} />
+					</Stack.Navigator>
+				)}
 			</Drawer.Screen>
 		</Drawer.Navigator>
 	);

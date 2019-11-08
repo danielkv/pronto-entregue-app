@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 /**
  * Atualiza infomações da empresa no servidor
@@ -117,7 +117,7 @@ export const GET_COMPANY_BRANCHES = gql`
   * Retorna filial selecionada
   */
  
- export const GET_SELECTED_BRANCH = gql`
+export const GET_SELECTED_BRANCH = gql`
 	query {
 		selectedBranch
 	}
@@ -127,7 +127,7 @@ export const GET_COMPANY_BRANCHES = gql`
   * Retorna métodos de pagamento da filial selecionada
   */
  
- export const LOAD_BRANCH_PAYMENT_METHODS = gql`
+export const LOAD_BRANCH_PAYMENT_METHODS = gql`
 	query ($id:ID!) {
 		branch (id:$id) {
 			id

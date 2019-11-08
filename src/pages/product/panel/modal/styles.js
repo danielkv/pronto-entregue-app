@@ -20,7 +20,7 @@ export const ModalHeader = styled.View`
 `;
 
 export const ModalContent = styled.View`
-	padding:${vw(5)}px;	
+
 `;
 
 export const ModalClose = styled.View`
@@ -48,8 +48,9 @@ export const ModalConfirm = styled.View`
 `;
 
 export const SearchContainer = styled.View`
-	margin-bottom:${vh(5)}px;
+	padding: 0 ${vw(5)}px;
 `;
-export const OptionsContainer = styled.View`
-	margin-left:10px;
+export const OptionsContainer = styled.ScrollView`
+	padding: 0 ${vw(6)}px;
+	margin-top:${vh(3)}px;
 `;

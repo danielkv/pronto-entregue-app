@@ -947,6 +947,16 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.1.tgz#dbcfc5ec08efbb02d4142dd9426c8d7a396829d7"
   integrity sha512-EyJVSbarZkOPYq+zCZLx9apMcpwkX9HvH6R+6CeVL29q88kEFemnLO/IhmE4YX/0MfalsduI8eTi7fuQh/5VeA==
 
+"@react-navigation/core@^5.0.0-alpha.0":
+  version "5.0.0-alpha.21"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.0.0-alpha.21.tgz#adf746e4c8c4471bbc041743728b0c9f97f830a2"
+  integrity sha512-RLD9A/GvAbaF27qm8JDsimX6o3VrDJGbTpK4R0HvX2Hy59gGUxVif5SxmosZQKk4wRd5rU2LOyFqDmB9Xc05dw==
+  dependencies:
+    escape-string-regexp "^2.0.0"
+    query-string "^6.8.3"
+    shortid "^2.2.15"
+    use-subscription "^1.1.1"
+
 "@react-navigation/core@^5.0.0-alpha.19":
   version "5.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.0.0-alpha.19.tgz#55bfe0fe98bfc887dbdb8fae3feff539ac8ccb25"
@@ -968,6 +978,14 @@
   version "5.0.0-alpha.13"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.0.0-alpha.13.tgz#fd0150bad0f5646724caa11e162588861c3e4a6b"
   integrity sha512-Zn5RkqrY94c/vmlAplvUUjZ6SA5tyN8JTmzSbSV6IlSPvOgF+Tg9J6BTyFq/iO0nrCX2P4EtOZnv7htRGC33wg==
+
+"@react-navigation/routers@^5.0.0-alpha.0":
+  version "5.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-5.0.0-alpha.0.tgz#9c2373a8dd3fa24ebdc9ffd8583e7a3af949bbfb"
+  integrity sha512-A0GIXJghZ88idfFmyl66FIsGCqCqOhOt413UH6IpVfOfeW+lAaBfTEWUZL5CjnajayYJQfDLKQZYT/04cKkHqw==
+  dependencies:
+    "@react-navigation/core" "^5.0.0-alpha.0"
+    shortid "^2.2.14"
 
 "@react-navigation/routers@^5.0.0-alpha.11":
   version "5.0.0-alpha.11"
@@ -5803,7 +5821,7 @@ shellwords@^0.1.1:
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
 
-shortid@^2.2.15:
+shortid@^2.2.14, shortid@^2.2.15:
   version "2.2.15"
   resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.15.tgz#2b902eaa93a69b11120373cd42a1f1fe4437c122"
   integrity sha512-5EaCy2mx2Jgc/Fdn9uuDuNIIfWBpzY4XIlhoqtXF6qsf+/+SGZ+FxDdX/ZsMZiWupIWNqAEmiNY4RC+LSmCeOw==

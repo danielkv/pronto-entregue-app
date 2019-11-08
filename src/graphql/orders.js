@@ -1,5 +1,5 @@
-import gql from "graphql-tag";
-import { OPTIONS_GROUP_FRAGMENT } from "./products";
+import gql from 'graphql-tag';
+import { OPTIONS_GROUP_FRAGMENT } from './products';
 
 
 export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
@@ -118,7 +118,7 @@ export const LOAD_ORDER = gql`
 	${ORDER_FRAGMENT}
 `;
 
-export  const GET_BANCH_ORDERS = gql`
+export const GET_BANCH_ORDERS = gql`
 	query ($id:ID!) {
 		branch (id:$id) {
 			id

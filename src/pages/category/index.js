@@ -1,38 +1,47 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { Text } from "react-native-elements";
 import { useQuery } from '@apollo/react-hooks';
-import { useRoute } from "@react-navigation/core";
+import { useRoute } from '@react-navigation/core';
 import {
 	Placeholder,
 	PlaceholderMedia,
 	PlaceholderLine,
 	Shine
-  } from "rn-placeholder";
+} from 'rn-placeholder';
 
-import { Container, Card, ProductContainer, ProductImageContainer, ProductImage, ProductInfoContainer, ProductTitle, ProductDescription, ProductWrapper } from './styles';
+import {
+	Container,
+	Card,
+	ProductContainer,
+	ProductImageContainer,
+	ProductImage,
+	ProductInfoContainer,
+	ProductTitle,
+	ProductDescription,
+	ProductWrapper
+} from './styles';
 import { GET_CATEGORY } from '../../graphql/categories';
 import CartButton from '../../components/cartButton';
 
-export default function category({navigation}) {
+export default function category({ navigation }) {
 	const route = useRoute();
-	const {category_id} = route.params;
+	const { category_id } = route.params;
 
-	const {data:categoryData, loading:loadingCategory} = useQuery(GET_CATEGORY, {variables:{id:category_id}});
+	const { data: categoryData, loading: loadingCategory } = useQuery(GET_CATEGORY, { variables: { id: category_id } });
 	const products = !loadingCategory && categoryData && categoryData.category ? categoryData.category.products : [];
 
-	const renderProductItem = ({item:{id, name, description, image, options_qty}}) => {
-		const openProduct = () => {navigation.navigate("Product", {product_id : id})};
+	const renderProductItem = ({ item: { id, name, description, image, options_qty, price } }) => {
+		const openProduct = () => { navigation.navigate('Product', { product_id: id }) };
 		const buttonIcon = options_qty ? 'page-next-outline' : 'cart-plus';
 		const buttonTitle = options_qty ? 'Ver opções' : 'Colocar no carrinho';
 		const buttonPrice = options_qty ? null : price;
-		const buttonAction = options_qty ? openProduct : () => {Cart.addToCart(item, 1);}
+		const buttonAction = options_qty ? openProduct : () => { /* Cart.addToCart(item, 1); */ }
 		
 		return (
 			<ProductContainer onPress={openProduct}>
 				<ProductWrapper>
 					<ProductImageContainer>
-						<ProductImage source={{uri:image}} />
+						<ProductImage source={{ uri: image }} />
 					</ProductImageContainer>
 					<ProductInfoContainer>
 						<ProductTitle>{name}</ProductTitle>
@@ -44,36 +53,38 @@ export default function category({navigation}) {
 		);
 	}
 
-	if (loadingCategory) return (
-		<Container>
-			<Card>
-				<Placeholder
-					Animation={Shine}
-					Left={PlaceholderMedia}
+	if (loadingCategory) {
+		return (
+			<Container>
+				<Card>
+					<Placeholder
+						Animation={Shine}
+						Left={PlaceholderMedia}
 					>
-					<PlaceholderLine width={100} />
-					<PlaceholderLine width={60} />
-				</Placeholder>
-			</Card>
-			<Card>
-				<Placeholder
-					Animation={Shine}
-					Left={PlaceholderMedia}
+						<PlaceholderLine width={100} />
+						<PlaceholderLine width={60} />
+					</Placeholder>
+				</Card>
+				<Card>
+					<Placeholder
+						Animation={Shine}
+						Left={PlaceholderMedia}
 					>
-					<PlaceholderLine width={100} />
-					<PlaceholderLine width={60} />
-				</Placeholder>
-			</Card>
-		</Container>
-	)
+						<PlaceholderLine width={100} />
+						<PlaceholderLine width={60} />
+					</Placeholder>
+				</Card>
+			</Container>
+		)
+	}
 
-  	return (
+	return (
 		<Container>
 			<FlatList
 				data={products}
 				renderItem={renderProductItem}
 				keyExtractor={(item) => item.id.toString()}
-				/>
+			/>
 		</Container>
-  	);
+	);
 }

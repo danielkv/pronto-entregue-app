@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 /**
  * Recupera o Token do usuário salvo em cache 

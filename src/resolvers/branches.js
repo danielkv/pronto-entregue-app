@@ -1,31 +1,35 @@
-import gql from "graphql-tag";
-import { AsyncStorage } from "react-native";
+import gql from 'graphql-tag';
+import { AsyncStorage } from 'react-native';
 
 export default {
-	Query : {
+	Query: {
 		
 	},
-	BranchMeta:{
-		action : ()=> {
+	BranchMeta: {
+		action: ()=> {
 			return 'editable';
 		}
 	},
-	Mutation : {
-		selectBranch: async (_, {id}, {client, cache}) => {
+	Mutation: {
+		// eslint-disable-next-line consistent-return
+		selectBranch: async (_, { id }, { client, cache }) => {
 			try {
-				const {data} = await client.query({query:gql`
-					query ($id:ID!) {
-						branch (id:$id) {
-							id
-							name
-							active
-							last_month_revenue
-							createdAt
+				const { data } = await client.query({
+					query: gql`
+						query ($id:ID!) {
+							branch (id:$id) {
+								id
+								name
+								active
+								last_month_revenue
+								createdAt
+							}
 						}
-					}
-				`, variables:{id}});
+					`,
+					variables: { id },
+				});
 				
-				cache.writeData({data:{selectedBranch:data.branch.id}});
+				cache.writeData({ data: { selectedBranch: data.branch.id } });
 
 				AsyncStorage.setItem('@flakery/selectedBranch', data.branch.id);
 
