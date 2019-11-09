@@ -41,12 +41,20 @@ export default {
 		}
 	},
 	Button: {
-		buttonStyle: {
-			backgroundColor: '#fff',
+		containerStyle: {
+			margin: 5,
 		},
-		titleStyle: {
-			color: '#FF7C03',
-		},
+		
+		solid: {
+			buttonStyle: {
+				backgroundColor: '#fff',
+			},
+			titleStyle: {
+				color: '#FF7C03',
+			},
+		}
+		
+		
 	},
 	Divider: {
 		style: {
