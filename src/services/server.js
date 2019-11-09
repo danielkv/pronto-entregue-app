@@ -36,7 +36,7 @@ const authLink = new ApolloLink((operation, forward)=> {
 	
 	const { selectedBranch } = cache.readQuery({ query: GET_SELECTED_BRANCH });
 	if (isUserLoggedIn && selectedBranch) set_headers.branch_id = selectedBranch;
-		
+	
 	operation.setContext(({ headers }) => {
 		return {
 			headers: { ...headers, ...set_headers }

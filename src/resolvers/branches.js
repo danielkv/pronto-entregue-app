@@ -31,7 +31,7 @@ export default {
 				
 				cache.writeData({ data: { selectedBranch: data.branch.id } });
 
-				AsyncStorage.setItem('@flakery/selectedBranch', data.branch.id);
+				AsyncStorage.setItem('@copeiro/selectedBranch', data.branch.id);
 
 				return data.branch;
 			} catch (e) {

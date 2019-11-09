@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {Text} from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import theme from '../../../../theme';
 

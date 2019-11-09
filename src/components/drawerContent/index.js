@@ -1,7 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Icon, Button, Divider } from 'react-native-elements';
+import { Button, Divider, Avatar } from 'react-native-elements';
 import { DrawerItem } from '@react-navigation/drawer';
+import { DrawerActions } from '@react-navigation/routers'
 
 import {
 	Container,
@@ -14,18 +15,26 @@ import {
 	getDraweItemProps,
 } from './styles';
 import { IS_USER_LOGGED_IN, LOGGED_USER } from '../../graphql/authentication';
+import { logUserOut } from '../../services/init';
 
-export default function DrawerContent() {
+export default function DrawerContent({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
 	const { data: loggedUserData } = useQuery(LOGGED_USER);
 	const loggedUser = loggedUserData ? loggedUserData.me : null;
+
+	const handleLogout = () => {
+		logUserOut();
+		DrawerActions.closeDrawer();
+	}
 	
 	return (
 		<Container>
 			<HeaderContainer>
-				<Icon type='material-community' name='account' size={69} color='#fff' />
+				{isUserLoggedIn && loggedUser
+					? <Avatar rounded title={`${loggedUser.first_name.substr(0, 1)}${loggedUser.last_name.substr(0, 2)}`} />
+					: <Avatar rounded icon={{ name: 'account' }} />}
 				<HeaderInfoContainer>
-					{isUserLoggedIn
+					{isUserLoggedIn && loggedUser
 						? (
 							<>
 								<UserName>{loggedUser.full_name}</UserName>
@@ -35,7 +44,7 @@ export default function DrawerContent() {
 						: (
 							<>
 								<HeaderInfo>Você não está logado</HeaderInfo>
-								<Button title='Login' onPress={()=>{}} />
+								<Button title='Login' onPress={()=>navigation.navigate('LoginScreen')} />
 							</>
 						)}
 				</HeaderInfoContainer>
@@ -44,7 +53,7 @@ export default function DrawerContent() {
 			<Divider />
 
 			<MenuContainer>
-				<DrawerItem {...getDraweItemProps({ icon: 'food', label: 'Cardápio' })} onPress={()=>{}} />
+				<DrawerItem {...getDraweItemProps({ icon: 'food', label: 'Cardápio' })} onPress={()=>navigation.navigate('HomeScreen')} />
 
 				{isUserLoggedIn && (
 					<>
@@ -63,10 +72,10 @@ export default function DrawerContent() {
 				<DrawerItem {...getDraweItemProps({ icon: 'information', label: 'Sobre' })} onPress={()=>{}} />
 
 				{isUserLoggedIn
-					? <DrawerItem {...getDraweItemProps({ icon: 'logout', label: 'Logout' })} onPress={()=>{}} />
+					? <DrawerItem {...getDraweItemProps({ icon: 'logout', label: 'Logout' })} onPress={handleLogout} />
 					: (
 						<>
-							<DrawerItem {...getDraweItemProps({ icon: 'login', label: 'Login' })} onPress={()=>{}} />
+							<DrawerItem {...getDraweItemProps({ icon: 'login', label: 'Login' })} onPress={()=>navigation.navigate('LoginScreen')} />
 							<DrawerItem {...getDraweItemProps({ icon: 'account-plus', label: 'Cadastrar' })} onPress={()=>{}} />
 						</>
 					)}

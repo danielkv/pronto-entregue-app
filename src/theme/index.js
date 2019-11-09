@@ -5,10 +5,11 @@ export default {
 	},
 	colors: {
 		primary: '#FF7C03',
-		divider: '#B95A02'
+		divider: '#B95A02',
+		error: '#C80707',
 	},
 	Text: {
-		color: '#ffffff',
+		/* color: '#ffffff', */
 		style: {
 			color: '#ffffff',
 		},
@@ -33,28 +34,38 @@ export default {
 	},
 	Input: {
 		placeholderTextColor: '#B95A02',
+		containerStyle: {
+			marginRight: 0,
+			marginLeft: 0,
+			marginVertical: 5,
+		},
 		inputStyle: {
-			
+			paddingHorizontal: 8,
+		},
+		disabledInputStyle: {
+			backgroundColor: '#B95A02',
+			color: '#543315',
 		},
 		inputContainerStyle: {
 			borderBottomColor: '#000',
 		}
 	},
 	Button: {
+		loadingProps: {
+			color: '#FF7C03',
+		},
+		disabledTitleStyle: {
+			color: '#543315',
+		},
 		containerStyle: {
 			margin: 5,
 		},
-		
-		solid: {
-			buttonStyle: {
-				backgroundColor: '#fff',
-			},
-			titleStyle: {
-				color: '#FF7C03',
-			},
-		}
-		
-		
+		buttonStyle: {
+			backgroundColor: '#fff',
+		},
+		titleStyle: {
+			color: '#FF7C03',
+		},
 	},
 	Divider: {
 		style: {

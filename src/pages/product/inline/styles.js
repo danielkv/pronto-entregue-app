@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
-import theme from '../../../theme';
-import { vh, vw } from 'react-native-expo-viewport-units';
+import { vh } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
+
+import theme from '../../../theme';
 
 export const Container = styled.View`
 	

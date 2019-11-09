@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import client from './server';
 
 import { GET_SELECTED_BRANCH } from '../graphql/branches';
+import { LOGGED_USER } from '../graphql/authentication';
 
 export function useInitialize() {
 	const [loading, setLoading] = useState(false);
@@ -35,22 +36,24 @@ export function useInitialize() {
 }
 
 async function init() {
-	const selectedBranch = await AsyncStorage.getItem('@flakery/selectedBranch');
-	
-	if (!selectedBranch) return false;
-	client.writeData({ data: { selectedBranch } });
+	const selectedBranch = await AsyncStorage.getItem('@copeiro/selectedBranch');
+	const userToken = await AsyncStorage.getItem('@copeiro/userToken');
+
+	if (userToken) await logUserIn(userToken);
+
+	if (selectedBranch) client.writeData({ data: { selectedBranch } });
 	
 	return true;
 }
 
-export function logUserIn(token) {
-	AsyncStorage.setItem('@flakery/userToken', token);
+export async function logUserIn(token) {
+	await AsyncStorage.setItem('@copeiro/userToken', token);
 	client.writeData({ data: { isUserLoggedIn: true, userToken: token } });
+	await client.query({ query: LOGGED_USER });
 }
 
-export function logUserOut() {
-	AsyncStorage.removeItem('@flakery/userToken');
-	AsyncStorage.removeItem('@flakery/selectedBranch');
+export async function logUserOut() {
+	await AsyncStorage.removeItem('@copeiro/userToken');
 	client.writeData({ data: { userToken: null, authenticated: false, isUserLoggedIn: false } });
 	client.resetStore();
 }
