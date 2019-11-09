@@ -31,8 +31,8 @@ export default function DrawerContent({ navigation }) {
 		<Container>
 			<HeaderContainer>
 				{isUserLoggedIn && loggedUser
-					? <Avatar rounded title={`${loggedUser.first_name.substr(0, 1)}${loggedUser.last_name.substr(0, 2)}`} />
-					: <Avatar rounded icon={{ name: 'account' }} />}
+					? <Avatar size={60} rounded title={`${loggedUser.first_name.substr(0, 1).toUpperCase()}${loggedUser.last_name.substr(0, 1).toUpperCase()}`} />
+					: <Avatar size={60} rounded icon={{ name: 'account-circle' }} />}
 				<HeaderInfoContainer>
 					{isUserLoggedIn && loggedUser
 						? (
