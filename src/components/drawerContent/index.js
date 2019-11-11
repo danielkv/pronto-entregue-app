@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Button, Divider, Avatar } from 'react-native-elements';
+import { Button, Divider, Avatar, ListItem } from 'react-native-elements';
 import { DrawerItem } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/routers'
 
@@ -15,12 +15,19 @@ import {
 	getDraweItemProps,
 } from './styles';
 import { IS_USER_LOGGED_IN, LOGGED_USER } from '../../graphql/authentication';
-import { logUserOut } from '../../services/init';
+import { GET_SELECTED_BRANCH, LOAD_BRANCH } from '../../graphql/branches';
+import { logUserOut, resetBranch } from '../../services/init';
+import theme from '../../theme';
 
 export default function DrawerContent({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
 	const { data: loggedUserData } = useQuery(LOGGED_USER);
+
+	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
+	const { data: branchData } = useQuery(LOAD_BRANCH, { variables: { id: selectedBranchData.selectedBranch } });
+
 	const loggedUser = loggedUserData ? loggedUserData.me : null;
+	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
 
 	const handleLogout = () => {
 		logUserOut();
@@ -31,7 +38,7 @@ export default function DrawerContent({ navigation }) {
 		<Container>
 			<HeaderContainer>
 				{isUserLoggedIn && loggedUser
-					? <Avatar size={60} rounded title={`${loggedUser.first_name.substr(0, 1).toUpperCase()}${loggedUser.last_name.substr(0, 1).toUpperCase()}`} />
+					? <Avatar size={60} rounded title={userInitials} />
 					: <Avatar size={60} rounded icon={{ name: 'account-circle' }} />}
 				<HeaderInfoContainer>
 					{isUserLoggedIn && loggedUser
@@ -81,6 +88,16 @@ export default function DrawerContent({ navigation }) {
 					)}
 
 			</MenuContainer>
+			{branchData
+				&& (
+					<ListItem
+						leftIcon={{ name: 'store' }}
+						title={branchData.branch.name}
+						subtitle='Trocar filial'
+						containerStyle={{ backgroundColor: theme.colors.divider }}
+						onPress={()=>resetBranch()}
+					/>
+				)}
 		</Container>
 	);
 }

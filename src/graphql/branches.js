@@ -1,9 +1,21 @@
 import gql from 'graphql-tag';
 
-/**
- * Atualiza infomações da empresa no servidor
- * 
- */
+export const LOAD_BRANCH = gql`
+	query ($id: ID!) {
+		branch (id: $id) {
+			id
+			name
+			address {
+				id
+				street
+				number
+				city
+				state
+			}
+		}
+	}
+`;
+
 export const GET_BRANCH_LAST_ORDERS = gql`
 	query ($id:ID!, $limit:Int!, $filter:Filter) {
 		branch(id: $id) {

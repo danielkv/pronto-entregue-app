@@ -4,7 +4,7 @@ import { Text, Icon } from 'react-native-elements';
 
 import theme from '../../theme';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
 	background-color: ${theme.colors.primary};
 	flex: 1;
 `;
@@ -34,6 +34,7 @@ export const HeaderInfo = styled(Text)`
 `;
 export const MenuContainer = styled.View`
 	margin-bottom: 15px;
+	flex: 1;
 `;
 
 const ItemLabel = styled(Text)`

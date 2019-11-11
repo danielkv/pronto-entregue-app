@@ -55,7 +55,11 @@ export async function logUserIn(token) {
 export async function logUserOut() {
 	await AsyncStorage.removeItem('@copeiro/userToken');
 	client.writeData({ data: { userToken: null, authenticated: false, isUserLoggedIn: false } });
-	client.resetStore();
+}
+
+export async function resetBranch() {
+	await AsyncStorage.removeItem('@copeiro/selectedBranch');
+	client.writeData({ data: { selectedBranch: '' } });
 }
 
 
