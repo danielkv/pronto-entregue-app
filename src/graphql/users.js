@@ -40,6 +40,18 @@ export const LOAD_INITIAL_DATA = gql`
 	}
 `;
 
+export const CREATE_USER = gql`
+	mutation ($data:UserInput!) {
+		createUser (data:$data) {
+			id
+			full_name
+			role
+			createdAt
+			active
+		}
+	}
+`;
+
 export const GET_COMPANY_USERS = gql`
 	query ($id:ID!) {
 		company (id:$id) {

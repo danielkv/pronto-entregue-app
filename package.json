@@ -7,7 +7,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject"
-    
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",

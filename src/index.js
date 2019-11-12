@@ -9,6 +9,7 @@ import apolloClient from './services/server';
 import { Container } from './styles';
 import RootRoutes from './rootRoutes';
 import theme from './theme';
+import { ErrorBoundary } from './utils/errors';
 
 export default function App() {
 	return (
@@ -16,7 +17,9 @@ export default function App() {
 			<ApolloProvider client={apolloClient}>
 				<ThemeProvider theme={theme}>
 					<Container>
-						<RootRoutes />
+						<ErrorBoundary>
+							<RootRoutes />
+						</ErrorBoundary>
 					</Container>
 				</ThemeProvider>
 			</ApolloProvider>

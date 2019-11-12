@@ -83,7 +83,10 @@ export default function DrawerContent({ navigation }) {
 					: (
 						<>
 							<DrawerItem {...getDraweItemProps({ icon: 'login', label: 'Login' })} onPress={()=>navigation.navigate('LoginScreen')} />
-							<DrawerItem {...getDraweItemProps({ icon: 'account-plus', label: 'Cadastrar' })} onPress={()=>{}} />
+							<DrawerItem
+								{...getDraweItemProps({ icon: 'account-plus', label: 'Cadastrar' })}
+								onPress={()=>navigation.navigate('SubscriptionScreen')}
+							/>
 						</>
 					)}
 

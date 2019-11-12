@@ -9,10 +9,11 @@ import logoResource from '../../assets/images/logo-copeiro.png';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer } from './styles';
 import { LOGIN } from '../../graphql/authentication';
 import { logUserIn } from '../../services/init';
+import { getErrors } from '../../utils/errors';
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
-		.email('Email válido')
+		.email('Email inválido')
 		.required('Obrigatório'),
 	password: Yup.string()
 		.required('Obrigatório'),
@@ -26,20 +27,18 @@ export default function login({ navigation }) {
 
 	const client = useApolloClient();
 
-	const onSubmit = ({ email, password }, { setSubmitting, resetForm }) => {
-		// navigation.navigate('SubscriptionScreen');
-		client.mutate({ mutation: LOGIN, variables: { email, password } })
+	const onSubmit = async ({ email, password }, { resetForm }) => {
+		await client.mutate({ mutation: LOGIN, variables: { email, password } })
 			.then(({ data })=>{
 				resetForm();
 				if (data.login.token) {
 					logUserIn(data.login.token);
+					navigation.navigate('HomeScreen');
 				}
 			})
 			.catch(err => {
-				Alert.alert(err.message)
-			}).finally(()=>{
-				setSubmitting(false);
-			});
+				Alert.alert(getErrors(err));
+			})
 	}
 
 	// eslint-disable-next-line no-shadow

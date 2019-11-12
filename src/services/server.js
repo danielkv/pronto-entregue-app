@@ -29,13 +29,13 @@ const authLink = new ApolloLink((operation, forward)=> {
 	const set_headers = {};
 
 	const { userToken } = cache.readQuery({ query: GET_USER_TOKEN });
-	if (userToken) set_headers.authorization = `Bearer ${userToken}`;
+	if (isUserLoggedIn && userToken) set_headers.authorization = `Bearer ${userToken}`;
 
 	const { selectedCompany } = cache.readQuery({ query: GET_SELECTED_COMPANY });
-	if (isUserLoggedIn && selectedCompany) set_headers.company_id = selectedCompany;
+	if (selectedCompany) set_headers.company_id = selectedCompany;
 	
 	const { selectedBranch } = cache.readQuery({ query: GET_SELECTED_BRANCH });
-	if (isUserLoggedIn && selectedBranch) set_headers.branch_id = selectedBranch;
+	if (selectedBranch) set_headers.branch_id = selectedBranch;
 	
 	operation.setContext(({ headers }) => {
 		return {
