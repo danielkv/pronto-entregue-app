@@ -4,7 +4,10 @@ import { ErrorContainer, ErrorTitle, ErrorMessage } from './styles';
 
 export const getErrors = (err) => {
 	if (err.graphQLErrors) {
-		return err.graphQLErrors[0].message;
+		if (err.graphQLErrors[0] && err.graphQLErrors[0].message) {
+			return err.graphQLErrors[0].message;
+		}
+		console.log(err.graphQLErrors);
 	}
 
 	if (err.networkError) return err.networkError.message;

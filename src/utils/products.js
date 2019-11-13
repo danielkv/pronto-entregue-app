@@ -1,3 +1,5 @@
+import { uniqueId } from 'lodash';
+
 export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
 	if (!optionsGroup) return 0;
 	return optionsGroup.options.reduce((totalOption, option) => {
@@ -71,4 +73,35 @@ export function checkProductRules(product) {
 		checkGroupRules(groupWithRules);
 	});
 	return true;
+}
+
+export const sanitizeCartData = (data) => {
+	return {
+		id: uniqueId(),
+		product_id: data.id,
+		image: data.image,
+		name: data.name,
+		price: data.price,
+		message: data.message || '',
+		__typename: 'CartItem',
+
+		options_groups: data.options_groups.filter(group=>group.options.some(option=>option.selected)).map(group =>{
+			return {
+				id: uniqueId(),
+				name: group.name,
+				options_group_id: group.id,
+				__typename: 'CartOptionsGroup',
+
+				options: group.options.filter(option=>option.selected).map(option => {
+					return {
+						id: uniqueId(),
+						name: option.name,
+						price: option.price,
+						option_id: option.id,
+						__typename: 'CartOption',
+					};
+				})
+			}
+		})
+	}
 }

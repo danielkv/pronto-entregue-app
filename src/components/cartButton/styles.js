@@ -4,9 +4,9 @@ import theme from '../../theme';
 
 export const ButtonContainer = styled.TouchableOpacity`
   	background-color: ${theme.colors.primary};
-	height:40px;
+	height:50px;
 	
-	border-radius:6px;
+	border-radius:4px;
 	flex-direction:row;
 	overflow:hidden;
 

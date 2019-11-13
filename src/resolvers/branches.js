@@ -5,11 +5,6 @@ export default {
 	Query: {
 		
 	},
-	BranchMeta: {
-		action: ()=> {
-			return 'editable';
-		}
-	},
 	Mutation: {
 		// eslint-disable-next-line consistent-return
 		selectBranch: async (_, { id }, { client, cache }) => {

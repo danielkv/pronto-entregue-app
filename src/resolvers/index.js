@@ -1,6 +1,7 @@
-// import { merge } from 'lodash';
+import { merge } from 'lodash';
 
 import branches from './branches';
+import cartItem from './cart';
 
 
-export default (branches);
+export default merge(branches, cartItem);

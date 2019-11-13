@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Alert } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
+import { Alert, TouchableOpacity } from 'react-native';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
+import { cloneDeep } from 'lodash';
+import { Icon } from 'react-native-elements';
 
 import { LOAD_PRODUCT } from '../../graphql/products';
 
@@ -16,30 +18,42 @@ import {
 	ProductDescription,
 	ProductContainer,
 	CartButtonContainer,
-	GroupsContainer
+	GroupsContainer,
+	QuantityContainer,
+	QuantityTitle,
+	Quantity,
 } from './styles';
-import { calculateProductPrice, checkProductRules } from '../../utils/products';
+import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 
 import Inline from './inline';
 import Panel from './panel';
+import { ADD_CART_ITEM } from '../../graphql/cart';
+import { getErrors } from '../../utils/errors';
 
 export default function Product() {
 	const route = useRoute();
 	const { product_id } = route.params;
+	// const product_id = 1;
 	const [product, setProduct] = useState(null);
-
-	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: product_id } });
-
-	useEffect(()=>{
-		if (error) setProduct(null);
-		else if (!loadingProduct && productData) setProduct(productData.product);
-	}, [productData, loadingProduct, error])
-
+	const [quantity, setQuantity] = useState(1);
+	const client = useApolloClient();
 	const totalPrice = useMemo(()=>{
 		if (product) return calculateProductPrice(product);
 
 		return 0;
 	}, [product, calculateProductPrice]);
+
+	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: product_id } });
+
+	useEffect(()=>{
+		if (error) setProduct(null);
+		else if (productData) setProduct(cloneDeep(productData.product));
+	}, [productData, loadingProduct, error]);
+
+	const resetProduct = () => {
+		setProduct(cloneDeep(productData.product));
+		setQuantity(1);
+	}
 
 	const handleItemSelect = useCallback((optionsGroups) => {
 		const newProduct = { ...product };
@@ -50,7 +64,19 @@ export default function Product() {
 
 	const handleCartButtonPress = () => {
 		try {
-			checkProductRules(product);
+			if (checkProductRules(product)) {
+				client.mutate({
+					mutation: ADD_CART_ITEM,
+					variables: { data: sanitizeCartData({ ...product, price: totalPrice, quantity }) },
+					// refetchQueries: [{ query: LOAD_PRODUCT, variables: { id: product_id } }]
+				})
+					.then(()=>{
+						resetProduct();
+					})
+					.catch((err)=>{
+						Alert.alert(getErrors(err));
+					})
+			}
 		} catch (err) {
 			Alert.alert(err.message);
 		}
@@ -82,6 +108,27 @@ export default function Product() {
 
 			</ProductContainer>
 			<CartButtonContainer>
+				<QuantityContainer>
+					<QuantityTitle>Quantidade</QuantityTitle>
+
+					<TouchableOpacity
+						onPress={()=>{
+							if (quantity > 1) setQuantity(quantity - 1);
+						}}
+					>
+						<Icon type='material-community' name='minus-circle-outline' color='#fff' />
+					</TouchableOpacity>
+					
+					<Quantity>{quantity.toString()}</Quantity>
+
+					<TouchableOpacity
+						onPress={()=> {
+							setQuantity(quantity + 1);
+						}}
+					>
+						<Icon type='material-community' name='plus-circle-outline' color='#fff' />
+					</TouchableOpacity>
+				</QuantityContainer>
 				<CartButton title='Adicionar ao Carrinho' forceShowPrice onPress={handleCartButtonPress} price={totalPrice} icon='cart' />
 			</CartButtonContainer>
 		</Container>
