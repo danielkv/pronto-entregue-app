@@ -5,6 +5,7 @@ export const schema = gql`
 		id: ID!
 		product_id: ID!
 		name: String!
+		quantity: Int!
 		message: String!
 		image: String!
 		price: Float!
@@ -26,6 +27,7 @@ export const schema = gql`
 	input CartItemInput {
 		id: ID!
 		product_id: Int!
+		quantity: Int!
 		name: String!
 		image: String!
 		message: String!
@@ -44,15 +46,8 @@ export const schema = gql`
 		price: Float!
 		option_id: ID!
 	}
-	#type Cart {
-	#	delivery: ID
-	#	payment: ID
-	#	items: [CartItem]!
-	#}
+
 	extend type Query {
 		cartItems: [CartItem]!
 	}
-	#extend type Mutation {
-	#	addCartItem(data: CartItemInput!): CartItem!
-	#}
 `;

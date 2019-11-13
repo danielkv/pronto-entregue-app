@@ -61,10 +61,10 @@ export default function DrawerContent({ navigation }) {
 
 			<MenuContainer>
 				<DrawerItem {...getDraweItemProps({ icon: 'food', label: 'Cardápio' })} onPress={()=>navigation.navigate('HomeScreen')} />
+				<DrawerItem {...getDraweItemProps({ icon: 'cart', label: 'Carrinho' })} onPress={()=>navigation.navigate('CartScreen')} />
 
 				{isUserLoggedIn && (
 					<>
-						<DrawerItem {...getDraweItemProps({ icon: 'cart', label: 'Carrinho' })} onPress={()=>navigation.navigate('CartScreen')} />
 
 						<Divider />
 

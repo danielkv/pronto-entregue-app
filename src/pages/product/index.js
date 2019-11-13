@@ -5,6 +5,7 @@ import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
 import { Icon } from 'react-native-elements';
+import Toast from 'react-native-simple-toast';
 
 import { LOAD_PRODUCT } from '../../graphql/products';
 
@@ -72,6 +73,7 @@ export default function Product() {
 				})
 					.then(()=>{
 						resetProduct();
+						Toast.show('Produto adicionado ao carrinho');
 					})
 					.catch((err)=>{
 						Alert.alert(getErrors(err));

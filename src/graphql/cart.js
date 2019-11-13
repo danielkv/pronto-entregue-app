@@ -25,6 +25,7 @@ export const GET_CART_ITEMS = gql`
 			message
 			image
 			price
+			quantity
 			options_groups {
 				id
 				name

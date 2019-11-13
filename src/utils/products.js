@@ -82,6 +82,7 @@ export const sanitizeCartData = (data) => {
 		image: data.image,
 		name: data.name,
 		price: data.price,
+		quantity: data.quantity,
 		message: data.message || '',
 		__typename: 'CartItem',
 
