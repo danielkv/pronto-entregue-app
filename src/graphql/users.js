@@ -1,13 +1,12 @@
 import gql from 'graphql-tag';
 
-export const SEARCH_USERS = gql`
-	query ($search:String!) {
-		searchCompanyUsers(search:$search) {
+export const GET_USER_ADDRESSES = gql`
+	query {
+		me  {
 			id
-			full_name
-			email
 			addresses {
 				id
+				name
 				street
 				number
 				zipcode

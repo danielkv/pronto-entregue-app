@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { TouchableOpacity, View, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import { cloneDeep } from 'lodash';
-import { Icon, Input } from 'react-native-elements';
+import { Input } from 'react-native-elements';
 
 import { calculateOptionsGroupPrice, getOptionNewState } from '../../../../utils/products';
 import Option from '../../option';
 import {
-	ModalContainer,
-	ModalHeader,
-	ModalClose,
-	ModalTitle,
-	ModalPrice,
-	ModalConfirm,
-	ModalContent,
 	SearchContainer,
 	OptionsContainer
 } from './styles';
+import Panel from '../../../../components/panel';
 
 export default function modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);
@@ -50,38 +44,27 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 	if (!optionGroup) return <View />
 
 	return (
-		<ModalContainer>
-			<ModalHeader>
-				<ModalClose>
-					<TouchableOpacity onPress={closeModal}>
-						<Icon name='close' color='#fff' size={30} />
-					</TouchableOpacity>
-				</ModalClose>
-				<ModalTitle>{optionGroup.name}</ModalTitle>
-				<ModalPrice>{`R$ ${parseFloat(price).toFixed(2).replace('.', ',')}`}</ModalPrice>
-				<ModalConfirm>
-					<TouchableOpacity onPress={()=>confirmModal(optionGroup)}>
-						<Icon name='check' color='#fff' size={30} />
-					</TouchableOpacity>
-				</ModalConfirm>
-			</ModalHeader>
-			<ModalContent>
-				{optionGroup.options.length >= 10 && (
-					<SearchContainer>
-						<Input value={search} onChangeText={(text)=>{ setSearch(text.toLowerCase()) }} placeholder='Buscar' />
-					</SearchContainer>
-				)}
-				<OptionsContainer>
-					{optionGroup.options.filter(opt=>opt.name.toLowerCase().search(search) !== -1).map((option, optionIndex)=>(
-						<Option
-							key={optionIndex}
-							option={option}
-							type={optionGroup.type}
-							onPress={handlePressOption(optionIndex)}
-						/>
-					))}
-				</OptionsContainer>
-			</ModalContent>
-		</ModalContainer>
+		<Panel
+			title={optionGroup.name}
+			handleCancel={closeModal}
+			handleConfirm={()=>confirmModal(optionGroup)}
+			badgeText={`R$ ${price.toFixed(2).replace('.', ',')}`}
+		>
+			{optionGroup.options.length >= 10 && (
+				<SearchContainer>
+					<Input value={search} onChangeText={(text)=>{ setSearch(text.toLowerCase()) }} placeholder='Buscar' />
+				</SearchContainer>
+			)}
+			<OptionsContainer>
+				{optionGroup.options.filter(opt=>opt.name.toLowerCase().search(search) !== -1).map((option, optionIndex)=>(
+					<Option
+						key={optionIndex}
+						option={option}
+						type={optionGroup.type}
+						onPress={handlePressOption(optionIndex)}
+					/>
+				))}
+			</OptionsContainer>
+		</Panel>
 	);
 }

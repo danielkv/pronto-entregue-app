@@ -7,7 +7,6 @@ export const getErrors = (err) => {
 		if (err.graphQLErrors[0] && err.graphQLErrors[0].message) {
 			return err.graphQLErrors[0].message;
 		}
-		console.log(err.graphQLErrors);
 	}
 
 	if (err.networkError) return err.networkError.message;

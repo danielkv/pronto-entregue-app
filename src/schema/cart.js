@@ -47,7 +47,20 @@ export const schema = gql`
 		option_id: ID!
 	}
 
+	#input DeliveryInput {
+	#	type: String!
+	#	price: Float!
+	#	address: Address
+	#}
+
+	#type Delivery {
+	#	type: String!
+	#	price: Float!
+	#	address: Address
+	#}
+
 	extend type Query {
-		cartItems: [CartItem]!
+		cartItems: [CartItem]!,
+		cartDelivery: Delivery
 	}
 `;

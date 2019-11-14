@@ -22,7 +22,7 @@ export const IS_USER_AUTHENTICATED = gql`
  * Recupera o Token do usuário salvo em cache 
  */
 export const IS_USER_LOGGED_IN = gql`
-	{
+	query isUserLoggedIn {
 		isUserLoggedIn
 	}
 `;
@@ -53,7 +53,7 @@ export const LOGIN = gql`
  */
 
 export const LOGGED_USER = gql`
-	query {
+	query LoggedUser {
 		me {
 			id
 			full_name

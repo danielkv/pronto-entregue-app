@@ -140,7 +140,7 @@ export const GET_SELECTED_BRANCH = gql`
   */
  
 export const LOAD_BRANCH_PAYMENT_METHODS = gql`
-	query ($id:ID!) {
+	query LoadPaymentMethods ($id:ID!) {
 		branch (id:$id) {
 			id
 			paymentMethods {
