@@ -12,7 +12,7 @@ export default function CartButton({ title, iconSize = 24, price = 0, forceShowP
 			</ButtonTextContainer>
 			{!!(price || forceShowPrice) && (
 				<ButtonPriceContainer>
-					<ButtonPrice>{`R$ ${parseFloat(price).toFixed(2)}`}</ButtonPrice>
+					<ButtonPrice>{`R$ ${price.toFixed(2).replace('.', ',')}`}</ButtonPrice>
 				</ButtonPriceContainer>
 			)}
 		</ButtonContainer>

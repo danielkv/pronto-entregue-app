@@ -5,6 +5,16 @@ export const ADD_CART_ITEM = gql`
 		addCartItem (data: $data) @client
 	}
 `;
+export const REMOVE_CART_ITEM = gql`
+	mutation RemoveCartItem ($id: ID!) {
+		removeCartItem (id: $id) @client
+	}
+`;
+export const CANCEL_CART = gql`
+	mutation CancelCart {
+		cancelCart @client
+	}
+`;
 export const SET_CART_DELIVERY = gql`
 	mutation SetCartDelivery ($data: DeliveryInput!) {
 		setDelivery (data: $data) @client

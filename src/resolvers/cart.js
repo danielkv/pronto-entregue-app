@@ -11,12 +11,32 @@ export default {
 	},
 	Mutation: {
 		// eslint-disable-next-line consistent-return
+		cancelCart: (_, args, { cache }) => {
+			cache.writeData({
+				data: {
+					/* cartDelivery: null,
+					cartPayment: null, */
+					cartMessage: '',
+					cartItems: []
+				}
+			});
+		},
 		addCartItem: (_, { data }, { cache }) => {
 			const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
 			
 			const new_cart = cartItems.concat(data);
 
 			cache.writeQuery({ query: GET_CART_ITEMS, data: { cartItems: new_cart } });
+
+			return null;
+		},
+		removeCartItem: (_, { id }, { cache }) => {
+			const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
+			
+			const removeIndex = cartItems.findIndex(item => item.id === id);
+			cartItems.splice(removeIndex, 1);
+
+			cache.writeQuery({ query: GET_CART_ITEMS, data: { cartItems } });
 
 			return null;
 		},

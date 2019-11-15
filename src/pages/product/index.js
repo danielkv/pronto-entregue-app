@@ -39,10 +39,10 @@ export default function Product() {
 	const [quantity, setQuantity] = useState(1);
 	const client = useApolloClient();
 	const totalPrice = useMemo(()=>{
-		if (product) return calculateProductPrice(product);
+		if (product) return calculateProductPrice(product) * quantity;
 
 		return 0;
-	}, [product, calculateProductPrice]);
+	}, [product, calculateProductPrice, quantity]);
 
 	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: product_id } });
 

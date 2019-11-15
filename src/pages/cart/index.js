@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { useQuery, useApolloClient, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { vw } from 'react-native-expo-viewport-units';
 
 import CartButton from '../../components/cartButton';
@@ -31,27 +31,48 @@ import ErrorBlock from '../../components/errorBlock';
 import DeliveryModal from './deliveryModal';
 import PaymentModal from './paymentModal';
 
-import { GET_CART_ITEMS, GET_CART_PAYMENT, GET_CART_DELIVERY, SET_CART_DELIVERY, SET_CART_PAYMENT } from '../../graphql/cart';
+import {
+	GET_CART_ITEMS,
+	GET_CART_PAYMENT,
+	GET_CART_DELIVERY,
+	SET_CART_DELIVERY,
+	SET_CART_PAYMENT,
+	REMOVE_CART_ITEM,
+	CANCEL_CART,
+} from '../../graphql/cart';
+
 import { IS_USER_LOGGED_IN } from '../../graphql/authentication';
 import { getErrors } from '../../utils/errors';
+import { calculateOrderPrice, validadeCart } from '../../utils/cart';
 
 export default function Cart({ navigation }) {
-	const [observations, setObservations] = useState('');
+	const [message, setMessage] = useState('');
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
 	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+	const client = useApolloClient();
 	
 	const [setDelivery, { loading: loadingSetDelivery }] = useMutation(SET_CART_DELIVERY);
 	const [setPayment, { loading: loadingSetPayment }] = useMutation(SET_CART_PAYMENT);
+	const [removeCartItem, { loading: loadingRemoveCartItem }] = useMutation(REMOVE_CART_ITEM);
+	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
 	
 	const { data: cartItemsData, loading: loadingCartItems, error } = useQuery(GET_CART_ITEMS);
 	const { data: cartDeliveryData, loading: loadingCartDelivery } = useQuery(GET_CART_DELIVERY);
 	const { data: cartPaymentData, loading: loadingCartPayment } = useQuery(GET_CART_PAYMENT);
 	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN)
 
-	const cartItems = cartItemsData ? cartItemsData.cartItems : [];
+	const cartItems = cartItemsData ? [...cartItemsData.cartItems] : [];
 	const cartDelivery = cartDeliveryData ? cartDeliveryData.cartDelivery : null;
 	const cartPayment = cartPaymentData ? cartPaymentData.cartPayment : null;
 	const isUserLoggedIn = userLoggedInData ? userLoggedInData.isUserLoggedIn : false;
+	const discount = 0;
+
+	const orderPrice = useMemo(()=>{
+		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
+		const deliveryPrice = cartDelivery && cartDelivery.price ? cartDelivery.price : 0;
+
+		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - discount);
+	}, [cartItems, cartDelivery, cartPayment, discount]);
 
 	const handleOpenDeliveryModal = useCallback(()=>{
 		if (isUserLoggedIn) setDeliveryModalOpen(true);
@@ -80,7 +101,42 @@ export default function Cart({ navigation }) {
 			.catch((err) => {
 				Alert.alert(getErrors(err));
 			});
-	})
+	});
+
+	const handleRemoveCartItem = (item) => () => {
+		Alert.alert(
+			`Remover ${item.name}`,
+			'tem certeza que deseja remover esse item do carrinho',
+			[
+				{ text: 'Sim', onPress: ()=>removeCartItem({ variables: { id: item.id } }) },
+				{ text: 'Cancelar' },
+			]
+		);
+	}
+
+	const handleFinishCart = () => {
+		try {
+			validadeCart(cartItems, cartDelivery, cartPayment);
+
+			client.writeData({ data: { cartMessage: message } });
+
+			navigation.navigate('PaymentScreen');
+		} catch (err) {
+			Alert.alert(err.message);
+		}
+	}
+
+	const handleCancelCart = () => {
+		Alert.alert(
+			'Cancelar pedido',
+			'Tem certeza que deseja cancelar o pedido atual',
+			[
+				{ text: 'Sim', onPress: ()=>cancelCart() },
+				{ text: 'Cancelar' },
+			]
+		);
+	}
+
 
 	if (loadingCartItems || loadingCartDelivery || loadingCartPayment || loadingUser) return <LoadingBlock />;
 	if (error) return <ErrorBlock error={error} />
@@ -93,7 +149,9 @@ export default function Cart({ navigation }) {
 						{`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`}
 					</SectionTitle>
 					<SectionContent>
-						{cartItems.map((item, index)=><CartItem key={index} item={item} />)}
+						{cartItems.map((item, index)=>(
+							<CartItem key={index} item={item} onPressDelete={handleRemoveCartItem(item)} />
+						))}
 					</SectionContent>
 				</Section>
 				<Section>
@@ -130,8 +188,8 @@ export default function Cart({ navigation }) {
 					<SectionTitle>Observações</SectionTitle>
 					<SectionContent>
 						<Input
-							value={observations}
-							onChangeText={(text)=>setObservations(text)}
+							value={message}
+							onChangeText={(text)=>setMessage(text)}
 							multiline
 						/>
 					</SectionContent>
@@ -142,15 +200,14 @@ export default function Cart({ navigation }) {
 				<CartButton
 					title='Finalizar pedido'
 					forceShowPrice
-					price={0}
-					onPress={()=>{}}
+					price={orderPrice}
+					onPress={handleFinishCart}
 				/>
 				<CancelButton>
-					<CancelButtonText>Cancelar pedido</CancelButtonText>
+					<CancelButtonText onPress={handleCancelCart}>Cancelar pedido</CancelButtonText>
 				</CancelButton>
 			</CartButtonContainer>
 			
-
 			<Modal
 				isVisible={deliveryModalOpen}
 				onModalHide={handleCloseDeliveryModal}
@@ -178,43 +235,6 @@ export default function Cart({ navigation }) {
 			>
 				<PaymentModal confirmModal={handleConfirmPaymentModal} closeModal={handleClosePaymentModal} />
 			</Modal>
-		
-
-			{/* 
-		</View>
-			{this.state.deliveryOpen && 
-				<Panel ref={(panel)=>{this.deliveryPanel = panel;}} title='Endereço de entrega' headerRight={()=>(
-					<TouchableOpacity onPress={() => {NavigationService.navigate('Add_Address', {fromCart:true})}}>
-						<Icon type='material-community' name='plus' color='#fff' size={24} />
-					</TouchableOpacity>
-				)}>
-					<DeliveryMethods onSelectItem={(method)=>{
-						this.deliveryPanel.close(()=>{
-							try {
-								let delivery = Cart.setDelivery(method);
-								this.setState({delivery, deliveryOpen:false});
-							} catch (error) {
-								ToastAndroid.show(error.message, ToastAndroid.LONG);
-							}
-						});
-					}} />
-				</Panel>
-			}
-
-			{this.state.paymentOpen && 
-				<Panel ref={(panel)=>{this.paymentPanel = panel;}} title='Forma de Pagamento'>
-					<PaymentMethods onSelectItem={(method)=>{
-						this.paymentPanel.close(()=>{
-							try {
-								let payment = Cart.setPayment(method);
-								this.setState({payment, paymentOpen:false});
-							} catch (error) {
-								ToastAndroid.show(error.message, ToastAndroid.SHORT);
-							}
-						});
-					}} />
-				</Panel>
-			} */}
 		</Container>
 	);
 }
