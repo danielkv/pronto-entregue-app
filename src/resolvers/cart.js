@@ -17,7 +17,8 @@ export default {
 					/* cartDelivery: null,
 					cartPayment: null, */
 					cartMessage: '',
-					cartItems: []
+					cartItems: [],
+					cartPrice: 0
 				}
 			});
 		},

@@ -25,6 +25,55 @@ export const SET_CART_PAYMENT = gql`
 		setPayment (data: $data) @client
 	}
 `;
+export const GET_CART = gql`
+	query GetCart {
+		cartDelivery @client {
+			type
+			price
+			address {
+				name,
+				street
+				number
+				district
+				city
+				state
+				zipcode
+			}
+		}
+
+		cartPrice @client
+
+		cartDiscount @client
+
+		cartMessage @client
+
+		cartPayment @client {
+			id
+			name
+			display_name
+			price
+		}
+
+		cartItems @client {
+			id
+			product_id
+			name
+			message
+			image
+			price
+			quantity
+			options_groups {
+				id
+				name
+				options {
+					id
+					name
+					price
+				}
+			}
+		}
+	}
+`;
 export const GET_CART_DELIVERY = gql`
 	query GetCartDeliveryType {
 		cartDelivery @client {

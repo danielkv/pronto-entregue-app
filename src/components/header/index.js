@@ -8,13 +8,13 @@ import { DrawerActions } from '@react-navigation/routers';
 
 import { HeaderTitle } from './styles';
 import theme from '../../theme';
-import { GET_CART_ITEMS } from '../../graphql/cart';
+import { GET_CART } from '../../graphql/cart';
 
 export default ({ previous, scene, navigation }) => {
 	const { options } = scene.descriptor;
 
-	const { data: cartItemsData } = useQuery(GET_CART_ITEMS);
-	const cartItems = cartItemsData ? [...cartItemsData.cartItems] : [];
+	const { data: { cartItems } } = useQuery(GET_CART);
+	// const cartItems = cartItemsData ? [...cartItemsData.cartItems] : [];
 
 	const title = scene.route.params && scene.route.params.headerTitle
 		? scene.route.params.headerTitle

@@ -32,13 +32,11 @@ import DeliveryModal from './deliveryModal';
 import PaymentModal from './paymentModal';
 
 import {
-	GET_CART_ITEMS,
-	GET_CART_PAYMENT,
-	GET_CART_DELIVERY,
 	SET_CART_DELIVERY,
 	SET_CART_PAYMENT,
 	REMOVE_CART_ITEM,
 	CANCEL_CART,
+	GET_CART,
 } from '../../graphql/cart';
 
 import { IS_USER_LOGGED_IN } from '../../graphql/authentication';
@@ -56,23 +54,16 @@ export default function Cart({ navigation }) {
 	const [removeCartItem, { loading: loadingRemoveCartItem }] = useMutation(REMOVE_CART_ITEM);
 	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
 	
-	const { data: cartItemsData, loading: loadingCartItems, error } = useQuery(GET_CART_ITEMS);
-	const { data: cartDeliveryData, loading: loadingCartDelivery } = useQuery(GET_CART_DELIVERY);
-	const { data: cartPaymentData, loading: loadingCartPayment } = useQuery(GET_CART_PAYMENT);
-	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN)
-
-	const cartItems = cartItemsData ? [...cartItemsData.cartItems] : [];
-	const cartDelivery = cartDeliveryData ? cartDeliveryData.cartDelivery : null;
-	const cartPayment = cartPaymentData ? cartPaymentData.cartPayment : null;
+	const { data: { cartItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
+	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN);
 	const isUserLoggedIn = userLoggedInData ? userLoggedInData.isUserLoggedIn : false;
-	const discount = 0;
 
-	const orderPrice = useMemo(()=>{
+	const cartPrice = useMemo(()=>{
 		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
 		const deliveryPrice = cartDelivery && cartDelivery.price ? cartDelivery.price : 0;
 
-		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - discount);
-	}, [cartItems, cartDelivery, cartPayment, discount]);
+		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - cartDiscount);
+	}, [cartItems, cartDelivery, cartPayment, cartDiscount]);
 
 	const handleOpenDeliveryModal = useCallback(()=>{
 		if (isUserLoggedIn) setDeliveryModalOpen(true);
@@ -118,7 +109,7 @@ export default function Cart({ navigation }) {
 		try {
 			validadeCart(cartItems, cartDelivery, cartPayment);
 
-			client.writeData({ data: { cartMessage: message } });
+			client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
 			navigation.navigate('PaymentScreen');
 		} catch (err) {
@@ -138,7 +129,7 @@ export default function Cart({ navigation }) {
 	}
 
 
-	if (loadingCartItems || loadingCartDelivery || loadingCartPayment || loadingUser) return <LoadingBlock />;
+	if (loadingCart || loadingUser) return <LoadingBlock />;
 	if (error) return <ErrorBlock error={error} />
 
 	return (
@@ -200,7 +191,7 @@ export default function Cart({ navigation }) {
 				<CartButton
 					title='Finalizar pedido'
 					forceShowPrice
-					price={orderPrice}
+					price={cartPrice}
 					onPress={handleFinishCart}
 				/>
 				<CancelButton>

@@ -26,7 +26,9 @@ const initialData = {
 	cartDelivery: null,
 	cartPayment: null,
 	cartItems: [],
+	cartPrice: 0,
 	cartMessage: '',
+	cartDiscount: 0,
 }
 
 cache.writeData({ data: initialData });

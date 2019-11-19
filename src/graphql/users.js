@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const GET_USER_ADDRESSES = gql`
-	query {
+	query getUserAddresses {
 		me  {
 			id
 			addresses {
@@ -14,6 +14,16 @@ export const GET_USER_ADDRESSES = gql`
 				city
 				state
 			}
+		}
+	}
+`;
+
+export const GET_USER = gql`
+	query getUser {
+		me  {
+			id
+			full_name
+			email
 		}
 	}
 `;
