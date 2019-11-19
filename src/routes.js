@@ -6,17 +6,18 @@ import header from './components/header';
 import theme from './theme';
 import DrawerContent from './components/drawerContent';
 
-import HomeScreen from './pages/home';
-import CategoryScreen from './pages/category';
-import ProductScreen from './pages/product';
+import HomeScreen from './pages/Home';
+import CategoryScreen from './pages/Category';
+import ProductScreen from './pages/Product';
 
-import LoginScreen from './pages/login';
-import SubscriptionScreen from './pages/subscription';
+import LoginScreen from './pages/Login';
+import SubscriptionScreen from './pages/Subscription';
 
-import CartScreen from './pages/cart';
-import PaymentScreen from './pages/payment';
+import CartScreen from './pages/Cart';
+import PaymentScreen from './pages/Payment';
 
-import OrderListScreen from './pages/orderList';
+import OrderListScreen from './pages/OrderList';
+import OrderScreen from './pages/Order';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -41,6 +42,7 @@ export default function Routes() {
 						<Stack.Screen name='PaymentScreen' component={PaymentScreen} options={{ title: 'Pagamento' }} />
 						
 						<Stack.Screen name='OrderListScreen' component={OrderListScreen} options={{ title: 'Pedidos' }} />
+						<Stack.Screen name='OrderScreen' component={OrderScreen} options={{ title: 'Pedido' }} />
 					</Stack.Navigator>
 				)}
 			</Drawer.Screen>
