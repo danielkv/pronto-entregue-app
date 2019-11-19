@@ -1,7 +1,7 @@
-import React from './node_modules/react';
+import React from 'react';
 import { Image, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { useQuery, useMutation } from './node_modules/@apollo/react-hooks';
-import { ListItem, Icon } from './node_modules/react-native-elements';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { ListItem, Icon } from 'react-native-elements';
 
 import logoCopeiro from '../../assets/images/logo-copeiro.png';
 import { Container, MenuContainer, HelperText } from './styles';
