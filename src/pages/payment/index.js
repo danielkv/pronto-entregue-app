@@ -11,20 +11,6 @@ import { CREATE_ORDER } from '../../graphql/orders';
 import { sanitizeOrderData } from '../../utils/cart';
 import { GET_USER } from '../../graphql/users';
 
-const cart = {
-	// eslint-disable-next-line global-require
-	cartItems: require('../../../products.json'),
-	cartDelivery: {
-		type: 'takeout',
-	},
-	cartPayment: {
-		id: 1,
-		name: 'Money',
-	},
-	cartPrice: 54.34,
-	cartDiscount: 0,
-	cartMessage: 'teste de mensagem',
-}
 
 export default function Payment({ navigation }) {
 	const { data: cartData, loading: loadingCart, error } = useQuery(GET_CART);
@@ -52,7 +38,7 @@ export default function Payment({ navigation }) {
 
 	return (
 		<Container>
-			<Gateway step='finish' name='Money' cart={cart} onFinish={handleFinishOrder} />
+			<Gateway step='finish' name='Money' cart={cartData} onFinish={handleFinishOrder} />
 		</Container>
 	);
 }
