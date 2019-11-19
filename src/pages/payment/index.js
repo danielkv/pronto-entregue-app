@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from './node_modules/react';
 import { Alert } from 'react-native';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from './node_modules/@apollo/react-hooks';
 
 import { Container } from './styles';
 import ErrorBlock from '../../components/errorBlock';

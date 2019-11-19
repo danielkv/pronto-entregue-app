@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-import { vw, vh } from 'react-native-expo-viewport-units';
+import styled from './node_modules/styled-components/native';
+import { vw, vh } from './node_modules/react-native-expo-viewport-units';
 
 import theme from '../../theme';
 

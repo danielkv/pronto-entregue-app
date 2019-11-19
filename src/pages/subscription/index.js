@@ -1,9 +1,9 @@
-import React from 'react';
+import React from './node_modules/react';
 import { Alert } from 'react-native';
-import { useApolloClient } from '@apollo/react-hooks';
-import { Button, Input } from 'react-native-elements';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { useApolloClient } from './node_modules/@apollo/react-hooks';
+import { Button, Input } from './node_modules/react-native-elements';
+import { useFormik } from './node_modules/formik';
+import * as Yup from './node_modules/yup';
 
 import logoResource from '../../assets/images/logo-copeiro.png';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer } from './styles';
