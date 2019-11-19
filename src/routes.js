@@ -16,6 +16,8 @@ import SubscriptionScreen from './pages/subscription';
 import CartScreen from './pages/cart';
 import PaymentScreen from './pages/payment';
 
+import OrderListScreen from './pages/orderList';
+
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -25,7 +27,7 @@ export default function Routes() {
 			<Drawer.Screen name='Pages'>
 				{()=>(
 					<Stack.Navigator
-						initialRouteName='HomeScreen'
+						initialRouteName='OrderListScreen'
 						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.colors.primary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
@@ -37,6 +39,8 @@ export default function Routes() {
 						
 						<Stack.Screen name='CartScreen' component={CartScreen} options={{ title: 'Carrinho' }} />
 						<Stack.Screen name='PaymentScreen' component={PaymentScreen} options={{ title: 'Pagamento' }} />
+						
+						<Stack.Screen name='OrderListScreen' component={OrderListScreen} options={{ title: 'Pedidos' }} />
 					</Stack.Navigator>
 				)}
 			</Drawer.Screen>

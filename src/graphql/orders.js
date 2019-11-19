@@ -118,9 +118,9 @@ export const LOAD_ORDER = gql`
 	${ORDER_FRAGMENT}
 `;
 
-export const GET_BANCH_ORDERS = gql`
-	query ($id:ID!) {
-		branch (id:$id) {
+export const GET_USER_ORDERS = gql`
+	query {
+		me {
 			id
 			orders {
 				id
