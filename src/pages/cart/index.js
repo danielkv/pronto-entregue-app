@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useCallback, useMemo } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -49,10 +49,10 @@ export default function Cart({ navigation }) {
 	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 	const client = useApolloClient();
 	
-	const [setDelivery, { loading: loadingSetDelivery }] = useMutation(SET_CART_DELIVERY);
-	const [setPayment, { loading: loadingSetPayment }] = useMutation(SET_CART_PAYMENT);
-	const [removeCartItem, { loading: loadingRemoveCartItem }] = useMutation(REMOVE_CART_ITEM);
-	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
+	const [setDelivery] = useMutation(SET_CART_DELIVERY);
+	const [setPayment] = useMutation(SET_CART_PAYMENT);
+	const [removeCartItem] = useMutation(REMOVE_CART_ITEM);
+	const [cancelCart] = useMutation(CANCEL_CART);
 	
 	const { data: { cartItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
 	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN);
@@ -107,7 +107,7 @@ export default function Cart({ navigation }) {
 
 	const handleFinishCart = () => {
 		try {
-			validadeCart(cartItems, cartDelivery, cartPayment);
+			validadeCart({ cartItems, cartDelivery, cartPayment });
 
 			client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 

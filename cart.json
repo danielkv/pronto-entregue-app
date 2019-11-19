@@ -1,0 +1,79 @@
+{
+	"cartDelivery": {
+		"__typename": "Delivery",
+		"address": {
+			"__typename": "Address",
+			"city": "Houston",
+			"district": "Waubesa",
+			"name": "Youspan",
+			"number": "6455",
+			"state": "Texas",
+			"street": "Meadow Vale",
+			"zipcode": 88955000
+		},
+		"price": 5,
+		"type": "delivery"
+	},
+	"cartDiscount": 0,
+	"cartItems": [
+		{
+			"__typename": "CartItem",
+			"id": "1",
+			"image": "http://192.168.234.2:4000/uploads/copeiro-hamburge1r/5ac6194c6c058d82eaa26886605c121f-hamburguer-de-siri-stunt-burger-1432825855665_1280x855.jpg",
+			"message": "",
+			"name": "Hambúrguer com Calabresa",
+			"options_groups": [
+				{
+					"__typename": "CartOptionsGroup",
+					"id": "2",
+					"name": "Extras",
+					"options": [
+						{
+							"__typename": "CartOption",
+							"id": "3",
+							"name": "Sem alface",
+							"price": 0
+						}
+					]
+				}
+			],
+			"price": 16.98,
+			"product_id": "1",
+			"quantity": 1
+		},
+		{
+			"__typename": "CartItem",
+			"id": "4",
+			"image": "http://192.168.234.2:4000/uploads/copeiro-hamburge1r/5ac6194c6c058d82eaa26886605c121f-hamburguer-de-siri-stunt-burger-1432825855665_1280x855.jpg",
+			"message": "",
+			"name": "Hambúrguer com Calabresa",
+			"options_groups": [
+				{
+					"__typename": "CartOptionsGroup",
+					"id": "5",
+					"name": "Extras",
+					"options": [
+						{
+							"__typename": "CartOption",
+							"id": "6",
+							"name": "Bacon",
+							"price": 1.5
+						}
+					]
+				}
+			],
+			"price": 18.48,
+			"product_id": "1",
+			"quantity": 1
+		}
+	],
+	"cartMessage": "",
+	"cartPayment": {
+		"__typename": "Payment",
+		"display_name": "Cartão de Crédito/Débito",
+		"id": "1",
+		"name": "Money",
+		"price": 0
+	},
+	"cartPrice": 40.46
+}

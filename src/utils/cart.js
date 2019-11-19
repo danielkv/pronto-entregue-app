@@ -5,12 +5,12 @@ export const calculateOrderPrice = (products, initialValue = 0) => {
 	}, initialValue));
 }
 
-export const validadeCart = (items, delivery, payment) => {
-	if (items.length === 0) throw new Error('Não há nenhum item no carrinho');
+export const validadeCart = ({ cartItems, cartDelivery, cartPayment }) => {
+	if (cartItems.length === 0) throw new Error('Não há nenhum item no carrinho');
 
-	if (!delivery || !delivery.type) throw new Error('Selecione um tipo de entrega');
+	if (!cartDelivery || !cartDelivery.type) throw new Error('Selecione um tipo de entrega');
 	
-	if (!payment || !payment.id) throw new Error('Selecione uma método de pagamento');
+	if (!cartPayment || !cartPayment.id || !cartPayment.name) throw new Error('Selecione uma método de pagamento');
 
 	return true;
 }

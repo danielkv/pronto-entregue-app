@@ -5,7 +5,16 @@ import {
 	GataweyContainer,
 	GetawayTitle,
 	GetawayIconContainer,
-} from '../styles'
+} from '../styles';
+
+import {
+	FinishContainer,
+	CartButtonContainer,
+	FormContainer,
+	Title,
+} from './styles';
+
+import CartButton from '../../components/cartButton';
 
 export const Option = ({ onPress }) => {
 	return (
@@ -18,42 +27,28 @@ export const Option = ({ onPress }) => {
 	);
 }
 
-export const Finish = () => {
+export const Finish = ({ cart, onFinish }) => {
+	const { cartPrice } = cart;
+	
+	const onSubmit = () => {
+		return onFinish(cart);
+	}
+	
 	return (
-		<GataweyContainer>
-			<GetawayIconContainer>
-				<Icon type='material-community' name='credit-card' size={24} color='#fff' />
-			</GetawayIconContainer>
-			<GetawayTitle>Cartão de Crédito/Débito</GetawayTitle>
-		</GataweyContainer>
-	);
-}
-
-/* renderPayment = ({order, component}) => {
-	return (
-		<View style={styles.container}>
-			<View style={styles.paymentContainer}>
+		<FinishContainer>
+			<FormContainer>
 				<Icon type='material-community' name='credit-card' size={75} color='#fff' />
-				<Text style={styles.gatewayTitle}>{this.title}</Text>
-				<Text style={styles.textInfo}>
-					Você pagará com cartão de débito quando for retirar seu pedido.
-				</Text>
-				<Text style={styles.textInfo}>
-					Clique em Finalizar para enviar seu pedido.
-				</Text>
-				<Icon type='material-community' name='chevron-down' size={24} color='#fff' />
-			</View>
-			<View style={styles.addToCartContainer}>
+				<Title>Pagamento com Cartão de Crédito/Débito</Title>
+			</FormContainer>
+			<CartButtonContainer>
 				<CartButton
-					containerStyle={styles.cartButton}
-					title='Finalizar'
+					title='Finalizar pedido'
 					icon='check'
 					forceShowPrice
-					price={order.amount.toBRL()}
-					onPress={()=>{
-						this.finishPayment(order, component);
-					}}
-					/>
-			</View>
-		</View>
-	); */
+					price={cartPrice}
+					onPress={onSubmit}
+				/>
+			</CartButtonContainer>
+		</FinishContainer>
+	);
+}
