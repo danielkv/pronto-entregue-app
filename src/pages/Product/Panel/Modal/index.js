@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash';
 import { Input } from 'react-native-elements';
 
 import { calculateOptionsGroupPrice, getOptionNewState } from '../../../../utils/products';
-import Option from '../../option';
+import Option from '../../Option';
 import {
 	SearchContainer,
 	OptionsContainer

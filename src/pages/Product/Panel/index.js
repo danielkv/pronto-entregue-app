@@ -4,9 +4,9 @@ import { vw } from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
 
 import { getGroupRestrainingRules } from '../../../utils/products';
-import Group from './group';
+import Group from './Group';
 import { Container } from './styles';
-import GroupModal from './modal';
+import GroupModal from './Modal';
 
 function Panel({ optionsGroups, onItemSelect }) {
 	const [selectedOptionGroup, setSelectedOptionGroup] = useState(null);
