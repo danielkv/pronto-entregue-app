@@ -28,8 +28,8 @@ import OrderItem from '../../components/OrderItem';
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
 
-import DeliveryModal from './deliveryModal';
-import PaymentModal from './paymentModal';
+import DeliveryModal from './DeliveryModal';
+import PaymentModal from './PaymentModal';
 
 import {
 	SET_CART_DELIVERY,
