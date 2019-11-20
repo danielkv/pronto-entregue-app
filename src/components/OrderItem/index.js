@@ -19,13 +19,6 @@ import {
 export default function CartItem({ item, onPressDelete }) {
 	return (
 		<Container>
-			{!!onPressDelete && (
-				<ButtonsContainer>
-					<TouchableOpacity onPress={onPressDelete}>
-						<Icon type='material-community' name='delete' color='#fff' />
-					</TouchableOpacity>
-				</ButtonsContainer>
-			)}
 			<ItemContent>
 				<ItemTitle>{item.name}</ItemTitle>
 				<ItemOptionsContainer>
@@ -46,6 +39,14 @@ export default function CartItem({ item, onPressDelete }) {
 				<ItemQuantity>{`Qtde: ${item.quantity}`}</ItemQuantity>
 				<ItemPrice>{`R$ ${item.price.toFixed(2).replace('.', ',')}`}</ItemPrice>
 			</ItemFooter>
+			
+			{!!onPressDelete && (
+				<ButtonsContainer>
+					<TouchableOpacity onPress={onPressDelete}>
+						<Icon type='material-community' name='delete' color='#fff' />
+					</TouchableOpacity>
+				</ButtonsContainer>
+			)}
 		</Container>
 	);
 }

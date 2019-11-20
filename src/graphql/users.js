@@ -28,6 +28,37 @@ export const GET_USER = gql`
 	}
 `;
 
+export const CREATE_USER_ADDRESS = gql`
+	mutation createUserAddress ($data: UserAddressInput!) {
+		createUserAddress (data: $data)  {
+			id
+			name
+		}
+	}
+`;
+export const UPDATE_USER_ADDRESS = gql`
+	mutation updateUserAddress ($id: ID!, $data: UserAddressInput!) {
+		updateUserAddress (id: $id, data: $data)  {
+			id
+			name
+			street
+			number
+			zipcode
+			district
+			city
+			state
+		}
+	}
+`;
+export const REMOVE_USER_ADDRESS = gql`
+	mutation removeUserAddress ($id: ID!) {
+		removeUserAddress (id: $id)  {
+			id
+			name
+		}
+	}
+`;
+
 /**
  * Carrega todas infomações ao acessar
  * 

@@ -4,10 +4,16 @@ import { Text } from 'react-native-elements';
 
 import theme from '../../theme';
 
-export const Container = styled.TouchableOpacity`
+export const TouchableContainer = styled.TouchableOpacity`
 	background-color: ${theme.colors.divider};
 	padding: 20px;
-	margin: ${vh(2)}px 0;
+	margin: ${vh(1)}px 0;
+	border-radius:4px;
+`;
+export const Container = styled.View`
+	background-color: ${theme.colors.divider};
+	padding: 20px;
+	margin: ${vh(1)}px 0;
 	border-radius:4px;
 `;
 export const Title = styled(Text)`
@@ -20,4 +26,10 @@ export const AddressInfo = styled(Text)`
 	font-size:14px;
 	font-weight:100;
 	color:#fff;
+`;
+export const RightComponent = styled.View`
+	flex-direction: row;
+	position: absolute;
+	right: 10px;
+	top: 10px;
 `;

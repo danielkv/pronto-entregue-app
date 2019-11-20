@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, FlatList } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
@@ -21,10 +21,16 @@ export default function deliveryModal({ confirmModal, closeModal }) {
 	const onPressAddress = (address) => {
 		confirmModal({ type: 'delivery', address });
 	}
-
+	
+	const renderAddress = ({ item }) => (
+		<Address
+			address={item}
+			onPress={()=>onPressAddress(item)}
+		/>
+	)
+		
 	if (loadingUserAddresses) return <LoadingBlock />
 	if (error) return <ErrorBlock error={error} />
-
 	return (
 		<Panel
 			title='Endereço de entrega'
@@ -35,9 +41,12 @@ export default function deliveryModal({ confirmModal, closeModal }) {
 				</TouchableOpacity>
 			)}
 		>
-			{addresses.map((address, index) => (
-				<Address key={index} address={address} onPress={()=>onPressAddress(address)} />
-			))}
+
+			<FlatList
+				renderItem={renderAddress}
+				data={addresses}
+				keyExtractor={(item, index)=>index.toString()}
+			/>
 
 			<TakeoutContainer onPress={()=>confirmModal({ type: 'takeout' })}>
 				<TakeoutTitle>Retirar no local</TakeoutTitle>
