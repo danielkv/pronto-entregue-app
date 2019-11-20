@@ -26,8 +26,8 @@ import {
 } from './styles';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 
-import Inline from './inline';
-import Panel from './panel';
+import Inline from './Inline';
+import Panel from './Panel';
 import { ADD_CART_ITEM } from '../../graphql/cart';
 import { getErrors } from '../../utils/errors';
 

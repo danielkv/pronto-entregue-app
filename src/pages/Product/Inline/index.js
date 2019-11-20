@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import Option from '../option';
+import Option from '../Option';
 import {
 	Container,
 	GroupContainer,

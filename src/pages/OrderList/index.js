@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { Container, ContainerScroll } from './styles';
 import LoadingBlock from '../../components/LoadingBlock';
-import Order from './order';
+import Order from './Order';
 
 import { GET_USER_ORDERS } from '../../graphql/orders';
 
