@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 
-import LoadingBlock from '../../../components/loadingBlock';
-import ErrorBlock from '../../../components/errorBlock';
-import Panel from '../../../components/panel';
+import LoadingBlock from '../../../components/LoadingBlock';
+import ErrorBlock from '../../../components/ErrorBlock';
+import Panel from '../../../components/Panel';
 import Gateway from '../../../gateway';
 
 import { LOAD_BRANCH_PAYMENT_METHODS, GET_SELECTED_BRANCH } from '../../../graphql/branches';

@@ -4,10 +4,10 @@ import { useQuery } from '@apollo/react-hooks';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 
-import LoadingBlock from '../../../components/loadingBlock';
-import ErrorBlock from '../../../components/errorBlock';
-import Panel from '../../../components/panel';
-import Address from '../../../components/address';
+import LoadingBlock from '../../../components/LoadingBlock';
+import ErrorBlock from '../../../components/ErrorBlock';
+import Panel from '../../../components/Panel';
+import Address from '../../../components/Address';
 import { TakeoutContainer, TakeoutTitle } from './styles';
 
 import { GET_USER_ADDRESSES } from '../../../graphql/users';

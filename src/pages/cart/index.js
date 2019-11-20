@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { vw } from 'react-native-expo-viewport-units';
 
-import CartButton from '../../components/cartButton';
+import CartButton from '../../components/CartButton';
 import {
 	Container,
 	CartContainer,
@@ -25,8 +25,8 @@ import {
 } from './styles';
 import theme from '../../theme';
 import OrderItem from '../../components/OrderItem';
-import LoadingBlock from '../../components/loadingBlock';
-import ErrorBlock from '../../components/errorBlock';
+import LoadingBlock from '../../components/LoadingBlock';
+import ErrorBlock from '../../components/ErrorBlock';
 
 import DeliveryModal from './deliveryModal';
 import PaymentModal from './paymentModal';

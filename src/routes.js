@@ -2,9 +2,9 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import header from './components/header';
+import header from './components/Header';
 import theme from './theme';
-import DrawerContent from './components/drawerContent';
+import DrawerContent from './components/DrawerContent';
 
 import HomeScreen from './pages/Home';
 import CategoryScreen from './pages/Category';

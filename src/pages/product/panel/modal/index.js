@@ -9,7 +9,7 @@ import {
 	SearchContainer,
 	OptionsContainer
 } from './styles';
-import Panel from '../../../../components/panel';
+import Panel from '../../../../components/Panel';
 
 export default function modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);

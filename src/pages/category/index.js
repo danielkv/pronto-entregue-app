@@ -21,7 +21,7 @@ import {
 	ProductWrapper
 } from './styles';
 import { GET_CATEGORY } from '../../graphql/categories';
-import CartButton from '../../components/cartButton';
+import CartButton from '../../components/CartButton';
 
 export default function category({ navigation }) {
 	const route = useRoute();

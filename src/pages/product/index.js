@@ -9,8 +9,8 @@ import Toast from 'react-native-simple-toast';
 
 import { LOAD_PRODUCT } from '../../graphql/products';
 
-import LoadingBlock from '../../components/loadingBlock';
-import CartButton from '../../components/cartButton';
+import LoadingBlock from '../../components/LoadingBlock';
+import CartButton from '../../components/CartButton';
 
 import {
 	Container,

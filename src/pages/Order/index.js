@@ -4,8 +4,8 @@ import { Text } from 'react-native-elements';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 
-import LoadingBlock from '../../components/loadingBlock';
-import ErrorBlock from '../../components/errorBlock';
+import LoadingBlock from '../../components/LoadingBlock';
+import ErrorBlock from '../../components/ErrorBlock';
 import {
 	Container,
 	ContainerScroll,

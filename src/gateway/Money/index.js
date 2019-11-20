@@ -16,7 +16,7 @@ import {
 	Title,
 } from './styles';
 
-import CartButton from '../../components/cartButton';
+import CartButton from '../../components/CartButton';
 
 export const Option = ({ onPress }) => {
 	return (

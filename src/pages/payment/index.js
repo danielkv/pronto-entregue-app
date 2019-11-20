@@ -3,8 +3,8 @@ import { Alert } from 'react-native';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { Container } from './styles';
-import ErrorBlock from '../../components/errorBlock';
-import LoadingBlock from '../../components/loadingBlock';
+import ErrorBlock from '../../components/ErrorBlock';
+import LoadingBlock from '../../components/LoadingBlock';
 import Gateway from '../../gateway';
 
 import { GET_CART, CANCEL_CART } from '../../graphql/cart';

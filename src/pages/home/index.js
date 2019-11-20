@@ -19,7 +19,7 @@ import {
 	CategoryImage,
 	CategoryTitle
 } from './styles';
-import LoadingBlock from '../../components/loadingBlock';
+import LoadingBlock from '../../components/LoadingBlock';
 import { LOAD_PRODUCT } from '../../graphql/products';
 import { GET_SELECTED_BRANCH } from '../../graphql/branches';
 import { GET_BRANCH_CATEGORIES } from '../../graphql/categories';
