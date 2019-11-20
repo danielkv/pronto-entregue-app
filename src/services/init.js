@@ -8,8 +8,8 @@ import { GET_SELECTED_BRANCH } from '../graphql/branches';
 import { LOGGED_USER } from '../graphql/authentication';
 
 export function useInitialize() {
-	//logUserOut();
-	//resetBranch();
+	// logUserOut();
+	// resetBranch();
 
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);

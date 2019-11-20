@@ -61,7 +61,6 @@ export const LOGGED_USER = gql`
 			last_name
 			email
 			role
-			active
 		}
 	}
 `;
