@@ -28,7 +28,7 @@ export default function Routes() {
 			<Drawer.Screen name='Pages'>
 				{()=>(
 					<Stack.Navigator
-						initialRouteName='HomeScreen'
+						initialRouteName='PaymentScreen'
 						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.colors.primary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />

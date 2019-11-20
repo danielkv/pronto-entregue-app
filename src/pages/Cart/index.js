@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState, useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { Input, Icon } from 'react-native-elements';
@@ -42,6 +41,7 @@ import {
 import { IS_USER_LOGGED_IN } from '../../graphql/authentication';
 import { getErrors } from '../../utils/errors';
 import { calculateOrderPrice, validadeCart } from '../../utils/cart';
+import { checkCondition } from '../../utils';
 
 export default function Cart({ navigation }) {
 	const [message, setMessage] = useState('');
@@ -54,7 +54,7 @@ export default function Cart({ navigation }) {
 	const [removeOrderItem] = useMutation(REMOVE_CART_ITEM);
 	const [cancelCart] = useMutation(CANCEL_CART);
 	
-	const { data: { OrderItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
+	const { data: { cartItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
 	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN);
 	const isUserLoggedIn = userLoggedInData ? userLoggedInData.isUserLoggedIn : false;
 
@@ -62,8 +62,8 @@ export default function Cart({ navigation }) {
 		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
 		const deliveryPrice = cartDelivery && cartDelivery.price ? cartDelivery.price : 0;
 
-		return calculateOrderPrice(OrderItems, paymentPrice + deliveryPrice - cartDiscount);
-	}, [OrderItems, cartDelivery, cartPayment, cartDiscount]);
+		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - cartDiscount);
+	}, [cartItems, cartDelivery, cartPayment, cartDiscount]);
 
 	const handleOpenDeliveryModal = useCallback(()=>{
 		if (isUserLoggedIn) setDeliveryModalOpen(true);
@@ -107,7 +107,7 @@ export default function Cart({ navigation }) {
 
 	const handleFinishCart = () => {
 		try {
-			validadeCart({ OrderItems, cartDelivery, cartPayment });
+			validadeCart({ cartItems, cartDelivery, cartPayment });
 
 			client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
@@ -132,15 +132,18 @@ export default function Cart({ navigation }) {
 	if (loadingCart || loadingUser) return <LoadingBlock />;
 	if (error) return <ErrorBlock error={error} />
 
+	// navigate to HomeScreen if there's no items in Cart
+	if (checkCondition((cartItems && cartItems.length), 'O carrinho está vazio')) return <></>;
+
 	return (
 		<Container>
 			<CartContainer>
 				<Section>
 					<SectionTitle>
-						{`${OrderItems.length} ${OrderItems.length > 1 ? 'itens' : 'item'}`}
+						{`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`}
 					</SectionTitle>
 					<SectionContent>
-						{OrderItems.map((item, index)=>(
+						{cartItems.map((item, index)=>(
 							<OrderItem key={index} item={item} onPressDelete={handleRemoveOrderItem(item)} />
 						))}
 					</SectionContent>
@@ -155,6 +158,7 @@ export default function Cart({ navigation }) {
 						<CardContent>
 							<CardInfo>
 								{
+									// eslint-disable-next-line no-nested-ternary
 									cartDelivery
 										? (cartDelivery.type === 'delivery') ? cartDelivery.address.name : 'Retirar no local'
 										: 'Nenhum endereço selecionado'
