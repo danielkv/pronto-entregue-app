@@ -11,7 +11,7 @@ export function useInitialize() {
 	//logUserOut();
 	//resetBranch();
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
 	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);

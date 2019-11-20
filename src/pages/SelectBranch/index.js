@@ -8,7 +8,7 @@ import { Container, MenuContainer, HelperText } from './styles';
 import { GET_COMPANY_BRANCHES, SELECT_BRANCH } from '../../graphql/branches';
 import { GET_SELECTED_COMPANY } from '../../graphql/companies';
 
-export default function splashScreen({ loadingRoot }) {
+export default function SelectBranch() {
 	const { data: selectedCompanyData } = useQuery(GET_SELECTED_COMPANY);
 	// eslint-disable-next-line max-len
 	const { data: branchesData, loading: loadingBranches } = useQuery(GET_COMPANY_BRANCHES, { variables: { id: selectedCompanyData.selectedCompany } });
@@ -20,7 +20,7 @@ export default function splashScreen({ loadingRoot }) {
 	return (
 		<Container>
 			<Image style={{ marginBottom: 20, alignSelf: 'center' }} resizeMethod='resize' source={logoCopeiro} />
-			{loadingRoot || loadingBranches
+			{loadingBranches
 				? <ActivityIndicator size={28} color='#B95A02' />
 				: (
 					<MenuContainer>
