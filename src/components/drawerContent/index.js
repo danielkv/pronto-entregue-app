@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Button, Divider, Avatar, ListItem } from 'react-native-elements';
@@ -69,7 +70,7 @@ export default function DrawerContent({ navigation }) {
 						<Divider />
 
 						<DrawerItem {...getDraweItemProps({ icon: 'account-circle', label: 'Meus dados' })} onPress={()=>{}} />
-						<DrawerItem {...getDraweItemProps({ icon: 'view-list', label: 'Meus pedidos' })} onPress={()=>{}} />
+						<DrawerItem {...getDraweItemProps({ icon: 'view-list', label: 'Meus pedidos' })} onPress={navigation.navigate('OrderListScreen')} />
 
 					</>
 				)}

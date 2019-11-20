@@ -5,7 +5,7 @@ import { NavigationNativeContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { useInitialize } from './services/init';
-import SplashScreen from './pages/splashScreen';
+import SplashScreen from './pages/SplashScreen';
 import RootScreen from './routes';
 import theme from './theme';
 

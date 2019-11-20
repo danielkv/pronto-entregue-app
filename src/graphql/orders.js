@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 import { OPTIONS_GROUP_FRAGMENT } from './products';
 
-
 export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
 	fragment ProductRelatedFields on Product {
 		id
 		name
+		#quantity
 		price
 		description
 		image
@@ -27,50 +27,25 @@ export const ORDER_FRAGMENT = gql`
 		payment_fee
 		payment_method {
 			id
+			display_name
 		}
 
 		street
 		number
-		city
-		state
-		district
-		zipcode
-
-		user {
-			id
-			full_name
-			addresses {
-				id
-				name
-				street
-				number
-				zipcode
-				district
-				city
-				state
-			}
-		}
+		
 		products {
 			id
 			name
 			price
-			product_related {
-				...ProductRelatedFields
-			}
+			quantity
+			message
 			options_groups {
 				id
 				name
-				options_group_related {
-					id
-				}
-				#message
 				options {
 					id
 					name
 					price
-					option_related {
-						id
-					}
 				}
 			}
 		}
@@ -78,7 +53,7 @@ export const ORDER_FRAGMENT = gql`
 		createdDate
 		createdTime
 	}
-	${ORDER_PRODUCT_RELATED_FRAGMENT}
+	
 `;
 
 export const CALCULATE_DELIVERY_PRICE = gql`
@@ -101,16 +76,16 @@ export const CREATE_ORDER = gql`
 `;
 
 export const UPDATE_ORDER = gql`
-	mutation ($id:ID!, $data:OrderInput!, $filter:Filter) {
+	mutation updateOrder ($id:ID!, $data:OrderInput!) {
 		updateOrder(id:$id, data:$data) {
-			...OrderFields
+			id
+			status
 		}
 	}
-	${ORDER_FRAGMENT}
 `;
 
 export const LOAD_ORDER = gql`
-	query ($id:ID!, $filter:Filter) {
+	query loadOrder ($id:ID!) {
 		order (id:$id) {
 			...OrderFields
 		}

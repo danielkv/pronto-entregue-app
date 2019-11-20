@@ -11,23 +11,23 @@ export default {
 	Text: {
 		/* color: '#ffffff', */
 		style: {
-			color: '#ffffff',
+			/* color: '#ffffff', */
 		},
 		h1Style: {
-			color: '#ffffff',
+			/* color: '#ffffff', */
 			fontSize: 20,
 		},
 		h2Style: {
-			color: '#ffffff',
+			/* color: '#ffffff', */
 			fontSize: 18,
 		},
 		h3Style: {
-			color: '#ffffff',
+			/* color: '#ffffff', */
 			fontSize: 14,
 			fontWeight: 'normal'
 		},
 		h4Style: {
-			color: '#ffffff',
+			/* color: '#ffffff', */
 			fontSize: 12,
 			fontWeight: 'normal'
 		},

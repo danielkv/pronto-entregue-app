@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { vh } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
-import theme from '../../../theme';
+import theme from '../../theme';
 
 export const Container = styled.View`
 	background-color: ${theme.colors.divider};

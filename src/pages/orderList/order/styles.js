@@ -3,6 +3,7 @@ import { Text } from 'react-native-elements';
 import { vh } from 'react-native-expo-viewport-units';
 
 import theme from '../../../theme';
+import { getStatusColors } from '../../../utils';
 
 export const Container = styled.TouchableOpacity`
 	height: 125px;
@@ -40,17 +41,7 @@ export const StatusBadge = styled(Text)`
 	padding: 5px 8px;
 	border-radius:3px;
 	${({ status }) => {
-		switch (status) {
-		case 'delivered':
-			return 'background-color: #fff; color: #000;';
-		case 'delivery':
-			return 'background-color: #FFCA39; color #000;';
-		case 'canceled':
-			return `background-color: ${theme.colors.error} ; color #fff;`;
-		case 'preparing':
-		case 'waiting':
-		default:
-			return 'background-color: #000; color #fff;';
-		}
+		const { background, text } = getStatusColors(status);
+		return `background-color: ${background}; color: ${text};`
 	}}
 `;

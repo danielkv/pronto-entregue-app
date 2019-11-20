@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useCallback, useMemo } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -24,7 +24,7 @@ import {
 	CancelButtonText,
 } from './styles';
 import theme from '../../theme';
-import CartItem from './cartItem';
+import OrderItem from '../../components/OrderItem';
 import LoadingBlock from '../../components/loadingBlock';
 import ErrorBlock from '../../components/errorBlock';
 
@@ -51,10 +51,10 @@ export default function Cart({ navigation }) {
 	
 	const [setDelivery] = useMutation(SET_CART_DELIVERY);
 	const [setPayment] = useMutation(SET_CART_PAYMENT);
-	const [removeCartItem] = useMutation(REMOVE_CART_ITEM);
+	const [removeOrderItem] = useMutation(REMOVE_CART_ITEM);
 	const [cancelCart] = useMutation(CANCEL_CART);
 	
-	const { data: { cartItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
+	const { data: { OrderItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
 	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN);
 	const isUserLoggedIn = userLoggedInData ? userLoggedInData.isUserLoggedIn : false;
 
@@ -62,8 +62,8 @@ export default function Cart({ navigation }) {
 		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
 		const deliveryPrice = cartDelivery && cartDelivery.price ? cartDelivery.price : 0;
 
-		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - cartDiscount);
-	}, [cartItems, cartDelivery, cartPayment, cartDiscount]);
+		return calculateOrderPrice(OrderItems, paymentPrice + deliveryPrice - cartDiscount);
+	}, [OrderItems, cartDelivery, cartPayment, cartDiscount]);
 
 	const handleOpenDeliveryModal = useCallback(()=>{
 		if (isUserLoggedIn) setDeliveryModalOpen(true);
@@ -94,12 +94,12 @@ export default function Cart({ navigation }) {
 			});
 	});
 
-	const handleRemoveCartItem = (item) => () => {
+	const handleRemoveOrderItem = (item) => () => {
 		Alert.alert(
 			`Remover ${item.name}`,
 			'tem certeza que deseja remover esse item do carrinho',
 			[
-				{ text: 'Sim', onPress: ()=>removeCartItem({ variables: { id: item.id } }) },
+				{ text: 'Sim', onPress: ()=>removeOrderItem({ variables: { id: item.id } }) },
 				{ text: 'Cancelar' },
 			]
 		);
@@ -107,7 +107,7 @@ export default function Cart({ navigation }) {
 
 	const handleFinishCart = () => {
 		try {
-			validadeCart({ cartItems, cartDelivery, cartPayment });
+			validadeCart({ OrderItems, cartDelivery, cartPayment });
 
 			client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
@@ -137,11 +137,11 @@ export default function Cart({ navigation }) {
 			<CartContainer>
 				<Section>
 					<SectionTitle>
-						{`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`}
+						{`${OrderItems.length} ${OrderItems.length > 1 ? 'itens' : 'item'}`}
 					</SectionTitle>
 					<SectionContent>
-						{cartItems.map((item, index)=>(
-							<CartItem key={index} item={item} onPressDelete={handleRemoveCartItem(item)} />
+						{OrderItems.map((item, index)=>(
+							<OrderItem key={index} item={item} onPressDelete={handleRemoveOrderItem(item)} />
 						))}
 					</SectionContent>
 				</Section>
