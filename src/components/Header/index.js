@@ -12,12 +12,12 @@ import { GET_CART } from '../../graphql/cart';
 
 export default ({ previous, scene, navigation }) => {
 	const { options } = scene.descriptor;
+	const { params } = scene.route;
 
 	const { data: { cartItems } } = useQuery(GET_CART);
-	// const cartItems = cartItemsData ? [...cartItemsData.cartItems] : [];
 
-	const title = scene.route.params && scene.route.params.headerTitle
-		? scene.route.params.headerTitle
+	const title = params && params.headerTitle
+		? params.headerTitle
 		: options.headerTitle !== undefined
 			? options.headerTitle
 			: options.title !== undefined
@@ -55,8 +55,16 @@ export default ({ previous, scene, navigation }) => {
 						<Icon name='menu' color='#fff' />
 					</TouchableOpacity>
 				)}
+				
 			<HeaderTitle h1>{title}</HeaderTitle>
-			<TouchableOpacity onPress={()=>navigation.navigate('CartScreen')}><BadgeIcon name='shopping-cart' color='#fff' /></TouchableOpacity>
+
+			{params && params.headerRight
+				? params.headerRight
+				: (
+					<TouchableOpacity onPress={()=>navigation.navigate('CartScreen')}>
+						<BadgeIcon name='shopping-cart' color='#fff' />
+					</TouchableOpacity>
+				)}
 		</Header>
 	)
 }

@@ -69,7 +69,7 @@ export default function DrawerContent({ navigation }) {
 
 						<Divider />
 
-						<DrawerItem {...getDraweItemProps({ icon: 'account-circle', label: 'Meus dados' })} onPress={()=>{}} />
+						<DrawerItem {...getDraweItemProps({ icon: 'account-circle', label: 'Meus dados' })} onPress={()=>navigation.navigate('ProfileScreen')} />
 						<DrawerItem {...getDraweItemProps({ icon: 'view-list', label: 'Meus pedidos' })} onPress={()=>navigation.navigate('OrderListScreen')} />
 
 					</>

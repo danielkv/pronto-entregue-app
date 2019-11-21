@@ -20,7 +20,8 @@ import OrderListScreen from './pages/OrderList';
 import OrderScreen from './pages/Order';
 
 import ProfileScreen from './pages/Profile';
-import AddressListScreen from './pages/AdressList';
+import AddressListScreen from './pages/AddressList';
+import CreateAddressScreen from './pages/CreateAddress';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -31,7 +32,7 @@ export default function Routes() {
 			<Drawer.Screen name='Pages'>
 				{()=>(
 					<Stack.Navigator
-						initialRouteName='AddressListScreen'
+						initialRouteName='CreateAddressScreen'
 						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.colors.primary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
@@ -49,6 +50,7 @@ export default function Routes() {
 						
 						<Stack.Screen name='ProfileScreen' component={ProfileScreen} options={{ title: 'Meus Dados' }} />
 						<Stack.Screen name='AddressListScreen' component={AddressListScreen} options={{ title: 'Meus Endereços' }} />
+						<Stack.Screen name='CreateAddressScreen' component={CreateAddressScreen} options={{ title: 'Adicionar Endereço' }} />
 					</Stack.Navigator>
 				)}
 			</Drawer.Screen>

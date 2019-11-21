@@ -1,7 +1,7 @@
-import React from 'react';
-import { FlatList, Alert, ActivityIndicator } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 
 import Address from '../../components/Address';
 import LoadingBlock from '../../components/LoadingBlock';
@@ -11,7 +11,17 @@ import { Container } from './styles';
 import { GET_USER_ADDRESSES, REMOVE_USER_ADDRESS } from '../../graphql/users';
 import { getErrors } from '../../utils/errors';
 
-export default function AdressList() {
+export default function AdressList({ navigation }) {
+	useEffect(()=>{
+		navigation.setParams({
+			headerRight: (
+				<TouchableOpacity onPress={()=>navigation.navigate('CreateAddressScreen')}>
+					<Icon type='material-community' name='plus' color='#fff' />
+				</TouchableOpacity>
+			)
+		});
+	}, []);
+
 	const { data: userAddressesData, loading: loadingUserAddresses, error } = useQuery(GET_USER_ADDRESSES);
 	const addresses = userAddressesData ? userAddressesData.me.addresses : [];
 
