@@ -1,6 +1,7 @@
 import React from 'react';
 
 import NewAddress from './new_address';
+import EditAddress from './edit_address';
 import { Container, FormContainer } from './styles';
 
 export default function Address({ route }) {
@@ -10,7 +11,7 @@ export default function Address({ route }) {
 		<Container>
 			<FormContainer>
 				{address_id
-					? false
+					? <EditAddress address_id={address_id} />
 					: <NewAddress />}
 			</FormContainer>
 		</Container>

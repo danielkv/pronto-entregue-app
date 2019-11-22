@@ -71,7 +71,7 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onPress={handleSubmit}
 					disabled={isSubmitting}
 					loading={isSubmitting}
-					title='Adicionar'
+					title='Salvar'
 				/>
 			</ButtonsContainer>
 		</>

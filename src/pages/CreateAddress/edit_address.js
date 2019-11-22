@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import PageForm from './form';
 import { getErrors } from '../../utils/errors';
-import { CREATE_USER_ADDRESS } from '../../graphql/users';
+import { UPDATE_USER_ADDRESS, LOAD_USER_ADDRESS } from '../../graphql/users';
+import LoadingBlock from '../../components/LoadingBlock';
+import ErrorBlock from '../../components/ErrorBlock';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
@@ -19,33 +21,31 @@ const validationSchema = Yup.object().shape({
 	zipcode: Yup.number().typeError('Deve conter apenas números').required('Obrigatório'),
 });
 
-export default function NewAddress() {
+export default function EditAddress({ address_id }) {
 	const navigation = useNavigation();
 
-	const initialValues = {
-		name: '',
-		street: '',
-		number: '',
-		district: '',
-		city: '',
-		state: '',
-		zipcode: '',
-	}
+	useEffect(()=>{
+		navigation.setParams({
+			headerTitle: 'Alterar endereço'
+		});
+	}, []);
+	
+	const { data: loadAddressData, loading: loadingAddress, error: errorLoadAddress } = useQuery(LOAD_USER_ADDRESS, { variables: { id: address_id } });
 
-	const [createAddress] = useMutation(CREATE_USER_ADDRESS);
-
+	const [updateAddress] = useMutation(UPDATE_USER_ADDRESS, { variables: { id: address_id } });
+	
 	const onSubmit = async (data, { resetForm }) => {
 		const dataSave = {
 			...data,
 			zipcode: parseInt(data.zipcode, 10),
 		}
-
-		await createAddress({ variables: { data: dataSave } })
+		
+		await updateAddress({ variables: { data: dataSave } })
 			.then(() => {
 				resetForm();
 				Alert.alert(
 					'Sucesso',
-					'Novo endereço adicionado',
+					'Endereço alterado',
 					[{ text: 'OK', onPress: () => navigation.navigate('AddressListScreen') }],
 					{ cancelable: false }
 				);
@@ -53,6 +53,21 @@ export default function NewAddress() {
 			.catch(err => {
 				Alert.alert(getErrors(err));
 			});
+	}
+
+	// ------- END OF FUNCIONS -------
+
+	if (loadingAddress) return <LoadingBlock />;
+	if (errorLoadAddress) return <ErrorBlock error={errorLoadAddress} />;
+
+	const initialValues = {
+		name: loadAddressData.userAddress.name,
+		street: loadAddressData.userAddress.street,
+		number: loadAddressData.userAddress.number,
+		district: loadAddressData.userAddress.district,
+		city: loadAddressData.userAddress.city,
+		state: loadAddressData.userAddress.state,
+		zipcode: loadAddressData.userAddress.zipcode.toString(),
 	}
 
 	return (

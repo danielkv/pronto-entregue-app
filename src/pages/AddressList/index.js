@@ -52,14 +52,24 @@ export default function AdressList({ navigation }) {
 	const renderAddress = ({ item }) => (
 		<Address
 			rightComponent={(
-				<Button
-					disabled={loadingRemoveAddress}
-					type='clear'
-					icon={{ type: 'material-community', name: 'delete', color: '#fff' }}
-					onPress={handleRemoveAddress(item.id)}
-					buttonStyle={{ backgroundColor: 'transparent' }}
-					containerStyle={{ borderRadius: 50 }}
-				/>
+				<>
+					<Button
+						disabled={loadingRemoveAddress}
+						type='clear'
+						icon={{ type: 'material-community', name: 'pencil', color: '#fff' }}
+						onPress={()=>navigation.navigate('CreateAddressScreen', { address_id: item.id })}
+						buttonStyle={{ backgroundColor: 'transparent' }}
+						containerStyle={{ borderRadius: 50 }}
+					/>
+					<Button
+						disabled={loadingRemoveAddress}
+						type='clear'
+						icon={{ type: 'material-community', name: 'delete', color: '#fff' }}
+						onPress={handleRemoveAddress(item.id)}
+						buttonStyle={{ backgroundColor: 'transparent' }}
+						containerStyle={{ borderRadius: 50 }}
+					/>
+				</>
 			)}
 			address={item}
 		/>

@@ -28,6 +28,21 @@ export const GET_USER = gql`
 	}
 `;
 
+export const LOAD_USER_ADDRESS = gql`
+	query loadUserAddress ($id: ID!) {
+		userAddress (id: $id)  {
+			id
+			name
+			street
+			number
+			zipcode
+			district
+			city
+			state
+		}
+	}
+`;
+
 export const CREATE_USER_ADDRESS = gql`
 	mutation createUserAddress ($data: UserAddressInput!) {
 		createUserAddress (data: $data)  {
