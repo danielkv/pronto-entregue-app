@@ -72,5 +72,17 @@ export default {
 			height: 2,
 			marginVertical: 10,
 		}
+	},
+	ListItem: {
+		containerStyle: {
+			backgroundColor: 'transparent',
+		},
+		titleStyle: {
+			color: '#fff',
+			fontWeight: 'bold',
+		},
+		subtitleStyle: {
+			color: '#fff'
+		},
 	}
 }

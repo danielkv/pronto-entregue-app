@@ -5,12 +5,25 @@ export const LOAD_BRANCH = gql`
 		branch (id: $id) {
 			id
 			name
+			phones {
+				id
+				number
+			}
+			business_hours {
+				day_of_week
+				hours {
+					from
+					to
+				}
+			}
 			address {
 				id
 				street
+				district
 				number
 				city
 				state
+				zipcode
 			}
 		}
 	}

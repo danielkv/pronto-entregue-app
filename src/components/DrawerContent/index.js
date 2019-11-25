@@ -77,7 +77,7 @@ export default function DrawerContent({ navigation }) {
 				
 				<Divider />
 
-				<DrawerItem {...getDraweItemProps({ icon: 'information', label: 'Sobre' })} onPress={()=>{}} />
+				<DrawerItem {...getDraweItemProps({ icon: 'information', label: 'Sobre' })} onPress={()=>navigation.navigate('AboutScreen')} />
 
 				{isUserLoggedIn
 					? <DrawerItem {...getDraweItemProps({ icon: 'logout', label: 'Logout' })} onPress={handleLogout} />
