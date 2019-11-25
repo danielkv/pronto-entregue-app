@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
+import Toast from 'react-native-simple-toast';
 import * as Yup from 'yup';
 
 import PageForm from './form';
@@ -56,12 +57,9 @@ export default function EditUser({ user_id }) {
 		await updateUser({ variables: { data: saveData } })
 			.then(() => {
 				resetForm();
-				Alert.alert(
-					'Parabéns',
-					'Sua conta foi alterada',
-					[{ text: 'Logar', onPress: () => navigation.navigate('LoginScreen') }],
-					{ cancelable: false }
-				);
+
+				Toast.show('Seus dados foram salvos');
+				navigation.navigate('ProfileScreen');
 			})
 			.catch(err => {
 				Alert.alert(getErrors(err));

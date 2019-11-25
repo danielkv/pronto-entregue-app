@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import Toast from 'react-native-simple-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -47,12 +48,9 @@ export default function EditAddress({ address_id }) {
 		await updateAddress({ variables: { data: dataSave } })
 			.then(() => {
 				resetForm();
-				Alert.alert(
-					'Sucesso',
-					'Endereço alterado',
-					[{ text: 'OK', onPress: () => navigation.navigate('AddressListScreen') }],
-					{ cancelable: false }
-				);
+
+				Toast.show('Endereço alterado');
+				navigation.navigate('AddressListScreen');
 			})
 			.catch(err => {
 				Alert.alert(getErrors(err));

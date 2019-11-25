@@ -63,7 +63,7 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					onPress={handleSubmit}
 					disabled={isSubmitting}
 					loading={isSubmitting}
-					title='Cadastrar'
+					title='Salvar'
 				/>
 			</ButtonsContainer>
 		</FormContainer>
