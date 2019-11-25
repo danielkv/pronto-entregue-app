@@ -23,7 +23,14 @@ export const GET_USER = gql`
 		me  {
 			id
 			full_name
+			first_name
+			last_name
 			email
+			metas (type: "phone") {
+				id
+				meta_type
+				meta_value
+			}
 		}
 	}
 `;
@@ -100,9 +107,6 @@ export const CREATE_USER = gql`
 		createUser (data:$data) {
 			id
 			full_name
-			role
-			createdAt
-			active
 		}
 	}
 `;
@@ -126,31 +130,14 @@ export const UPDATE_USER = gql`
 	mutation ($id:ID!, $data:UserInput!) {
 		updateUser (id: $id, data:$data) {
 			id
+			full_name
 			first_name
 			last_name
 			email
-			createdAt
-			active
-			role
-			company(company_id:$company_id) {
-				id
-				user_relation {
-					active
-				}
-				assigned_branches {
-					id
-					name
-					user_relation {
-						active
-						role_id
-					}
-				}
-			}
 			metas {
 				id
 				meta_type
 				meta_value
-				action @client
 			}
 		}
 	}

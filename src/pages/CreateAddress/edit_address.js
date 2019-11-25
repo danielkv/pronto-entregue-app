@@ -30,7 +30,11 @@ export default function EditAddress({ address_id }) {
 		});
 	}, []);
 	
-	const { data: loadAddressData, loading: loadingAddress, error: errorLoadAddress } = useQuery(LOAD_USER_ADDRESS, { variables: { id: address_id } });
+	const {
+		data: loadAddressData,
+		loading: loadingAddress,
+		error: errorLoadAddress,
+	} = useQuery(LOAD_USER_ADDRESS, { variables: { id: address_id } });
 
 	const [updateAddress] = useMutation(UPDATE_USER_ADDRESS, { variables: { id: address_id } });
 	

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Input } from 'react-native-elements';
 
-import { InputsContainer, ButtonsContainer } from './styles';
+import { InputsContainer, ButtonsContainer, FormContainer } from './styles';
 
 export default function AddressForm({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
 	return (
-		<>
+		<FormContainer>
 			<InputsContainer>
 				<Input
 					errorMessage={errors.name}
@@ -74,6 +74,6 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					title='Salvar'
 				/>
 			</ButtonsContainer>
-		</>
+		</FormContainer>
 	);
 }

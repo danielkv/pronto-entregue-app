@@ -3,8 +3,11 @@ import { vw, vh } from 'react-native-expo-viewport-units';
 
 import theme from '../../theme';
 
-export const Container = styled.ScrollView`
-	margin-top:${theme.header.height}px;
+export const ContainerScroll = styled.ScrollView`
+	flex:1;
+`;
+export const Container = styled.View`
+	margin: ${theme.header.height}px ${vw(10)}px ${vh(5)}px ${vw(10)}px;
 	flex:1;
 `;
 
@@ -17,10 +20,6 @@ export const LogoImage = styled.Image`
 
 export const FormContainer = styled.View`
 	margin-top: ${vh(2)}px;
-	margin-bottom: ${vh(5)}px;
-	margin-left: ${vw(10)}px;
-	margin-right: ${vw(10)}px;
-
 `;
 export const InputsContainer = styled.View`
 	

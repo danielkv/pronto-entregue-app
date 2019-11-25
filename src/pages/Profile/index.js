@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { Avatar, Button } from 'react-native-elements';
+import { Avatar, Button, Icon } from 'react-native-elements';
 
 import { checkCondition } from '../../utils';
 import {
@@ -21,6 +22,19 @@ export default function Profile({ navigation }) {
 
 	const loggedUser = loggedUserData ? loggedUserData.me : null;
 	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
+	const user_id = loggedUser ? loggedUser.id : null
+
+	useEffect(()=>{
+		if (user_id) {
+			navigation.setParams({
+				headerRight: (
+					<TouchableOpacity onPress={()=>navigation.navigate('SubscriptionScreen', { user_id })}>
+						<Icon type='material-community' name='pencil' color='#fff' />
+					</TouchableOpacity>
+				)
+			});
+		}
+	}, [navigation, user_id]);
 
 	if (loadingUser) return <LoadingBlock />
 	if (checkCondition(isUserLoggedIn)) return <></>;
