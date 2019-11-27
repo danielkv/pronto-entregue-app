@@ -52,14 +52,17 @@ export const LOAD_OPTION_GROUP = gql`
 	${OPTIONS_GROUP_FRAGMENT}
 `;
 
-export const LOAD_FETURED_PRODUCTS = gql`
-	query loadFeaturedProducts ($limit: Int!) {
-		featuredProducts (limit: $limit) {
+export const LOAD_BRANCH_FETURED_PRODUCTS = gql`
+	query loadBranchFeaturedProducts ($id: ID!, $limit: Int!) {
+		branch (id: $id) {
 			id
-			name
-			image
-			type
-			price
+			featuredProducts (limit: $limit) {
+				id
+				name
+				image
+				type
+				price
+			}
 		}
 	}
 `;

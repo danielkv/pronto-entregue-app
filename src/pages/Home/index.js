@@ -18,7 +18,7 @@ import {
 } from './styles';
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
-import { LOAD_FETURED_PRODUCTS } from '../../graphql/products';
+import { LOAD_BRANCH_FETURED_PRODUCTS } from '../../graphql/products';
 import { GET_SELECTED_BRANCH } from '../../graphql/branches';
 import { GET_BRANCH_CATEGORIES } from '../../graphql/categories';
 import logoResource from '../../assets/images/logo-copeiro.png';
@@ -30,14 +30,14 @@ const featuredLimit = 5;
 export default function Home({ navigation }) {
 	const [featuredIndex, setFeaturedIndex] = useState(0);
 	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
+
 	// eslint-disable-next-line max-len
 	const { data: categoriesData, loading: loadingCategories } = useQuery(GET_BRANCH_CATEGORIES, { variables: { id: selectedBranchData.selectedBranch } });
-
 	const {
 		data: featuredProductData,
 		loading: loadingFeaturedProduct,
 		error: featuredError
-	} = useQuery(LOAD_FETURED_PRODUCTS, { variables: { limit: featuredLimit } });
+	} = useQuery(LOAD_BRANCH_FETURED_PRODUCTS, { variables: { id: selectedBranchData.selectedBranch, limit: featuredLimit } });
 	
 	const renderCategory = ({ item: { id, name, image } }) => {
 		return (
@@ -51,7 +51,7 @@ export default function Home({ navigation }) {
 	if (loadingFeaturedProduct || loadingCategories) return <LoadingBlock />;
 	if (featuredError) return <ErrorBlock error={featuredError} />;
 	
-	const { featuredProducts } = featuredProductData;
+	const { featuredProducts } = featuredProductData.branch;
 	const { categories } = categoriesData.branch;
 
 	const { width } = Dimensions.get('window');
