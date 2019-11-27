@@ -18,7 +18,7 @@ export const validadeCart = ({ cartItems, cartDelivery, cartPayment }) => {
 export const sanitizeOrderData = ({ user, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment }) => {
 	return {
 		user_id: user.id,
-		status: cartStatus || null,
+		status: cartStatus || 'waiting',
 		price: cartPrice,
 		message: cartMessage,
 		discount: cartDiscount || 0,
