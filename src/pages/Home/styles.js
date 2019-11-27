@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { ImageBackground } from 'react-native';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
 import theme from '../../theme';
@@ -19,19 +18,6 @@ export const Footer = styled.View`
 
 export const HeaderContainer = styled.TouchableOpacity`
 	height:${vh(40)}px;
-`;
-
-export const FeaturedProductContainer = styled(ImageBackground)`
-	flex:1;
-	justify-content:flex-end;
-`;
-
-export const FeaturedProductTitle = styled(Text)`
-	text-transform:uppercase;
-	text-align:center;
-`;
-export const FeaturedProductSubtitle = styled(Text)`
-	text-align:center;
 `;
 export const CategoriesContainer = styled.View`
 	padding:${vh(2)}px;
