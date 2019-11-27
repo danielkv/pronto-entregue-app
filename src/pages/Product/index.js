@@ -31,10 +31,9 @@ import Panel from './Panel';
 import { ADD_CART_ITEM } from '../../graphql/cart';
 import { getErrors } from '../../utils/errors';
 
-export default function Product() {
-	const route = useRoute();
+export default function Product({ route, navigation }) {
 	const { product_id } = route.params;
-	// const product_id = 1;
+
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
 	const client = useApolloClient();
@@ -45,12 +44,20 @@ export default function Product() {
 	}, [product, calculateProductPrice, quantity]);
 
 	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: product_id } });
-
+	
 	useEffect(()=>{
 		if (error) setProduct(null);
 		else if (productData) setProduct(cloneDeep(productData.product));
 	}, [productData, loadingProduct, error]);
-
+	
+	useEffect(()=>{
+		if (product && product.name) {
+			navigation.setParams({
+				headerTitle: product.name
+			});
+		}
+	}, [product]);
+	
 	const resetProduct = () => {
 		setProduct(cloneDeep(productData.product));
 		setQuantity(1);

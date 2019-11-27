@@ -10,7 +10,7 @@ export default function FeaturedProduct({ product: { id, name, image, price } })
 
 	return (
 		<Container source={{ uri: image }}>
-			<TouchableOpacity onPress={()=>navigation.navigate('ProductScreen', { product_id: id, headerTitle: name })}>
+			<TouchableOpacity onPress={()=>navigation.navigate('ProductScreen', { product_id: id })}>
 				<LinearGradient
 					colors={['rgba(255,124,3,0)', 'rgba(255,124,3,1)']}
 					style={{ justifyContent: 'flex-end', paddingTop: 30, paddingBottom: 20 }}

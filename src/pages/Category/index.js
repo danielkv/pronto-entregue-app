@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { useRoute } from '@react-navigation/core';
+
 import {
 	Placeholder,
 	PlaceholderMedia,
@@ -23,12 +23,19 @@ import {
 import { GET_CATEGORY } from '../../graphql/categories';
 import CartButton from '../../components/CartButton';
 
-export default function category({ navigation }) {
-	const route = useRoute();
+export default function category({ route, navigation }) {
 	const { category_id } = route.params;
 
 	const { data: categoryData, loading: loadingCategory } = useQuery(GET_CATEGORY, { variables: { id: category_id } });
 	const products = !loadingCategory && categoryData && categoryData.category ? categoryData.category.products : [];
+
+	useEffect(()=>{
+		if (categoryData && categoryData.category && categoryData.category.name) {
+			navigation.setParams({
+				headerTitle: categoryData.category.name
+			});
+		}
+	}, [categoryData]);
 
 	const renderProductItem = ({ item: { id, name, description, image, options_qty, price } }) => {
 		const openProduct = () => { navigation.navigate('ProductScreen', { product_id: id }) };
