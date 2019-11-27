@@ -20,23 +20,26 @@ import {
 	CategoryTitle
 } from './styles';
 import LoadingBlock from '../../components/LoadingBlock';
-import { LOAD_PRODUCT } from '../../graphql/products';
+import ErrorBlock from '../../components/ErrorBlock';
+import { LOAD_FETURED_PRODUCTS } from '../../graphql/products';
 import { GET_SELECTED_BRANCH } from '../../graphql/branches';
 import { GET_BRANCH_CATEGORIES } from '../../graphql/categories';
 import logoResource from '../../assets/images/logo-copeiro.png';
 
+// LIMIT OF FEATURED PRODUCTS
+const featuredLimit = 5;
+
 export default function Home({ navigation }) {
 	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
-
-	const { data: featuredProductData, loading: loadingFeaturedProduct } = useQuery(LOAD_PRODUCT, { variables: { id: 1 } });
-	const featuredProduct = featuredProductData && (featuredProductData.product || null);
-	
 	// eslint-disable-next-line max-len
 	const { data: categoriesData, loading: loadingCategories } = useQuery(GET_BRANCH_CATEGORIES, { variables: { id: selectedBranchData.selectedBranch } });
-	const categories = categoriesData && (categoriesData.branch.categories || null);
 
-	if (loadingFeaturedProduct || loadingCategories) return <LoadingBlock />;
-
+	const {
+		data: featuredProductData,
+		loading: loadingFeaturedProduct,
+		error: featuredError
+	} = useQuery(LOAD_FETURED_PRODUCTS, { variables: { limit: featuredLimit } });
+	
 	const renderCategory = ({ item: { id, name, image } }) => {
 		return (
 			<Category onPress={()=>{ navigation.navigate('CategoryScreen', { category_id: id, headerTitle: name }) }}>
@@ -46,17 +49,26 @@ export default function Home({ navigation }) {
 		);
 	}
 	
+	if (loadingFeaturedProduct || loadingCategories) return <LoadingBlock />;
+	if (featuredError) return <ErrorBlock error={featuredError} />;
+	
+	const featuredProduct = featuredProductData.featuredProducts.length ? featuredProductData.featuredProducts[0] : null;
+	const { categories } = categoriesData.branch;
+	
 	return (
 		<Container>
 			<HeaderContainer onPress={()=>{}}>
 				<FeaturedProductContainer source={{ uri: featuredProduct.image }}>
-
 					<LinearGradient
 						colors={['rgba(255,124,3,0)', 'rgba(255,124,3,1)']}
 						style={{ justifyContent: 'flex-end', paddingTop: 30, paddingBottom: 20 }}
 					>
 						<FeaturedProductTitle h2>{featuredProduct.name}</FeaturedProductTitle>
-						<FeaturedProductSubtitle h3>a partir de R$ 30,00</FeaturedProductSubtitle>
+						{!!featuredProduct.price && (
+							<FeaturedProductSubtitle h3>
+								{`a partir de R$ ${featuredProduct.price.toFixed(2).replace('.', ',')}`}
+							</FeaturedProductSubtitle>
+						)}
 					</LinearGradient>
 
 				</FeaturedProductContainer>

@@ -44,7 +44,7 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 `;
 
 export const LOAD_OPTION_GROUP = gql`
-	query ($id: ID!, $filter:Filter) {
+	query loadOptionGroup ($id: ID!, $filter:Filter) {
 		optionsGroup (id:$id) {
 			...OptionsGroupFields
 		}
@@ -52,8 +52,20 @@ export const LOAD_OPTION_GROUP = gql`
 	${OPTIONS_GROUP_FRAGMENT}
 `;
 
+export const LOAD_FETURED_PRODUCTS = gql`
+	query loadFeaturedProducts ($limit: Int!) {
+		featuredProducts (limit: $limit) {
+			id
+			name
+			image
+			type
+			price
+		}
+	}
+`;
+
 export const LOAD_PRODUCT = gql`
-	query ($id: ID!, $filter:Filter) {
+	query loadProducts ($id: ID!, $filter:Filter) {
 		product (id: $id) {
 			id
 			name
