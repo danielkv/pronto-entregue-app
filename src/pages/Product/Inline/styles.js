@@ -20,6 +20,7 @@ export const GroupTitle = styled(Text)`
 	text-align:left;
 	font-weight:100;
 	color : #fff;
+	margin-top:${vh(2)}px;
 	margin-bottom:${vh(1)}px;
 `;
 export const OptionsContainer = styled.View`

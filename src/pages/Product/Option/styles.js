@@ -22,7 +22,8 @@ export const PriceContainer = styled.View`
 	justify-content:center;
 `;
 export const OptionPrice = styled(Text)`
-
+	color: #fff;
+	font-size: 12px;
 `;
 
 export const Container = styled.TouchableOpacity`

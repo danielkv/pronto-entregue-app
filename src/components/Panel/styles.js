@@ -34,6 +34,7 @@ export const ModalTitle = styled(Text)`
 `;
 
 export const HeaderRightContainer = styled.View`
+	flex-direction: row;
 	margin-left:auto;
 	align-items:center;
 `;
