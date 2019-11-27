@@ -30,8 +30,9 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 		return calculateOptionsGroupPrice(optionGroup);
 	}, [optionGroup, calculateOptionsGroupPrice]);
 
-	const handlePressOption = useCallback((optionIndex) => () => {
+	const handlePressOption = useCallback((optionId) => () => {
 		try {
+			const optionIndex = optionGroup.options.findIndex(opt => opt.id === optionId)
 			const option = cloneDeep(optionGroup.options[optionIndex]);
 			option.selected = getOptionNewState(optionGroup, option);
 			optionGroup.options.splice(optionIndex, 1, option);
@@ -61,7 +62,7 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 						key={optionIndex}
 						option={option}
 						type={optionGroup.type}
-						onPress={handlePressOption(optionIndex)}
+						onPress={handlePressOption(option.id)}
 					/>
 				))}
 			</OptionsContainer>

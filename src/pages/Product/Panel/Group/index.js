@@ -15,13 +15,13 @@ import {
 } from './styles';
 
 function Group({ onPress, group }) {
-	const price = useMemo(()=>{
+	const selectedOptions = group.options.filter(opt => opt.selected);
+
+	const price = useMemo(() => {
 		return calculateOptionsGroupPrice(group);
-	}, [group.options.length, calculateOptionsGroupPrice]);
+	}, [selectedOptions, calculateOptionsGroupPrice]);
 	
 	const CenterElememt = () => {
-		const selectedOptions = group.options.filter(opt => opt.selected);
-
 		if (selectedOptions.length >= 1) {
 			if (selectedOptions.length < 3) return <SelectedOptionsText>{selectedOptions.map(row=>row.name).join(', ')}</SelectedOptionsText>;
 			return <SelectedOptionsNumber>{selectedOptions.length}</SelectedOptionsNumber>;
