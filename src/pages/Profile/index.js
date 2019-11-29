@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { Avatar, Button, Icon } from 'react-native-elements';
@@ -15,6 +15,7 @@ import {
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { IS_USER_LOGGED_IN, LOGGED_USER } from '../../graphql/authentication';
+import { useFocusEffect } from '@react-navigation/core';
 
 export default function Profile({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
@@ -36,8 +37,14 @@ export default function Profile({ navigation }) {
 		}
 	}, [navigation, user_id]);
 
+	// navigate to HomeScreen if user is not logged in
+	useFocusEffect(
+		useCallback(() => {
+			checkCondition(isUserLoggedIn, navigation, 'Você não está logado')
+		}, [isUserLoggedIn])
+	);
+
 	if (loadingUser) return <LoadingBlock />
-	if (checkCondition(isUserLoggedIn, navigation)) return <></>;
 
 	return (
 		<ContainerScroll>

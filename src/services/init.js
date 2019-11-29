@@ -56,40 +56,14 @@ async function init() {
 export async function logUserIn(token) {
 	await AsyncStorage.setItem('@copeiro/userToken', token);
 	client.writeData({ data: { isUserLoggedIn: true, userToken: token } });
-	await client.query({ query: LOGGED_USER });
 }
 
 export async function logUserOut() {
 	await AsyncStorage.removeItem('@copeiro/userToken');
-	client.writeData({ data: { userToken: null, authenticated: false, isUserLoggedIn: false } });
+	client.writeData({ data: { userToken: null, isUserLoggedIn: false } });
 }
 
 export async function resetBranch() {
 	await AsyncStorage.removeItem('@copeiro/selectedBranch');
 	client.writeData({ data: { selectedBranch: '' } });
 }
-
-
-/*
-async function authenticate() {
-	const {data:userData} = await client.query({query:LOGGED_USER});
-	
-	if (!userData.me) return false;
-
-	client.writeData({data:{isUserLoggedIn:true, authenticated:true}});
-	return true;
-}
- 
-function loadInitialData() {
-	return client.query({query:GET_USER_COMPANIES})
-	.then (async ({data})=> {
-		const {selectedCompany} = client.readQuery({query:GET_SELECTED_COMPANY});
-		const selectCompany_id = selectedCompany || data.userCompanies[0].id;
-
-		client.writeData({data:{initialized:true}});
-
-		await client.mutate({mutation:SELECT_COMPANY, variables:{id:selectCompany_id}});
-
-		return true;
-	});
-} */

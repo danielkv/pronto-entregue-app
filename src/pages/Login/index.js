@@ -19,7 +19,9 @@ const validationSchema = Yup.object().shape({
 		.required('Obrigatório'),
 });
 
-export default function login({ navigation }) {
+export default function login({ route, navigation }) {
+	const redirect = route.params && route.params.redirect ? route.params.redirect : 'HomeScreen';
+
 	const initialValues = {
 		email: '',
 		password: '',
@@ -33,7 +35,7 @@ export default function login({ navigation }) {
 				resetForm();
 				if (data.login.token) {
 					logUserIn(data.login.token);
-					navigation.navigate('HomeScreen');
+					navigation.navigate(redirect);
 				}
 			})
 			.catch(err => {

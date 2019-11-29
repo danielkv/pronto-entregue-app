@@ -68,7 +68,7 @@ export default function Cart({ navigation }) {
 
 	const handleOpenDeliveryModal = useCallback(()=>{
 		if (isUserLoggedIn) setDeliveryModalOpen(true);
-		else navigation.navigate('LoginScreen');
+		else navigation.navigate('LoginScreen', { redirect: 'CartScreen' });
 	})
 	const handleCloseDeliveryModal = useCallback(()=>{
 		setDeliveryModalOpen(false);
@@ -82,7 +82,7 @@ export default function Cart({ navigation }) {
 	})
 	const handleOpenPaymentModal = useCallback(()=>{
 		if (isUserLoggedIn) setPaymentModalOpen(true);
-		else navigation.navigate('LoginScreen');
+		else navigation.navigate('LoginScreen', { redirect: 'CartScreen' });
 	})
 	const handleClosePaymentModal = useCallback(()=>{
 		setPaymentModalOpen(false);

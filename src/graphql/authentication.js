@@ -9,14 +9,6 @@ export const GET_USER_TOKEN = gql`
 	}
 `;
 
-/**
- * Recupera o Token do usuário salvo em cache 
- */
-export const IS_USER_AUTHENTICATED = gql`
-	{
-		authenticated
-	}
-`;
 
 /**
  * Recupera o Token do usuário salvo em cache 
