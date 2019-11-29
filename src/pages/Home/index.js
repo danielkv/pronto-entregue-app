@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, FlatList, Dimensions } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, FlatList, Dimensions, RefreshControl } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useQuery } from '@apollo/react-hooks';
 import SideSwipe from 'react-native-sideswipe';
@@ -30,14 +30,22 @@ const featuredLimit = 5;
 export default function Home({ navigation }) {
 	const [featuredIndex, setFeaturedIndex] = useState(0);
 	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
+	const [refreshing, setRefreshing] = useState(false);
 
+	const fetchPolicy = refreshing ? 'networt-only' : 'cache-fisrt';
+	
 	// eslint-disable-next-line max-len
-	const { data: categoriesData, loading: loadingCategories } = useQuery(GET_BRANCH_CATEGORIES, { variables: { id: selectedBranchData.selectedBranch } });
+	const {
+		data: categoriesData,
+		loading: loadingCategories,
+		refetch: refetchCategories
+	} = useQuery(GET_BRANCH_CATEGORIES, { variables: { id: selectedBranchData.selectedBranch }, fetchPolicy });
 	const {
 		data: featuredProductData,
 		loading: loadingFeaturedProduct,
-		error: featuredError
-	} = useQuery(LOAD_BRANCH_FETURED_PRODUCTS, { variables: { id: selectedBranchData.selectedBranch, limit: featuredLimit } });
+		error: featuredError,
+		refetch: refetchFeaturedProducts,
+	} = useQuery(LOAD_BRANCH_FETURED_PRODUCTS, { variables: { id: selectedBranchData.selectedBranch, limit: featuredLimit }, fetchPolicy });
 	
 	const renderCategory = ({ item: { id, name, image } }) => {
 		return (
@@ -48,17 +56,31 @@ export default function Home({ navigation }) {
 		);
 	}
 	
-	if (loadingFeaturedProduct || loadingCategories) return <LoadingBlock />;
+	const onRefresh = useCallback(()=>{
+		refetchFeaturedProducts()
+		refetchCategories();
+		setRefreshing(true);
+	}, [refreshing]);
+
+	useEffect(()=>{
+		if (loadingCategories && loadingFeaturedProduct && refreshing) setRefreshing(false);
+	}, [loadingCategories, loadingFeaturedProduct, refreshing])
+	
+	console.log(fetchPolicy, refreshing, loadingCategories);
+	
+	if (!refreshing && (loadingFeaturedProduct || loadingCategories)) return <LoadingBlock />;
 	if (featuredError) return <ErrorBlock error={featuredError} />;
 	
 	const { featuredProducts } = featuredProductData.branch;
 	const { categories } = categoriesData.branch;
-
 	const { width } = Dimensions.get('window');
-	// const contentOffset = width / 2;
 	
 	return (
-		<Container>
+		<Container
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+			}
+		>
 			<HeaderContainer onPress={()=>{}}>
 				<SideSwipe
 					index={featuredIndex}
