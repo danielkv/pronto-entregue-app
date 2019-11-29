@@ -32,7 +32,7 @@ export default function About() {
 				<LogoImage source={logoResource} />
 
 				<Content>
-					{branch.phones.length && (
+					{!!branch.phones.length && (
 						branch.phones.map(phone => {
 							const phoneNumber = (Platform.OS === 'android') ? `tel:${phone.number}` : `telprompt:${phone.number}`;
 
