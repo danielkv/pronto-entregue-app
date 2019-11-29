@@ -37,7 +37,7 @@ export default function Profile({ navigation }) {
 	}, [navigation, user_id]);
 
 	if (loadingUser) return <LoadingBlock />
-	if (checkCondition(isUserLoggedIn)) return <></>;
+	if (checkCondition(isUserLoggedIn, navigation)) return <></>;
 
 	return (
 		<ContainerScroll>

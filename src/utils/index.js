@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
 
 import theme from '../theme';
 import { getErrors } from './errors';
@@ -48,8 +47,7 @@ export const getStatusColors = (status) => {
 	}
 }
 
-export function checkCondition(condition, errorMessage, navigateTo = 'HomeScreen') {
-	const navigation = useNavigation();
+export function checkCondition(condition, navigation, errorMessage, navigateTo = 'HomeScreen') {
 	let result = condition;
 	if (typeof condition === 'function') {
 		try {

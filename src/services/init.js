@@ -7,9 +7,13 @@ import client from './server';
 import { GET_SELECTED_BRANCH } from '../graphql/branches';
 import { LOGGED_USER } from '../graphql/authentication';
 
+// import dummy_cart from '../../cart.json';
+
 export function useInitialize() {
 	// logUserOut();
 	// resetBranch();
+
+	// client.writeData({ data: dummy_cart })
 
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);

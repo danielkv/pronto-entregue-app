@@ -2,7 +2,6 @@ import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import { Text } from 'react-native-elements';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { useRoute } from '@react-navigation/core';
 
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
@@ -24,8 +23,7 @@ import { LOAD_ORDER, UPDATE_ORDER } from '../../graphql/orders';
 import { getStatusText } from '../../utils';
 import { getErrors } from '../../utils/errors';
 
-export default function Order() {
-	const route = useRoute();
+export default function Order({ route }) {
 	const { order_id } = route.params;
 
 	const { data: orderData, loading: loadingOrder, error: orderError } = useQuery(LOAD_ORDER, { variables: { id: order_id } });

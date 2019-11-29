@@ -4,6 +4,7 @@ import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { vw } from 'react-native-expo-viewport-units';
+import { useFocusEffect } from '@react-navigation/core';
 
 import CartButton from '../../components/CartButton';
 import {
@@ -128,12 +129,15 @@ export default function Cart({ navigation }) {
 		);
 	}
 
+	// navigate to HomeScreen if there's no items in Cart
+	useFocusEffect(
+		useCallback(() => {
+			checkCondition((cartItems && cartItems.length), navigation, 'O carrinho está vazio')
+		}, [])
+	);
 
 	if (loadingCart || loadingUser) return <LoadingBlock />;
 	if (error) return <ErrorBlock error={error} />
-
-	// navigate to HomeScreen if there's no items in Cart
-	if (checkCondition((cartItems && cartItems.length), 'O carrinho está vazio')) return <></>;
 
 	return (
 		<Container>
