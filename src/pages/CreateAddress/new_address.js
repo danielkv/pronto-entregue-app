@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 
 import PageForm from './form';
 import { getErrors } from '../../utils/errors';
-import { CREATE_USER_ADDRESS } from '../../graphql/users';
+import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
@@ -35,7 +35,7 @@ export default function NewAddress() {
 		zipcode: '',
 	}
 
-	const [createAddress] = useMutation(CREATE_USER_ADDRESS);
+	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES }] });
 
 	const onSubmit = async (data, { resetForm }) => {
 		const dataSave = {

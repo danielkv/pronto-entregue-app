@@ -9,6 +9,7 @@ export const GET_USER_ADDRESSES = gql`
 				name
 				street
 				number
+				complement
 				zipcode
 				district
 				city
@@ -42,6 +43,7 @@ export const LOAD_USER_ADDRESS = gql`
 			name
 			street
 			number
+			complement
 			zipcode
 			district
 			city

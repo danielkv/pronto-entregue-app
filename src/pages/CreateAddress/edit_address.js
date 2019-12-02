@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 
 import PageForm from './form';
 import { getErrors } from '../../utils/errors';
-import { UPDATE_USER_ADDRESS, LOAD_USER_ADDRESS } from '../../graphql/users';
+import { UPDATE_USER_ADDRESS, LOAD_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
 
@@ -38,7 +38,7 @@ export default function EditAddress({ address_id }) {
 		error: errorLoadAddress,
 	} = useQuery(LOAD_USER_ADDRESS, { variables: { id: address_id } });
 
-	const [updateAddress] = useMutation(UPDATE_USER_ADDRESS, { variables: { id: address_id } });
+	const [updateAddress] = useMutation(UPDATE_USER_ADDRESS, { variables: { id: address_id }, refetchQueries: [{ query: GET_USER_ADDRESSES }] });
 	
 	const onSubmit = async (data, { resetForm }) => {
 		const dataSave = {
