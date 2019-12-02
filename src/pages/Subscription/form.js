@@ -9,7 +9,9 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 			<InputsContainer>
 				<Input
 					errorMessage={errors.first_name || ''}
+					autoFocus
 					placeholder='Primeiro nome'
+					autoCompleteType='name'
 					onChangeText={handleChange('first_name')}
 					onBlur={handleBlur('first_name')}
 					disabled={isSubmitting}
@@ -26,6 +28,7 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 				<Input
 					errorMessage={errors.phone || ''}
 					placeholder='Telefone'
+					autoCompleteType='tel'
 					onChangeText={handleChange('phone')}
 					onBlur={handleBlur('phone')}
 					disabled={isSubmitting}
@@ -34,6 +37,9 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 				<Input
 					errorMessage={errors.email || ''}
 					placeholder='Email'
+					keyboardType='email-address'
+					autoCapitalize='none'
+					autoCompleteType='email'
 					onChangeText={handleChange('email')}
 					onBlur={handleBlur('email')}
 					disabled={isSubmitting}
@@ -43,6 +49,7 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					errorMessage={errors.password || ''}
 					secureTextEntry
 					placeholder='Senha'
+					autoCompleteType='password'
 					onChangeText={handleChange('password')}
 					onBlur={handleBlur('password')}
 					disabled={isSubmitting}

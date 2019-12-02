@@ -58,18 +58,25 @@ export default function login({ route, navigation }) {
 				<InputsContainer>
 					<Input
 						errorMessage={errors.email || ''}
+						autoFocus
 						placeholder='Email'
+						keyboardType='email-address'
+						autoCapitalize='none'
+						autoCompleteType='email'
 						onChangeText={handleChange('email')}
 						onBlur={handleBlur('email')}
+						onSubmitEditing={() => { focusField('field2'); }}
 						disabled={isSubmitting}
 						value={email}
 					/>
 					<Input
 						errorMessage={errors.password || ''}
 						secureTextEntry
+						autoCompleteType='password'
 						placeholder='Senha'
 						onChangeText={handleChange('password')}
 						onBlur={handleBlur('password')}
+						ref={(ref)=> { refs.password = ref }}
 						disabled={isSubmitting}
 						value={password}
 					/>
