@@ -66,8 +66,6 @@ export default function Home({ navigation }) {
 		if (loadingCategories && loadingFeaturedProduct && refreshing) setRefreshing(false);
 	}, [loadingCategories, loadingFeaturedProduct, refreshing])
 	
-	console.log(fetchPolicy, refreshing, loadingCategories);
-	
 	if (!refreshing && (loadingFeaturedProduct || loadingCategories)) return <LoadingBlock />;
 	if (featuredError) return <ErrorBlock error={featuredError} />;
 	

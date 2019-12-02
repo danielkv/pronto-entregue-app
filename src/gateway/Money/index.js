@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Icon, CheckBox, Input } from 'react-native-elements';
+import { TextInputMask } from 'react-native-masked-text'
 
 import {
 	GataweyContainer,
 	GetawayTitle,
 	GetawayIconContainer,
+	LabelText,
 } from '../styles'
 
 import {
@@ -30,12 +32,12 @@ export const Option = ({ onPress }) => {
 }
 
 export const Finish = ({ onFinish, cart }) => {
-	const [needChange, setNeedChange] = useState(false);
-	const [change, setChange] = useState('');
-	const [error, setError] = useState('');
-
-	
 	const { cartItems, cartDelivery, cartPayment, cartDiscount, cartPrice } = cart;
+
+	const [needChange, setNeedChange] = useState(false);
+	const [change, setChange] = useState(Math.ceil(cartPrice / 10) * 10);
+	const [error, setError] = useState('');
+	
 	let { cartMessage } = cart;
 	
 	const onSubmit = () => {
@@ -60,13 +62,24 @@ export const Finish = ({ onFinish, cart }) => {
 						onPress={()=>{ setError(''); setNeedChange(!needChange) }}
 					/>
 					{needChange && (
-						<Input
-							placeholder='Troco para quanto?'
-							type='number'
-							value={change.toString()}
-							onChangeText={(value)=>setChange(value)}
-							keyboardType='numeric'
-						/>
+						<>
+							<LabelText h3>Troco para quanto?</LabelText>
+							<TextInputMask
+								type='money'
+								value={change}
+								onChangeText={(value)=>setChange(value)}
+								options={{
+									unit: 'R$ ',
+								}}
+								customTextInput={Input}
+								customTextInputProps={{
+									placeholder: 'Troco para quanto?',
+									// type: 'number',
+									
+									keyboardType: 'numeric'
+								}}
+							/>
+						</>
 					)}
 				</View>
 				{!!error && <ErrorMessage>{error}</ErrorMessage>}

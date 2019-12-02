@@ -23,3 +23,8 @@ export const GetawayTitle = styled(Text)`
 export const GetawayIconContainer = styled.View`
 	
 `;
+export const LabelText = styled(Text)`
+	color: #fff;
+	margin-top: 15px;
+	padding: 0 7px;
+`;
