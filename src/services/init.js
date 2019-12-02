@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import { useState, useEffect } from 'react';
 import { AsyncStorage } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
@@ -6,13 +7,12 @@ import client from './server';
 
 import { GET_SELECTED_BRANCH } from '../graphql/branches';
 
-// import dummy_cart from '../../cart.json';
-
 export function useInitialize() {
 	// logUserOut();
 	// resetBranch();
 
-	// client.writeData({ data: dummy_cart })
+	// eslint-disable-next-line no-undef
+	if (__DEV__) client.writeData({ data: require('../../cart.json') });
 
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);

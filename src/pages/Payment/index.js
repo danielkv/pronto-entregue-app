@@ -25,7 +25,10 @@ export default function Payment({ navigation }) {
 		
 		createOrder({ variables: { data: sanitizedCart } })
 			.then(async ({ data }) => {
-				navigation.navigate('OrderScreen', { order_id: data.createOrder.id });
+				navigation.reset({
+					index: 0,
+					routes: [{ name: 'OrderScreen', params: { order_id: data.createOrder.id } }]
+				});
 				cancelCart();
 			})
 	}
