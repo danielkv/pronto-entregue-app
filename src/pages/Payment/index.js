@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import { useQuery, useMutation, useLazyQuery } from '@apollo/react-hooks';
+import React, { useCallback } from 'react';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 
 import { Container } from './styles';
@@ -17,11 +17,7 @@ import { LOGGED_USER_ID } from '../../graphql/authentication';
 export default function Payment({ navigation }) {
 	const { data: cartData, loading: loadingCart, error } = useQuery(GET_CART);
 	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
-	const [loadUser, { data: userData, loading: loadingUser, error: userError }] = useLazyQuery(GET_USER);
-
-	useEffect(()=>{
-		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
-	}, [loggedUserId])
+	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 	
 	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
 	const [createOrder, { loading: loadingCreateOrder, error: createOrderError }] = useMutation(CREATE_ORDER);

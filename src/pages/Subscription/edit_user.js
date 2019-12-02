@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 import Toast from 'react-native-simple-toast';
 import * as Yup from 'yup';
@@ -38,12 +38,8 @@ export default function EditUser({ user_id }) {
 	}, [navigation]);
 	
 	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
-	const [loadUser, { data: userData, loading: loadingUser, error: userError }] = useLazyQuery(GET_USER);
+	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 	const [updateUser] = useMutation(UPDATE_USER, { variables: { id: user_id } });
-
-	useEffect(()=>{
-		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
-	}, [loggedUserId])
 	
 	const onSubmit = async (result, { resetForm }) => {
 		const saveData = {

@@ -4,6 +4,11 @@ import { Button, Input } from 'react-native-elements';
 import { InputsContainer, ButtonsContainer, FormContainer } from './styles';
 
 export default function AddressForm({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
+	const refs = {};
+	const handleNextInput = (fieldName) => () => {
+		refs[fieldName].focus();
+	}
+
 	return (
 		<FormContainer>
 			<InputsContainer>
@@ -15,6 +20,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('name')}
 					disabled={isSubmitting}
 					value={values.name}
+
+					ref={ref => { refs.name = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('street')}
 				/>
 				<Input
 					errorMessage={errors.street}
@@ -24,6 +34,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('street')}
 					disabled={isSubmitting}
 					value={values.street}
+
+					ref={ref => { refs.street = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('number')}
 				/>
 				<Input
 					errorMessage={errors.number}
@@ -33,6 +48,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('number')}
 					disabled={isSubmitting}
 					value={values.number}
+
+					ref={ref => { refs.number = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('complement')}
 				/>
 				<Input
 					errorMessage={errors.complement}
@@ -41,6 +61,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('complement')}
 					disabled={isSubmitting}
 					value={values.complement}
+
+					ref={ref => { refs.complement = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('district')}
 				/>
 				<Input
 					errorMessage={errors.district}
@@ -49,6 +74,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('district')}
 					disabled={isSubmitting}
 					value={values.district}
+
+					ref={ref => { refs.district = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('city')}
 				/>
 				<Input
 					errorMessage={errors.city}
@@ -57,6 +87,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('city')}
 					disabled={isSubmitting}
 					value={values.city}
+
+					ref={ref => { refs.city = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('state')}
 				/>
 				<Input
 					errorMessage={errors.state}
@@ -65,6 +100,11 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('state')}
 					disabled={isSubmitting}
 					value={values.state}
+
+					ref={ref => { refs.state = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('zipcode')}
 				/>
 				<Input
 					errorMessage={errors.zipcode}
@@ -75,6 +115,9 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('zipcode')}
 					disabled={isSubmitting}
 					value={values.zipcode}
+
+					ref={ref => { refs.zipcode = ref }}
+					onSubmitEditing={handleSubmit}
 				/>
 			</InputsContainer>
 			<ButtonsContainer>

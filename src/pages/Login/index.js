@@ -29,6 +29,11 @@ export default function login({ route, navigation }) {
 
 	const client = useApolloClient();
 
+	const refs = {}
+	const handleNextInput = (fieldName) => () => {
+		refs[fieldName].focus();
+	}
+
 	const onSubmit = async ({ email, password }, { resetForm }) => {
 		await client.mutate({ mutation: LOGIN, variables: { email, password } })
 			.then(({ data })=>{
@@ -67,6 +72,10 @@ export default function login({ route, navigation }) {
 						onBlur={handleBlur('email')}
 						disabled={isSubmitting}
 						value={email}
+
+						blurOnSubmit={false}
+						returnKeyType='next'
+						onSubmitEditing={handleNextInput('password')}
 					/>
 					<Input
 						errorMessage={errors.password || ''}
@@ -77,6 +86,9 @@ export default function login({ route, navigation }) {
 						onBlur={handleBlur('password')}
 						disabled={isSubmitting}
 						value={password}
+						
+						ref={ref => { refs.password = ref }}
+						onSubmitEditing={handleSubmit}
 					/>
 				</InputsContainer>
 				<ButtonsContainer>

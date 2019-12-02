@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { Avatar, Button, Icon } from 'react-native-elements';
 import { useFocusEffect } from '@react-navigation/core';
 
@@ -21,11 +21,7 @@ import { GET_USER } from '../../graphql/users';
 export default function Profile({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
 	const { data: { loggedUserId }, loading: loadingUserId } = useQuery(LOGGED_USER_ID);
-	const [loadUser, { data: loggedUserData, loading: loadingUser }] = useLazyQuery(GET_USER);
-
-	useEffect(()=>{
-		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
-	}, [loggedUserId])
+	const { data: loggedUserData, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 
 	const loggedUser = loggedUserData ? loggedUserData.user : null;
 	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
