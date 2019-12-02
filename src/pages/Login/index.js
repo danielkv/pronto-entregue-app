@@ -65,7 +65,6 @@ export default function login({ route, navigation }) {
 						autoCompleteType='email'
 						onChangeText={handleChange('email')}
 						onBlur={handleBlur('email')}
-						onSubmitEditing={() => { focusField('field2'); }}
 						disabled={isSubmitting}
 						value={email}
 					/>
@@ -76,7 +75,6 @@ export default function login({ route, navigation }) {
 						placeholder='Senha'
 						onChangeText={handleChange('password')}
 						onBlur={handleBlur('password')}
-						ref={(ref)=> { refs.password = ref }}
 						disabled={isSubmitting}
 						value={password}
 					/>
