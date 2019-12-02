@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -50,8 +50,8 @@ export default function Cart({ navigation }) {
 	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 	const client = useApolloClient();
 	
-	const [setDelivery] = useMutation(SET_CART_DELIVERY);
-	const [setPayment] = useMutation(SET_CART_PAYMENT);
+	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
+	const [setPayment, { loading: loadingPayment }] = useMutation(SET_CART_PAYMENT);
 	const [removeOrderItem] = useMutation(REMOVE_CART_ITEM);
 	const [cancelCart] = useMutation(CANCEL_CART);
 	
@@ -154,10 +154,11 @@ export default function Cart({ navigation }) {
 				</Section>
 				<Section>
 					<SectionTitle>Entrega e pagamento</SectionTitle>
-					<CardContainer onPress={handleOpenDeliveryModal}>
+					<CardContainer disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
 						<CardHeader>
 							<Icon type='material-community' name='truck' color={theme.colors.divider} size={24} />
 							<CardTitle>Entrega</CardTitle>
+							{loadingDelivery && <ActivityIndicator color={theme.colors.divider} />}
 						</CardHeader>
 						<CardContent>
 							<CardInfo>
@@ -172,10 +173,11 @@ export default function Cart({ navigation }) {
 							{!!(cartDelivery && cartDelivery.price) && <CardPrice>{cartDelivery.price.toFixed(2).replace('.', ',')}</CardPrice>}
 						</CardContent>
 					</CardContainer>
-					<CardContainer onPress={handleOpenPaymentModal}>
+					<CardContainer disabled={loadingPayment} onPress={handleOpenPaymentModal}>
 						<CardHeader>
 							<Icon type='material-community' name='credit-card' color={theme.colors.divider} size={24} />
 							<CardTitle>Pagamento</CardTitle>
+							{loadingPayment && <ActivityIndicator color={theme.colors.divider} />}
 						</CardHeader>
 						<CardContent>
 							<CardInfo>{cartPayment ? cartPayment.display_name : 'Nenhum pagamento selecionado'}</CardInfo>

@@ -36,7 +36,7 @@ export default function deliveryModal({ confirmModal, closeModal }) {
 			title='Endereço de entrega'
 			handleCancel={closeModal}
 			HeaderRight={()=>(
-				<TouchableOpacity onPress={()=>{ closeModal(); navigation.navigate('LoginScreen') }}>
+				<TouchableOpacity onPress={()=>{ closeModal(); navigation.navigate('CreateAddressScreen') }}>
 					<Icon type='material-community' name='plus' color='#fff' size={30} />
 				</TouchableOpacity>
 			)}

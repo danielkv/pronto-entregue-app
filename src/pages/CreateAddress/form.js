@@ -8,6 +8,7 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 		<FormContainer>
 			<InputsContainer>
 				<Input
+					autoFocus
 					errorMessage={errors.name}
 					placeholder='Nome de identificação'
 					onChangeText={handleChange('name')}
@@ -18,6 +19,7 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 				<Input
 					errorMessage={errors.street}
 					placeholder='Rua'
+					autoCompleteType='street-address'
 					onChangeText={handleChange('street')}
 					onBlur={handleBlur('street')}
 					disabled={isSubmitting}
@@ -31,6 +33,14 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					onBlur={handleBlur('number')}
 					disabled={isSubmitting}
 					value={values.number}
+				/>
+				<Input
+					errorMessage={errors.complement}
+					placeholder='Complemento'
+					onChangeText={handleChange('complement')}
+					onBlur={handleBlur('complement')}
+					disabled={isSubmitting}
+					value={values.complement}
 				/>
 				<Input
 					errorMessage={errors.district}
@@ -60,6 +70,7 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					errorMessage={errors.zipcode}
 					keyboardType='number-pad'
 					placeholder='CEP'
+					autoCompleteType='postal-code'
 					onChangeText={handleChange('zipcode')}
 					onBlur={handleBlur('zipcode')}
 					disabled={isSubmitting}
