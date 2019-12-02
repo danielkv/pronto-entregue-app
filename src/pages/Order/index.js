@@ -32,13 +32,26 @@ export default function Order({ route }) {
 	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: order_id, data: { status: 'canceled' } } });
 
 	const handleCancelOrder = () => {
-		cancelOrder()
-			.catch((err)=>{
-				Alert.alert(
-					'Ocorreu um erro',
-					getErrors(err)
-				)
-			})
+		Alert.alert(
+			'Confirmação',
+			'Tem certeza que deseja cancelar esse pedido?',
+			[
+				{
+					text: 'Sim',
+					onPress: ()=> {
+						cancelOrder()
+							.catch((err)=>{
+								Alert.alert(
+									'Ocorreu um erro',
+									getErrors(err)
+								)
+							})
+					}
+				},
+				{ text: 'Não, manter pedido' }
+			]
+		)
+		
 	}
 
 	if (loadingOrder) return <LoadingBlock />
