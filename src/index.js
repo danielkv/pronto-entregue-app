@@ -9,7 +9,7 @@ import apolloClient from './services/server';
 import { Container } from './styles';
 import RootScreen from './SplashScreen';
 import theme from './theme';
-import { ErrorBoundary } from './utils/errors';
+// import { ErrorBoundary } from './utils/errors';
 
 export default function App() {
 	return (
@@ -17,9 +17,7 @@ export default function App() {
 			<ApolloProvider client={apolloClient}>
 				<ThemeProvider theme={theme}>
 					<Container>
-						<ErrorBoundary>
-							<RootScreen />
-						</ErrorBoundary>
+						<RootScreen />
 					</Container>
 				</ThemeProvider>
 			</ApolloProvider>

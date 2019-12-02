@@ -94,8 +94,8 @@ export const LOAD_ORDER = gql`
 `;
 
 export const GET_USER_ORDERS = gql`
-	query {
-		me {
+	query ($id: ID!) {
+		user (id: $id) {
 			id
 			orders {
 				id

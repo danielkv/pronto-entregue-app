@@ -34,7 +34,7 @@ export default function login({ route, navigation }) {
 			.then(({ data })=>{
 				resetForm();
 				if (data.login.token) {
-					logUserIn(data.login.token);
+					logUserIn(data.login.user, data.login.token);
 					navigation.navigate(redirect);
 				}
 			})

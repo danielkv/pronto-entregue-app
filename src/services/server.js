@@ -15,6 +15,7 @@ const httpLink = new HttpLink({ uri: host });
 const cache = new InMemoryCache({});
 
 const initialData = {
+	loggedUserId: null,
 	isUserLoggedIn: false,
 	userToken: null,
 	selectedCompany: 1, // ID da empresa

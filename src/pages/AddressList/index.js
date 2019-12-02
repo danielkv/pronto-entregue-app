@@ -10,6 +10,7 @@ import { Container } from './styles';
 
 import { GET_USER_ADDRESSES, REMOVE_USER_ADDRESS } from '../../graphql/users';
 import { getErrors } from '../../utils/errors';
+import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 export default function AdressList({ navigation }) {
 	useEffect(()=>{
@@ -22,10 +23,21 @@ export default function AdressList({ navigation }) {
 		});
 	}, []);
 
-	const { data: userAddressesData, loading: loadingUserAddresses, error } = useQuery(GET_USER_ADDRESSES);
-	const addresses = userAddressesData ? userAddressesData.me.addresses : [];
+	const { data: loggedUserIdData } = useQuery(LOGGED_USER_ID);
+	const {
+		data: userAddressesData,
+		loading: loadingUserAddresses,
+		error
+	} = useQuery(GET_USER_ADDRESSES, { variables: { id: loggedUserIdData.loggedUserId } });
+	const addresses = userAddressesData ? userAddressesData.user.addresses : [];
 
-	const [removeAddress, { loading: loadingRemoveAddress }] = useMutation(REMOVE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES }] })
+	const [
+		removeAddress,
+		{
+			loading:
+			loadingRemoveAddress
+		}
+	] = useMutation(REMOVE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserIdData.loggedUserId } }] })
 
 	const handleRemoveAddress = (id) => () => {
 		Alert.alert(

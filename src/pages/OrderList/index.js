@@ -6,10 +6,12 @@ import LoadingBlock from '../../components/LoadingBlock';
 import Order from './Order';
 
 import { GET_USER_ORDERS } from '../../graphql/orders';
+import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 export default function OrderList() {
-	const { data: ordersData, loading: loadingOrders } = useQuery(GET_USER_ORDERS);
-	const orders = ordersData && ordersData.me ? ordersData.me.orders : [];
+	const { data: loggedUserIdData } = useQuery(LOGGED_USER_ID);
+	const { data: ordersData, loading: loadingOrders } = useQuery(GET_USER_ORDERS, { variables: { id: loggedUserIdData.loggedUserId } });
+	const orders = ordersData && ordersData.user ? ordersData.user.orders : [];
 
 	if (loadingOrders) return <LoadingBlock />;
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 import Toast from 'react-native-simple-toast';
 import * as Yup from 'yup';
@@ -12,6 +12,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import { getErrors } from '../../utils/errors';
 
 import { UPDATE_USER, GET_USER } from '../../graphql/users';
+import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 const validationSchema = Yup.object().shape({
 	first_name: Yup.string().required('Obrigatório'),
@@ -36,8 +37,13 @@ export default function EditUser({ user_id }) {
 		});
 	}, [navigation]);
 	
-	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER);
+	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
+	const [loadUser, { data: userData, loading: loadingUser, error: userError }] = useLazyQuery(GET_USER);
 	const [updateUser] = useMutation(UPDATE_USER, { variables: { id: user_id } });
+
+	useEffect(()=>{
+		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
+	}, [loggedUserId])
 	
 	const onSubmit = async (result, { resetForm }) => {
 		const saveData = {
@@ -72,10 +78,10 @@ export default function EditUser({ user_id }) {
 	if (userError) return <ErrorBlock error={userError} />;
 		
 	const initialValues = {
-		first_name: userData.me.first_name,
-		last_name: userData.me.last_name,
-		phone: userData.me.metas[0].meta_value,
-		email: userData.me.email,
+		first_name: userData.user.first_name,
+		last_name: userData.user.last_name,
+		phone: userData.user.metas[0].meta_value,
+		email: userData.user.email,
 		password: '',
 		repeat_password: '',
 	}

@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useEffect } from 'react';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { Button, Divider, Avatar, ListItem } from 'react-native-elements';
 import { DrawerItem } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/routers'
 
+import theme from '../../theme';
+import { logUserOut, resetBranch } from '../../services/init';
 import {
 	Container,
 	HeaderContainer,
@@ -15,19 +17,24 @@ import {
 	MenuContainer,
 	getDraweItemProps,
 } from './styles';
-import { IS_USER_LOGGED_IN, LOGGED_USER } from '../../graphql/authentication';
+
+import { IS_USER_LOGGED_IN, LOGGED_USER_ID } from '../../graphql/authentication';
 import { GET_SELECTED_BRANCH, LOAD_BRANCH } from '../../graphql/branches';
-import { logUserOut, resetBranch } from '../../services/init';
-import theme from '../../theme';
+import { GET_USER } from '../../graphql/users';
 
 export default function DrawerContent({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
-	const { data: loggedUserData } = useQuery(LOGGED_USER);
+	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
+	const [loadUser, { data: loggedUserData }] = useLazyQuery(GET_USER);
+
+	useEffect(()=>{
+		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
+	}, [loggedUserId]);
 
 	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
 	const { data: branchData } = useQuery(LOAD_BRANCH, { variables: { id: selectedBranchData.selectedBranch } });
 
-	const loggedUser = loggedUserData ? loggedUserData.me : null;
+	const loggedUser = loggedUserData ? loggedUserData.user : null;
 	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
 
 	const handleLogout = () => {

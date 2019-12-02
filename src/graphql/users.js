@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_USER_ADDRESSES = gql`
-	query getUserAddresses {
-		me  {
+	query getUserAddresses ($id: ID!) {
+		user (id: $id)  {
 			id
 			addresses {
 				id
@@ -20,13 +20,14 @@ export const GET_USER_ADDRESSES = gql`
 `;
 
 export const GET_USER = gql`
-	query getUser {
-		me  {
+	query getUser ($id: ID!) {
+		user (id: $id)  {
 			id
 			full_name
 			first_name
 			last_name
 			email
+			role
 			metas (type: "phone") {
 				id
 				meta_type
@@ -79,27 +80,6 @@ export const REMOVE_USER_ADDRESS = gql`
 		removeUserAddress (id: $id)  {
 			id
 			name
-		}
-	}
-`;
-
-/**
- * Carrega todas infomações ao acessar
- * 
- * companies, branches, 
- */
-export const LOAD_INITIAL_DATA = gql`
-	query init {
-		me {
-			id
-			companies {
-				id
-				name
-				display_name
-				last_month_revenue
-				createdAt
-				active
-			}
 		}
 	}
 `;

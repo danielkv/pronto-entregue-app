@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { Avatar, Button, Icon } from 'react-native-elements';
+import { useFocusEffect } from '@react-navigation/core';
 
 import { checkCondition } from '../../utils';
 import {
@@ -14,14 +15,19 @@ import {
 } from './styles';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { IS_USER_LOGGED_IN, LOGGED_USER } from '../../graphql/authentication';
-import { useFocusEffect } from '@react-navigation/core';
+import { IS_USER_LOGGED_IN, LOGGED_USER_ID } from '../../graphql/authentication';
+import { GET_USER } from '../../graphql/users';
 
 export default function Profile({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
-	const { data: loggedUserData, loading: loadingUser } = useQuery(LOGGED_USER);
+	const { data: { loggedUserId }, loading: loadingUserId } = useQuery(LOGGED_USER_ID);
+	const [loadUser, { data: loggedUserData, loading: loadingUser }] = useLazyQuery(GET_USER);
 
-	const loggedUser = loggedUserData ? loggedUserData.me : null;
+	useEffect(()=>{
+		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
+	}, [loggedUserId])
+
+	const loggedUser = loggedUserData ? loggedUserData.user : null;
 	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
 	const user_id = loggedUser ? loggedUser.id : null
 
@@ -44,7 +50,7 @@ export default function Profile({ navigation }) {
 		}, [isUserLoggedIn])
 	);
 
-	if (loadingUser) return <LoadingBlock />
+	if (loadingUser || loadingUserId) return <LoadingBlock />
 
 	return (
 		<ContainerScroll>

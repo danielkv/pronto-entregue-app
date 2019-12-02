@@ -1,27 +1,33 @@
-import React, { useCallback } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import React, { useCallback, useEffect } from 'react';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 
 import { Container } from './styles';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import Gateway from '../../gateway';
+import { sanitizeOrderData, validadeCart } from '../../utils/cart';
+import { checkCondition } from '../../utils';
 
 import { GET_CART, CANCEL_CART } from '../../graphql/cart';
 import { CREATE_ORDER } from '../../graphql/orders';
-import { sanitizeOrderData, validadeCart } from '../../utils/cart';
 import { GET_USER } from '../../graphql/users';
-import { checkCondition } from '../../utils';
+import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 export default function Payment({ navigation }) {
 	const { data: cartData, loading: loadingCart, error } = useQuery(GET_CART);
-	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER);
+	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
+	const [loadUser, { data: userData, loading: loadingUser, error: userError }] = useLazyQuery(GET_USER);
+
+	useEffect(()=>{
+		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
+	}, [loggedUserId])
 	
 	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
 	const [createOrder, { loading: loadingCreateOrder, error: createOrderError }] = useMutation(CREATE_ORDER);
 
 	const handleFinishOrder = (cartResult) => {
-		const sanitizedCart = sanitizeOrderData({ user: userData.me, ...cartResult });
+		const sanitizedCart = sanitizeOrderData({ user: userData.user, ...cartResult });
 		
 		createOrder({ variables: { data: sanitizedCart } })
 			.then(async ({ data }) => {

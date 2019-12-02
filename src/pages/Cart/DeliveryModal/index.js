@@ -15,7 +15,7 @@ import { GET_USER_ADDRESSES } from '../../../graphql/users';
 
 export default function deliveryModal({ confirmModal, closeModal }) {
 	const { data: userAddressesData, loading: loadingUserAddresses, error } = useQuery(GET_USER_ADDRESSES);
-	const addresses = userAddressesData ? userAddressesData.me.addresses : [];
+	const addresses = userAddressesData ? userAddressesData.user.addresses : [];
 	const navigation = useNavigation();
 
 	const onPressAddress = (address) => {
