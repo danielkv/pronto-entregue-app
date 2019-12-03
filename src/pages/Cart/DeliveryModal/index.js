@@ -11,11 +11,16 @@ import Address from '../../../components/Address';
 import { TakeoutContainer, TakeoutTitle } from './styles';
 
 import { GET_USER_ADDRESSES } from '../../../graphql/users';
-
+import { LOGGED_USER_ID } from '../../../graphql/authentication';
 
 export default function deliveryModal({ confirmModal, closeModal }) {
-	const { data: userAddressesData, loading: loadingUserAddresses, error } = useQuery(GET_USER_ADDRESSES);
-	const addresses = userAddressesData ? userAddressesData.user.addresses : [];
+	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
+	const {
+		data: { user: { addresses = [] } = {} } = {},
+		loading: loadingUserAddresses,
+		error
+	} = useQuery(GET_USER_ADDRESSES, { variables: { id: loggedUserId } });
+	
 	const navigation = useNavigation();
 
 	const onPressAddress = (address) => {
