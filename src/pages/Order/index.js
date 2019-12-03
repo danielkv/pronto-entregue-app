@@ -51,7 +51,6 @@ export default function Order({ route }) {
 				{ text: 'Não, manter pedido' }
 			]
 		)
-		
 	}
 
 	if (loadingOrder) return <LoadingBlock />

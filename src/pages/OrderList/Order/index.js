@@ -22,7 +22,7 @@ export default function Order({ order: { id, status, createdDate, createdTime, p
 			<OrderItems>{`${products_qty} ${products_qty > 1 ? 'itens' : 'item'}`}</OrderItems>
 			<OrderFooter>
 				<OrderPrice>{`R$ ${price.toFixed(2).replace('.', ',')}`}</OrderPrice>
-				<StatusBadge>{statusText}</StatusBadge>
+				<StatusBadge status={status}>{statusText}</StatusBadge>
 			</OrderFooter>
 		</Container>
 	);
