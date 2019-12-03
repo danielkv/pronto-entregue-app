@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
 import { Icon } from 'react-native-elements';
@@ -75,8 +74,7 @@ export default function Product({ route, navigation }) {
 			if (checkProductRules(product)) {
 				client.mutate({
 					mutation: ADD_CART_ITEM,
-					variables: { data: sanitizeCartData({ ...product, price: totalPrice, quantity }) },
-					// refetchQueries: [{ query: LOAD_PRODUCT, variables: { id: product_id } }]
+					variables: { data: sanitizeCartData({ ...product, price: totalPrice, quantity }) }
 				})
 					.then(()=>{
 						resetProduct();

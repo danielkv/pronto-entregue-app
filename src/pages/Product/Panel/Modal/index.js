@@ -3,7 +3,7 @@ import { View, Alert } from 'react-native';
 import { cloneDeep } from 'lodash';
 import { Input } from 'react-native-elements';
 
-import { calculateOptionsGroupPrice, getOptionNewState } from '../../../../utils/products';
+import { calculateOptionsGroupPrice, getGroupNewState } from '../../../../utils/products';
 import Option from '../../Option';
 import {
 	SearchContainer,
@@ -32,11 +32,9 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 
 	const handlePressOption = useCallback((optionId) => () => {
 		try {
-			const optionIndex = optionGroup.options.findIndex(opt => opt.id === optionId)
-			const option = cloneDeep(optionGroup.options[optionIndex]);
-			option.selected = getOptionNewState(optionGroup, option);
-			optionGroup.options.splice(optionIndex, 1, option);
-			setOptionGroup({ ...optionGroup });
+			const new_state = getGroupNewState(optionGroup, optionId)
+			
+			setOptionGroup(new_state);
 		} catch (err) {
 			Alert.alert(err.message)
 		}

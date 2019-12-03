@@ -1,4 +1,4 @@
-import { uniqueId } from 'lodash';
+import { uniqueId, cloneDeep } from 'lodash';
 
 export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
 	if (!optionsGroup) return 0;
@@ -13,6 +13,29 @@ export const calculateProductPrice = (product) => {
 	}, product.price);
 	return r;
 };
+
+/**
+ * Return group new state after select option
+ * 
+ * @param {*} group 
+ * @param {*} optionId 
+ */
+
+export function getGroupNewState(optionGroup, optionId) {
+	const group = cloneDeep(optionGroup);
+	
+	if (group.type === 'single') {
+		const selectedOptionIndex = group.options.findIndex(opt => opt.selected);
+		if (selectedOptionIndex > -1) group.options[selectedOptionIndex].selected = false;
+	}
+
+	const optionIndex = group.options.findIndex(opt => opt.id === optionId)
+	const option = group.options[optionIndex];
+	option.selected = getOptionNewState(group, option);
+	group.options.splice(optionIndex, 1, option);
+	
+	return group;
+}
 
 export function getOptionNewState(group, option) {
 	if (option.selected) return false;

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 
+import { getGroupNewState } from '../../../utils/products';
 import Option from '../Option';
 import {
 	Container,
@@ -10,7 +11,12 @@ import {
 
 function Inline({ optionsGroups, onItemSelect }) {
 	const handlePressOption = useCallback((groupIndex, optionIndex) => () => {
-		optionsGroups[groupIndex].options[optionIndex].selected = !optionsGroups[groupIndex].options[optionIndex].selected;
+		const group = optionsGroups[groupIndex];
+		const option = group.options[optionIndex];
+		const new_state = getGroupNewState(group, option.id);
+
+		optionsGroups[groupIndex] = new_state;
+
 		onItemSelect(optionsGroups);
 	}, [optionsGroups]);
 
