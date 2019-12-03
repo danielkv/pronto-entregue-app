@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import client from './server';
 
 import { GET_SELECTED_BRANCH } from '../graphql/branches';
-import { IS_USER_LOGGED_IN, GET_USER_TOKEN, AUTHENTICATE, LOGGED_USER_ID } from '../graphql/authentication';
+import { AUTHENTICATE } from '../graphql/authentication';
 
 export function useInitialize() {
 	// logUserOut();
@@ -68,12 +68,7 @@ export async function logUserOut() {
 }
 
 export async function resetBranch() {
-	const { isUserLoggedIn } = client.readQuery({ query: IS_USER_LOGGED_IN });
-	const { userToken } = client.readQuery({ query: GET_USER_TOKEN });
-	const { loggedUserId } = client.readQuery({ query: LOGGED_USER_ID });
-
 	await AsyncStorage.removeItem('@copeiro/selectedBranch');
-	await client.resetStore();
 
-	client.writeData({ data: { isUserLoggedIn, userToken, loggedUserId } });
+	client.writeData({ data: { selectedBranch: '' } });
 }

@@ -25,10 +25,10 @@ import { GET_USER } from '../../graphql/users';
 export default function DrawerContent({ navigation }) {
 	const { data: { isUserLoggedIn } } = useQuery(IS_USER_LOGGED_IN);
 	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
-	const [loadUser, { data: loggedUserData }] = useLazyQuery(GET_USER);
-
+	const [loadUser, { data: loggedUserData }] = useLazyQuery(GET_USER, { variables: { id: loggedUserId } });
+	
 	useEffect(()=>{
-		if (loggedUserId) loadUser({ variables: { id: loggedUserId } })
+		if (loggedUserId) loadUser()
 	}, [loggedUserId]);
 
 	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
