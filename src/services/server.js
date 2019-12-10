@@ -10,6 +10,7 @@ import { GET_SELECTED_BRANCH } from '../graphql/branches';
 import { schema as typeDefs } from '../schema/cart';
 
 const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://192.168.234.2:4000/graphql';
+
 const httpLink = new HttpLink({ uri: host });
 
 const cache = new InMemoryCache({});

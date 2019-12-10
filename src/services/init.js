@@ -30,8 +30,10 @@ export function useInitialize() {
 			.then(()=>{
 				setLoading(false);
 			})
-			.catch((err)=>{
+			.catch((err) => {
 				setError(err);
+				logUserOut();
+				resetBranch();
 			})
 	}
 	
