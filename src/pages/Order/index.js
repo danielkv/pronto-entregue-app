@@ -74,7 +74,7 @@ export default function Order({ route }) {
 				{order.status === 'waiting' && (
 					<CancelButton disabled={loadingCancelOrder} onPress={handleCancelOrder}>
 						{loadingCancelOrder
-							? <ActivityIndicator color='#fff' />
+							? <ActivityIndicator color='#fff' size='small' />
 							: <CancelButtonText h2>Cancelar Pedido</CancelButtonText>}
 					</CancelButton>
 				)}

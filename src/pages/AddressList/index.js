@@ -92,7 +92,7 @@ export default function AdressList({ navigation }) {
 
 	return (
 		<Container>
-			{loadingRemoveAddress && <ActivityIndicator color='#fff' />}
+			{loadingRemoveAddress && <ActivityIndicator color='#fff' size='small' />}
 			<FlatList
 				renderItem={renderAddress}
 				data={addresses}

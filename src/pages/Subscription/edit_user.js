@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-tiny-toast';
 import * as Yup from 'yup';
 
 import PageForm from './form';

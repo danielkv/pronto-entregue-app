@@ -9,7 +9,7 @@ module.exports = {
 	  'react/jsx-filename-extension': 'off',
 	  'react/prop-types': 'off',
 	  'comma-dangle': 'off',
-	  "linebreak-style": ["error", "windows"],
+	  "linebreak-style": 'off',
 	  "react/jsx-indent" : ["error", 'tab'],
 	  "jsx-quotes": ["error", "prefer-single"],
 	  "indent": ["error", "tab"],

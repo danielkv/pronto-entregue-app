@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-tiny-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 

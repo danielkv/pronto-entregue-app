@@ -58,7 +58,7 @@ export default function Cart({ navigation }) {
 	const { data: { cartItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
 	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN);
 	const isUserLoggedIn = userLoggedInData ? userLoggedInData.isUserLoggedIn : false;
-
+	
 	const cartPrice = useMemo(()=>{
 		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
 		const deliveryPrice = cartDelivery && cartDelivery.price ? cartDelivery.price : 0;
@@ -72,7 +72,8 @@ export default function Cart({ navigation }) {
 	})
 	const handleCloseDeliveryModal = useCallback(()=>{
 		setDeliveryModalOpen(false);
-	})
+	});
+	
 	const handleConfirmDeliveryModal = useCallback((delivery)=>{
 		setDeliveryModalOpen(false);
 		setDelivery({ variables: { data: delivery } })
@@ -87,6 +88,7 @@ export default function Cart({ navigation }) {
 	const handleClosePaymentModal = useCallback(()=>{
 		setPaymentModalOpen(false);
 	})
+
 	const handleConfirmPaymentModal = useCallback((payment)=>{
 		setPaymentModalOpen(false);
 		setPayment({ variables: { data: payment } })
@@ -128,17 +130,16 @@ export default function Cart({ navigation }) {
 			]
 		);
 	}
-
+	
 	// navigate to HomeScreen if there's no items in Cart
-	useFocusEffect(
-		useCallback(() => {
-			checkCondition((cartItems && cartItems.length), navigation, 'O carrinho está vazio')
-		}, [])
-	);
-
+	const checkConditionCB = useCallback(() => {
+		checkCondition((cartItems && cartItems.length), navigation, 'O carrinho está vazio')
+	}, [])
+	useFocusEffect(checkConditionCB);
+	
 	if (loadingCart || loadingUser) return <LoadingBlock />;
 	if (error) return <ErrorBlock error={error} />
-
+	
 	return (
 		<Container>
 			<CartContainer>
@@ -158,7 +159,7 @@ export default function Cart({ navigation }) {
 						<CardHeader>
 							<Icon type='material-community' name='truck' color={theme.colors.divider} size={24} />
 							<CardTitle>Entrega</CardTitle>
-							{loadingDelivery && <ActivityIndicator color={theme.colors.divider} />}
+							{loadingDelivery && <ActivityIndicator color={theme.colors.divider} size='small' />}
 						</CardHeader>
 						<CardContent>
 							<CardInfo>
@@ -177,7 +178,7 @@ export default function Cart({ navigation }) {
 						<CardHeader>
 							<Icon type='material-community' name='credit-card' color={theme.colors.divider} size={24} />
 							<CardTitle>Pagamento</CardTitle>
-							{loadingPayment && <ActivityIndicator color={theme.colors.divider} />}
+							{loadingPayment && <ActivityIndicator color={theme.colors.divider} size='small' />}
 						</CardHeader>
 						<CardContent>
 							<CardInfo>{cartPayment ? cartPayment.display_name : 'Nenhum pagamento selecionado'}</CardInfo>

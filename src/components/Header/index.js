@@ -1,20 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { Header, Icon, withBadge } from 'react-native-elements';
+import { Header, Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native';
 import { DrawerActions } from '@react-navigation/routers';
 
-import { HeaderTitle } from './styles';
 import theme from '../../theme';
-import { GET_CART } from '../../graphql/cart';
+import CartButton from './CartButton';
+import { HeaderTitle } from './styles';
 
 export default ({ previous, scene, navigation }) => {
 	const { options } = scene.descriptor;
 	const { params } = scene.route;
-
-	const { data: { cartItems } } = useQuery(GET_CART);
 
 	const title = params && params.headerTitle
 		? params.headerTitle
@@ -24,14 +21,6 @@ export default ({ previous, scene, navigation }) => {
 				? options.title
 				: scene.route.name;
 	
-	const BadgeIcon = withBadge(cartItems.length,
-		{
-			hidden: !cartItems.length,
-			top: -5,
-			left: -16,
-			right: 'auto'
-		})(Icon);
-
 	return (
 		<Header
 			containerStyle={{
@@ -60,11 +49,7 @@ export default ({ previous, scene, navigation }) => {
 
 			{params && params.headerRight
 				? params.headerRight
-				: (
-					<TouchableOpacity onPress={()=>navigation.navigate('CartScreen')}>
-						<BadgeIcon name='shopping-cart' color='#fff' />
-					</TouchableOpacity>
-				)}
+				: <CartButton /> }
 		</Header>
 	)
 }

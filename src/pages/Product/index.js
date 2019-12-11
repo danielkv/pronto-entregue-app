@@ -4,7 +4,7 @@ import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
 import { Icon } from 'react-native-elements';
-import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-tiny-toast';
 
 import { LOAD_PRODUCT } from '../../graphql/products';
 

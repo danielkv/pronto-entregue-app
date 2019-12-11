@@ -21,7 +21,7 @@ export default function SelectBranch() {
 		<Container>
 			<Image style={{ marginBottom: 20, alignSelf: 'center' }} resizeMethod='resize' source={logoCopeiro} />
 			{loadingBranches
-				? <ActivityIndicator size={28} color='#B95A02' />
+				? <ActivityIndicator size='small' color='#B95A02' />
 				: (
 					<MenuContainer>
 						<HelperText>Selecione a filial</HelperText>

@@ -57,7 +57,7 @@ export default function Home({ navigation }) {
 	}
 	
 	const onRefresh = useCallback(()=>{
-		refetchFeaturedProducts()
+		refetchFeaturedProducts();
 		refetchCategories();
 		setRefreshing(true);
 	}, [refreshing]);
