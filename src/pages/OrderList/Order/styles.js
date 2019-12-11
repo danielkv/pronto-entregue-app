@@ -33,15 +33,21 @@ export const OrderPrice = styled(Text)`
 	font-size: 20px;
 	font-weight: bold;
 `;
-export const StatusBadge = styled(Text)`
-	color: #fff;
+export const StatusBadge = styled.View`
+	padding: 5px 8px;
+	border-radius:3px;
+
+	${({ status }) => {
+		const { background } = getStatusColors(status);
+		return `background-color: ${background};`
+	}}
+`;
+export const StatusBadgeText = styled(Text)`
 	font-size: 12px;
 	font-weight: normal;
 
-	padding: 5px 8px;
-	border-radius:3px;
 	${({ status }) => {
-		const { background, text } = getStatusColors(status);
-		return `background-color: ${background}; color: ${text};`
+		const { text } = getStatusColors(status);
+		return `color: ${text};`
 	}}
 `;

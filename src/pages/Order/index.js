@@ -14,6 +14,7 @@ import {
 	CancelButton,
 	CancelButtonText,
 	StatusCard,
+	StatusCardText,
 } from './styles';
 
 import Blocks from './Blocks';
@@ -59,7 +60,9 @@ export default function Order({ route }) {
 	return (
 		<ContainerScroll>
 			<Container>
-				<StatusCard status={order.status}>{getStatusText(order.status)}</StatusCard>
+				<StatusCard status={order.status}>
+					<StatusCardText status={order.status}>{getStatusText(order.status)}</StatusCardText>
+				</StatusCard>
 				<BlocksContainer>
 					<Blocks order={order} />
 				</BlocksContainer>

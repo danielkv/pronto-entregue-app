@@ -56,10 +56,12 @@ export const ItemQuantity = styled(Text)`
 	font-weight: 100;
 	font-size: 12px;
 `;
-export const ItemPrice = styled(Text)`
-	font-size: 12px;
-	color: ${theme.colors.divider};
+export const ItemPriceContainer = styled.View`
 	background-color: #fff;
 	border-radius: 3px;
 	padding: 4px 7px;
+`;
+export const ItemPrice = styled(Text)`
+	font-size: 12px;
+	color: ${theme.colors.divider};
 `;

@@ -14,6 +14,7 @@ import {
 	ItemOptionDesc,
 	ItemQuantity,
 	ItemPrice,
+	ItemPriceContainer,
 } from './styles';
 
 export default function CartItem({ item, onPressDelete }) {
@@ -37,7 +38,7 @@ export default function CartItem({ item, onPressDelete }) {
 			</ItemContent>
 			<ItemFooter>
 				<ItemQuantity>{`Qtde: ${item.quantity}`}</ItemQuantity>
-				<ItemPrice>{`R$ ${item.price.toFixed(2).replace('.', ',')}`}</ItemPrice>
+				<ItemPriceContainer><ItemPrice>{`R$ ${item.price.toFixed(2).replace('.', ',')}`}</ItemPrice></ItemPriceContainer>
 			</ItemFooter>
 			
 			{!!onPressDelete && (

@@ -5,14 +5,18 @@ import theme from '../../theme';
 
 export const Container = styled.View`
 	flex: 1;
-	margin-top: ${theme.header.height}px;
+	
 `;
-export const CartContainer = styled.ScrollView`
+export const CartContainer = styled.View`
 	flex: 1;
+	margin: ${theme.header.height + vw(2)}px ${vw(5)}px ${vw(5)}px ${vw(5)}px;
+`;
+export const CartContainerScroll = styled.ScrollView`
+	
 `;
 
 export const Section = styled.View`
-	margin: ${vh(2)}px ${vw(5)}px;
+	margin: ${vh(2)}px 0;
 `;
 export const SectionTitle = styled(Text)`
 	font-weight: 100;
