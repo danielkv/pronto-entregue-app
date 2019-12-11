@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Alert, ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator, Platform } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -49,6 +50,10 @@ export default function Cart({ navigation }) {
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
 	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 	const client = useApolloClient();
+
+	const insets = useSafeArea();
+	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
+	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 	
 	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
 	const [setPayment, { loading: loadingPayment }] = useMutation(SET_CART_PAYMENT);
@@ -218,8 +223,9 @@ export default function Cart({ navigation }) {
 				onBackdropPress={handleCloseDeliveryModal}
 				animationIn='slideInRight'
 				animationOut='slideOutRight'
-				style={{ marginLeft: vw(10), marginRight: 0, marginVertical: 0 }}
+				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
 				swipeDirection='right'
+				propagateSwipe
 			>
 				<DeliveryModal confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
 			</Modal>
@@ -232,8 +238,9 @@ export default function Cart({ navigation }) {
 				onBackdropPress={handleClosePaymentModal}
 				animationIn='slideInRight'
 				animationOut='slideOutRight'
-				style={{ marginLeft: vw(10), marginRight: 0, marginVertical: 0 }}
+				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
 				swipeDirection='right'
+				propagateSwipe
 			>
 				<PaymentModal confirmModal={handleConfirmPaymentModal} closeModal={handleClosePaymentModal} />
 			</Modal>

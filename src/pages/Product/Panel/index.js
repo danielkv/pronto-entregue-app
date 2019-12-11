@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
+import { Platform, Alert } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
 
@@ -11,6 +12,10 @@ import GroupModal from './Modal';
 function Panel({ optionsGroups, onItemSelect }) {
 	const [selectedOptionGroup, setSelectedOptionGroup] = useState(null);
 	const [modalOpen, setModalOpen] = useState(false);
+	const insets = useSafeArea();
+
+	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
+	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 
 	const handlePressGroup = useCallback((groupIndex) => () => {
 		try {
@@ -51,8 +56,9 @@ function Panel({ optionsGroups, onItemSelect }) {
 				onBackdropPress={handleCloseModal}
 				animationIn='slideInRight'
 				animationOut='slideOutRight'
-				style={{ marginLeft: vw(10), marginRight: 0, marginVertical: 0 }}
+				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
 				swipeDirection='right'
+				propagateSwipe
 			>
 				<GroupModal optionGroup={selectedOptionGroup} confirmModal={handleConfirmModal} closeModal={handleCloseModal} />
 			</Modal>

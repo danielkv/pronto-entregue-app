@@ -38,13 +38,15 @@ export const HeaderRightContainer = styled.View`
 	margin-left:auto;
 	align-items:center;
 `;
-export const ModalBadge = styled(Text)`
-	color:#fff;
+export const ModalBadgeContainer = styled(Text)`
 	background-color: #000;
 	padding:4px 10px;
 	border-radius:3px;
 	align-items:center;
 	justify-content:center;
+`;
+export const ModalBadge = styled(Text)`
+	color:#fff;
 `;
 
 export const ModalConfirm = styled.View`

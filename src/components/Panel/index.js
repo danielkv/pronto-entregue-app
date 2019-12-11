@@ -11,6 +11,7 @@ import {
 	ModalBadge,
 	ModalConfirm,
 	ModalContent,
+	ModalBadgeContainer,
 } from './styles';
 
 export default function Panel({ children, title, handleCancel, handleConfirm, badgeText, HeaderRight }) {
@@ -35,7 +36,7 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 				<ModalTitle>{title}</ModalTitle>
 
 				<HeaderRightContainer>
-					{!!badgeText && <ModalBadge>{badgeText}</ModalBadge>}
+					{!!badgeText && <ModalBadgeContainer><ModalBadge>{badgeText}</ModalBadge></ModalBadgeContainer>}
 
 					<ModalConfirm>
 						<RenderHeaderRight />

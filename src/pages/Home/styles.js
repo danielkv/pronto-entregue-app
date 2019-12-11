@@ -38,10 +38,11 @@ export const Category = styled.TouchableOpacity`
 export const CategoryImage = styled.Image`
 	width:100px;
 	height:100px;
-	flex:1;
-	border-radius:100px;
+	
+	border-radius:50px;
 `;
-export const CategoryTitle = styled(Text)`
+
+export const CategoryTitleContainer = styled.View`
 	color:#fff;
 	text-align: center;
 	font-weight:100;
@@ -50,4 +51,9 @@ export const CategoryTitle = styled(Text)`
 	padding:3px 13px;
 	background-color:#000;
 	border-radius:20px;
+`;
+export const CategoryTitle = styled(Text)`
+	color:#fff;
+	text-align: center;
+	font-weight:100;
 `;

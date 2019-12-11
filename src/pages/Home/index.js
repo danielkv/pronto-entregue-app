@@ -14,7 +14,8 @@ import {
 	CategoriesTitle,
 	Category,
 	CategoryImage,
-	CategoryTitle
+	CategoryTitle,
+	CategoryTitleContainer
 } from './styles';
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
@@ -51,7 +52,9 @@ export default function Home({ navigation }) {
 		return (
 			<Category onPress={()=>{ navigation.navigate('CategoryScreen', { category_id: id }) }}>
 				<CategoryImage source={{ uri: image }} />
-				<CategoryTitle>{name}</CategoryTitle>
+				<CategoryTitleContainer>
+					<CategoryTitle>{name}</CategoryTitle>
+				</CategoryTitleContainer>
 			</Category>
 		);
 	}
