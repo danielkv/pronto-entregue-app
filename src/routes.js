@@ -35,6 +35,8 @@ export default function Routes() {
 				{()=>(
 					<Stack.Navigator
 						initialRouteName='HomeScreen'
+						mode='card'
+						headerMode='screen'
 						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.colors.primary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
