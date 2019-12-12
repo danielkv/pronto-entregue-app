@@ -3,6 +3,8 @@ import { vw } from 'react-native-expo-viewport-units';
 
 import theme from '../../theme';
 
+export const ContainerScroll = styled.ScrollView`
+`;
 export const Container = styled.View`
-	margin: ${theme.header.height}px ${vw(3)}px 0 ${vw(3)}px;
+	margin: ${theme.header.height}px ${vw(5)}px ${vw(5)}px ${vw(5)}px;
 `;

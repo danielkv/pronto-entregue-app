@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import Toast from 'react-native-tiny-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import PageForm from './form';
 import { getErrors } from '../../utils/errors';
 import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
+import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
@@ -35,7 +36,8 @@ export default function NewAddress() {
 		zipcode: '',
 	}
 
-	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES }] });
+	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
+	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] });
 
 	const onSubmit = async (data, { resetForm }) => {
 		const dataSave = {

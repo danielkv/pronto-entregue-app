@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { KeyboardAvoidingView } from 'react-native';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 
@@ -10,7 +11,7 @@ import { sanitizeOrderData, validadeCart } from '../../utils/cart';
 import { checkCondition } from '../../utils';
 
 import { GET_CART, CANCEL_CART } from '../../graphql/cart';
-import { CREATE_ORDER } from '../../graphql/orders';
+import { CREATE_ORDER, GET_USER_ORDERS } from '../../graphql/orders';
 import { GET_USER } from '../../graphql/users';
 import { LOGGED_USER_ID } from '../../graphql/authentication';
 
@@ -20,7 +21,9 @@ export default function Payment({ navigation }) {
 	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 	
 	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
-	const [createOrder, { loading: loadingCreateOrder, error: createOrderError }] = useMutation(CREATE_ORDER);
+	const [createOrder, { loading: loadingCreateOrder, error: createOrderError }] = useMutation(CREATE_ORDER, {
+		refetchQueries: [{ query: GET_USER_ORDERS, variables: { id: loggedUserId } }]
+	});
 
 	const handleFinishOrder = (cartResult) => {
 		const sanitizedCart = sanitizeOrderData({ user: userData.user, ...cartResult });
@@ -29,7 +32,7 @@ export default function Payment({ navigation }) {
 			.then(async ({ data }) => {
 				navigation.reset({
 					index: 0,
-					routes: [{ name: 'OrderScreen', params: { order_id: data.createOrder.id } }]
+					routes: [{ name: 'HomeScreen' }, { name: 'OrderScreen', params: { order_id: data.createOrder.id } }]
 				});
 				cancelCart();
 			})
@@ -49,9 +52,11 @@ export default function Payment({ navigation }) {
 	if (userError) return <ErrorBlock error={userError} />
 
 	return (
-		<Container>
-			{(!!cartData.cartPayment && !!cartData.cartPayment.name)
-				&& <Gateway step='finish' name={cartData.cartPayment.name} cart={cartData} onFinish={handleFinishOrder} />}
-		</Container>
+		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+			<Container>
+				{(!!cartData.cartPayment && !!cartData.cartPayment.name)
+					&& <Gateway step='finish' name={cartData.cartPayment.name} cart={cartData} onFinish={handleFinishOrder} />}
+			</Container>
+		</KeyboardAvoidingView>
 	);
 }

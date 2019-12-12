@@ -11,7 +11,8 @@ import {
 	GroupTitle,
 	TitleContainer,
 	SelectedOptionsText,
-	SelectedOptionsNumber
+	SelectedOptionsNumber,
+	SelectedOptionsNumberText
 } from './styles';
 
 function Group({ onPress, group }) {
@@ -24,7 +25,11 @@ function Group({ onPress, group }) {
 	const CenterElememt = () => {
 		if (selectedOptions.length >= 1) {
 			if (selectedOptions.length < 3) return <SelectedOptionsText>{selectedOptions.map(row=>row.name).join(', ')}</SelectedOptionsText>;
-			return <SelectedOptionsNumber>{selectedOptions.length}</SelectedOptionsNumber>;
+			return (
+				<SelectedOptionsNumber>
+					<SelectedOptionsNumberText>{selectedOptions.length}</SelectedOptionsNumberText>
+				</SelectedOptionsNumber>
+			);
 		}
 
 		return <Icon name='keyboard-arrow-right' color={theme.colors.primary} size={24} />;

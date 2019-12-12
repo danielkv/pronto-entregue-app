@@ -53,16 +53,18 @@ export const SelectedOptionsText = styled(Text)`
 	color:#999;
 `;
 
-export const SelectedOptionsNumber = styled(Text)`
-	font-size:14px;
+export const SelectedOptionsNumber = styled.View`
 	background-color:${theme.colors.primary};
 	border-radius:30px;
 	width:30px;
 	height:30px;
+	justify-content:center;
+	align-items:center;
+`;
+export const SelectedOptionsNumberText = styled(Text)`
+	font-size:14px;
 	line-height:30px;
 	text-align:center;
 	font-weight:bold;
-	justify-content:center;
-	align-items:center;
 	color:#fff;
 `;

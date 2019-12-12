@@ -38,7 +38,7 @@ export const HeaderRightContainer = styled.View`
 	margin-left:auto;
 	align-items:center;
 `;
-export const ModalBadgeContainer = styled(Text)`
+export const ModalBadgeContainer = styled.View`
 	background-color: #000;
 	padding:4px 10px;
 	border-radius:3px;

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, KeyboardAvoidingView } from 'react-native';
 import { useApolloClient } from '@apollo/react-hooks';
 import { Button, Input } from 'react-native-elements';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import logoResource from '../../assets/images/logo-copeiro.png';
-import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer } from './styles';
+import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 import { LOGIN } from '../../graphql/authentication';
 import { logUserIn } from '../../services/init';
 import { getErrors } from '../../utils/errors';
@@ -56,63 +56,67 @@ export default function login({ route, navigation }) {
 	});
 
 	return (
-		<Container>
-			<LogoImage source={logoResource} />
-			
-			<FormContainer>
-				<InputsContainer>
-					<Input
-						errorMessage={errors.email || ''}
-						autoFocus
-						placeholder='Email'
-						keyboardType='email-address'
-						autoCapitalize='none'
-						autoCompleteType='email'
-						onChangeText={handleChange('email')}
-						onBlur={handleBlur('email')}
-						disabled={isSubmitting}
-						value={email}
+		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+			<ContainerScroll>
+				<Container>
+					<LogoImage source={logoResource} />
+					
+					<FormContainer>
+						<InputsContainer>
+							<Input
+								errorMessage={errors.email || ''}
+								autoFocus
+								placeholder='Email'
+								keyboardType='email-address'
+								autoCapitalize='none'
+								autoCompleteType='email'
+								onChangeText={handleChange('email')}
+								onBlur={handleBlur('email')}
+								disabled={isSubmitting}
+								value={email}
 
-						blurOnSubmit={false}
-						returnKeyType='next'
-						onSubmitEditing={handleNextInput('password')}
-					/>
-					<Input
-						errorMessage={errors.password || ''}
-						secureTextEntry
-						autoCompleteType='password'
-						placeholder='Senha'
-						onChangeText={handleChange('password')}
-						onBlur={handleBlur('password')}
-						disabled={isSubmitting}
-						value={password}
-						
-						ref={ref => { refs.password = ref }}
-						onSubmitEditing={handleSubmit}
-					/>
-				</InputsContainer>
-				<ButtonsContainer>
-					<Button
-						onPress={handleSubmit}
-						disabled={isSubmitting}
-						loading={isSubmitting}
-						title='Login'
-					/>
-					<Button
-						buttonStyle={{ backgroundColor: '#B95A02' }}
-						titleStyle={{ color: '#fff' }}
-						onPress={() => navigation.navigate('SubscriptionScreen')}
-						disabled={isSubmitting}
-						title='Quero me cadastrar'
-					/>
-					<Button
-						buttonStyle={{ backgroundColor: 'transparent' }}
-						titleStyle={{ color: '#fff' }}
-						disabled={isSubmitting}
-						title='Esqueci minha senha'
-					/>
-				</ButtonsContainer>
-			</FormContainer>
-		</Container>
+								blurOnSubmit={false}
+								returnKeyType='next'
+								onSubmitEditing={handleNextInput('password')}
+							/>
+							<Input
+								errorMessage={errors.password || ''}
+								secureTextEntry
+								autoCompleteType='password'
+								placeholder='Senha'
+								onChangeText={handleChange('password')}
+								onBlur={handleBlur('password')}
+								disabled={isSubmitting}
+								value={password}
+								
+								ref={ref => { refs.password = ref }}
+								onSubmitEditing={handleSubmit}
+							/>
+						</InputsContainer>
+						<ButtonsContainer>
+							<Button
+								onPress={handleSubmit}
+								disabled={isSubmitting}
+								loading={isSubmitting}
+								title='Login'
+							/>
+							<Button
+								buttonStyle={{ backgroundColor: '#B95A02' }}
+								titleStyle={{ color: '#fff' }}
+								onPress={() => navigation.navigate('SubscriptionScreen')}
+								disabled={isSubmitting}
+								title='Quero me cadastrar'
+							/>
+							<Button
+								buttonStyle={{ backgroundColor: 'transparent' }}
+								titleStyle={{ color: '#fff' }}
+								disabled={isSubmitting}
+								title='Esqueci minha senha'
+							/>
+						</ButtonsContainer>
+					</FormContainer>
+				</Container>
+			</ContainerScroll>
+		</KeyboardAvoidingView>
 	);
 }

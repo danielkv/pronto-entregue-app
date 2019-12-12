@@ -36,7 +36,11 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 				<ModalTitle>{title}</ModalTitle>
 
 				<HeaderRightContainer>
-					{!!badgeText && <ModalBadgeContainer><ModalBadge>{badgeText}</ModalBadge></ModalBadgeContainer>}
+					{!!badgeText && (
+						<ModalBadgeContainer>
+							<ModalBadge>{badgeText}</ModalBadge>
+						</ModalBadgeContainer>
+					)}
 
 					<ModalConfirm>
 						<RenderHeaderRight />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, TouchableOpacity } from 'react-native';
 import { cloneDeep } from 'lodash';
-import { Input } from 'react-native-elements';
+import { Input, Icon } from 'react-native-elements';
 
 import { calculateOptionsGroupPrice, getGroupNewState } from '../../../../utils/products';
 import Option from '../../Option';
@@ -10,6 +10,7 @@ import {
 	OptionsContainer
 } from './styles';
 import Panel from '../../../../components/Panel';
+import theme from '../../../../theme';
 
 export default function modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);
@@ -51,7 +52,16 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 		>
 			{optionGroup.options.length >= 10 && (
 				<SearchContainer>
-					<Input value={search} onChangeText={(text)=>{ setSearch(text.toLowerCase()) }} placeholder='Buscar' />
+					<Input
+						value={search}
+						onChangeText={(text)=>{ setSearch(text.toLowerCase()) }}
+						placeholder='Buscar'
+						rightIcon={!!search && (
+							<TouchableOpacity onPress={()=>setSearch('')}>
+								<Icon name='close' color={theme.colors.divider} />
+							</TouchableOpacity>
+						)}
+					/>
 				</SearchContainer>
 			)}
 			<OptionsContainer>

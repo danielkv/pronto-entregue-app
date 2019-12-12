@@ -6,7 +6,7 @@ import { Button, Icon } from 'react-native-elements';
 import Address from '../../components/Address';
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
-import { Container } from './styles';
+import { Container, ContainerScroll } from './styles';
 
 import { GET_USER_ADDRESSES, REMOVE_USER_ADDRESS } from '../../graphql/users';
 import { getErrors } from '../../utils/errors';
@@ -23,12 +23,12 @@ export default function AdressList({ navigation }) {
 		});
 	}, []);
 
-	const { data: loggedUserIdData } = useQuery(LOGGED_USER_ID);
+	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
 	const {
 		data: userAddressesData,
 		loading: loadingUserAddresses,
 		error
-	} = useQuery(GET_USER_ADDRESSES, { variables: { id: loggedUserIdData.loggedUserId } });
+	} = useQuery(GET_USER_ADDRESSES, { variables: { id: loggedUserId } });
 	const addresses = userAddressesData ? userAddressesData.user.addresses : [];
 
 	const [
@@ -37,7 +37,7 @@ export default function AdressList({ navigation }) {
 			loading:
 			loadingRemoveAddress
 		}
-	] = useMutation(REMOVE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserIdData.loggedUserId } }] })
+	] = useMutation(REMOVE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] })
 
 	const handleRemoveAddress = (id) => () => {
 		Alert.alert(
@@ -91,13 +91,15 @@ export default function AdressList({ navigation }) {
 	if (error) return <ErrorBlock error={error} />;
 
 	return (
-		<Container>
-			{loadingRemoveAddress && <ActivityIndicator color='#fff' size='small' />}
-			<FlatList
-				renderItem={renderAddress}
-				data={addresses}
-				keyExtractor={(item, index)=>index.toString()}
-			/>
-		</Container>
+		<ContainerScroll>
+			<Container>
+				{loadingRemoveAddress && <ActivityIndicator color='#fff' size='small' />}
+				<FlatList
+					renderItem={renderAddress}
+					data={addresses}
+					keyExtractor={(item, index)=>index.toString()}
+				/>
+			</Container>
+		</ContainerScroll>
 	);
 }

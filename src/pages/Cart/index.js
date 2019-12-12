@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Alert, ActivityIndicator, Platform } from 'react-native';
+import { Alert, ActivityIndicator, Platform, KeyboardAvoidingView } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { Input, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
@@ -148,63 +148,66 @@ export default function Cart({ navigation }) {
 	
 	return (
 		<Container>
-			<CartContainerScroll>
-				<CartContainer>
-					<Section>
-						<SectionTitle>
-							{`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`}
-						</SectionTitle>
-						<SectionContent>
-							{cartItems.map((item, index)=>(
-								<OrderItem key={index} item={item} onPressDelete={handleRemoveOrderItem(item)} />
-							))}
-						</SectionContent>
-					</Section>
-					<Section>
-						<SectionTitle>Entrega e pagamento</SectionTitle>
-						<CardContainer disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
-							<CardHeader>
-								<Icon type='material-community' name='truck' color={theme.colors.divider} size={24} />
-								<CardTitle>Entrega</CardTitle>
-								{loadingDelivery && <ActivityIndicator color={theme.colors.divider} size='small' />}
-							</CardHeader>
-							<CardContent>
-								<CardInfo>
-									{
-										// eslint-disable-next-line no-nested-ternary
-										cartDelivery
-											? (cartDelivery.type === 'delivery') ? cartDelivery.address.name : 'Retirar no local'
-											: 'Nenhum endereço selecionado'
-									}
-								</CardInfo>
-								<Icon type='material-community' name='pencil' color={theme.colors.divider} size={24} />
-								{!!(cartDelivery && cartDelivery.price) && <CardPrice>{cartDelivery.price.toFixed(2).replace('.', ',')}</CardPrice>}
-							</CardContent>
-						</CardContainer>
-						<CardContainer disabled={loadingPayment} onPress={handleOpenPaymentModal}>
-							<CardHeader>
-								<Icon type='material-community' name='credit-card' color={theme.colors.divider} size={24} />
-								<CardTitle>Pagamento</CardTitle>
-								{loadingPayment && <ActivityIndicator color={theme.colors.divider} size='small' />}
-							</CardHeader>
-							<CardContent>
-								<CardInfo>{cartPayment ? cartPayment.display_name : 'Nenhum pagamento selecionado'}</CardInfo>
-								<Icon type='material-community' name='pencil' color={theme.colors.divider} size={20} />
-							</CardContent>
-						</CardContainer>
-					</Section>
-					<Section>
-						<SectionTitle>Observações</SectionTitle>
-						<SectionContent>
-							<Input
-								value={message}
-								onChangeText={(text)=>setMessage(text)}
-								multiline
-							/>
-						</SectionContent>
-					</Section>
-				</CartContainer>
-			</CartContainerScroll>
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+				<CartContainerScroll>
+					<CartContainer>
+						<Section>
+							<SectionTitle>
+								{`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`}
+							</SectionTitle>
+							<SectionContent>
+								{cartItems.map((item, index)=>(
+									<OrderItem key={index} item={item} onPressDelete={handleRemoveOrderItem(item)} />
+								))}
+							</SectionContent>
+						</Section>
+						<Section>
+							<SectionTitle>Entrega e pagamento</SectionTitle>
+							<CardContainer disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
+								<CardHeader>
+									<Icon type='material-community' name='truck' color={theme.colors.divider} size={24} />
+									<CardTitle>Entrega</CardTitle>
+									{loadingDelivery && <ActivityIndicator color={theme.colors.divider} size='small' />}
+								</CardHeader>
+								<CardContent>
+									<CardInfo>
+										{
+											// eslint-disable-next-line no-nested-ternary
+											cartDelivery
+												? (cartDelivery.type === 'delivery') ? cartDelivery.address.name : 'Retirar no local'
+												: 'Nenhum endereço selecionado'
+										}
+									</CardInfo>
+									<Icon type='material-community' name='pencil' color={theme.colors.divider} size={24} />
+									{!!(cartDelivery && cartDelivery.price)
+										&& <CardPrice>{cartDelivery.price.toFixed(2).replace('.', ',')}</CardPrice>}
+								</CardContent>
+							</CardContainer>
+							<CardContainer disabled={loadingPayment} onPress={handleOpenPaymentModal}>
+								<CardHeader>
+									<Icon type='material-community' name='credit-card' color={theme.colors.divider} size={24} />
+									<CardTitle>Pagamento</CardTitle>
+									{loadingPayment && <ActivityIndicator color={theme.colors.divider} size='small' />}
+								</CardHeader>
+								<CardContent>
+									<CardInfo>{cartPayment ? cartPayment.display_name : 'Nenhum pagamento selecionado'}</CardInfo>
+									<Icon type='material-community' name='pencil' color={theme.colors.divider} size={20} />
+								</CardContent>
+							</CardContainer>
+						</Section>
+						<Section>
+							<SectionTitle>Observações</SectionTitle>
+							<SectionContent>
+								<Input
+									value={message}
+									onChangeText={(text)=>setMessage(text)}
+									multiline
+								/>
+							</SectionContent>
+						</Section>
+					</CartContainer>
+				</CartContainerScroll>
+			</KeyboardAvoidingView>
 
 			<CartButtonContainer>
 				<CartButton
