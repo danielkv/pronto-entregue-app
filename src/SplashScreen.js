@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context';
-import { NavigationNativeContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import { useInitialize } from './services/init';
 import SelectBranch from './pages/SelectBranch';
@@ -14,14 +14,14 @@ export default function RootRoutes() {
 	
 	return (
 		<View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
-			<NavigationNativeContainer>
+			<NavigationContainer>
 				{
 					// eslint-disable-next-line no-nested-ternary
 					loading
 						? <LoadingBlock />
 						: !selectedBranch ? <SelectBranch /> : <RootScreen />
 				}
-			</NavigationNativeContainer>
+			</NavigationContainer>
 		</View>
 	);
 }
