@@ -5,27 +5,29 @@ import { useQuery } from '@apollo/react-hooks';
 
 import client from './server';
 
-import { GET_SELECTED_BRANCH } from '../graphql/branches';
-import { AUTHENTICATE } from '../graphql/authentication';
+import { AUTHENTICATE, LOGGED_USER_ID } from '../graphql/authentication';
+import { GET_SELECTED_USER_ADDRESS } from '../graphql/users';
 
 export function useInitialize() {
 	// logUserOut();
-	// resetBranch();
 
 	// eslint-disable-next-line no-undef
-	if (__DEV__) client.writeData({ data: require('../../cart.json') });
+	// if (__DEV__) client.writeData({ data: require('../../cart.json') });
 
+	
+	const [called, setCalled] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
-	const selectedBranch = selectedBranchData ? selectedBranchData.selectedBranch : null;
+	const { loggedUserId = null } = useQuery(LOGGED_USER_ID);
+	const { selectedAddress = null } = useQuery(GET_SELECTED_USER_ADDRESS);
 	
 	useEffect(()=>{
-		if (!selectedBranch) setLoading(true);
-	}, [selectedBranch]);
+		if (loading) setCalled(false);
+	}, [loading])
 	
-	if (loading && !selectedBranch) {
+	if (!called) {
+		setCalled(true);
 		init()
 			.then(()=>{
 				setLoading(false);
@@ -33,19 +35,20 @@ export function useInitialize() {
 			.catch((err) => {
 				setError(err);
 				logUserOut();
-				resetBranch();
+				resetAddress();
 			})
 	}
 	
 	return {
 		error,
 		loading,
-		selectedBranch
+		loggedUserId,
+		selectedAddress
 	}
 }
 
 async function init() {
-	const selectedBranch = await AsyncStorage.getItem('@copeiro/selectedBranch');
+	const selectedAddress = await AsyncStorage.getItem('@copeiro/selectedAddress');
 	const userToken = await AsyncStorage.getItem('@copeiro/userToken');
 
 	if (userToken) {
@@ -53,7 +56,7 @@ async function init() {
 		await logUserIn(data.authenticate, userToken);
 	}
 
-	if (selectedBranch) client.writeData({ data: { selectedBranch } });
+	if (selectedAddress) client.writeData({ data: { selectedAddress } });
 	
 	return true;
 }
@@ -69,8 +72,8 @@ export async function logUserOut() {
 	client.writeData({ data: { userToken: '', isUserLoggedIn: false, loggedUserId: null } });
 }
 
-export async function resetBranch() {
-	await AsyncStorage.removeItem('@copeiro/selectedBranch');
+export async function resetAddress() {
+	await AsyncStorage.removeItem('@copeiro/selectedLocation');
 
-	client.writeData({ data: { selectedBranch: '' } });
+	client.writeData({ data: { selectedLocation: '' } });
 }

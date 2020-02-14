@@ -1,12 +1,36 @@
+import React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 export default {
 	header: {
 		height: 60,
-		background: ['black', 'rgba(0,0,0,0)'],
+		backgroundColor: {
+			transparent: ['black', 'rgba(0,0,0,0)'],
+			solid: '#EFE8DA'
+		}
+	},
+	margin: {
+		top: 15,
+		left: 35,
+		right: 35,
+		bottom: 15
 	},
 	colors: {
-		primary: '#FF7C03',
-		divider: '#B95A02',
-		error: '#C80707',
+		primary: '#F11761',
+		secondary: '#A4D82B',
+		background: '#EFE8DA',
+		backgroundLowContrast: '#D1C6B1',
+		divider: '#D1C6B1',
+		gray: {
+			dark: '#333333',
+			light: '#999999',
+			lighter: '#cccccc'
+		},
+		text: {
+			light: '#ffffff',
+			dark: '#333333'
+		},
+		error: '#C80707'
 	},
 	Text: {
 		/* color: '#ffffff', */
@@ -33,21 +57,30 @@ export default {
 		},
 	},
 	Input: {
-		placeholderTextColor: '#B95A02',
+		placeholderTextColor: '#cccccc',
 		containerStyle: {
 			marginRight: 0,
 			marginLeft: 0,
+			marginHorizontal: 0,
 			marginVertical: 5,
+			paddingHorizontal: 0
 		},
 		inputStyle: {
-			paddingHorizontal: 8,
+			marginHorizontal: 0,
+			paddingHorizontal: 25,
+			fontSize: 16,
+			lineHeight: 50,
+			height: 50
 		},
 		disabledInputStyle: {
 			backgroundColor: '#B95A02',
-			color: '#543315',
+			color: '#543315'
 		},
 		inputContainerStyle: {
-			borderBottomColor: '#000',
+			borderBottomColor: 'transparent',
+			backgroundColor: '#fff',
+			borderRadius: 25,
+			marginHorizontal: 0
 		}
 	},
 	Button: {
@@ -58,13 +91,22 @@ export default {
 			color: '#543315',
 		},
 		containerStyle: {
-			margin: 5,
+			marginHorizontal: 0,
+			marginVertical: 5,
+			borderRadius: 25,
 		},
 		buttonStyle: {
-			backgroundColor: '#fff',
+			borderRadius: 25,
+			height: 50,
+			// backgroundColor: '#F11761',
+			/* borderWidth: 1,
+			borderColor: '#655A51',
+			backgroundColor: 'none', */
+			
 		},
 		titleStyle: {
-			color: '#FF7C03',
+			fontSize: 16,
+			
 		},
 	},
 	Divider: {

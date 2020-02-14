@@ -3,22 +3,23 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import { ThemeProvider } from 'react-native-elements';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import apolloClient from './services/server';
 
-// import theme from './theme';
 import { Container } from './styles';
-import RootScreen from './SplashScreen';
+import SplashScreen from './SplashScreen';
 import theme from './theme';
-// import { ErrorBoundary } from './utils/errors';
 
 export default function App() {
 	return (
 		<SafeAreaProvider>
 			<ApolloProvider client={apolloClient}>
 				<ThemeProvider theme={theme}>
-					<Container>
-						<RootScreen />
-					</Container>
+					<StyledThemeProvider theme={theme}>
+						<Container>
+							<SplashScreen />
+						</Container>
+					</StyledThemeProvider>
 				</ThemeProvider>
 			</ApolloProvider>
 		</SafeAreaProvider>

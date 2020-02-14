@@ -37,6 +37,12 @@ export const GET_USER = gql`
 	}
 `;
 
+export const GET_SELECTED_USER_ADDRESS = gql`
+	query {
+		selectedAddress @client
+	}
+`;
+
 export const LOAD_USER_ADDRESS = gql`
 	query loadUserAddress ($id: ID!) {
 		userAddress (id: $id)  {
@@ -49,6 +55,7 @@ export const LOAD_USER_ADDRESS = gql`
 			district
 			city
 			state
+			location
 		}
 	}
 `;

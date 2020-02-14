@@ -1,12 +1,11 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/react-hooks';
-import { Button, Divider, Avatar, ListItem } from 'react-native-elements';
+import { Button, Divider, Avatar } from 'react-native-elements';
 import { DrawerItem } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/routers'
 
-import theme from '../../theme';
-import { logUserOut, resetBranch } from '../../services/init';
+import { logUserOut } from '../../services/init';
 import {
 	Container,
 	HeaderContainer,
@@ -19,7 +18,6 @@ import {
 } from './styles';
 
 import { IS_USER_LOGGED_IN, LOGGED_USER_ID } from '../../graphql/authentication';
-import { GET_SELECTED_BRANCH, LOAD_BRANCH } from '../../graphql/branches';
 import { GET_USER } from '../../graphql/users';
 
 export default function DrawerContent({ navigation }) {
@@ -30,9 +28,6 @@ export default function DrawerContent({ navigation }) {
 	useEffect(()=>{
 		if (loggedUserId) loadUser()
 	}, [loggedUserId]);
-
-	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
-	const { data: branchData } = useQuery(LOAD_BRANCH, { variables: { id: selectedBranchData.selectedBranch } });
 
 	const loggedUser = loggedUserData ? loggedUserData.user : null;
 	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
@@ -99,16 +94,6 @@ export default function DrawerContent({ navigation }) {
 					)}
 
 			</MenuContainer>
-			{branchData
-				&& (
-					<ListItem
-						leftIcon={{ name: 'store' }}
-						title={branchData.branch.name}
-						subtitle='Trocar filial'
-						containerStyle={{ backgroundColor: theme.colors.divider }}
-						onPress={()=>resetBranch()}
-					/>
-				)}
 		</Container>
 	);
 }

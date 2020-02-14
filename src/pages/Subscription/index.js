@@ -1,6 +1,6 @@
 import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-import logoResource from '../../assets/images/logo-copeiro.png';
+import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { Container, LogoImage, ContainerScroll } from './styles';
 import NewUser from './new_user';
 import EditUser from './edit_user';

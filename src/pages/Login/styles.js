@@ -1,15 +1,15 @@
 import styled from 'styled-components/native';
-import { vw, vh } from 'react-native-expo-viewport-units';
-
-import theme from '../../theme';
 
 export const ContainerScroll = styled.ScrollView`
 	flex:1;
 `;
 export const Container = styled.View`
 	flex:1;
-	justify-content:center;
-	margin: ${theme.header.height + vh(5)}px ${vw(5)}px ${vw(5)}px ${vw(5)}px;
+	justify-content: center;
+	margin-top: ${({ theme }) => theme.margin.top}px;
+	margin-bottom: ${({ theme }) => theme.margin.bottom}px;
+	margin-left: ${({ theme }) => theme.margin.left}px;
+	margin-right: ${({ theme }) => theme.margin.right}px;
 `;
 
 export const LogoImage = styled.Image`
@@ -17,7 +17,7 @@ export const LogoImage = styled.Image`
 `;
 
 export const FormContainer = styled.View`
-	margin: 0 ${vw(8)}px;
+	
 `;
 export const InputsContainer = styled.View`
 	margin-top: 30px;

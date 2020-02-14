@@ -100,27 +100,6 @@ export const CREATE_PRODUCT = gql`
 	}
 `;
 
-export const GET_BRANCHES_PRODUCTS = gql`
-	query ($id:ID!, $filter:Filter) {
-		branch (id:$id) {
-			id
-			products (filter:$filter) {
-				id
-				name
-				image
-				active
-				price
-				options_qty
-				createdAt
-				category {
-					id
-					name
-				}
-			}
-		}
-	}
-`;
-
 export const UPDATE_PRODUCT = gql`
 	mutation ($id:ID!, $data:ProductInput!, $filter:Filter) {
 		updateProduct (id:$id, data:$data) {

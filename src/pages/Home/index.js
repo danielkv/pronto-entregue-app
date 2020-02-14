@@ -20,23 +20,21 @@ import {
 import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
 import { LOAD_BRANCH_FETURED_PRODUCTS } from '../../graphql/products';
-import { GET_SELECTED_BRANCH } from '../../graphql/branches';
 import { GET_BRANCH_CATEGORIES } from '../../graphql/categories';
-import logoResource from '../../assets/images/logo-copeiro.png';
+import logoResource from '../../assets/images/logo-vertical-v2.png';
 import FeaturedProduct from './FeaturedProduct';
 
 // LIMIT OF FEATURED PRODUCTS
-const featuredLimit = 5;
+// const featuredLimit = 5;
 
 export default function Home({ navigation }) {
 	const [featuredIndex, setFeaturedIndex] = useState(0);
-	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
 	const [refreshing, setRefreshing] = useState(false);
 
-	const fetchPolicy = refreshing ? 'networt-only' : 'cache-fisrt';
+	// const fetchPolicy = refreshing ? 'networt-only' : 'cache-fisrt';
 	
 	// eslint-disable-next-line max-len
-	const {
+	/* const {
 		data: categoriesData,
 		loading: loadingCategories,
 		refetch: refetchCategories
@@ -46,7 +44,7 @@ export default function Home({ navigation }) {
 		loading: loadingFeaturedProduct,
 		error: featuredError,
 		refetch: refetchFeaturedProducts,
-	} = useQuery(LOAD_BRANCH_FETURED_PRODUCTS, { variables: { id: selectedBranchData.selectedBranch, limit: featuredLimit }, fetchPolicy });
+	} = useQuery(LOAD_BRANCH_FETURED_PRODUCTS, { variables: { id: selectedBranchData.selectedBranch, limit: featuredLimit }, fetchPolicy }); */
 	
 	const renderCategory = ({ item: { id, name, image } }) => {
 		return (

@@ -4,12 +4,12 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { useInitialize } from './services/init';
-import SelectBranch from './pages/SelectBranch';
-import RootScreen from './routes';
+import Routes from './routes';
 import LoadingBlock from './components/LoadingBlock';
+import Login from './pages/Login';
 
-export default function RootRoutes() {
-	const { loading, selectedBranch } = useInitialize();
+export default function SplashScreen() {
+	const { loading, loggedUserId } = useInitialize();
 	const insets = useSafeArea();
 	
 	return (
@@ -19,7 +19,7 @@ export default function RootRoutes() {
 					// eslint-disable-next-line no-nested-ternary
 					loading
 						? <LoadingBlock />
-						: !selectedBranch ? <SelectBranch /> : <RootScreen />
+						: !loggedUserId ? <Login /> : <Routes />
 				}
 			</NavigationContainer>
 		</View>

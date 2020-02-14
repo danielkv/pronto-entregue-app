@@ -21,21 +21,18 @@ export const UPDATE_COMPANY = gql`
 	}
 `;
 
-/**
- * Atualiza infomações da empresa no servidor
- * 
- */
-/* export const CREATE_USER_COMPANY = gql`
-	mutation ($data:CompanyInput!) {
-		createUserCompany (data:$data) @client {
+export const GET_COMPANY_PAYMENT_METHODS = gql`
+	query GetPaymentPaymentMethods ($id:ID!) {
+		branch (id:$id) {
 			id
+			paymentMethods {
+				id
+				name
+				display_name
+			}
 		}
 	}
-`; */
-
-/**
- * Retorna empresas selecionaveis
- */
+ `;
 
 export const GET_USER_COMPANIES = gql`
 	query {

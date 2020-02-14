@@ -5,7 +5,7 @@ import { Button, Input } from 'react-native-elements';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import logoResource from '../../assets/images/logo-copeiro.png';
+import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 import { LOGIN } from '../../graphql/authentication';
 import { logUserIn } from '../../services/init';
@@ -19,9 +19,7 @@ const validationSchema = Yup.object().shape({
 		.required('Obrigatório'),
 });
 
-export default function login({ route, navigation }) {
-	const redirect = route.params && route.params.redirect ? route.params.redirect : 'HomeScreen';
-
+export default function Login({ navigation }) {
 	const initialValues = {
 		email: '',
 		password: '',
@@ -40,7 +38,6 @@ export default function login({ route, navigation }) {
 				resetForm();
 				if (data.login.token) {
 					logUserIn(data.login.user, data.login.token);
-					navigation.navigate(redirect);
 				}
 			})
 			.catch(err => {
@@ -56,11 +53,10 @@ export default function login({ route, navigation }) {
 	});
 
 	return (
-		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+		<KeyboardAvoidingView style={{ margin: 0, flex: 1 }} behavior='height'>
 			<ContainerScroll>
 				<Container>
 					<LogoImage source={logoResource} />
-					
 					<FormContainer>
 						<InputsContainer>
 							<Input
@@ -95,10 +91,12 @@ export default function login({ route, navigation }) {
 						</InputsContainer>
 						<ButtonsContainer>
 							<Button
+								type='outline'
 								onPress={handleSubmit}
 								disabled={isSubmitting}
 								loading={isSubmitting}
 								title='Login'
+								containerStyle={{ borderRadius: 25 }}
 							/>
 							<Button
 								buttonStyle={{ backgroundColor: '#B95A02' }}

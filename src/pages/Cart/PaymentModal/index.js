@@ -7,12 +7,12 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import Panel from '../../../components/Panel';
 import Gateway from '../../../gateway';
 
-import { LOAD_BRANCH_PAYMENT_METHODS, GET_SELECTED_BRANCH } from '../../../graphql/branches';
+import { GET_COMPANY_PAYMENT_METHODS } from '../../../graphql/companies';
 
 export default function deliveryModal({ confirmModal, closeModal }) {
-	const { data: selectedBranchData } = useQuery(GET_SELECTED_BRANCH);
-	const { data: userPaymentMethodsData, loading: loadingPaymentMethods, error } = useQuery(LOAD_BRANCH_PAYMENT_METHODS, {
-		variables: { id: selectedBranchData.selectedBranch }
+	const company_id = 1; // fix
+	const { data: userPaymentMethodsData, loading: loadingPaymentMethods, error } = useQuery(GET_COMPANY_PAYMENT_METHODS, {
+		variables: { id: company_id }
 	});
 	const paymentMethods = userPaymentMethodsData ? userPaymentMethodsData.branch.paymentMethods : [];
 
