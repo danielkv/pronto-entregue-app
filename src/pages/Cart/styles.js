@@ -1,6 +1,8 @@
-import styled from 'styled-components/native';
-import { vw, vh } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
+import { vw, vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
+
 import theme from '../../theme';
 
 export const Container = styled.View`
@@ -68,7 +70,7 @@ export const CartButtonContainer = styled.View`
 `;
 export const CancelButton = styled.TouchableOpacity`
 	padding: 10px;
-	background-color: ${theme.colors.error};
+	background-color: ${theme.palette.error};
 	margin-top: 10px;
 	border-radius: 4px;
 `;

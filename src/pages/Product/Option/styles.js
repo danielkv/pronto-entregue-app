@@ -1,6 +1,8 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
 import { vh, vw } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
+
 import theme from '../../../theme';
 
 export const TitleContainer = styled.View`
@@ -27,7 +29,7 @@ export const OptionPrice = styled(Text)`
 `;
 
 export const Container = styled.TouchableOpacity`
-	${({ selected })=>(selected ? 'background-color: #fff;' : `background-color: ${theme.colors.divider}`)}
+	${({ selected })=>(selected ? 'background-color: #fff;' : `background-color: ${theme.palette.divider}`)}
 	${({ selected })=>(selected && 'shadow-color: #000;	shadow-offset: 0 2px;	shadow-opacity: 0.23;	shadow-radius: 2.62px;	elevation:4;')}
 	
 	padding: 0 ${vw(5)}px;

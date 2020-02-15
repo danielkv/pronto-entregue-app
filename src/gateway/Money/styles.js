@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
-import { vh, vw } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
+import { vh, vw } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 import theme from '../../theme';
 
@@ -19,7 +20,7 @@ export const Title = styled(Text)`
 	margin-bottom: 20px;
 `;
 export const ErrorMessage = styled(Text)`
-	color: ${theme.colors.error};
+	color: ${theme.palette.error};
 	text-align: center;
 `;
 export const CartButtonContainer = styled.View`

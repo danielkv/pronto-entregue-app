@@ -1,13 +1,12 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView } from 'react-native';
-import { Button, Input } from 'react-native-elements';
+import { Alert, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 
 import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
-import { TextField } from '../../react-native-ui';
+import { TextField, Button } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
 import { getErrors } from '../../utils/errors';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
@@ -93,31 +92,34 @@ export default function Login({ navigation }) {
 								helperText={errors.password || ''}
 								error={Boolean(errors.password)}
 								
-								ref={ref => { refs.password = ref }}
+								inputRef={ref => { refs.password = ref }}
 								onSubmitEditing={handleSubmit}
 							/>
 						</InputsContainer>
 						<ButtonsContainer>
 							<Button
+								color='primary'
+								variant='filled'
 								type='outline'
 								onPress={handleSubmit}
 								disabled={isSubmitting}
 								loading={isSubmitting}
-								title='Login'
 								containerStyle={{ borderRadius: 25 }}
-							/>
+							>
+								{isSubmitting
+									? <ActivityIndicator />
+									: 'Login'}
+							</Button>
 							<Button
-								buttonStyle={{ backgroundColor: '#B95A02' }}
-								titleStyle={{ color: '#fff' }}
+								variant='outlined'
+								color='primary'
 								onPress={() => navigation.navigate('SubscriptionScreen')}
 								disabled={isSubmitting}
-								title='Quero me cadastrar'
+								label='Quero me cadastrar'
 							/>
 							<Button
-								buttonStyle={{ backgroundColor: 'transparent' }}
-								titleStyle={{ color: '#fff' }}
 								disabled={isSubmitting}
-								title='Esqueci minha senha'
+								label='Esqueci minha senha'
 							/>
 						</ButtonsContainer>
 					</FormContainer>

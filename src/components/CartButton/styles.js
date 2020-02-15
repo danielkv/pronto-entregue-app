@@ -1,9 +1,11 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
+
+import styled from 'styled-components/native';
+
 import theme from '../../theme';
 
 export const ButtonContainer = styled.TouchableOpacity`
-  	background-color: ${theme.colors.primary};
+  	background-color: ${theme.palette.primary};
 	height:50px;
 	
 	border-radius:4px;

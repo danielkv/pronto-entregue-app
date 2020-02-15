@@ -1,25 +1,27 @@
+import { ButtonType } from '../Button/types';
 import { FormHelperTextType } from '../FormHelperText/types';
 import { TextFieldType } from '../TextField/types';
 
 export interface Theme {
-	colors?: {
-		primary?: string;
-		secondary?: string;
+	palette?: {
+		primary?: ColorVararits;
+		secondary?: ColorVararits;
+		default?: ColorVararits;
 		divider?: string;
 		gray?: string;
 		text?: string;
-		error?: {
-			light: string
-			main: string
-			dark: string
-			contrastText: string
-		};
+		error?: ColorVararits
 	};
 	TextField?: TextFieldType,
 	FormHelperText?: FormHelperTextType,
+	Button?: ButtonType,
 }
 
-export enum Color {
-	primary='primary',
-	secondary='secondary'
+interface ColorVararits {
+	light: string
+	main: string
+	dark: string
+	contrastText: string
 }
+
+export type Color = 'primary' | 'secondary' | 'default';

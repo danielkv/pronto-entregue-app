@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
 import { vw, vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 import theme from '../../theme';
 import { getStatusColors } from '../../utils';
@@ -45,7 +46,7 @@ export const ItemsContainer = styled.View`
 	margin: ${vh(2)}px 0;
 `;
 export const CancelButton = styled.TouchableOpacity`
-	background-color: ${theme.colors.error};
+	background-color: ${theme.palette.error};
 	border-radius: 4px;
 	padding: 10px;
 `;

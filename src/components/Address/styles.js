@@ -5,13 +5,13 @@ import { Text } from 'react-native-elements';
 import theme from '../../theme';
 
 export const TouchableContainer = styled.TouchableOpacity`
-	background-color: ${theme.colors.divider};
+	background-color: ${theme.palette.divider};
 	padding: 20px;
 	margin: ${vh(1)}px 0;
 	border-radius:4px;
 `;
 export const Container = styled.View`
-	background-color: ${theme.colors.divider};
+	background-color: ${theme.palette.divider};
 	padding: 20px;
 	margin: ${vh(1)}px 0;
 	border-radius:4px;

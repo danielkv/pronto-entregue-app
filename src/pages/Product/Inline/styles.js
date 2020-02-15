@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
-import { vh } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
+import { vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 import theme from '../../../theme';
 
@@ -11,7 +12,7 @@ export const Container = styled.View`
 export const GroupContainer = styled.View`
 	border-style:dashed;
 	border-top-width:2px;
-	border-top-color: ${theme.colors.divider};
+	border-top-color: ${theme.palette.divider};
 
 	margin:10px 0 5px 0;
 `;

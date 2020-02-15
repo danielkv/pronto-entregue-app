@@ -1,11 +1,12 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import { Text, Icon } from 'react-native-elements';
+
+import styled from 'styled-components/native';
 
 import theme from '../../theme';
 
 export const Container = styled.View`
-	background-color: ${theme.colors.primary};
+	background-color: ${theme.palette.primary};
 	flex: 1;
 `;
 

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Icon } from 'react-native-elements';
 
-import { calculateOptionsGroupPrice } from '../../../../utils/products';
 import theme from '../../../../theme';
+import { calculateOptionsGroupPrice } from '../../../../utils/products';
 import {
 	Container,
 	GroupPrice,
@@ -32,7 +32,7 @@ function Group({ onPress, group }) {
 			);
 		}
 
-		return <Icon name='keyboard-arrow-right' color={theme.colors.primary} size={24} />;
+		return <Icon name='keyboard-arrow-right' color={theme.palette.primary} size={24} />;
 	}
 	
 	return (

@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
 import { vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 import theme from '../../../theme';
 
@@ -13,5 +14,5 @@ export const TakeoutContainer = styled.TouchableOpacity`
 export const TakeoutTitle = styled(Text)`
 	font-size:20px;
 	font-weight:bold;
-	color: ${theme.colors.divider};
+	color: ${theme.palette.divider};
 `;

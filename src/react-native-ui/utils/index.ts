@@ -4,10 +4,10 @@ import { merge, cloneDeep } from 'lodash';
 
 import DefaultTheme from '../theme';
 import { ThemeContext } from "../ThemeContext";
-import { ComponentTypes } from "./types";
+import { ComponentStyles } from "./types";
 
-export function mergeStyles(theme: ComponentTypes, variant: string, styles: Object = {}) {
-	const componentStyle = cloneDeep(theme.style);
+export function mergeStyles(style: ComponentStyles, variant: string, styles: Object = {}) {
+	const componentStyle = cloneDeep(style);
 	const componentStandardStyle = componentStyle.standard;
 	const componentVariantStyle = componentStyle[variant];
 

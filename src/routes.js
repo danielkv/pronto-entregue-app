@@ -1,32 +1,30 @@
 import React from 'react';
+
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import header from './components/Header';
-import theme from './theme';
 import DrawerContent from './components/DrawerContent';
+import header from './components/Header';
 
-import HomeScreen from './pages/Home';
-import CategoryScreen from './pages/Category';
-import ProductScreen from './pages/Product';
-
-import LoginScreen from './pages/Login';
-import SubscriptionScreen from './pages/Subscription';
-
-import CartScreen from './pages/Cart';
-import PaymentScreen from './pages/Payment';
-
-import OrderListScreen from './pages/OrderList';
-import OrderScreen from './pages/Order';
-
-import ProfileScreen from './pages/Profile';
 import AddressListScreen from './pages/AddressList';
+import CartScreen from './pages/Cart';
+import CategoryScreen from './pages/Category';
 import CreateAddressScreen from './pages/CreateAddress';
+import HomeScreen from './pages/Home';
+import LoginScreen from './pages/Login';
+import OrderScreen from './pages/Order';
+import OrderListScreen from './pages/OrderList';
+import PaymentScreen from './pages/Payment';
+import ProductScreen from './pages/Product';
+import ProfileScreen from './pages/Profile';
+import SubscriptionScreen from './pages/Subscription';
+import { useTheme } from './react-native-ui';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 export default function Routes() {
+	const theme = useTheme();
 	return (
 		<Drawer.Navigator contentComponent={props => <DrawerContent {...props} />}>
 			<Drawer.Screen name='Pages'>
@@ -35,7 +33,7 @@ export default function Routes() {
 						initialRouteName='HomeScreen'
 						mode='card'
 						headerMode='screen'
-						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.colors.primary } }}
+						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.palette.primary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
 						<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{ title: 'Produtos' }} />

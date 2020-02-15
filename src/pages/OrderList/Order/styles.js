@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
 import { vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 import theme from '../../../theme';
 import { getStatusColors } from '../../../utils';
@@ -8,7 +9,7 @@ import { getStatusColors } from '../../../utils';
 export const Container = styled.TouchableOpacity`
 	height: 125px;
 	border-radius: 4px;
-	background-color: ${theme.colors.divider};
+	background-color: ${theme.palette.divider};
 	padding: 20px;
 	margin-bottom: ${vh(3)}px;
 `;

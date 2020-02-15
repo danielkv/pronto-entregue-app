@@ -1,6 +1,8 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
 import { vh, vw } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
+
 import theme from '../../../../theme';
 
 
@@ -54,7 +56,7 @@ export const SelectedOptionsText = styled(Text)`
 `;
 
 export const SelectedOptionsNumber = styled.View`
-	background-color:${theme.colors.primary};
+	background-color:${theme.palette.primary};
 	border-radius:30px;
 	width:30px;
 	height:30px;

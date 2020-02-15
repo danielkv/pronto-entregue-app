@@ -1,4 +1,5 @@
-import { FormHelperTextType } from '../FormHelperText/types'
-import { TextFieldType } from '../TextField/types'
+import { ButtonStyles } from '../Button/types';
+import { FormHelperTextStyles } from '../FormHelperText/types'
+import { TextFieldStyles } from '../TextField/types'
 
-export type ComponentTypes = TextFieldType | FormHelperTextType;
+export type ComponentStyles = TextFieldStyles | FormHelperTextStyles | ButtonStyles;

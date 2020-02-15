@@ -1,3 +1,5 @@
-export { default as ThemeProvider } from './ThemeContext/index.tsx';
-export { default as TextField } from './TextField/index.tsx';
-export * from './utils/index.ts';
+export { default as ThemeProvider } from './ThemeContext';
+export { default as TextField } from './TextField';
+export { default as FormHelperText } from './FormHelperText';
+export { default as Button } from './Button';
+export * from './utils';

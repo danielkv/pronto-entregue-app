@@ -34,7 +34,7 @@ export const getStatusColors = (status) => {
 		};
 	case 'canceled':
 		return {
-			background: theme.colors.error,
+			background: theme.palette.error,
 			text: '#fff'
 		};
 	case 'preparing':

@@ -1,11 +1,12 @@
-import styled from 'styled-components/native';
-import { vh } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
+import { vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 import theme from '../theme';
 
 export const GataweyContainer = styled.TouchableOpacity`
-	background-color: ${theme.colors.divider};
+	background-color: ${theme.palette.divider};
 	padding: 20px;
 	margin: ${vh(2)}px 0;
 	border-radius: 4px;

@@ -1,11 +1,28 @@
+import ButtonDefaultTheme from '../Button/defaultTheme';
 import FormHelperTextDefaultTheme from '../FormHelperText/defaultTheme';
 import TextFieldDefaultTheme from '../TextField/defaultTheme';
 import { Theme } from './types';
 
 export default<Theme> {
-	colors: {
-		primary: '#F11761',
-		secondary: '#A4D82B',
+	palette: {
+		primary: {
+			light: "#F3548A",
+			main: "#F11761",
+			dark: "#AC1347",
+			contrastText: "#ffffff"
+		},
+		secondary: {
+			light: "#C4EE64",
+			main: "#A4D82B",
+			dark: "#82AA26",
+			contrastText: "#333333"
+		},
+		default: {
+			light: "#999999",
+			main: "#333333",
+			dark: "#111111",
+			contrastText: "#ffffff"
+		},
 		background: '#EFE8DA',
 		divider: '#D1C6B1',
 		gray: '#333333',
@@ -19,4 +36,5 @@ export default<Theme> {
 	},
 	TextField: TextFieldDefaultTheme,
 	FormHelperText: FormHelperTextDefaultTheme,
+	Button: ButtonDefaultTheme,
 }

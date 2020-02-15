@@ -1,13 +1,24 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Alert, ActivityIndicator, Platform, KeyboardAvoidingView } from 'react-native';
-import { useSafeArea } from 'react-native-safe-area-context';
 import { Input, Icon } from 'react-native-elements';
-import Modal from 'react-native-modal';
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { vw } from 'react-native-expo-viewport-units';
+import Modal from 'react-native-modal';
+import { useSafeArea } from 'react-native-safe-area-context';
+
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 
 import CartButton from '../../components/CartButton';
+import ErrorBlock from '../../components/ErrorBlock';
+import LoadingBlock from '../../components/LoadingBlock';
+import OrderItem from '../../components/OrderItem';
+
+import theme from '../../theme';
+import { checkCondition } from '../../utils';
+import { calculateOrderPrice, validadeCart } from '../../utils/cart';
+import { getErrors } from '../../utils/errors';
+import DeliveryModal from './DeliveryModal';
+import PaymentModal from './PaymentModal';
 import {
 	Container,
 	CartContainer,
@@ -25,14 +36,9 @@ import {
 	CancelButtonText,
 	CartContainerScroll,
 } from './styles';
-import theme from '../../theme';
-import OrderItem from '../../components/OrderItem';
-import LoadingBlock from '../../components/LoadingBlock';
-import ErrorBlock from '../../components/ErrorBlock';
 
-import DeliveryModal from './DeliveryModal';
-import PaymentModal from './PaymentModal';
 
+import { IS_USER_LOGGED_IN } from '../../graphql/authentication';
 import {
 	SET_CART_DELIVERY,
 	SET_CART_PAYMENT,
@@ -41,10 +47,6 @@ import {
 	GET_CART,
 } from '../../graphql/cart';
 
-import { IS_USER_LOGGED_IN } from '../../graphql/authentication';
-import { getErrors } from '../../utils/errors';
-import { calculateOrderPrice, validadeCart } from '../../utils/cart';
-import { checkCondition } from '../../utils';
 
 export default function Cart({ navigation }) {
 	const [message, setMessage] = useState('');
@@ -165,9 +167,9 @@ export default function Cart({ navigation }) {
 							<SectionTitle>Entrega e pagamento</SectionTitle>
 							<CardContainer disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
 								<CardHeader>
-									<Icon type='material-community' name='truck' color={theme.colors.divider} size={24} />
+									<Icon type='material-community' name='truck' color={theme.palette.divider} size={24} />
 									<CardTitle>Entrega</CardTitle>
-									{loadingDelivery && <ActivityIndicator color={theme.colors.divider} size='small' />}
+									{loadingDelivery && <ActivityIndicator color={theme.palette.divider} size='small' />}
 								</CardHeader>
 								<CardContent>
 									<CardInfo>
@@ -178,20 +180,20 @@ export default function Cart({ navigation }) {
 												: 'Nenhum endereço selecionado'
 										}
 									</CardInfo>
-									<Icon type='material-community' name='pencil' color={theme.colors.divider} size={24} />
+									<Icon type='material-community' name='pencil' color={theme.palette.divider} size={24} />
 									{!!(cartDelivery && cartDelivery.price)
 										&& <CardPrice>{cartDelivery.price.toFixed(2).replace('.', ',')}</CardPrice>}
 								</CardContent>
 							</CardContainer>
 							<CardContainer disabled={loadingPayment} onPress={handleOpenPaymentModal}>
 								<CardHeader>
-									<Icon type='material-community' name='credit-card' color={theme.colors.divider} size={24} />
+									<Icon type='material-community' name='credit-card' color={theme.palette.divider} size={24} />
 									<CardTitle>Pagamento</CardTitle>
-									{loadingPayment && <ActivityIndicator color={theme.colors.divider} size='small' />}
+									{loadingPayment && <ActivityIndicator color={theme.palette.divider} size='small' />}
 								</CardHeader>
 								<CardContent>
 									<CardInfo>{cartPayment ? cartPayment.display_name : 'Nenhum pagamento selecionado'}</CardInfo>
-									<Icon type='material-community' name='pencil' color={theme.colors.divider} size={20} />
+									<Icon type='material-community' name='pencil' color={theme.palette.divider} size={20} />
 								</CardContent>
 							</CardContainer>
 						</Section>

@@ -18,7 +18,7 @@ function ProductOption({ option, onPress, type }) {
 		: option.selected ? 'checkbox-marked-circle-outline' : 'checkbox-blank-circle-outline';
 
 	const textColor = option.selected ? '#707070' : '#fff';
-	const iconColor = option.selected ? theme.colors.primary : '#000';
+	const iconColor = option.selected ? theme.palette.primary : '#000';
 	const iconSize = 24;
 		
 	return (

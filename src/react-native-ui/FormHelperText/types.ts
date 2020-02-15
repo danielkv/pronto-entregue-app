@@ -5,13 +5,14 @@ import { Color } from '../theme/types';
 export interface FormHelperTextType {
 	variant?: "standard" | "outlined",
 	color?: Color,
-	style?: {
-		standard?: FormHelperTextStyles,
-		outlined?: FormHelperTextStyles,
-		filled?: FormHelperTextStyles,
-	},
+	style?: FormHelperTextStyles
 }
 export interface FormHelperTextStyles {
+	standard?: FormHelperTextVariantStyles,
+	outlined?: FormHelperTextVariantStyles,
+}
+
+interface FormHelperTextVariantStyles {
 	root?: StyleProp<ViewStyle>,
 	text?: StyleProp<TextStyle>,
 }

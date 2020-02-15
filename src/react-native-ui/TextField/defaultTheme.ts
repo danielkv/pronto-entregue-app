@@ -1,11 +1,13 @@
 import { TextFieldType } from "./types";
 
 export default<TextFieldType> {
-	color: "primary",
 	variant: 'standard',
 	style: {
 		standard: {
 			root: {
+				marginVertical: 5,
+			},
+			inputContainer: {
 				backgroundColor: '#ffffff',
 				borderRadius: 25,
 				height: 50,
@@ -19,7 +21,7 @@ export default<TextFieldType> {
 			}
 		},
 		outlined: {
-			root: {
+			inputContainer: {
 				
 			},
 			text: {
@@ -27,17 +29,11 @@ export default<TextFieldType> {
 			}
 		},
 		filled: {
-			root: {
-				backgroundColor: '#ffffff',
-				borderRadius: 25,
-				height: 50,
-				border: 0,
-				paddingHorizontal: 20,
-				paddingVertical: 10
+			inputContainer: {
+				
 			},
 			text: {
-				fontSize: 16,
-				color: "#333333"
+				
 			}
 		}
 	},

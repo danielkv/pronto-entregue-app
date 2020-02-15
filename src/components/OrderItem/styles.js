@@ -1,10 +1,12 @@
-import styled from 'styled-components/native';
-import { vh } from 'react-native-expo-viewport-units';
 import { Text } from 'react-native-elements';
+import { vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
+
 import theme from '../../theme';
 
 export const Container = styled.View`
-	background-color: ${theme.colors.divider};
+	background-color: ${theme.palette.divider};
 	border-radius: 6;
 	padding: 20px;
 	margin-bottom: ${vh(2)}px;
@@ -63,5 +65,5 @@ export const ItemPriceContainer = styled.View`
 `;
 export const ItemPrice = styled(Text)`
 	font-size: 12px;
-	color: ${theme.colors.divider};
+	color: ${theme.palette.divider};
 `;
