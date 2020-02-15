@@ -112,7 +112,6 @@ export default function Login({ navigation }) {
 							</Button>
 							<Button
 								variant='outlined'
-								color='primary'
 								onPress={() => navigation.navigate('SubscriptionScreen')}
 								disabled={isSubmitting}
 								label='Quero me cadastrar'

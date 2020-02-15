@@ -22,7 +22,7 @@ export default<ButtonType> {
 				fontSize: 16,
 				textTransform: 'uppercase',
 				textAlign: "center",
-				fontWeight: 'bold'
+				fontWeight: 'normal'
 			}
 		},
 		outlined: {
