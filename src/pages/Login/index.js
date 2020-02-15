@@ -64,7 +64,7 @@ export default function Login({ navigation }) {
 						<InputsContainer>
 							<TextField
 								label='Email'
-								//autoFocus
+								autoFocus
 								keyboardType='email-address'
 								autoCapitalize='none'
 								autoCompleteType='email'
@@ -108,7 +108,7 @@ export default function Login({ navigation }) {
 							>
 								{isSubmitting
 									? <ActivityIndicator />
-									: 'Login'}
+									: 'Entrar'}
 							</Button>
 							<Button
 								variant='outlined'
