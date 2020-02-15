@@ -1,4 +1,5 @@
-import { TextFieldType } from './TextFieldTypes';
+import { FormHelperTextType } from '../FormHelperText/types';
+import { TextFieldType } from '../TextField/types';
 
 export interface Theme {
 	colors?: {
@@ -7,9 +8,15 @@ export interface Theme {
 		divider?: string;
 		gray?: string;
 		text?: string;
-		error?: string;
+		error?: {
+			light: string
+			main: string
+			dark: string
+			contrastText: string
+		};
 	};
-	TextField?: TextFieldType
+	TextField?: TextFieldType,
+	FormHelperText?: FormHelperTextType,
 }
 
 export enum Color {

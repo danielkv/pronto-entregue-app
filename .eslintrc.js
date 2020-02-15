@@ -1,10 +1,38 @@
 module.exports = {
-	'extends': 'airbnb',
 	'parser': 'babel-eslint',
-	'env': {
-		'jest': true,
-	},
-	'rules': {
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+		"@typescript-eslint",
+		"eslint-plugin-import-helpers"
+    ],
+    "rules": {
+		"@typescript-eslint/no-explicit-any": "off",
+    	"@typescript-eslint/no-parameter-properties": "off",
+		"@typescript-eslint/no-unused-vars": "error",
+		"key-spacing": "error",
+		"object-curly-spacing": ["error", "always"],
+		"array-bracket-spacing": ["error", "never"],
 		'no-use-before-define': 'off',
 		'react/jsx-filename-extension': 'off',
 		'react/prop-types': 'off',
@@ -27,9 +55,21 @@ module.exports = {
 		"import/prefer-default-export" : 0,
 		"no-trailing-spaces": ['error', {skipBlankLines:true, ignoreComments:true}],
 		"object-curly-newline": ["error", { multiline: true, consistent: true }],
+		"switch-colon-spacing": ["error", {"after": true, "before": false}],
 		"react/jsx-props-no-spreading": 0,
-	},
-	'globals': {
-		"fetch": false
-	}
-}
+		"import-helpers/order-imports": [
+			"warn",
+			{
+				"newlinesBetween": "always", // new line between groups
+				"groups": [
+					"/^react/",
+					"module",
+					"/components/",
+					["parent", "sibling", "index"],
+					"/\/graphql\//"
+				],
+				"alphabetize": { "order": "asc", "ignoreCase": true }
+			}
+		]
+    }
+};

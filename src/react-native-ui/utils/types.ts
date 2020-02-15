@@ -1,5 +1,4 @@
-import { TextFieldStyles } from '../theme/TextFieldTypes';
+import { FormHelperTextType } from '../FormHelperText/types'
+import { TextFieldType } from '../TextField/types'
 
-export enum ComponentTypes {
-	TextField = "TextField"
-}
+export type ComponentTypes = TextFieldType | FormHelperTextType;

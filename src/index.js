@@ -1,13 +1,14 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+
 import { ThemeProvider } from './react-native-ui';
 import apolloClient from './services/server';
-
-import { Container } from './styles';
 import SplashScreen from './SplashScreen';
+import { Container } from './styles';
 import theme from './theme';
 
 export default function App() {

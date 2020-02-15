@@ -1,16 +1,19 @@
 import React from 'react';
 import { Alert, KeyboardAvoidingView } from 'react-native';
-import { useApolloClient } from '@apollo/react-hooks';
 import { Button, Input } from 'react-native-elements';
+
+import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { TextField } from '../../react-native-ui';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
-import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
-import { LOGIN } from '../../graphql/authentication';
+import { TextField } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
 import { getErrors } from '../../utils/errors';
+import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
+
+import { LOGIN } from '../../graphql/authentication';
+
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
@@ -62,8 +65,7 @@ export default function Login({ navigation }) {
 						<InputsContainer>
 							<TextField
 								label='Email'
-								errorMessage={errors.email || ''}
-								autoFocus
+								//autoFocus
 								keyboardType='email-address'
 								autoCapitalize='none'
 								autoCompleteType='email'
@@ -72,12 +74,14 @@ export default function Login({ navigation }) {
 								disabled={isSubmitting}
 								value={email}
 
+								error={Boolean(errors.email)}
+								helperText={errors.email || ''}
+
 								blurOnSubmit={false}
 								returnKeyType='next'
 								onSubmitEditing={handleNextInput('password')}
 							/>
-							<Input
-								errorMessage={errors.password || ''}
+							<TextField
 								secureTextEntry
 								autoCompleteType='password'
 								placeholder='Senha'
@@ -85,6 +89,9 @@ export default function Login({ navigation }) {
 								onBlur={handleBlur('password')}
 								disabled={isSubmitting}
 								value={password}
+
+								helperText={errors.password || ''}
+								error={Boolean(errors.password)}
 								
 								ref={ref => { refs.password = ref }}
 								onSubmitEditing={handleSubmit}

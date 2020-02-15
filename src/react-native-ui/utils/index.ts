@@ -1,18 +1,17 @@
-import { ComponentTypes } from "./types";
-import { ThemeContext } from "../ThemeContext";
-import { merge, cloneDeep } from 'lodash';
-import DefaultTheme from '../theme/default';
 import { useContext } from "react";
 
-export function getStyle(component: ComponentTypes, variant: string, styles: Object = {}) {
-	const theme = ThemeContext._currentValue;
+import { merge, cloneDeep } from 'lodash';
 
-	const componentStyle = theme[component].style;
+import DefaultTheme from '../theme';
+import { ThemeContext } from "../ThemeContext";
+import { ComponentTypes } from "./types";
+
+export function mergeStyles(theme: ComponentTypes, variant: string, styles: Object = {}) {
+	const componentStyle = cloneDeep(theme.style);
+	const componentStandardStyle = componentStyle.standard;
 	const componentVariantStyle = componentStyle[variant];
 
-	console.log(component, componentStyle)
-
-	const resultStyles = merge(componentStyle, componentVariantStyle, styles);
+	const resultStyles = merge(componentStandardStyle, componentVariantStyle, styles);
 
 	return resultStyles;
 }

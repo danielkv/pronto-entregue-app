@@ -1,5 +1,6 @@
 import React from 'react';
-import theme from '../theme/default';
+
+import theme from '../theme';
 import { Theme } from '../theme/types';
 
 export const ThemeContext = React.createContext(theme);
@@ -12,7 +13,7 @@ interface IProps {
 export default function ThemeProvider(props: IProps) {
 	return (
 		<ThemeContext.Provider value={props.theme}>
-		{props.children}
+			{props.children}
 		</ThemeContext.Provider>
 	);
 }
