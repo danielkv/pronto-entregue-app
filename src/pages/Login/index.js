@@ -4,6 +4,7 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { Button, Input } from 'react-native-elements';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { TextField } from '../../react-native-ui';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
@@ -59,10 +60,10 @@ export default function Login({ navigation }) {
 					<LogoImage source={logoResource} />
 					<FormContainer>
 						<InputsContainer>
-							<Input
+							<TextField
+								label='Email'
 								errorMessage={errors.email || ''}
 								autoFocus
-								placeholder='Email'
 								keyboardType='email-address'
 								autoCapitalize='none'
 								autoCompleteType='email'
