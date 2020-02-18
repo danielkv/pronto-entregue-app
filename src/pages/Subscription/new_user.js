@@ -79,7 +79,6 @@ export default function NewUser() {
 				component={PageForm}
 			/>
 			<Button
-				color='primary'
 				variant='outlined'
 				onPress={() => navigation.navigate('LoginScreen')}
 				label='Já possuo uma conta'
