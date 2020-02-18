@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Typography, Chip } from '../../../../react-native-ui'
 import { Container, BgImage } from './styles';
 
-export default function Product({ item, config }) {
+export default function FeaturedItem({ item, config }) {
 	const navigation = useNavigation();
 
 	return (

@@ -1,111 +1,36 @@
-import React, { useState, useCallback } from 'react';
-import { View, FlatList, Dimensions, RefreshControl } from 'react-native';
-import { Icon } from 'react-native-elements';
-
-
-import { useQuery } from '@apollo/react-hooks';
-
-import ErrorBlock from '../../components/ErrorBlock';
-import LoadingBlock from '../../components/LoadingBlock';
+import React from 'react';
+import { RefreshControl } from 'react-native';
+import { Image } from 'react-native-elements';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
-import { Paper } from '../../react-native-ui';
+import BestSellers from './BestSellers'
 import FeaturedProducts from './FeaturedProducts';
 import {
 	Container,
-	ImageLogo,
 	Footer,
-	HeaderContainer,
-	CategoriesContainer,
-	Categories,
-	CategoriesTitle,
-	Category,
-	CategoryImage,
-	CategoryTitle,
-	CategoryTitleContainer
 } from './styles';
 
-import { GET_BRANCH_CATEGORIES } from '../../graphql/categories';
-import { LOAD_BRANCH_FETURED_PRODUCTS } from '../../graphql/products';
-
-// LIMIT OF FEATURED PRODUCTS
-// const featuredLimit = 5;
-
-export default function Home({ navigation }) {
-	const [featuredIndex, setFeaturedIndex] = useState(0);
-	const [refreshing, setRefreshing] = useState(false);
-
-	// const fetchPolicy = refreshing ? 'networt-only' : 'cache-fisrt';
-	
-	// eslint-disable-next-line max-len
-	/* const {
-		data: categoriesData,
-		loading: loadingCategories,
-		refetch: refetchCategories
-	} = useQuery(GET_BRANCH_CATEGORIES, { variables: { id: selectedBranchData.selectedBranch }, fetchPolicy });
-	const {
-		data: featuredProductData,
-		loading: loadingFeaturedProduct,
-		error: featuredError,
-		refetch: refetchFeaturedProducts,
-	} = useQuery(LOAD_BRANCH_FETURED_PRODUCTS, { variables: { id: selectedBranchData.selectedBranch, limit: featuredLimit }, fetchPolicy }); */
-	
-	const renderCategory = ({ item: { id, name, image } }) => {
-		return (
-			<Category onPress={()=>{ navigation.navigate('CategoryScreen', { category_id: id }) }}>
-				<CategoryImage source={{ uri: image }} />
-				<CategoryTitleContainer>
-					<CategoryTitle>{name}</CategoryTitle>
-				</CategoryTitleContainer>
-			</Category>
-		);
-	}
+export default function Home() {
+	/* const [refreshing, setRefreshing] = useState(false);
 	
 	const onRefresh = useCallback(()=>{
 		refetchFeaturedProducts();
 		refetchCategories();
 		setRefreshing(true);
-	}, [refreshing]);
-
-	/* useEffect(()=>{
-		if (loadingCategories && loadingFeaturedProduct && refreshing) setRefreshing(false);
-	}, [loadingCategories, loadingFeaturedProduct, refreshing])
-	
-	if (!refreshing && (loadingFeaturedProduct || loadingCategories)) return <LoadingBlock />;
-	if (featuredError) return <ErrorBlock error={featuredError} />;
-	
-	const { featuredProducts } = featuredProductData.branch;
-	const { categories } = categoriesData.branch;
-	const { width } = Dimensions.get('window'); */
+	}, [refreshing]); */
 	
 	return (
 		<Container
 			refreshControl={
-				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+				<RefreshControl />
 			}
 		>
-			<Paper style={{ paddingHorizontal: 0 }}>
-				<FeaturedProducts />
-			</Paper>
+			<FeaturedProducts />
+			<BestSellers />
 
-			{/* <CategoriesContainer>
-				<View>
-					<CategoriesTitle h2>Mais produtos</CategoriesTitle>
-					<Icon type='material-community' name='chevron-down' size={14} color='#fff' />
-				</View>
-				<Categories>
-					<FlatList
-						data={categories}
-						renderItem={renderCategory}
-						keyExtractor={(item)=>item.id}
-						numColumns={2}
-					/>
-				</Categories>
-			</CategoriesContainer> */}
 			<Footer>
-				<ImageLogo source={logoResource} />
+				<Image source={logoResource} />
 			</Footer>
-	
 		</Container>
 	);
 }

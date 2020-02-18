@@ -9,12 +9,22 @@ export const GET_CATEGORY_PRODUCTS = gql`
 				id
 				name
 				image
-				price
+				fromPrice
 			}
 		}
 	}
 `;
 
+export const GET_BEST_SELLERS = gql`
+	query GetBestSellers ($limit: Int!) {
+		bestSellers (limit: $limit) {
+			id
+			name
+			image
+			fromPrice
+		}
+	}
+`;
 
 export const OPTIONS_GROUP_FRAGMENT = gql`
 	fragment OptionsGroupFields on OptionsGroup {

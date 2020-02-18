@@ -7,17 +7,17 @@ import { useQuery } from '@apollo/react-hooks';
 import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
-import { useTheme } from '../../../react-native-ui';
+import { useTheme, Paper, Typography } from '../../../react-native-ui';
 import { getErrors } from '../../../utils/errors';
-import Product from './Product';
+import FeaturedItem from './FeaturedItem';
 
 import { GET_CATEGORY_PRODUCTS } from '../../../graphql/products';
 
 const carouselConfig = {
 	sliderWidth: vw(100),
 	sliderHeight: vh(30),
-	itemWidth: vw(80),
-	itemHeight: vh(25),
+	itemWidth: vw(100)-70,
+	itemHeight: vh(28),
 }
 
 export default function FeaturedProduct() {
@@ -30,10 +30,11 @@ export default function FeaturedProduct() {
 	if (error) return <ErrorBlock error={getErrors(error)} />
 
 	return (
-		<>
+		<Paper style={{ paddingHorizontal: 0 }}>
+			<Typography variant='h1' style={{ marginLeft: 35, marginBottom: 20 }}>Destaques</Typography>
 			<Carousel
 				data={products}
-				renderItem={({ item }) => <Product item={item} config={carouselConfig}/>}
+				renderItem={({ item }) => <FeaturedItem item={item} config={carouselConfig}/>}
 				onSnapToItem={(slideIndex) => {setActiveSlide(slideIndex)}}
 				ref={carouselRef}
 
@@ -54,7 +55,7 @@ export default function FeaturedProduct() {
 				}}
 
 				dotColor={theme.palette.primary.main}
-				inactiveDotColor={theme.palette.default.main}
+				inactiveDotColor={theme.palette.background.dark}
 
 				dotStyle={{
 					width: 10,
@@ -63,6 +64,6 @@ export default function FeaturedProduct() {
 					marginHorizontal: 8
 				}}
 			/>
-		</>
+		</Paper>
 	);
 }
