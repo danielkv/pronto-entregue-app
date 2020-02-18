@@ -17,7 +17,7 @@ export interface TypographyStyles {
 	h5?: StyleProp<TextStyle>
 }
 
-export interface TypographyProps extends Pick<TypographyType, 'variant'>, Omit<TextProps, 'style'> {
+export interface TypographyProps extends Omit<TypographyType, 'style'>, Omit<TextProps, 'style'> {
 	children: string,
 	style: StyleProp<TextStyle>,
 }

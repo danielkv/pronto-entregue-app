@@ -17,7 +17,8 @@ interface FormHelperTextVariantStyles {
 	text?: StyleProp<TextStyle>,
 }
 
-export interface FormHelperTextProps extends FormHelperTextType {
+export interface FormHelperTextProps extends Omit<FormHelperTextType, 'style'> {
 	children: string,
-	error?: boolean
+	error?: boolean,
+	style?: FormHelperTextVariantStyles
 }

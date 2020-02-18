@@ -21,10 +21,11 @@ interface ButtonVariantStyles {
 	text?: StyleProp<TextStyle>,
 }
 
-export interface ButtonProps extends ButtonType, Omit<TouchableOpacityProps, 'style'> {
+export interface ButtonProps extends Omit<ButtonType, 'style'>, Omit<TouchableOpacityProps, 'style'> {
 	label?: string
 	children?: string | ReactNode,
 	helperText?: string,
 	icon?: IconInComponentType
+	style?: ButtonVariantStyles
 }
 

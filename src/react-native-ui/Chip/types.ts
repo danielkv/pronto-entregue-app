@@ -17,7 +17,8 @@ interface ChipVariantStyles {
 	text?: StyleProp<TextStyle>,
 }
 
-export interface ChipProps extends ChipType, Omit<TextProps, 'style'> {
+export interface ChipProps extends Omit<ChipType, 'style'>, Omit<TextProps, 'style'> {
 	children?: string,
-	label?: string
+	label?: string,
+	style?: ChipVariantStyles,
 }

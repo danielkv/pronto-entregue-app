@@ -12,7 +12,7 @@ export default<ChipType> {
 				alignSelf: 'flex-start'
 			},
 			text: {
-				fontSize: 14,
+				fontSize: 16,
 			}
 		},
 		outlined: {

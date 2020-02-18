@@ -19,9 +19,10 @@ interface TextFieldVariantStyles {
 	text?: StyleProp<TextStyle>,
 }
 
-export interface TextFieldProps extends TextFieldType, Omit<TextInputProps, 'style'> {
+export interface TextFieldProps extends Omit<TextFieldType, 'style'>, Omit<TextInputProps, 'style'> {
 	label: string,
 	error: boolean,
 	helperText: string,
-	inputRef: Ref<TextInput>
+	inputRef: Ref<TextInput>,
+	style?: TextFieldVariantStyles
 }
