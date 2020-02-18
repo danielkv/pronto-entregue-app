@@ -1,13 +1,14 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/core';
+
 import { useMutation } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import PageForm from './form';
+import { Button, Typography } from '../../react-native-ui';
 import { getErrors } from '../../utils/errors';
+import PageForm from './form';
 
 import { CREATE_USER } from '../../graphql/users';
 
@@ -70,6 +71,7 @@ export default function NewUser() {
 
 	return (
 		<>
+			<Typography variant='h1' style={{ marginTop: 25 }}>Novo cadastro</Typography>
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
@@ -77,10 +79,10 @@ export default function NewUser() {
 				component={PageForm}
 			/>
 			<Button
-				buttonStyle={{ backgroundColor: '#B95A02' }}
-				titleStyle={{ color: '#fff' }}
+				color='primary'
+				variant='outlined'
 				onPress={() => navigation.navigate('LoginScreen')}
-				title='Já possuo uma conta'
+				label='Já possuo uma conta'
 			/>
 		</>
 	);

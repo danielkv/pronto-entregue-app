@@ -1,6 +1,9 @@
 import { withTheme } from '../react-native-ui';
 
 export default withTheme({
+	palette: {
+		tertiary: '#EFE8DA',
+	},
 	header: {
 		height: 60,
 		backgroundColor: {

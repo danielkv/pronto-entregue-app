@@ -14,8 +14,6 @@ export default function Typography(props: TypographyProps) {
 		color: palette.text
 	}, Typography.style[variant], props.style);
 
-	console.log(variant, Typography.style[variant])
-
 	return (
 		<Text {...props} style={styles}>{props.children}</Text>
 	);

@@ -1,9 +1,10 @@
 import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
+
 import logoResource from '../../assets/images/logo-vertical-v2.png';
-import { Container, LogoImage, ContainerScroll } from './styles';
-import NewUser from './new_user';
 import EditUser from './edit_user';
+import NewUser from './new_user';
+import { Container, LogoImage, ContainerScroll } from './styles';
 
 export default function login({ route }) {
 	const user_id = route.params && route.params.user_id;

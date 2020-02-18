@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, KeyboardAvoidingView, ActivityIndicator, Image, } from 'react-native';
 
 import { useApolloClient } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -15,8 +16,6 @@ import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer,
 
 import { LOGIN } from '../../graphql/authentication';
 
-
-
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
 		.email('Email inválido')
@@ -25,7 +24,9 @@ const validationSchema = Yup.object().shape({
 		.required('Obrigatório'),
 });
 
-export default function Login({ navigation }) {
+export default function Login() {
+	const navigation = useNavigation();
+	
 	const initialValues = {
 		email: '',
 		password: '',
@@ -65,6 +66,7 @@ export default function Login({ navigation }) {
 					<LogoImage source={logoResource} />
 					<FormContainer>
 						<InputsContainer>
+							<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
 							<TextField
 								label='Email'
 								//autoFocus

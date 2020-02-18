@@ -11,13 +11,11 @@ import CartScreen from './pages/Cart';
 import CategoryScreen from './pages/Category';
 import CreateAddressScreen from './pages/CreateAddress';
 import HomeScreen from './pages/Home';
-import LoginScreen from './pages/Login';
 import OrderScreen from './pages/Order';
 import OrderListScreen from './pages/OrderList';
 import PaymentScreen from './pages/Payment';
 import ProductScreen from './pages/Product';
 import ProfileScreen from './pages/Profile';
-import SubscriptionScreen from './pages/Subscription';
 import { useTheme } from './react-native-ui';
 
 const Drawer = createDrawerNavigator();
@@ -25,6 +23,7 @@ const Stack = createStackNavigator();
 
 export default function Routes() {
 	const theme = useTheme();
+	
 	return (
 		<Drawer.Navigator contentComponent={props => <DrawerContent {...props} />}>
 			<Drawer.Screen name='Pages'>
@@ -38,9 +37,6 @@ export default function Routes() {
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
 						<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{ title: 'Produtos' }} />
 						<Stack.Screen name='ProductScreen' component={ProductScreen} options={{ title: 'Produto' }} />
-						
-						<Stack.Screen name='LoginScreen' component={LoginScreen} options={{ title: 'Login' }} />
-						<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} options={{ title: 'Cadastrar' }} />
 						
 						<Stack.Screen name='CartScreen' component={CartScreen} options={{ title: 'Carrinho' }} />
 						<Stack.Screen name='PaymentScreen' component={PaymentScreen} options={{ title: 'Pagamento' }} />

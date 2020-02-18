@@ -1,12 +1,14 @@
 import React from 'react';
 import { View } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context';
+
 import { NavigationContainer } from '@react-navigation/native';
 
-import { useInitialize } from './services/init';
-import Routes from './routes';
 import LoadingBlock from './components/LoadingBlock';
-import Login from './pages/Login';
+
+import AppRoutes from './app-routes';
+import LoginRoutes from './login-routes';
+import { useInitialize } from './services/init';
 
 export default function SplashScreen() {
 	const { loading, loggedUserId } = useInitialize();
@@ -19,7 +21,7 @@ export default function SplashScreen() {
 					// eslint-disable-next-line no-nested-ternary
 					loading
 						? <LoadingBlock />
-						: !loggedUserId ? <Login /> : <Routes />
+						: !loggedUserId ? <LoginRoutes /> : <AppRoutes />
 				}
 			</NavigationContainer>
 		</View>

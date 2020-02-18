@@ -1,11 +1,12 @@
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
+import { HttpLink } from 'apollo-link-http';
 
 import resolvers from '../resolvers';
-import { GET_USER_TOKEN, IS_USER_LOGGED_IN } from '../graphql/authentication';
 import { schema as typeDefs } from '../schema/cart';
+
+import { GET_USER_TOKEN, IS_USER_LOGGED_IN } from '../graphql/authentication';
 import { GET_SELECTED_USER_ADDRESS } from '../graphql/users';
 
 const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://192.168.234.2:4000/graphql';
