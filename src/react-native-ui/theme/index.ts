@@ -15,6 +15,12 @@ export default<Theme> {
 			dark: "#AC1347",
 			contrastText: "#ffffff"
 		},
+		background: {
+			light: "#fff",
+			main: "#EFE8DA",
+			dark: "#655A51",
+			contrastText: "#333333"
+		},
 		secondary: {
 			light: "#C4EE64",
 			main: "#A4D82B",
@@ -27,7 +33,6 @@ export default<Theme> {
 			dark: "#111111",
 			contrastText: "#ffffff"
 		},
-		background: '#EFE8DA',
 		divider: '#D1C6B1',
 		gray: '#333333',
 		text: '#333333',

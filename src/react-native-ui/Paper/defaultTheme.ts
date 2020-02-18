@@ -8,7 +8,8 @@ export default<PaperType> {
 			paddingVertical: 35,
 			borderRadius: 30,
 			backgroundColor: '#fff',
-			width: '100%'
+			width: '100%',
+			margin: 8,
 		},
 		outlined: {
 			backgroundColor: 'transparent',

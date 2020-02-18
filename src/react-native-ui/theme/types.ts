@@ -10,13 +10,14 @@ import { TypographyType } from '../Typography/types';
 
 export interface Theme {
 	palette?: {
-		primary?: ColorVararits;
-		secondary?: ColorVararits;
-		default?: ColorVararits;
+		primary?: ColorVariants;
+		secondary?: ColorVariants;
+		default?: ColorVariants;
+		background?: ColorVariants;
 		divider?: string;
 		gray?: string;
 		text?: string;
-		error?: ColorVararits
+		error?: ColorVariants
 	};
 	TextField?: TextFieldType,
 	FormHelperText?: FormHelperTextType,
@@ -27,7 +28,7 @@ export interface Theme {
 	Paper?: PaperType,
 }
 
-interface ColorVararits {
+interface ColorVariants {
 	light: string
 	main: string
 	dark: string
