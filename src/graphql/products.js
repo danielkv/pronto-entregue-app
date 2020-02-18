@@ -1,18 +1,20 @@
 import gql from 'graphql-tag';
 
 export const GET_CATEGORY_PRODUCTS = gql`
-	query ($search:String!) {
-		category(id:$id) {
+	query GetCategoryProducts ($id: ID!) {
+		category(id: $id) {
 			id
 			name
-			product {
+			products {
 				id
 				name
+				image
 				price
 			}
 		}
 	}
 `;
+
 
 export const OPTIONS_GROUP_FRAGMENT = gql`
 	fragment OptionsGroupFields on OptionsGroup {
@@ -114,7 +116,7 @@ export const UPDATE_PRODUCT = gql`
 			}
 			image
 			active
-			options_groups (filter:$filter) {
+			optionsGroups (filter:$filter) {
 				...OptionsGroupFields
 			}
 		}

@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, FlatList, Dimensions, RefreshControl } from 'react-native';
 import { Icon } from 'react-native-elements';
-import SideSwipe from 'react-native-sideswipe';
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -9,7 +8,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
-import FeaturedProduct from './FeaturedProduct';
+import FeaturedProducts from './FeaturedProducts';
 import {
 	Container,
 	ImageLogo,
@@ -84,20 +83,10 @@ export default function Home({ navigation }) {
 			}
 		>
 			<HeaderContainer onPress={()=>{}}>
-				<SideSwipe
-					index={featuredIndex}
-					itemWidth={width}
-					style={{ width, height: '100%' }}
-					data={featuredProducts}
-					contentOffset={0}
-					onIndexChange={index =>	setFeaturedIndex(index)}
-					renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
-						<FeaturedProduct key={itemIndex} currentIndex={currentIndex} product={item} animatedValue={animatedValue} />
-					)}
-				/>
+				<FeaturedProducts />
 			</HeaderContainer>
 
-			<CategoriesContainer>
+			{/* <CategoriesContainer>
 				<View>
 					<CategoriesTitle h2>Mais produtos</CategoriesTitle>
 					<Icon type='material-community' name='chevron-down' size={14} color='#fff' />
@@ -110,7 +99,7 @@ export default function Home({ navigation }) {
 						numColumns={2}
 					/>
 				</Categories>
-			</CategoriesContainer>
+			</CategoriesContainer> */}
 			<Footer>
 				<ImageLogo source={logoResource} />
 			</Footer>

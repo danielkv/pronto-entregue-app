@@ -33,7 +33,7 @@ export default function Routes() {
 						initialRouteName='HomeScreen'
 						mode='card'
 						headerMode='screen'
-						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.palette.tertiary } }}
+						screenOptions={{ header, cardStyle: { backgroundColor: theme.palette.tertiary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
 						<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{ title: 'Produtos' }} />

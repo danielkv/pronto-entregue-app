@@ -3,10 +3,7 @@ import { vh, vw } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
 
-import theme from '../../theme';
-
 export const Container = styled.ScrollView`
-	background-color:${theme.palette.primary};
 `;
 
 export const ImageLogo = styled.Image`
