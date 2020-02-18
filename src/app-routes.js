@@ -16,6 +16,7 @@ import OrderListScreen from './pages/OrderList';
 import PaymentScreen from './pages/Payment';
 import ProductScreen from './pages/Product';
 import ProfileScreen from './pages/Profile';
+import SubscriptionScreen from './pages/Subscription';
 import { useTheme } from './react-native-ui';
 
 const Drawer = createDrawerNavigator();
@@ -32,11 +33,13 @@ export default function Routes() {
 						initialRouteName='HomeScreen'
 						mode='card'
 						headerMode='screen'
-						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.palette.primary } }}
+						screenOptions={{ header, headerTransparent: true, cardStyle: { backgroundColor: theme.palette.tertiary } }}
 					>
 						<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
 						<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{ title: 'Produtos' }} />
 						<Stack.Screen name='ProductScreen' component={ProductScreen} options={{ title: 'Produto' }} />
+
+						<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} />
 						
 						<Stack.Screen name='CartScreen' component={CartScreen} options={{ title: 'Carrinho' }} />
 						<Stack.Screen name='PaymentScreen' component={PaymentScreen} options={{ title: 'Pagamento' }} />

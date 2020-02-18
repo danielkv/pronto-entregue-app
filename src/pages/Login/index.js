@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, KeyboardAvoidingView, ActivityIndicator, Image, } from 'react-native';
 
-import { useApolloClient } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -24,23 +24,24 @@ const validationSchema = Yup.object().shape({
 		.required('Obrigatório'),
 });
 
+const initialValues = {
+	email: '',
+	password: '',
+}
+
 export default function Login() {
 	const navigation = useNavigation();
-	
-	const initialValues = {
-		email: '',
-		password: '',
-	}
 
-	const client = useApolloClient();
+	// Setup GQL Mutation
+	const [login] = useMutation(LOGIN);
 
 	const refs = {}
 	const handleNextInput = (fieldName) => () => {
 		refs[fieldName].focus();
 	}
 
-	const onSubmit = async ({ email, password }, { resetForm }) => {
-		await client.mutate({ mutation: LOGIN, variables: { email, password } })
+	function onSubmit({ email, password }, { resetForm }) {
+		return login({ variables: { email, password } })
 			.then(({ data })=>{
 				resetForm();
 				if (data.login.token) {
@@ -56,6 +57,7 @@ export default function Login() {
 	const { values: { email, password }, errors, handleSubmit, handleChange, handleBlur, isSubmitting } = useFormik({
 		initialValues,
 		validationSchema,
+		validateOnBlur: false,
 		onSubmit,
 	});
 
@@ -69,7 +71,6 @@ export default function Login() {
 							<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
 							<TextField
 								label='Email'
-								//autoFocus
 								keyboardType='email-address'
 								autoCapitalize='none'
 								autoCompleteType='email'

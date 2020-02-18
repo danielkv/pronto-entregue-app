@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+
 import { OPTIONS_GROUP_FRAGMENT } from './products';
 
 export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
@@ -102,7 +103,7 @@ export const GET_USER_ORDERS = gql`
 				type
 				user {
 					id
-					full_name
+					fullName
 				}
 				street
 				number

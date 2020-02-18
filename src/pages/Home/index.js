@@ -1,9 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, FlatList, Dimensions, RefreshControl } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { useQuery } from '@apollo/react-hooks';
 import SideSwipe from 'react-native-sideswipe';
 
+import { useQuery } from '@apollo/react-hooks';
+
+import ErrorBlock from '../../components/ErrorBlock';
+import LoadingBlock from '../../components/LoadingBlock';
+
+import logoResource from '../../assets/images/logo-vertical-v2.png';
+import FeaturedProduct from './FeaturedProduct';
 import {
 	Container,
 	ImageLogo,
@@ -17,12 +23,9 @@ import {
 	CategoryTitle,
 	CategoryTitleContainer
 } from './styles';
-import LoadingBlock from '../../components/LoadingBlock';
-import ErrorBlock from '../../components/ErrorBlock';
-import { LOAD_BRANCH_FETURED_PRODUCTS } from '../../graphql/products';
+
 import { GET_BRANCH_CATEGORIES } from '../../graphql/categories';
-import logoResource from '../../assets/images/logo-vertical-v2.png';
-import FeaturedProduct from './FeaturedProduct';
+import { LOAD_BRANCH_FETURED_PRODUCTS } from '../../graphql/products';
 
 // LIMIT OF FEATURED PRODUCTS
 // const featuredLimit = 5;
@@ -63,7 +66,7 @@ export default function Home({ navigation }) {
 		setRefreshing(true);
 	}, [refreshing]);
 
-	useEffect(()=>{
+	/* useEffect(()=>{
 		if (loadingCategories && loadingFeaturedProduct && refreshing) setRefreshing(false);
 	}, [loadingCategories, loadingFeaturedProduct, refreshing])
 	
@@ -72,7 +75,7 @@ export default function Home({ navigation }) {
 	
 	const { featuredProducts } = featuredProductData.branch;
 	const { categories } = categoriesData.branch;
-	const { width } = Dimensions.get('window');
+	const { width } = Dimensions.get('window'); */
 	
 	return (
 		<Container

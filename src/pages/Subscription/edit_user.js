@@ -1,34 +1,37 @@
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Formik } from 'formik';
 import Toast from 'react-native-tiny-toast';
+
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/core';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import PageForm from './form';
-import LoadingBlock from '../../components/LoadingBlock';
 import ErrorBlock from '../../components/ErrorBlock';
-import { getErrors } from '../../utils/errors';
+import LoadingBlock from '../../components/LoadingBlock';
 
-import { UPDATE_USER, GET_USER } from '../../graphql/users';
+import { getErrors } from '../../utils/errors';
+import PageForm from './form';
+
+
 import { LOGGED_USER_ID } from '../../graphql/authentication';
+import { UPDATE_USER, GET_USER } from '../../graphql/users';
 
 const validationSchema = Yup.object().shape({
-	first_name: Yup.string().required('Obrigatório'),
-	last_name: Yup.string().required('Obrigatório'),
+	firstName: Yup.string().required('Obrigatório'),
+	lastName: Yup.string().required('Obrigatório'),
 	phone: Yup.number().required('Obrigatório'),
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),
 	password: Yup.string(),
-	repeat_password: Yup.string()
+	repeatPassword: Yup.string()
 		.test('confirm_passaword', 'Não é igual a senha', function confirm(value) {
 			return value === this.parent.password;
 		}),
 });
 
-export default function EditUser({ user_id }) {
+export default function EditUser({ userId }) {
 	const navigation = useNavigation();
 
 	useEffect(()=>{
@@ -39,17 +42,17 @@ export default function EditUser({ user_id }) {
 	
 	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
 	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER, { variables: { id: loggedUserId } });
-	const [updateUser] = useMutation(UPDATE_USER, { variables: { id: user_id } });
+	const [updateUser] = useMutation(UPDATE_USER, { variables: { id: userId } });
 	
 	const onSubmit = async (result, { resetForm }) => {
 		const saveData = {
-			first_name: result.first_name,
-			last_name: result.last_name,
+			firstName: result.firstName,
+			lastName: result.lastName,
 			email: result.email,
 			metas: [{
 				action: 'update',
-				meta_type: 'phone',
-				meta_value: result.phone,
+				key: 'phone',
+				value: result.phone,
 			}]
 		};
 
@@ -74,12 +77,12 @@ export default function EditUser({ user_id }) {
 	if (userError) return <ErrorBlock error={userError} />;
 		
 	const initialValues = {
-		first_name: userData.user.first_name,
-		last_name: userData.user.last_name,
-		phone: userData.user.metas[0].meta_value,
+		firstName: userData.user.firstName,
+		lastName: userData.user.lastName,
+		phone: userData.user.metas[0].value,
 		email: userData.user.email,
 		password: '',
-		repeat_password: '',
+		repeatPassword: '',
 	}
 	return (
 		<Formik

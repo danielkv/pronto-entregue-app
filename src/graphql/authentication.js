@@ -7,7 +7,7 @@ export const AUTHENTICATE = gql`
 	mutation ($token: String!) {
 		authenticate (token: $token) {
 			id
-			full_name
+			fullName
 			email
 		}
 	}
@@ -50,9 +50,9 @@ export const LOGIN = gql`
 		login(email: $email, password: $password) {
 			user {
 				id
-				full_name
-				first_name
-				last_name
+				fullName
+				firstName
+				lastName
 				email
 				role
 				active

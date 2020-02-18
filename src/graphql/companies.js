@@ -14,8 +14,8 @@ export const UPDATE_COMPANY = gql`
 			active
 			metas {
 				id
-				meta_type
-				meta_value
+				key
+				value
 			}
 		}
 	}

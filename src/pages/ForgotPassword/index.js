@@ -51,6 +51,7 @@ export default function ForgotPassword() {
 	const { values: { email }, errors, handleSubmit, handleChange, handleBlur, isSubmitting } = useFormik({
 		initialValues,
 		validationSchema,
+		validateOnBlur: false,
 		onSubmit,
 	});
 

@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 import { useState, useEffect } from 'react';
 import { AsyncStorage } from 'react-native';
+
 import { useQuery } from '@apollo/react-hooks';
 
 import client from './server';
@@ -19,8 +20,8 @@ export function useInitialize() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	const { loggedUserId = null } = useQuery(LOGGED_USER_ID);
-	const { selectedAddress = null } = useQuery(GET_SELECTED_USER_ADDRESS);
+	const { data: { loggedUserId = null } = {} } = useQuery(LOGGED_USER_ID);
+	const { data: { selectedAddress = null } = {} } = useQuery(GET_SELECTED_USER_ADDRESS);
 	
 	useEffect(()=>{
 		if (loading) setCalled(false);

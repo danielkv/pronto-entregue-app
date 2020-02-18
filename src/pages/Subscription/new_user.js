@@ -13,15 +13,15 @@ import PageForm from './form';
 import { CREATE_USER } from '../../graphql/users';
 
 const validationSchema = Yup.object().shape({
-	first_name: Yup.string().required('Obrigatório'),
-	last_name: Yup.string().required('Obrigatório'),
+	firstName: Yup.string().required('Obrigatório'),
+	lastName: Yup.string().required('Obrigatório'),
 	phone: Yup.number().required('Obrigatório'),
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),
 	password: Yup.string()
 		.required('Obrigatório'),
-	repeat_password: Yup.string()
+	repeatPassword: Yup.string()
 		.test('confirm_passaword', 'Não é igual a senha', function confirm(value) {
 			return value === this.parent.password;
 		}),
@@ -31,26 +31,26 @@ export default function NewUser() {
 	const navigation = useNavigation();
 
 	const initialValues = {
-		first_name: '',
-		last_name: '',
+		firstName: '',
+		lastName: '',
 		phone: '',
 		email: '',
 		password: '',
-		repeat_password: '',
+		repeatPassword: '',
 	}
 
 	const [createUser] = useMutation(CREATE_USER);
 
 	const onSubmit = async (result, { resetForm }) => {
 		const saveData = {
-			first_name: result.first_name,
-			last_name: result.last_name,
+			firstName: result.firstName,
+			lastName: result.lastName,
 			password: result.password,
 			email: result.email,
 			metas: [{
 				action: 'create',
-				meta_type: 'phone',
-				meta_value: result.phone,
+				key: 'phone',
+				value: result.phone,
 			}]
 		};
 		
@@ -75,6 +75,7 @@ export default function NewUser() {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
+				validateOnBlur={false}
 				onSubmit={onSubmit}
 				component={PageForm}
 			/>

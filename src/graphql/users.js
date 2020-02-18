@@ -23,22 +23,22 @@ export const GET_USER = gql`
 	query getUser ($id: ID!) {
 		user (id: $id)  {
 			id
-			full_name
-			first_name
-			last_name
+			fullName
+			firstName
+			lastName
 			email
 			role
 			metas (type: "phone") {
 				id
-				meta_type
-				meta_value
+				key
+				value
 			}
 		}
 	}
 `;
 
 export const GET_SELECTED_USER_ADDRESS = gql`
-	query {
+	query selectedAddress {
 		selectedAddress @client
 	}
 `;
@@ -95,7 +95,7 @@ export const CREATE_USER = gql`
 	mutation ($data:UserInput!) {
 		createUser (data:$data) {
 			id
-			full_name
+			fullName
 		}
 	}
 `;
@@ -106,7 +106,7 @@ export const GET_COMPANY_USERS = gql`
 			id
 			users {
 				id
-				full_name
+				fullName
 				role
 				createdAt
 				active
@@ -119,14 +119,14 @@ export const UPDATE_USER = gql`
 	mutation ($id:ID!, $data:UserInput!) {
 		updateUser (id: $id, data:$data) {
 			id
-			full_name
-			first_name
-			last_name
+			fullName
+			firstName
+			lastName
 			email
 			metas {
 				id
-				meta_type
-				meta_value
+				key
+				value
 			}
 		}
 	}

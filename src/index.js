@@ -6,8 +6,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import { ThemeProvider } from './react-native-ui';
+import Routes from './routes';
 import apolloClient from './services/server';
-import SplashScreen from './SplashScreen';
 import { Container } from './styles';
 import theme from './theme';
 
@@ -18,7 +18,7 @@ export default function App() {
 				<ThemeProvider theme={theme}>
 					<StyledThemeProvider theme={theme}>
 						<Container>
-							<SplashScreen />
+							<Routes />
 						</Container>
 					</StyledThemeProvider>
 				</ThemeProvider>

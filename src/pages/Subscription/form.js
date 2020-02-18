@@ -16,29 +16,29 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					autoFocus
 					label='Primeiro nome'
 					autoCompleteType='name'
-					onChangeText={handleChange('first_name')}
-					onBlur={handleBlur('first_name')}
+					onChangeText={handleChange('firstName')}
+					onBlur={handleBlur('firstName')}
 					disabled={isSubmitting}
-					value={values.first_name}
+					value={values.firstName}
 					
-					helperText={errors.first_name || ''}
-					error={Boolean(errors.first_name)}
-					inputRef={ref => { refs.first_name = ref }}
+					helperText={errors.firstName || ''}
+					error={Boolean(errors.firstName)}
+					inputRef={ref => { refs.firstName = ref }}
 					blurOnSubmit={false}
 					returnKeyType='next'
-					onSubmitEditing={handleNextInput('last_name')}
+					onSubmitEditing={handleNextInput('lastName')}
 				/>
 				<TextField
 					label='Sobrenome'
-					onChangeText={handleChange('last_name')}
-					onBlur={handleBlur('last_name')}
+					onChangeText={handleChange('lastName')}
+					onBlur={handleBlur('lastName')}
 					disabled={isSubmitting}
-					value={values.last_name}
+					value={values.lastName}
 					
-					inputRef={ref => { refs.last_name = ref }}
+					inputRef={ref => { refs.lastName = ref }}
 					blurOnSubmit={false}
-					helperText={errors.last_name || ''}
-					error={Boolean(errors.last_name)}
+					helperText={errors.lastName || ''}
+					error={Boolean(errors.lastName)}
 					returnKeyType='next'
 					onSubmitEditing={handleNextInput('phone')}
 				/>
@@ -88,19 +88,19 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					inputRef={ref => { refs.password = ref }}
 					blurOnSubmit={false}
 					returnKeyType='next'
-					onSubmitEditing={handleNextInput('repeat_password')}
+					onSubmitEditing={handleNextInput('repeatPassword')}
 				/>
 				<TextField
 					secureTextEntry
 					label='confirmar senha'
-					onChangeText={handleChange('repeat_password')}
-					onBlur={handleBlur('repeat_password')}
+					onChangeText={handleChange('repeatPassword')}
+					onBlur={handleBlur('repeatPassword')}
 					disabled={isSubmitting}
-					value={values.repeat_password}
+					value={values.repeatPassword}
 					
-					inputRef={ref => { refs.repeat_password = ref }}
-					helperText={errors.repeat_password || ''}
-					error={Boolean(errors.repeat_password)}
+					inputRef={ref => { refs.repeatPassword = ref }}
+					helperText={errors.repeatPassword || ''}
+					error={Boolean(errors.repeatPassword)}
 					onSubmitEditing={handleSubmit}
 				/>
 			</InputsContainer>

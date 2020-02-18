@@ -9,7 +9,7 @@ import { schema as typeDefs } from '../schema/cart';
 import { GET_USER_TOKEN, IS_USER_LOGGED_IN } from '../graphql/authentication';
 import { GET_SELECTED_USER_ADDRESS } from '../graphql/users';
 
-const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://192.168.234.2:4000/graphql';
+const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://10.1.1.170:4000/graphql';
 
 const httpLink = new HttpLink({ uri: host });
 
@@ -34,19 +34,20 @@ cache.writeData({ data: initialData });
 
 const authLink = new ApolloLink((operation, forward)=> {
 	const { isUserLoggedIn } = cache.readQuery({ query: IS_USER_LOGGED_IN });
-	const set_headers = {};
+	const tempHeaders = {};
 
 	const { userToken } = cache.readQuery({ query: GET_USER_TOKEN });
-	if (isUserLoggedIn && userToken) set_headers.authorization = `Bearer ${userToken}`;
+	if (isUserLoggedIn && userToken) tempHeaders.authorization = `Bearer ${userToken}`;
 
 	const { selectedAddress } = cache.readQuery({ query: GET_SELECTED_USER_ADDRESS });
-	if (selectedAddress) set_headers.address_id = selectedAddress;
+	// eslint-disable-next-line camelcase
+	if (selectedAddress) tempHeaders.address_id = selectedAddress;
 
 	// console.log(set_headers);
 	
 	operation.setContext(({ headers }) => {
 		return {
-			headers: { ...headers, ...set_headers }
+			headers: { ...headers, ...tempHeaders }
 		}
 	});
 	

@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { Button, Divider, Avatar } from 'react-native-elements';
+
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { DrawerItem } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/routers'
 
@@ -30,7 +31,7 @@ export default function DrawerContent({ navigation }) {
 	}, [loggedUserId]);
 
 	const loggedUser = loggedUserData ? loggedUserData.user : null;
-	const userInitials = loggedUser ? loggedUser.first_name.substr(0, 1).toUpperCase() + loggedUser.last_name.substr(0, 1).toUpperCase() : '';
+	const userInitials = loggedUser ? loggedUser.firstName.substr(0, 1).toUpperCase() + loggedUser.lastName.substr(0, 1).toUpperCase() : '';
 
 	const handleLogout = () => {
 		logUserOut();
@@ -47,7 +48,7 @@ export default function DrawerContent({ navigation }) {
 					{isUserLoggedIn && loggedUser
 						? (
 							<>
-								<UserName>{loggedUser.full_name}</UserName>
+								<UserName>{loggedUser.fullName}</UserName>
 								<UserEmail>{loggedUser.email}</UserEmail>
 							</>
 						)
