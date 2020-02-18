@@ -2350,6 +2350,11 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.8.tgz#0fb6fc2417ffd2816a418c9336da74d7f07db431"
   integrity sha512-msVS9qTuMT5zwAGCVm4mxfrZ18BNc6Csd0oJAtiFMZ1FAx1CCvy2+5MDmYoix63LM/6NDbNtodCiGYGmFgO0dA==
 
+currency.js@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/currency.js/-/currency.js-1.2.2.tgz#ae84daf68798051097ad3feb2d022ad08994f526"
+  integrity sha512-trMkXtHpIFq2P+PcSml3La/jpwo8shy2Xn/b5mBXoJhx3E4m3wBbdjS8eHy/DWgYKaEUH8EXPC6yomFx+zumww==
+
 damerau-levenshtein@^1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.6.tgz#143c1641cb3d85c60c32329e26899adea8701791"

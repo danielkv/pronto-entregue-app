@@ -21,6 +21,7 @@
     "apollo-client": "^2.6.4",
     "apollo-link": "^1.2.13",
     "apollo-link-http": "^1.5.16",
+    "currency.js": "^1.2.2",
     "expo": "^36.0.0",
     "expo-constants": "~8.0.0",
     "expo-linear-gradient": "~8.0.0",
