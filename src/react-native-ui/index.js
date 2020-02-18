@@ -6,5 +6,6 @@ export { default as Icon } from './Icon';
 export { default as Typography } from './Typography';
 export { default as Chip } from './Chip';
 export { default as Paper } from './Paper';
+export { default as Avatar } from './Avatar';
 
 export * from './utils';
