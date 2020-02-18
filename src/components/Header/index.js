@@ -1,18 +1,22 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Header, Icon } from 'react-native-elements';
+import { TouchableOpacity, View } from 'react-native';
 
 import { DrawerActions } from '@react-navigation/routers';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import theme from '../../theme';
-import CartButton from './CartButton';
-import { HeaderTitle } from './styles';
+import { useTheme, Icon, Typography } from "../../react-native-ui";
 
-export default function  AppHeader({ variant='standard', previous, scene, navigation }) {
+export default function  AppHeader({ variant='solid', previous, scene, navigation }) {
+	const theme = useTheme();
 	const { options } = scene.descriptor;
 	const { params } = scene.route;
+
+	const ContainerComponent = variant === 'transparent'
+		? LinearGradient
+		: View
+
+	const iconsColor = variant === 'transparent' ? '#fff' : theme.palette.gray;
 
 	const title = params && params.headerTitle
 		? params.headerTitle
@@ -23,34 +27,34 @@ export default function  AppHeader({ variant='standard', previous, scene, naviga
 				: scene.route.name;
 	
 	return (
-		<Header
-			containerStyle={{
+		<ContainerComponent
+			style={{
 				height: theme.header.height,
-				backgroundColor: 'transparent',
+				flexDirection: "row",
+
 				borderBottomWidth: 0,
+				justifyContent: 'space-between',
 				alignItems: 'center',
-				paddingTop: 0,
+				paddingHorizontal: 15
+
 			}}
+			colors={['#000f', '#0000']}
 			// ViewComponent={LinearGradient}
 			
 		>
 			{previous
 				? (
 					<TouchableOpacity onPress={navigation.goBack}>
-						<Icon name='arrow-back' color='#fff' />
+						<Icon name='chevron-left' color={iconsColor} />
 					</TouchableOpacity>
 				)
 				: (
 					<TouchableOpacity onPress={()=>navigation.dispatch(DrawerActions.toggleDrawer())}>
-						<Icon name='menu' color='#fff' />
+						<Icon name='menu' color={iconsColor} />
 					</TouchableOpacity>
 				)}
 				
-			<HeaderTitle h1>{title}</HeaderTitle>
-
-			{params && params.headerRight
-				? params.headerRight
-				: <CartButton /> }
-		</Header>
+			{Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography>}
+		</ContainerComponent>
 	)
 }
