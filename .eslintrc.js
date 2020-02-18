@@ -40,7 +40,7 @@ module.exports = {
 		"linebreak-style": 'off',
 		"react/jsx-indent" : ["error", 'tab'],
 		"jsx-quotes": ["error", "prefer-single"],
-		"indent": ["error", "tab"],
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
 		"no-tabs" : 0,
 		"arrow-body-style": 0,
 		"semi": 0,

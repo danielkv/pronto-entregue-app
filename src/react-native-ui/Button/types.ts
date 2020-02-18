@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { StyleProp, ViewStyle, TextStyle, TouchableOpacityProps } from 'react-native';
 
-import { Color } from '../theme/types';
+import { Color, IconInComponentType } from '../theme/types';
 
 export interface ButtonType {
 	variant?: "standard" | "outlined" | "filled",
@@ -25,4 +25,6 @@ export interface ButtonProps extends ButtonType, Omit<TouchableOpacityProps, 'st
 	label?: string
 	children?: string | ReactNode,
 	helperText?: string,
+	icon?: IconInComponentType
 }
+

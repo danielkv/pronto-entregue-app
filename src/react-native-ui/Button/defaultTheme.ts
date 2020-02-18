@@ -17,12 +17,7 @@ export default<ButtonType> {
 				backgroundColor: 'transparent',
 				alignItems: 'center',
 				justifyContent: 'center',
-			},
-			text: {
-				fontSize: 16,
-				textTransform: 'uppercase',
-				textAlign: "center",
-				fontWeight: 'normal'
+				flexDirection: 'row'
 			}
 		},
 		outlined: {

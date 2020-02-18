@@ -1,17 +1,20 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { Alert, KeyboardAvoidingView, ActivityIndicator, Image, } from 'react-native';
 
 import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+import imageFB from '../../assets/images/logo-fb.png';
+import imageGoogle from '../../assets/images/logo-google.png';
 import logoResource from '../../assets/images/logo-vertical-v2.png';
-import { TextField, Button } from '../../react-native-ui';
+import { TextField, Button, Typography } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
 import { getErrors } from '../../utils/errors';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 
 import { LOGIN } from '../../graphql/authentication';
+
 
 
 const validationSchema = Yup.object().shape({
@@ -64,7 +67,7 @@ export default function Login({ navigation }) {
 						<InputsContainer>
 							<TextField
 								label='Email'
-								autoFocus
+								//autoFocus
 								keyboardType='email-address'
 								autoCapitalize='none'
 								autoCompleteType='email'
@@ -120,6 +123,24 @@ export default function Login({ navigation }) {
 								disabled={isSubmitting}
 								label='Esqueci minha senha'
 							/>
+							<Button
+								variant='filled'
+								disabled={isSubmitting}
+							>
+								<>
+									<Image source={imageGoogle} />
+									<Typography variant='button' style={{ color: '#fff' }}>Logar com Google</Typography>
+								</>
+							</Button>
+							<Button
+								variant='filled'
+								disabled={isSubmitting}
+							>
+								<>
+									<Image source={imageFB} style={{ marginRight: 10 }} />
+									<Typography variant='button' style={{ color: '#fff' }}>Logar com Facebook</Typography>
+								</>
+							</Button>
 						</ButtonsContainer>
 					</FormContainer>
 				</Container>

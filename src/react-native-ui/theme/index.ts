@@ -1,6 +1,8 @@
 import ButtonDefaultTheme from '../Button/defaultTheme';
 import FormHelperTextDefaultTheme from '../FormHelperText/defaultTheme';
+import IconDefaultTheme from '../Icon/defaultTheme';
 import TextFieldDefaultTheme from '../TextField/defaultTheme';
+import TypographyDefaultTheme from '../Typography/defaultTheme';
 import { Theme } from './types';
 
 export default<Theme> {
@@ -37,4 +39,6 @@ export default<Theme> {
 	TextField: TextFieldDefaultTheme,
 	FormHelperText: FormHelperTextDefaultTheme,
 	Button: ButtonDefaultTheme,
+	Icon: IconDefaultTheme,
+	Typography: TypographyDefaultTheme,
 }
