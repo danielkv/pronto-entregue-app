@@ -1,13 +1,11 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView, ActivityIndicator, Image, } from 'react-native';
+import { Alert, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 
 import { useApolloClient } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import imageFB from '../../assets/images/logo-fb.png';
-import imageGoogle from '../../assets/images/logo-google.png';
 import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { TextField, Button, Typography } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
@@ -20,16 +18,13 @@ const validationSchema = Yup.object().shape({
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),
-	password: Yup.string()
-		.required('Obrigatório'),
 });
 
-export default function Login() {
+export default function ForgotPassword() {
 	const navigation = useNavigation();
 	
 	const initialValues = {
 		email: '',
-		password: '',
 	}
 
 	const client = useApolloClient();
@@ -53,7 +48,7 @@ export default function Login() {
 	}
 
 	// eslint-disable-next-line no-shadow
-	const { values: { email, password }, errors, handleSubmit, handleChange, handleBlur, isSubmitting } = useFormik({
+	const { values: { email }, errors, handleSubmit, handleChange, handleBlur, isSubmitting } = useFormik({
 		initialValues,
 		validationSchema,
 		onSubmit,
@@ -66,7 +61,7 @@ export default function Login() {
 					<LogoImage source={logoResource} />
 					<FormContainer>
 						<InputsContainer>
-							<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
+							<Typography variant='h1' style={{ marginBottom: 10 }}>Recuperar senha</Typography>
 							<TextField
 								label='Email'
 								//autoFocus
@@ -85,21 +80,6 @@ export default function Login() {
 								returnKeyType='next'
 								onSubmitEditing={handleNextInput('password')}
 							/>
-							<TextField
-								secureTextEntry
-								autoCompleteType='password'
-								placeholder='Senha'
-								onChangeText={handleChange('password')}
-								onBlur={handleBlur('password')}
-								disabled={isSubmitting}
-								value={password}
-
-								helperText={errors.password || ''}
-								error={Boolean(errors.password)}
-								
-								inputRef={ref => { refs.password = ref }}
-								onSubmitEditing={handleSubmit}
-							/>
 						</InputsContainer>
 						<ButtonsContainer>
 							<Button
@@ -113,37 +93,15 @@ export default function Login() {
 							>
 								{isSubmitting
 									? <ActivityIndicator />
-									: 'Entrar'}
+									: 'Enviar'}
 							</Button>
 							<Button
 								variant='outlined'
-								onPress={() => navigation.navigate('SubscriptionScreen')}
+								onPress={() => navigation.navigate('LoginScreen')}
 								disabled={isSubmitting}
-								label='Quero me cadastrar'
+								label='Já sei meu Login'
 							/>
-							<Button
-								disabled={isSubmitting}
-								onPress={() => navigation.navigate('ForgotPasswordScreen')}
-								label='Esqueci minha senha'
-							/>
-							<Button
-								variant='filled'
-								disabled={isSubmitting}
-							>
-								<>
-									<Image source={imageGoogle} />
-									<Typography variant='button' style={{ color: '#fff' }}>Logar com Google</Typography>
-								</>
-							</Button>
-							<Button
-								variant='filled'
-								disabled={isSubmitting}
-							>
-								<>
-									<Image source={imageFB} style={{ marginRight: 10 }} />
-									<Typography variant='button' style={{ color: '#fff' }}>Logar com Facebook</Typography>
-								</>
-							</Button>
+							
 						</ButtonsContainer>
 					</FormContainer>
 				</Container>

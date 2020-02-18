@@ -2,6 +2,7 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import ForgotPasswordScreen from './pages/ForgotPassword';
 import LoginScreen from './pages/Login';
 import SubscriptionScreen from './pages/Subscription';
 import { useTheme } from './react-native-ui';
@@ -17,8 +18,9 @@ export default function Routes() {
 			headerMode='none'
 			screenOptions={{ cardStyle: { backgroundColor: theme.palette.tertiary } }}
 		>
-			<Stack.Screen name='LoginScreen' component={LoginScreen} options={{ title: 'Login' }} />
-			<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} options={{ title: 'Cadastrar' }} />
+			<Stack.Screen name='LoginScreen' component={LoginScreen} />
+			<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} />
+			<Stack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen} />
 		</Stack.Navigator>
 	);
 }
