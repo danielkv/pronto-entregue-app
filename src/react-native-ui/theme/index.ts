@@ -2,6 +2,7 @@ import ButtonDefaultTheme from '../Button/defaultTheme';
 import ChipDefaultTheme from '../Chip/defaultTheme';
 import FormHelperTextDefaultTheme from '../FormHelperText/defaultTheme';
 import IconDefaultTheme from '../Icon/defaultTheme';
+import PaperDefaultTheme from '../Paper/defaultTheme';
 import TextFieldDefaultTheme from '../TextField/defaultTheme';
 import TypographyDefaultTheme from '../Typography/defaultTheme';
 import { Theme } from './types';
@@ -43,4 +44,5 @@ export default<Theme> {
 	Icon: IconDefaultTheme,
 	Typography: TypographyDefaultTheme,
 	Chip: ChipDefaultTheme,
+	Paper: PaperDefaultTheme,
 }

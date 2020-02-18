@@ -4,6 +4,7 @@ import { ButtonType } from '../Button/types';
 import { ChipType } from '../Chip/types';
 import { FormHelperTextType } from '../FormHelperText/types';
 import { IconType, IconProps } from '../Icon/types';
+import { PaperType } from '../Paper/types';
 import { TextFieldType } from '../TextField/types';
 import { TypographyType } from '../Typography/types';
 
@@ -23,6 +24,7 @@ export interface Theme {
 	Icon?: IconType,
 	Typography?: TypographyType,
 	Chip?: ChipType,
+	Paper?: PaperType,
 }
 
 interface ColorVararits {
