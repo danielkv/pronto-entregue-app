@@ -2,12 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { View, FlatList, Dimensions, RefreshControl } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+
 import { useQuery } from '@apollo/react-hooks';
 
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
+import { Paper } from '../../react-native-ui';
 import FeaturedProducts from './FeaturedProducts';
 import {
 	Container,
@@ -82,9 +84,9 @@ export default function Home({ navigation }) {
 				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 			}
 		>
-			<HeaderContainer onPress={()=>{}}>
+			<Paper style={{ paddingHorizontal: 0 }}>
 				<FeaturedProducts />
-			</HeaderContainer>
+			</Paper>
 
 			{/* <CategoriesContainer>
 				<View>

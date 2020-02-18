@@ -16,7 +16,7 @@ export default function Routes() {
 			initialRouteName='LoginScreen'
 			mode='card'
 			headerMode='none'
-			screenOptions={{ cardStyle: { backgroundColor: theme.palette.tertiary } }}
+			screenOptions={{ cardStyle: { backgroundColor: theme.palette.background.main } }}
 		>
 			<Stack.Screen name='LoginScreen' component={LoginScreen} />
 			<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} />

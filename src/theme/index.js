@@ -1,9 +1,6 @@
 import { withTheme } from '../react-native-ui';
 
 export default withTheme({
-	palette: {
-		tertiary: '#EFE8DA',
-	},
 	header: {
 		height: 60,
 		backgroundColor: {
@@ -17,10 +14,11 @@ export default withTheme({
 		right: 35,
 		bottom: 15
 	},
-	TextField: {
+	Paper: {
 		style: {
-			root: {
-				backgroundColor: '#ffffff',
+			default: {
+				margin: 0,
+				marginVertical: 8,
 			}
 		}
 	}
