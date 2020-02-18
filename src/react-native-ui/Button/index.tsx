@@ -4,29 +4,22 @@ import { View, TouchableOpacity } from 'react-native';
 import { merge, cloneDeep } from 'lodash';
 
 import FormHelperText from '../FormHelperText';
-import Icon from '../Icon';
 import Typography from '../Typography';
 import { useTheme } from '../utils';
+import { getIcon } from '../utils/icons';
 import { ButtonProps } from './types';
 
-function getIcon(icon) {
-	if (typeof icon === 'string')
-		return <Icon name={icon} />;
-
-	if (icon.name)
-		return <Icon name={icon.name} size={icon.size} type={icon.type} />;
-
-	if (React.isValidElement(icon))
-		return icon;
-
-	return false;
-}
 
 export default function Button(props: ButtonProps) {
 	const { Button, palette } = useTheme();
 	const variant = props.variant || Button.variant;
 	const colorVariant = props.color || Button.color;
-	const IconComponent = props.icon ? getIcon(props.icon) : false;
+
+	const iconColor = variant === 'filled'
+		? palette[colorVariant].contrastText
+		: palette[colorVariant].main
+
+	const IconComponent = props.icon ? getIcon(props.icon, iconColor) : false;
 
 	const componentStyle = merge({
 		default: {

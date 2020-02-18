@@ -6,8 +6,8 @@ export default<AvatarType> {
 		circle: {
 			root: {
 				borderRadius: 50,
-				width: 44,
-				height: 44,
+				width: 50,
+				height: 50,
 				alignItems: 'center',
 				justifyContent: 'center',
 				overflow: 'hidden'
@@ -18,8 +18,8 @@ export default<AvatarType> {
 				fontWeight: 'bold'
 			},
 			image: {
-				width: 44,
-				height: 44,
+				width: 50,
+				height: 50,
 				resizeMode: 'cover'
 			}
 		},

@@ -14,9 +14,7 @@ export default function Icon(props: IconProps) {
 	const type = props.type || Icon.type;
 	const styles = merge(Icon.style, props.style);
 
-	const IconComponent = getIconComponent(type)
-
-
+	const IconComponent = getIconComponent(type);
 
 	return (
 		<View {...props} style={styles.root}>

@@ -6,6 +6,7 @@ import DefaultTheme from '../theme';
 import { ThemeContext } from "../ThemeContext";
 import { ComponentStyles } from "./types";
 
+
 export function mergeStyles(style: ComponentStyles, variant: string, styles: Object = {}) {
 	const componentStyle = cloneDeep(style);
 	const componentStandardStyle = componentStyle.default;
@@ -25,3 +26,4 @@ export function useTheme() {
 
 	return theme;
 }
+

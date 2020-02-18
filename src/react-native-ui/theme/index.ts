@@ -3,6 +3,7 @@ import ButtonDefaultTheme from '../Button/defaultTheme';
 import ChipDefaultTheme from '../Chip/defaultTheme';
 import FormHelperTextDefaultTheme from '../FormHelperText/defaultTheme';
 import IconDefaultTheme from '../Icon/defaultTheme';
+import IconButtonDefaultTheme from '../IconButton/defaultTheme';
 import PaperDefaultTheme from '../Paper/defaultTheme';
 import TextFieldDefaultTheme from '../TextField/defaultTheme';
 import TypographyDefaultTheme from '../Typography/defaultTheme';
@@ -57,6 +58,7 @@ export default<Theme> {
 	TextField: TextFieldDefaultTheme,
 	FormHelperText: FormHelperTextDefaultTheme,
 	Button: ButtonDefaultTheme,
+	IconButton: IconButtonDefaultTheme,
 	Icon: IconDefaultTheme,
 	Typography: TypographyDefaultTheme,
 	Chip: ChipDefaultTheme,
