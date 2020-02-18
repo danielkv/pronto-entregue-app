@@ -3,10 +3,10 @@ import { StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { Color } from './types';
 
 export interface TextFieldType {
-	variant?: "standard" | "outlined" | "filled",
+	variant?: "default" | "outlined" | "filled",
 	color?: Color,
 	style?: {
-		standard?: TextFieldStyles,
+		default?: TextFieldStyles,
 		outlined?: TextFieldStyles,
 		filled?: TextFieldStyles,
 	},

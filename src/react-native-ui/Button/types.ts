@@ -4,13 +4,13 @@ import { StyleProp, ViewStyle, TextStyle, TouchableOpacityProps } from 'react-na
 import { Color, IconInComponentType } from '../theme/types';
 
 export interface ButtonType {
-	variant?: "standard" | "outlined" | "filled",
+	variant?: "default" | "outlined" | "filled",
 	color?: Color,
 	style?: ButtonStyles
 }
 
 export interface ButtonStyles {
-	standard?: ButtonVariantStyles,
+	default?: ButtonVariantStyles,
 	outlined?: ButtonVariantStyles,
 	filled?: ButtonVariantStyles,
 }

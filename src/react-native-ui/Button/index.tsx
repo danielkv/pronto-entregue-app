@@ -29,7 +29,7 @@ export default function Button(props: ButtonProps) {
 	const IconComponent = props.icon ? getIcon(props.icon) : false;
 
 	const componentStyle = merge({
-		standard: {
+		default: {
 			text: {
 				color: palette[colorVariant].main
 			}
@@ -52,7 +52,7 @@ export default function Button(props: ButtonProps) {
 		}
 	}, cloneDeep(Button.style));
 
-	const componentStandardStyle = componentStyle.standard;
+	const componentStandardStyle = componentStyle.default;
 	const componentVariantStyle = componentStyle[variant];
 
 	const styles = merge(componentStandardStyle, componentVariantStyle, props.style);

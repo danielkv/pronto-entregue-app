@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { ButtonType } from '../Button/types';
+import { ChipType } from '../Chip/types';
 import { FormHelperTextType } from '../FormHelperText/types';
 import { IconType, IconProps } from '../Icon/types';
 import { TextFieldType } from '../TextField/types';
@@ -21,6 +22,7 @@ export interface Theme {
 	Button?: ButtonType,
 	Icon?: IconType,
 	Typography?: TypographyType,
+	Chip?: ChipType,
 }
 
 interface ColorVararits {

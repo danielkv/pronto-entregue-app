@@ -2,9 +2,9 @@ import { ButtonType } from "./types";
 
 export default<ButtonType> {
 	color: "default",
-	variant: 'standard',
+	variant: 'default',
 	style: {
-		standard: {
+		default: {
 			root: {
 				marginVertical: 5,
 			},

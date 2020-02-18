@@ -1,29 +1,28 @@
-import { FormHelperTextType } from "./types";
+import { ChipType } from "./types";
 
-export default<FormHelperTextType> {
-	color: "primary",
+export default<ChipType> {
+	color: "default",
 	variant: 'default',
 	style: {
 		default: {
 			root: {
-				marginTop: 4,
-				marginLeft: 5,
+				paddingHorizontal: 16,
+				paddingVertical: 10,
+				borderRadius: 20,
+				alignSelf: 'flex-start'
 			},
 			text: {
-				fontSize: 12,
-				color: "#999"
+				fontSize: 14,
 			}
 		},
 		outlined: {
 			root: {
 				borderWidth: 1,
-				borderColor: "#999",
 				paddingHorizontal: 12,
 				paddingVertical: 8,
 				borderRadius: 30
 			},
 			text: {
-				color: "#999"
 			}
 		},
 	},

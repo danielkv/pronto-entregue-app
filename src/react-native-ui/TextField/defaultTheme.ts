@@ -1,9 +1,9 @@
 import { TextFieldType } from "./types";
 
 export default<TextFieldType> {
-	variant: 'standard',
+	variant: 'default',
 	style: {
-		standard: {
+		default: {
 			root: {
 				marginVertical: 5,
 			},

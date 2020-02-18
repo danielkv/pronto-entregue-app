@@ -8,7 +8,7 @@ import { ComponentStyles } from "./types";
 
 export function mergeStyles(style: ComponentStyles, variant: string, styles: Object = {}) {
 	const componentStyle = cloneDeep(style);
-	const componentStandardStyle = componentStyle.standard;
+	const componentStandardStyle = componentStyle.default;
 	const componentVariantStyle = componentStyle[variant];
 
 	const resultStyles = merge(componentStandardStyle, componentVariantStyle, styles);

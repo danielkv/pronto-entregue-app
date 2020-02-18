@@ -3,12 +3,12 @@ import { StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { Color } from '../theme/types';
 
 export interface FormHelperTextType {
-	variant?: "standard" | "outlined",
+	variant?: "default" | "outlined",
 	color?: Color,
 	style?: FormHelperTextStyles
 }
 export interface FormHelperTextStyles {
-	standard?: FormHelperTextVariantStyles,
+	default?: FormHelperTextVariantStyles,
 	outlined?: FormHelperTextVariantStyles,
 }
 

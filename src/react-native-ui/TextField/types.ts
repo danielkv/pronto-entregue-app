@@ -3,12 +3,12 @@ import { TextInputProps, TextInput } from 'react-native';
 import { StyleProp, ViewStyle, TextStyle } from 'react-native';
 
 export interface TextFieldType {
-	variant?: "standard" | "outlined" | "filled",
+	variant?: "default" | "outlined" | "filled",
 	style?: TextFieldStyles,
 }
 
 export interface TextFieldStyles {
-	standard?: TextFieldVariantStyles,
+	default?: TextFieldVariantStyles,
 	outlined?: TextFieldVariantStyles,
 	filled?: TextFieldVariantStyles,
 }
