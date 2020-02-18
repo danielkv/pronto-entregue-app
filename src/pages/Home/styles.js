@@ -15,7 +15,7 @@ export const Footer = styled.View`
 	margin:${vh(5)}px 0;
 `;
 
-export const HeaderContainer = styled.TouchableOpacity`
+export const HeaderContainer = styled.View`
 	height:${vh(40)}px;
 `;
 export const CategoriesContainer = styled.View`

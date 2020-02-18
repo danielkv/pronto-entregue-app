@@ -8,8 +8,8 @@ export const Container = styled.View`
 `;
 
 export const BgImage = styled(ImageBackground).attrs({ borderRadius: 15 })`
-	width: ${vw(70)}px;
-	height: ${vh(30)};
+	width: ${({config})=> config.itemWidth}px;
+	height: ${({config})=> config.itemHeight}px;
 	border-radius: 15px;
 	justify-content: flex-end;
 `;

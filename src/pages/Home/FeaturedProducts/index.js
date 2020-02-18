@@ -37,8 +37,8 @@ import { GET_CATEGORY_PRODUCTS } from '../../../graphql/products';
 const carouselConfig = {
 	sliderWidth: vw(100),
 	sliderHeight: vh(30),
-	itemWidth: vw(70),
-	itemHeight: vh(30),
+	itemWidth: vw(80),
+	itemHeight: vh(25),
 }
 
 export default function FeaturedProduct() {
@@ -54,7 +54,7 @@ export default function FeaturedProduct() {
 	return (
 		<Carousel
 			data={products}
-			renderItem={Product}
+			renderItem={({ item }) => <Product item={item} config={carouselConfig}/>}
 
 			sliderWidth={carouselConfig.sliderWidth}
 			sliderHeight={carouselConfig.sliderHeight}
