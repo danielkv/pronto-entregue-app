@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, FlatList, Dimensions, RefreshControl } from 'react-native';
 import { Icon } from 'react-native-elements';
 

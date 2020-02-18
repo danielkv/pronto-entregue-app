@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import { LinearGradient } from 'expo-linear-gradient';
-import { cloneDeep } from 'lodash';
 import { Icon } from 'react-native-elements';
 import Toast from 'react-native-tiny-toast';
 
-import { LOAD_PRODUCT } from '../../graphql/products';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useRoute, useNavigation } from '@react-navigation/core';
+import { LinearGradient } from 'expo-linear-gradient';
+import { cloneDeep } from 'lodash';
 
-import LoadingBlock from '../../components/LoadingBlock';
 import CartButton from '../../components/CartButton';
+import LoadingBlock from '../../components/LoadingBlock';
 
+import { getErrors } from '../../utils/errors';
+import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
+import Inline from './Inline';
+import Panel from './Panel';
 import {
 	Container,
 	HeaderImageBackgroundContainer,
@@ -23,15 +27,14 @@ import {
 	QuantityTitle,
 	Quantity,
 } from './styles';
-import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 
-import Inline from './Inline';
-import Panel from './Panel';
 import { ADD_CART_ITEM } from '../../graphql/cart';
-import { getErrors } from '../../utils/errors';
+import { LOAD_PRODUCT } from '../../graphql/products';
 
-export default function Product({ route, navigation }) {
-	const { product_id } = route.params;
+
+export default function Product() {
+	const { params: { productId=null } = {} } = useRoute();
+	const navigation = useNavigation();
 
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
@@ -42,7 +45,7 @@ export default function Product({ route, navigation }) {
 		return 0;
 	}, [product, calculateProductPrice, quantity]);
 
-	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: product_id } });
+	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
 	
 	useEffect(()=>{
 		if (error) setProduct(null);
