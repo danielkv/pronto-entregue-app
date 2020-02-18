@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle, ViewProps } from 'react-native';
 
 export interface PaperType {
 	variant?: "default" | "outlined",
-	style?: PaperProps
+	style?: PaperStyles
 }
 export interface PaperStyles {
 	default?: StyleProp<ViewStyle>,

@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { AvatarType } from '../Avatar/types';
 import { ButtonType } from '../Button/types';
 import { ChipType } from '../Chip/types';
 import { FormHelperTextType } from '../FormHelperText/types';
@@ -36,6 +37,7 @@ export interface Theme {
 	Typography?: TypographyType,
 	Chip?: ChipType,
 	Paper?: PaperType,
+	Avatar?: AvatarType,
 }
 
 interface ColorVariants {

@@ -1,3 +1,4 @@
+import AvatarDefaultTheme from '../Avatar/defaultTheme';
 import ButtonDefaultTheme from '../Button/defaultTheme';
 import ChipDefaultTheme from '../Chip/defaultTheme';
 import FormHelperTextDefaultTheme from '../FormHelperText/defaultTheme';
@@ -19,7 +20,7 @@ export default<Theme> {
 			light: "#fff",
 			main: "#EFE8DA",
 			dark: "#655A51",
-			contrastText: "#333333"
+			contrastText: "#ffffff"
 		},
 		secondary: {
 			light: "#C4EE64",
@@ -60,4 +61,5 @@ export default<Theme> {
 	Typography: TypographyDefaultTheme,
 	Chip: ChipDefaultTheme,
 	Paper: PaperDefaultTheme,
+	Avatar: AvatarDefaultTheme,
 }
