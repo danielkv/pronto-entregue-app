@@ -11,8 +11,8 @@ export default function Typography(props: TypographyProps) {
 	const variant = props.variant || Typography.variant;
 
 	const styles = merge({
-		color: palette.text
-	}, Typography.style[variant], props.style);
+		color: palette.text[variant]
+	}, Typography.style.text, Typography.style[variant], props.style);
 
 	return (
 		<Text {...props} style={styles}>{props.children}</Text>

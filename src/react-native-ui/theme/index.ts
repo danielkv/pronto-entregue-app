@@ -35,7 +35,17 @@ export default<Theme> {
 		},
 		divider: '#D1C6B1',
 		gray: '#333333',
-		text: '#333333',
+		text: {
+			default: '#F11761',
+			button: '#ffffff',
+			title: '#333333',
+			subtitle: '#333333',
+			h1: '#F11761',
+			h2: '#333333',
+			h3: '#333333',
+			h4: '#333333',
+			h5: '#333333'
+		},
 		error: {
 			light: "#e57373",
 			main: "#f44336",

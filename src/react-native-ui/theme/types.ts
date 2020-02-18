@@ -16,7 +16,17 @@ export interface Theme {
 		background?: ColorVariants;
 		divider?: string;
 		gray?: string;
-		text?: string;
+		text?: {
+			default?: string,
+			button?: string,
+			title?: string,
+			subtitle?: string,
+			h1?: string,
+			h2?: string,
+			h3?: string,
+			h4?: string,
+			h5?: string
+		};
 		error?: ColorVariants
 	};
 	TextField?: TextFieldType,

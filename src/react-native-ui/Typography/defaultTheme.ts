@@ -12,7 +12,7 @@ export default<TypographyType> {
 			fontSize: 20
 		},
 		subtitle: {
-			fontWeight: "bold",
+			fontWeight: "normal",
 			fontSize: 18
 		},
 		error: {
@@ -28,11 +28,11 @@ export default<TypographyType> {
 		},
 		h1: {
 			fontWeight: "bold",
-			fontSize: 24
+			fontSize: 26
 		},
 		h2: {
 			fontWeight: "bold",
-			fontSize: 22
+			fontSize: 24
 		},
 		h3: {
 			fontWeight: "normal",
