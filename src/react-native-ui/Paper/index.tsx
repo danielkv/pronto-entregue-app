@@ -6,7 +6,7 @@ import { merge, cloneDeep } from 'lodash';
 import { useTheme } from '../utils';
 import { PaperProps } from './types';
 
-export default function Chip(props: PaperProps) {
+export default function Paper(props: PaperProps) {
 	const { Paper } = useTheme();
 	const variant = props.variant || Paper.variant;
 	
