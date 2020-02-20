@@ -9,6 +9,7 @@ import {
 	Container,
 	Footer,
 } from './styles';
+import UserInfo from './UserInfo';
 
 export default function Home() {
 	/* const [refreshing, setRefreshing] = useState(false);
@@ -25,6 +26,7 @@ export default function Home() {
 				<RefreshControl />
 			}
 		>
+			<UserInfo />
 			<FeaturedProducts />
 			<BestSellers />
 
