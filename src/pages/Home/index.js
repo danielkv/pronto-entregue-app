@@ -1,5 +1,4 @@
 import React from 'react';
-import { RefreshControl } from 'react-native';
 import { Image } from 'react-native-elements';
 
 import logoResource from '../../assets/images/logo-simbolo.png';
@@ -12,19 +11,9 @@ import {
 import UserInfo from './UserInfo';
 
 export default function Home() {
-	/* const [refreshing, setRefreshing] = useState(false);
-	
-	const onRefresh = useCallback(()=>{
-		refetchFeaturedProducts();
-		refetchCategories();
-		setRefreshing(true);
-	}, [refreshing]); */
-	
 	return (
 		<Container
-			refreshControl={
-				<RefreshControl />
-			}
+			scrollEventThrottle={16}
 		>
 			<UserInfo />
 			<FeaturedProducts />

@@ -23,7 +23,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 
 	const iconsColor = variant === 'transparent' ? '#fff' : theme.palette.background.dark;
 
-	/* const title = params && params.headerTitle
+	/*const title = params && params.headerTitle
 		? params.headerTitle
 		: options.headerTitle !== undefined
 			? options.headerTitle
@@ -34,18 +34,13 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 	return (
 		<ContainerComponent
 			style={{
-				height: theme.header.height,
+				flex: 1,
 				flexDirection: "row",
-
-				borderBottomWidth: 0,
 				justifyContent: 'space-between',
 				alignItems: 'center',
 				paddingHorizontal: 15
-
 			}}
 			colors={['#000f', '#0000']}
-			// ViewComponent={LinearGradient}
-			
 		>
 			{previous
 				&& (
