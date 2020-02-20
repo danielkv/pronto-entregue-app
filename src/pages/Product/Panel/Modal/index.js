@@ -35,9 +35,9 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 
 	const handlePressOption = useCallback((optionId) => () => {
 		try {
-			const new_state = getGroupNewState(optionGroup, optionId)
+			const newState = getGroupNewState(optionGroup, optionId)
 			
-			setOptionGroup(new_state);
+			setOptionGroup(newState);
 		} catch (err) {
 			Alert.alert(err.message)
 		}

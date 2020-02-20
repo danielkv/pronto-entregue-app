@@ -3,20 +3,16 @@ import React from 'react';
 import { TouchableOpacity, View, ActivityIndicator } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
-import { DrawerActions } from '@react-navigation/routers';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { useTheme, Icon, Typography, Avatar, IconButton } from "../../react-native-ui";
+import { useTheme, Icon, Avatar, IconButton } from "../../react-native-ui";
 import { useLoggedUserId } from '../../utils/hooks';
 import { RigthContent } from './styles';
 
 import { GET_USER } from '../../graphql/users';
 
-
-export default function  AppHeader({ variant='solid', previous, scene, navigation }) {
+export default function  AppHeader({ variant='solid', rigthContent=true, previous, navigation }) {
 	const theme = useTheme();
-	const { options } = scene.descriptor;
-	const { params } = scene.route;
 
 	const loggedUserId = useLoggedUserId();
 	const { data: { user = null } ={}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
@@ -27,13 +23,13 @@ export default function  AppHeader({ variant='solid', previous, scene, navigatio
 
 	const iconsColor = variant === 'transparent' ? '#fff' : theme.palette.background.dark;
 
-	const title = params && params.headerTitle
+	/* const title = params && params.headerTitle
 		? params.headerTitle
 		: options.headerTitle !== undefined
 			? options.headerTitle
 			: options.title !== undefined
 				? options.title
-				: scene.route.name;
+				: scene.route.name; */
 	
 	return (
 		<ContainerComponent
@@ -52,20 +48,15 @@ export default function  AppHeader({ variant='solid', previous, scene, navigatio
 			
 		>
 			{previous
-				? (
+				&& (
 					<TouchableOpacity onPress={navigation.goBack}>
 						<Icon name='chevron-left' color={iconsColor} />
 					</TouchableOpacity>
-				)
-				: (
-					<TouchableOpacity onPress={()=>navigation.dispatch(DrawerActions.toggleDrawer())}>
-						<Icon name='menu' color={iconsColor} />
-					</TouchableOpacity>
 				)}
 				
-			{Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography>}
+			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 
-			<RigthContent>
+			{rigthContent && <RigthContent>
 				<IconButton onPress={()=>{}} icon={{ name: 'search', color: iconsColor }} />
 				<IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} />
 				{loadingUser
@@ -74,7 +65,7 @@ export default function  AppHeader({ variant='solid', previous, scene, navigatio
 						source={{ uri: 'https://s3.amazonaws.com/37assets/svn/1065-IMG_2529.jpg' }}
 						alt={user.fullName}
 					/>}
-			</RigthContent>
+			</RigthContent>}
 		</ContainerComponent>
 	)
 }
