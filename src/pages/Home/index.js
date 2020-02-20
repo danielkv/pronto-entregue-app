@@ -2,7 +2,7 @@ import React from 'react';
 import { RefreshControl } from 'react-native';
 import { Image } from 'react-native-elements';
 
-import logoResource from '../../assets/images/logo-vertical-v2.png';
+import logoResource from '../../assets/images/logo-simbolo.png';
 import BestSellers from './BestSellers'
 import FeaturedProducts from './FeaturedProducts';
 import {
@@ -31,7 +31,7 @@ export default function Home() {
 			<BestSellers />
 
 			<Footer>
-				<Image source={logoResource} />
+				<Image source={logoResource} resizeMode='contain' style={{ height: 130, width: 150 }} />
 			</Footer>
 		</Container>
 	);
