@@ -10,7 +10,7 @@ export default<TypographyType> {
 		},
 		title: {
 			fontWeight: "bold",
-			fontSize: 20
+			fontSize: 26
 		},
 		subtitle: {
 			fontWeight: "normal",

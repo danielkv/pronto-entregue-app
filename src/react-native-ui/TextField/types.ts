@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { Ref, ReactNode } from 'react';
 import { TextInputProps, TextInput } from 'react-native';
 import { StyleProp, ViewStyle, TextStyle } from 'react-native';
 
@@ -22,7 +22,10 @@ interface TextFieldVariantStyles {
 export interface TextFieldProps extends Omit<TextFieldType, 'style'>, Omit<TextInputProps, 'style'> {
 	label: string,
 	error: boolean,
+	disabled: boolean,
 	helperText: string,
 	inputRef: Ref<TextInput>,
-	style?: TextFieldVariantStyles
+	style?: TextFieldVariantStyles,
+	actionButton?: ReactNode,
+	actionButtonOnPress?(text: string): void
 }

@@ -40,7 +40,7 @@ export default<Theme> {
 		text: {
 			default: '#F11761',
 			button: '#ffffff',
-			title: '#333333',
+			title: '#F11761',
 			subtitle: '#333333',
 			h1: '#F11761',
 			h2: '#333333',

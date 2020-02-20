@@ -13,9 +13,13 @@ export default<TextFieldType> {
 				height: 50,
 				border: 0,
 				paddingHorizontal: 20,
-				paddingVertical: 10
+				paddingVertical: 10,
+				flexDirection: 'row',
+				alignItems: 'center',
+				justifyContent: 'space-between'
 			},
 			text: {
+				flex: 1,
 				fontSize: 16,
 				color: "#333333"
 			}
