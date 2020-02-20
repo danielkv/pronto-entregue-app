@@ -13,7 +13,6 @@ export default<ButtonType> {
 				height: 50,
 				border: 0,
 				paddingHorizontal: 20,
-				paddingVertical: 10,
 				backgroundColor: 'transparent',
 				alignItems: 'center',
 				justifyContent: 'center',
