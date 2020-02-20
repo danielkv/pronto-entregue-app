@@ -17,9 +17,11 @@ export default function App() {
 			<ApolloProvider client={apolloClient}>
 				<ThemeProvider theme={theme}>
 					<StyledThemeProvider theme={theme}>
+						
 						<Container>
 							<Routes />
 						</Container>
+						
 					</StyledThemeProvider>
 				</ThemeProvider>
 			</ApolloProvider>

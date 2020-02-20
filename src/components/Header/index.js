@@ -10,6 +10,7 @@ import { useLoggedUserId } from '../../utils/hooks';
 import { RigthContent } from './styles';
 
 import { GET_USER } from '../../graphql/users';
+import { transform } from 'typescript';
 
 export default function  AppHeader({ variant='solid', rigthContent=true, previous, navigation }) {
 	const theme = useTheme();
@@ -32,13 +33,15 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 				: scene.route.name; */
 	
 	return (
+		
 		<ContainerComponent
 			style={{
-				flex: 1,
+				height: theme.header.height,
 				flexDirection: "row",
 				justifyContent: 'space-between',
 				alignItems: 'center',
-				paddingHorizontal: 15
+				paddingHorizontal: 15,
+				background: theme.palette.background.main,
 			}}
 			colors={['#000f', '#0000']}
 		>
@@ -48,7 +51,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 						<Icon name='chevron-left' color={iconsColor} />
 					</TouchableOpacity>
 				)}
-				
+					
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 
 			{rigthContent && <RigthContent>
@@ -62,5 +65,6 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 					/>}
 			</RigthContent>}
 		</ContainerComponent>
+
 	)
 }

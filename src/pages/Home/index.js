@@ -12,9 +12,7 @@ import UserInfo from './UserInfo';
 
 export default function Home() {
 	return (
-		<Container
-			scrollEventThrottle={16}
-		>
+		<Container>
 			<UserInfo />
 			<FeaturedProducts />
 			<BestSellers />

@@ -16,23 +16,19 @@ import PaymentScreen from './pages/Payment';
 import ProductScreen from './pages/Product';
 import ProfileScreen from './pages/Profile';
 import SubscriptionScreen from './pages/Subscription';
-import { useTheme } from './react-native-ui';
 
 const Stack = createStackNavigator();
 
 export default function Routes() {
-	const theme = useTheme();
-	
 	return (
 		<>
 			<Stack.Navigator
 				backBehavior='history'
 				initialRouteName='HomeScreen'
-				//headerMode='none'
 				screenOptions={{ header: Header }}
 			>
 				
-				<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '', cardStyle: { backgroundColor: theme.palette.background.main } }} />
+				<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: '' }} />
 				<Stack.Screen name='CategoryScreen' component={CategoryScreen} options={{ title: 'Produtos' }} />
 				<Stack.Screen name='ProductScreen' component={ProductScreen} options={{ title: 'Produto' }} />
 
