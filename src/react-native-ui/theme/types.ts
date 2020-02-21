@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { AvatarType } from '../Avatar/types';
 import { ButtonType } from '../Button/types';
 import { ChipType } from '../Chip/types';
+import { DividerType } from '../Divider/types';
 import { FormHelperTextType } from '../FormHelperText/types';
 import { IconType, IconProps } from '../Icon/types';
 import { IconButtonType } from '../IconButton/types';
@@ -40,6 +41,7 @@ export interface Theme {
 	Chip?: ChipType,
 	Paper?: PaperType,
 	Avatar?: AvatarType,
+	Divider?: DividerType,
 }
 
 interface ColorVariants {

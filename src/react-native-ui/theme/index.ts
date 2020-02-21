@@ -1,6 +1,7 @@
 import AvatarDefaultTheme from '../Avatar/defaultTheme';
 import ButtonDefaultTheme from '../Button/defaultTheme';
 import ChipDefaultTheme from '../Chip/defaultTheme';
+import DividerDefaultTheme from '../Divider/defaultTheme';
 import FormHelperTextDefaultTheme from '../FormHelperText/defaultTheme';
 import IconDefaultTheme from '../Icon/defaultTheme';
 import IconButtonDefaultTheme from '../IconButton/defaultTheme';
@@ -64,4 +65,5 @@ export default<Theme> {
 	Chip: ChipDefaultTheme,
 	Paper: PaperDefaultTheme,
 	Avatar: AvatarDefaultTheme,
+	Divider: DividerDefaultTheme,
 }

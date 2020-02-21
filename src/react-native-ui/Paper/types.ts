@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { StyleProp, ViewStyle, ViewProps } from 'react-native';
 
 export interface PaperType {
-	variant?: "default" | "outlined",
+	variant?: "default" | "outlined" | "transparent",
 	style?: PaperStyles
 }
 export interface PaperStyles {

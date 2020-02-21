@@ -16,5 +16,9 @@ export default<PaperType> {
 			borderWidth: 1,
 			borderColor: '#fff'
 		},
+		transparent: {
+			backgroundColor: 'transparent',
+			borderWidth: 0,
+		},
 	},
 }
