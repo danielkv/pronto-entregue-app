@@ -19,7 +19,7 @@ const initialData = {
 	loggedUserId: null,
 	isUserLoggedIn: false,
 	userToken: null,
-	selectedAddress: '',
+	selectedAddress: null,
 
 	// CART
 	cartDelivery: null,

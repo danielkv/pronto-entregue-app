@@ -22,6 +22,16 @@ export default withTheme({
 			}
 		}
 	},
+	Typography: {
+		style: {
+			h4: {
+				fontSize: 18,
+			},
+			h5: {
+				fontSize: 16
+			}
+		}
+	},
 	Icon: {
 		type: 'feather',
 	}

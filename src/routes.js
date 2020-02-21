@@ -10,14 +10,17 @@ import LoadingBlock from './components/LoadingBlock';
 
 import AppRoutes from './app-routes';
 import LoginRoutes from './login-routes';
+import AddFirstAddressScreen from './pages/AddFirstAddress';
 import { useInitialize } from './services/init';
 import NavigatorTheme from './theme/navigator';
 
 const Stack = createStackNavigator();
 
 export default function SplashScreen() {
-	const { loading, loggedUserId } = useInitialize();
+	const { loading, loggedUserId, selectedAddress } = useInitialize();
 	const insets = useSafeArea();
+
+	console.log('selectedAddress: ', selectedAddress);
 	
 	return (
 		<View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
@@ -25,7 +28,6 @@ export default function SplashScreen() {
 				<Stack.Navigator
 					initialRouteName='HomeScreen'
 					mode='card'
-					//headerMode='none'
 					screenOptions={{ header }}
 				>
 					{
@@ -34,7 +36,9 @@ export default function SplashScreen() {
 							? <Stack.Screen name='Loading' options={{ headerShown: false }} component={LoadingBlock} />
 							: !loggedUserId
 								? <Stack.Screen name='LoginRoutes' options={{ headerShown: false }} component={LoginRoutes} />
-								: <Stack.Screen name='AppRoutes' options={{ headerShown: false }} component={AppRoutes} />
+								: selectedAddress
+									? <Stack.Screen name='AppRoutes' options={{ headerShown: false }} component={AppRoutes} />
+									: <Stack.Screen name='SelectAddress' options={{ headerShown: false }} component={AddFirstAddressScreen} />
 					}
 				</Stack.Navigator>
 			</NavigationContainer>
