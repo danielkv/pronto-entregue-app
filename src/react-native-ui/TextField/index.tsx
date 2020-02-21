@@ -6,7 +6,7 @@ import IconButton from '../IconButton';
 import { mergeStyles, useTheme } from '../utils';
 import { TextFieldProps } from './types';
 
-export default function TextField({ variant, style, inputRef, label, helperText, error, value, disabled=false, actionButton, actionButtonOnPress, ...restProps }: TextFieldProps) {
+function TextField({ variant, style, inputRef, label, helperText, error, value, disabled=false, actionButton, actionButtonOnPress, ...restProps }: TextFieldProps) {
 	const { TextField } = useTheme();
 	const finalVariant = variant || TextField.variant;
 	const styles = mergeStyles(TextField.style, finalVariant, style);
@@ -26,3 +26,5 @@ export default function TextField({ variant, style, inputRef, label, helperText,
 		</View>
 	)
 }
+
+export default React.memo(TextField);
