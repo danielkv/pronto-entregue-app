@@ -3,6 +3,7 @@ import { ButtonType } from "./types";
 export default<ButtonType> {
 	color: "default",
 	variant: 'default',
+	fullWidth: true,
 	style: {
 		default: {
 			root: {

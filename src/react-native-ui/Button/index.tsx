@@ -9,11 +9,11 @@ import { useTheme } from '../utils';
 import { getIcon } from '../utils/icons';
 import { ButtonProps } from './types';
 
-
 export default function Button(props: ButtonProps) {
 	const { Button, palette } = useTheme();
 	const variant = props.variant || Button.variant;
 	const colorVariant = props.color || Button.color;
+	const finalFullWidth = props.fullWidth ?? Button.fullWidth;
 
 	const iconColor = variant === 'filled'
 		? palette[colorVariant].contrastText
@@ -48,7 +48,7 @@ export default function Button(props: ButtonProps) {
 	const componentStandardStyle = componentStyle.default;
 	const componentVariantStyle = componentStyle[variant];
 
-	const styles = merge(componentStandardStyle, componentVariantStyle, props.style);
+	const styles = merge(componentStandardStyle, componentVariantStyle, { root: { alignSelf: finalFullWidth ? 'stretch' : 'auto' }, button: { alignSelf: finalFullWidth ? 'stretch' : 'auto' } }, props.style);
 
 	return (
 		<View style={styles.root}>

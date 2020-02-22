@@ -6,7 +6,8 @@ import { Color, IconInComponentType } from '../theme/types';
 export interface ButtonType {
 	variant?: "default" | "outlined" | "filled",
 	color?: Color,
-	style?: ButtonStyles
+	style?: ButtonStyles,
+	fullWidth?: Boolean
 }
 
 export interface ButtonStyles {
