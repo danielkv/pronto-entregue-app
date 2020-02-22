@@ -114,6 +114,12 @@ export default function AddFirstAddress() {
 					actionButton={<Icon name='search' color={palette.background.dark} />}
 					actionButtonOnPress={handleSearch}
 				/>
+				<Button
+					label='Buscar no mapa'
+					variant='filled'
+					icon='map'
+					onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
+				/>
 			</Paper>
 			{!!searchError && <FormHelperText error>{getErrors(searchError)}</FormHelperText>}
 

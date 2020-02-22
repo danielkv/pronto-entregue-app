@@ -13,3 +13,17 @@ export const SEARCH_ADDRESS = gql`
 		}
 	}
 `;
+
+export const SEARCH_LOCATION = gql`
+	mutation ($location: GeoPoint!) {
+		searchLocation(location: $location) {
+			street
+			number
+			district
+			city
+			state
+			zipcode
+			location
+		}
+	}
+`;

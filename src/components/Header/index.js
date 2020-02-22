@@ -10,7 +10,6 @@ import { useLoggedUserId } from '../../utils/hooks';
 import { RigthContent } from './styles';
 
 import { GET_USER } from '../../graphql/users';
-import { transform } from 'typescript';
 
 export default function  AppHeader({ variant='solid', rigthContent=true, previous, navigation }) {
 	const theme = useTheme();
@@ -41,9 +40,9 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 				justifyContent: 'space-between',
 				alignItems: 'center',
 				paddingHorizontal: 15,
-				background: theme.palette.background.main,
+				backgroundColor: variant === 'transparent' ? 'transparent' : theme.palette.background.main,
 			}}
-			colors={['#000f', '#0000']}
+			colors={['#000d', '#0000']}
 		>
 			{previous
 				&& (
