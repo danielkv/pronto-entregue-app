@@ -2,24 +2,24 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from './components/Header';
-import TabBar from './components/TabBar';
+import Header from '../components/Header';
+import TabBar from '../components/TabBar';
 
-import AddressListScreen from './pages/AddressList';
-import CartScreen from './pages/Cart';
-import CategoryScreen from './pages/Category';
-import CreateAddressScreen from './pages/CreateAddress';
-import HomeScreen from './pages/Home';
-import OrderScreen from './pages/Order';
-import OrderListScreen from './pages/OrderList';
-import PaymentScreen from './pages/Payment';
-import ProductScreen from './pages/Product';
-import ProfileScreen from './pages/Profile';
-import SubscriptionScreen from './pages/Subscription';
+import AddressListScreen from '../pages/AddressList';
+import CartScreen from '../pages/Cart';
+import CategoryScreen from '../pages/Category';
+import CreateAddressScreen from '../pages/CreateAddress';
+import HomeScreen from '../pages/Home';
+import OrderScreen from '../pages/Order';
+import OrderListScreen from '../pages/OrderList';
+import PaymentScreen from '../pages/Payment';
+import ProductScreen from '../pages/Product';
+import ProfileScreen from '../pages/Profile';
+import SubscriptionScreen from '../pages/Subscription';
 
 const Stack = createStackNavigator();
 
-export default function Routes() {
+export default function AppRoutes() {
 	return (
 		<>
 			<Stack.Navigator

@@ -89,7 +89,7 @@ export default function Login() {
 							<TextField
 								secureTextEntry
 								autoCompleteType='password'
-								placeholder='Senha'
+								label='Senha'
 								onChangeText={handleChange('password')}
 								onBlur={handleBlur('password')}
 								disabled={isSubmitting}

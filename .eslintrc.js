@@ -31,6 +31,7 @@ module.exports = {
 		"@typescript-eslint/no-explicit-any": "off",
     	"@typescript-eslint/no-parameter-properties": "off",
 		"@typescript-eslint/no-unused-vars": "error",
+		"react/display-name":"off",
 		"no-unused-vars": 'off',
 		"key-spacing": "error",
 		"object-curly-spacing": ["error", "always"],

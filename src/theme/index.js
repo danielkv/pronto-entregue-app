@@ -24,6 +24,10 @@ export default withTheme({
 	},
 	Typography: {
 		style: {
+			subtitle: {
+				fontSize: 16,
+				color: '#999'
+			},
 			h4: {
 				fontSize: 18,
 			},

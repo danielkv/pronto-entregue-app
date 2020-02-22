@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { useSafeArea } from 'react-native-safe-area-context';
 import { Platform, Alert } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 import { getGroupRestrainingRules } from '../../../utils/products';
 import Group from './Group';
-import { Container } from './styles';
 import GroupModal from './Modal';
+import { Container } from './styles';
 
 function Panel({ optionsGroups, onItemSelect }) {
 	const [selectedOptionGroup, setSelectedOptionGroup] = useState(null);

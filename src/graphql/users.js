@@ -14,6 +14,7 @@ export const GET_USER_ADDRESSES = gql`
 				district
 				city
 				state
+				location
 			}
 		}
 	}
@@ -43,19 +44,22 @@ export const GET_SELECTED_USER_ADDRESS = gql`
 	}
 `;
 
-export const LOAD_USER_ADDRESS = gql`
+export const GET_USER_ADDRESS = gql`
 	query loadUserAddress ($id: ID!) {
-		userAddress (id: $id)  {
+		user (id: $id)  {
 			id
-			name
-			street
-			number
-			complement
-			zipcode
-			district
-			city
-			state
-			location
+			addresses {
+				id
+				name
+				street
+				number
+				complement
+				zipcode
+				district
+				city
+				state
+				location
+			}
 		}
 	}
 `;

@@ -1,29 +1,37 @@
 import React from 'react';
+import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { useTheme, Icon, Typography, Divider } from '../../react-native-ui';
 import {
 	Container,
-	TouchableContainer,
-	Title,
-	AddressInfo,
-	RightComponent
+	IconBlock,
+	TextBlock
 } from './styles';
 
-export default function Address({ rightComponent, onPress, address: { name, street, number, city, state, zipcode, district, complement } }) {
-	const Wrapper = onPress ? TouchableContainer : Container;
+
+export default function Address({ divider=false, onPress, address }) {
+	const { palette } = useTheme()
+	const WrapperComponent = onPress ? TouchableOpacity : View;
+
 	return (
-		<Wrapper onPress={onPress}>
-			<Title>{name}</Title>
-			<AddressInfo>{`${street}, ${number}`}</AddressInfo>
-			{!!complement && <AddressInfo>{complement}</AddressInfo>}
-			<AddressInfo>{district}</AddressInfo>
-			<AddressInfo>{`${city} ${state}`}</AddressInfo>
-			<AddressInfo>{zipcode}</AddressInfo>
-			
-			{!!rightComponent && (
-				<RightComponent>
-					{rightComponent}
-				</RightComponent>
-			)}
-		</Wrapper>
+		<>
+			<WrapperComponent onPress={()=>onPress(address)}>
+				<Container>
+					<IconBlock>
+						<Icon name='map-pin' color={palette.background.dark} />
+					</IconBlock>
+					<TextBlock>
+						{!!address.name && <Typography variant='h4' style={{ fontWeight: "bold" }}>{address.name}</Typography>}
+						{!!address.street && <Typography variant='h4' style={{ fontWeight: "bold" }}>{`${address.street}${address.number ? `, ${address.number}` : ''}`}</Typography>}
+						{!!address.complement && <Typography variant='h5'>{address.complement}</Typography>}
+						{!!address.district && <Typography variant='h5'>{address.district}</Typography>}
+						{!!address.city && <Typography variant='h5'>{`${address.city} ${address.state}`}</Typography>}
+						{!!address.zipcode && <Typography variant='h5'>{address.zipcode}</Typography>}
+					</TextBlock>
+				</Container>
+			</WrapperComponent>
+			{divider && <Divider />}
+		</>
 	);
 }
