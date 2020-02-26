@@ -1,22 +1,50 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { merge } from 'lodash';
+import { merge, cloneDeep } from 'lodash';
 
-import { mergeStyles, useTheme } from '../utils';
+import { useTheme } from '../utils';
 import { FormHelperTextProps } from './types';
 
 export default function FormHelperText(props: FormHelperTextProps) {
 	const { palette, FormHelperText } = useTheme();
 	const variant = props.variant || FormHelperText.variant;
-	let styles = mergeStyles(FormHelperText.style, variant, props.style);
+	const colorVariant = props.color || FormHelperText.color;
 
-	if (props.error) {
-		styles = merge(styles, {
+	const componentStyle = merge({
+		default: {
+			text: {
+				color: palette[colorVariant].main
+			}
+		},
+		outlined: {
+			text: {
+				color: palette[colorVariant].main
+			},
+			root: {
+				borderColor: palette[colorVariant].main
+			}
+		},
+		filled: {
+			text: {
+				color: palette[colorVariant].contrastText
+			},
+			root: {
+				backgroundColor: palette[colorVariant].main
+			}
+		}
+	}, cloneDeep(FormHelperText.style));
+
+	const styles = merge(
+		componentStyle.default,
+		componentStyle[variant],
+		props.error ? {
 			root: variant === "outlined" ? { borderColor: palette.error.main } : {},
 			text: { color: palette.error.main },
-		})
-	}
+		} : {},
+		props.style);
+
+		console.log(colorVariant);
 
 	return (
 
