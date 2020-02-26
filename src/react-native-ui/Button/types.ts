@@ -14,6 +14,7 @@ export interface ButtonStyles {
 	default?: ButtonVariantStyles,
 	outlined?: ButtonVariantStyles,
 	filled?: ButtonVariantStyles,
+	disabled?: ButtonVariantStyles,
 }
 
 interface ButtonVariantStyles {

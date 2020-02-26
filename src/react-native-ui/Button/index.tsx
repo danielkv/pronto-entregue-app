@@ -48,7 +48,12 @@ export default function Button(props: ButtonProps) {
 	const componentStandardStyle = componentStyle.default;
 	const componentVariantStyle = componentStyle[variant];
 
-	const styles = merge(componentStandardStyle, componentVariantStyle, { root: { alignSelf: finalFullWidth ? 'stretch' : 'auto' }, button: { alignSelf: finalFullWidth ? 'stretch' : 'auto' } }, props.style);
+	let styles = merge(
+		componentStandardStyle,
+		componentVariantStyle,
+		{ root: { alignSelf: finalFullWidth ? 'stretch' : 'auto' }, button: { alignSelf: finalFullWidth ? 'stretch' : 'auto' } },
+		props.disabled ? Button.style.disabled : {},
+		props.style);
 
 	return (
 		<View style={styles.root}>

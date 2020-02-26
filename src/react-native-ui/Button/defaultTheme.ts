@@ -5,6 +5,14 @@ export default<ButtonType> {
 	variant: 'default',
 	fullWidth: true,
 	style: {
+		disabled: {
+			button: {
+				backgroundColor: '#ccc',
+			},
+			text: {
+				color: '#999'
+			}
+		},
 		default: {
 			root: {
 				marginVertical: 5,
