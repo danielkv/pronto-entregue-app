@@ -6,7 +6,7 @@ import { merge, cloneDeep } from 'lodash';
 import { useTheme } from '../utils';
 import { PaperProps } from './types';
 
-export default function Paper(props: PaperProps) {
+function Paper(props: PaperProps) {
 	const { Paper } = useTheme();
 	const variant = props.variant || Paper.variant;
 	
@@ -23,3 +23,5 @@ export default function Paper(props: PaperProps) {
 		</View>
 	);
 }
+
+export default React.memo(Paper);

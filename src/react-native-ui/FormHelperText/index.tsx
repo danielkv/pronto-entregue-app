@@ -6,7 +6,7 @@ import { merge, cloneDeep } from 'lodash';
 import { useTheme } from '../utils';
 import { FormHelperTextProps } from './types';
 
-export default function FormHelperText(props: FormHelperTextProps) {
+function FormHelperText(props: FormHelperTextProps) {
 	const { palette, FormHelperText } = useTheme();
 	const variant = props.variant || FormHelperText.variant;
 	const colorVariant = props.color || FormHelperText.color;
@@ -44,7 +44,7 @@ export default function FormHelperText(props: FormHelperTextProps) {
 		} : {},
 		props.style);
 
-		console.log(colorVariant);
+	console.log(colorVariant);
 
 	return (
 
@@ -53,3 +53,5 @@ export default function FormHelperText(props: FormHelperTextProps) {
 		</View>
 	);
 }
+
+export default React.memo(FormHelperText);

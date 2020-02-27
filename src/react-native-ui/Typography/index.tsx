@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import { useTheme } from '../utils';
 import { TypographyProps } from './types';
 
-export default function Typography(props: TypographyProps) {
+function Typography(props: TypographyProps) {
 	const { palette, Typography } = useTheme();
 	const variant = props.variant || Typography.variant;
 
@@ -16,3 +16,5 @@ export default function Typography(props: TypographyProps) {
 		<Text {...props} style={styles}>{props.children}</Text>
 	);
 }
+
+export default React.memo(Typography);
