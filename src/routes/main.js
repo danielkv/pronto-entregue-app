@@ -2,6 +2,8 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Header from '../components/Header';
+
 import ProfileRoutes from '../pages/Profile';
 import { useSelectedAddress } from '../utils/hooks';
 import CartRoutes from './cart';
@@ -19,8 +21,15 @@ export default function AppRoutes() {
 			<Stack.Navigator
 				backBehavior='history'
 				initialRouteName='HomeScreen'
-				headerMode='none'
-			>
+				
+				screenOptions={({ route })=>{
+					//console.log(route);
+					const actualRoute = route?.state?.routes[route.state.index] || route;
+					return {
+						headerTransparent: actualRoute.params?.headerTransparent || false,
+						header: Header
+					}
+				}}>
 				{selectedAddress && (
 					<>
 						<Stack.Screen name='HomeRoutes' component={HomeRoutes} />

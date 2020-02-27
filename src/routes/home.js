@@ -2,7 +2,6 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 
 import CategoryScreen from '../pages/Category';
@@ -18,7 +17,7 @@ export default function HomeRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='FeedScreen'
-				screenOptions={{ header: Header }}
+				headerMode='none'
 			>
 				<Stack.Screen name='FeedScreen' component={FeedScreen} />
 				<Stack.Screen name='CategoryScreen' component={CategoryScreen} />

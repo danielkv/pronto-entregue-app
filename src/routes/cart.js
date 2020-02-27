@@ -2,7 +2,6 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 
 import CartScreen from '../pages/Cart';
@@ -18,7 +17,7 @@ export default function CartRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='CartScreen'
-				screenOptions={{ header: Header }}
+				headerMode='none'
 			>
 				<Stack.Screen name='CartScreen' component={CartScreen} />
 				<Stack.Screen name='PaymentScreen' component={PaymentScreen} />

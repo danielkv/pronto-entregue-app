@@ -28,7 +28,7 @@ export default function UserAddresses() {
 	function handleAddressPress(address) {
 		setSelectedAddress({ variables: { address } })
 			.then(()=>{
-				navigation.navigate('HomeScreen')
+				navigation.navigate('HomeRoutes')
 			})
 	}
 		

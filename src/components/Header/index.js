@@ -3,7 +3,6 @@ import React from 'react';
 import { TouchableOpacity, View, ActivityIndicator } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
-import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme, Icon, Avatar, IconButton } from "../../react-native-ui";
@@ -12,18 +11,23 @@ import { RigthContent } from './styles';
 
 import { GET_USER } from '../../graphql/users';
 
-export default function  AppHeader({ variant='solid', rigthContent=true, previous, navigation }) {
+export default function  AppHeader({ variant='solid', rigthContent=true, navigation, ...props }) {
 	const theme = useTheme();
-	//const route = useNavigationState ();
+
+	const state = props.scene.route?.state || props.scene.route;
+	const previous =  state?.routes?.length > 1 || false;
+	const headerTransparent = props.scene.descriptor.options.headerTransparent;
+
+	const finalVariant = headerTransparent ? headerTransparent === true ? 'transparent' : variant : variant;
 
 	const loggedUserId = useLoggedUserId();
 	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
 
-	const ContainerComponent = variant === 'transparent'
+	const ContainerComponent = finalVariant === 'transparent'
 		? LinearGradient
 		: View
 
-	const iconsColor = variant === 'transparent' ? '#fff' : theme.palette.background.dark;
+	const iconsColor = finalVariant === 'transparent' ? '#fff' : theme.palette.background.dark;
 
 	/*const title = params && params.headerTitle
 		? params.headerTitle
@@ -42,7 +46,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 				justifyContent: 'space-between',
 				alignItems: 'center',
 				paddingHorizontal: 15,
-				backgroundColor: variant === 'transparent' ? 'transparent' : theme.palette.background.main,
+				backgroundColor: finalVariant === 'transparent' ? 'transparent' : theme.palette.background.main,
 			}}
 			colors={['#000d', '#0000']}
 		>

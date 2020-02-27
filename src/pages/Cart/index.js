@@ -139,7 +139,7 @@ export default function Cart({ navigation }) {
 		);
 	}
 	
-	// navigate to HomeScreen if there's no items in Cart
+	// navigate to HomeRoutes if there's no items in Cart
 	const checkConditionCB = useCallback(() => {
 		checkCondition((cartItems && cartItems.length), navigation, 'O carrinho está vazio')
 	}, [])

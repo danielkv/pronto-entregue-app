@@ -6,9 +6,9 @@ import { Container } from './styles';
 export default function TabBar(props) {
 	return (
 		<Container {...props}>
-			<MenuItem selected icon='home' label='Home' screenName='HomeScreen' />
-			<MenuItem icon='shopping-bag' label='Cesta' screenName='HomeScreen' />
-			<MenuItem icon='settings' label='Opções' screenName='HomeScreen' />
+			<MenuItem selected icon='home' label='Home' screenName='HomeRoutes' />
+			<MenuItem icon='shopping-bag' label='Cesta' screenName='HomeRoutes' />
+			<MenuItem icon='settings' label='Opções' screenName='HomeRoutes' />
 		</Container>
 	);
 }
