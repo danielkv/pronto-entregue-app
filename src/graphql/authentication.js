@@ -35,11 +35,11 @@ export const LOGGED_USER_ID = gql`
 /**
  * Recupera o Token do usuário salvo em cache 
  */
-export const IS_USER_LOGGED_IN = gql`
+/* export const IS_USER_LOGGED_IN = gql`
 	query isUserLoggedIn {
 		isUserLoggedIn
 	}
-`;
+`; */
 
 /**
  * GRAPHQL para fazer o login do usuário

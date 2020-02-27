@@ -7,7 +7,6 @@ import { useQuery } from '@apollo/react-hooks';
 import client from './server';
 
 import { AUTHENTICATE, LOGGED_USER_ID } from '../graphql/authentication';
-import { GET_SELECTED_USER_ADDRESS } from '../graphql/users';
 
 export function useInitialize() {
 	// logUserOut();
@@ -21,7 +20,6 @@ export function useInitialize() {
 	const [error, setError] = useState(null);
 
 	const { data: { loggedUserId = null } = {} } = useQuery(LOGGED_USER_ID);
-	const { data: { selectedAddress = null } = {} } = useQuery(GET_SELECTED_USER_ADDRESS);
 	
 	useEffect(()=>{
 		if (loading) setCalled(false);
@@ -43,8 +41,7 @@ export function useInitialize() {
 	return {
 		error,
 		loading,
-		loggedUserId,
-		selectedAddress
+		loggedUserId
 	}
 }
 
@@ -64,13 +61,13 @@ async function init() {
 
 export async function logUserIn(user, token) {
 	await AsyncStorage.setItem('@copeiro/userToken', token);
-	client.writeData({ data: { isUserLoggedIn: true, userToken: token, loggedUserId: user.id } });
+	client.writeData({ data: { userToken: token, loggedUserId: user.id } });
 }
 
 export async function logUserOut() {
 	await AsyncStorage.removeItem('@copeiro/userToken');
 	
-	client.writeData({ data: { userToken: '', isUserLoggedIn: false, loggedUserId: null } });
+	client.writeData({ data: { userToken: '', loggedUserId: null } });
 }
 
 export async function resetAddress() {

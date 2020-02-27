@@ -4,8 +4,8 @@ export const PointerContainer = styled.View`
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -35px;
-	margin-top:-70px;
+	margin-left: -36px;
+	margin-top:-58px;
 	align-items: center;
 	flex-direction:column-reverse;
 	z-index: 0;

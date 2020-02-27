@@ -38,12 +38,6 @@ export const GET_USER = gql`
 	}
 `;
 
-export const GET_SELECTED_USER_ADDRESS = gql`
-	query selectedAddress {
-		selectedAddress @client
-	}
-`;
-
 export const GET_USER_ADDRESS = gql`
 	query loadUserAddress ($id: ID!) {
 		user (id: $id)  {
@@ -65,32 +59,15 @@ export const GET_USER_ADDRESS = gql`
 `;
 
 export const CREATE_USER_ADDRESS = gql`
-	mutation createUserAddress ($data: UserAddressInput!) {
-		createUserAddress (data: $data)  {
-			id
-			name
-		}
-	}
-`;
-export const UPDATE_USER_ADDRESS = gql`
-	mutation updateUserAddress ($id: ID!, $data: UserAddressInput!) {
-		updateUserAddress (id: $id, data: $data)  {
-			id
-			name
+	mutation ($address: AddressInput!) {
+		createUserAddress(data: $address) {
 			street
 			number
-			zipcode
 			district
 			city
 			state
-		}
-	}
-`;
-export const REMOVE_USER_ADDRESS = gql`
-	mutation removeUserAddress ($id: ID!) {
-		removeUserAddress (id: $id)  {
-			id
-			name
+			zipcode
+			location
 		}
 	}
 `;

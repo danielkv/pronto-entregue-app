@@ -6,8 +6,8 @@ import { HttpLink } from 'apollo-link-http';
 import resolvers from '../resolvers';
 import { schema as typeDefs } from '../schema/cart';
 
+import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { GET_USER_TOKEN, IS_USER_LOGGED_IN } from '../graphql/authentication';
-import { GET_SELECTED_USER_ADDRESS } from '../graphql/users';
 
 const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://10.1.1.170:4000/graphql';
 
@@ -17,7 +17,6 @@ const cache = new InMemoryCache({});
 
 const initialData = {
 	loggedUserId: null,
-	isUserLoggedIn: false,
 	userToken: null,
 	selectedAddress: null,
 
@@ -33,13 +32,12 @@ const initialData = {
 cache.writeData({ data: initialData });
 
 const authLink = new ApolloLink((operation, forward)=> {
-	const { isUserLoggedIn } = cache.readQuery({ query: IS_USER_LOGGED_IN });
 	const tempHeaders = {};
-
+	
 	const { userToken } = cache.readQuery({ query: GET_USER_TOKEN });
-	if (isUserLoggedIn && userToken) tempHeaders.authorization = `Bearer ${userToken}`;
+	if (userToken) tempHeaders.authorization = `Bearer ${userToken}`;
 
-	const { selectedAddress } = cache.readQuery({ query: GET_SELECTED_USER_ADDRESS });
+	const { selectedAddress } = cache.readQuery({ query: GET_SELECTED_ADDRESS });
 	// eslint-disable-next-line camelcase
 	if (selectedAddress) tempHeaders.address_id = selectedAddress;
 

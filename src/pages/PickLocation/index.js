@@ -27,6 +27,7 @@ const clearCamera = {
 	zoom: 18
 }
 
+
 export default function PickLocation() {
 	const { params: { address, pickUserLocation } } = useRoute();
 	const navigation = useNavigation();
@@ -142,21 +143,23 @@ export default function PickLocation() {
 					bottom: 10,
 					left: 10,
 					right: 10,
+					alignItems: 'center'
 				}}
 			>
 				{loadingGeoLocation
 					? <ActivityIndicator color={palette.primary.main} style={{ marginBottom: 20 }} />
 					: !!selectedAddress && (<View style={{ marginBottom: 20 }}>
-						<Typography variant='h4' style={{ fontWeight: "bold", textAlign: 'center' }}>{`${selectedAddress.street}, ${selectedAddress.number}`}</Typography>
+						<Typography variant='h4' style={{ fontWeight: "bold", textAlign: 'center' }}>{`${selectedAddress.street} ${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
 						<Typography variant='h5' style={{ textAlign: 'center' }}>{`${selectedAddress.city}, ${selectedAddress.state}`}</Typography>
 					</View>)}
 
-				{!!locationError && <FormHelperText style={{ textAlign: 'center' }} error>{locationError}</FormHelperText>}
+				{!!locationError && <FormHelperText style={{ textAlign: 'center', }} error>{locationError}</FormHelperText>}
 				<Button
 					disabled={!selectedAddress}
 					label='Confirmar Localização'
 					color='primary'
 					variant='filled'
+					onPress={()=>navigation.navigate('ConfirmAddressScreen', { address: selectedAddress })}
 				/>
 			</Paper>
 		</Container>

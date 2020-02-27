@@ -3,6 +3,7 @@ import React from 'react';
 import { TouchableOpacity, View, ActivityIndicator } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
+import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme, Icon, Avatar, IconButton } from "../../react-native-ui";
@@ -13,9 +14,10 @@ import { GET_USER } from '../../graphql/users';
 
 export default function  AppHeader({ variant='solid', rigthContent=true, previous, navigation }) {
 	const theme = useTheme();
+	//const route = useNavigationState ();
 
 	const loggedUserId = useLoggedUserId();
-	const { data: { user = null } ={}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
+	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
 
 	const ContainerComponent = variant === 'transparent'
 		? LinearGradient
@@ -60,7 +62,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, previou
 					? <ActivityIndicator />
 					: <Avatar
 						source={{ uri: 'https://s3.amazonaws.com/37assets/svn/1065-IMG_2529.jpg' }}
-						alt={user.fullName}
+						alt={user ? user.fullName : ''}
 					/>}
 			</RigthContent>}
 		</ContainerComponent>

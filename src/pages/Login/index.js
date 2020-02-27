@@ -50,6 +50,7 @@ export default function Login() {
 			})
 			.catch(err => {
 				Alert.alert(getErrors(err));
+				//console.log(err);
 			})
 	}
 

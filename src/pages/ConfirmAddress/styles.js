@@ -1,22 +1,22 @@
 import styled from 'styled-components/native';
-import { vw, vh } from 'react-native-expo-viewport-units';
-
-import theme from '../../theme';
 
 export const ContainerScroll = styled.ScrollView`
 	flex:1;
 `;
 export const Container = styled.View`
-	margin: ${theme.header.height}px ${vw(10)}px ${vh(5)}px ${vw(10)}px;
 	flex:1;
 `;
 
 export const FormContainer = styled.View`
-	margin-top: ${vh(2)}px;
+	align-items:center;
+	margin: ${({ theme })=>(`${theme.margin.top}px ${theme.margin.left}px`)};
 `;
 export const InputsContainer = styled.View`
-	
+	flex: 1;
+	align-self:stretch;
+	margin-top: 20px;
 `;
 export const ButtonsContainer = styled.View`
+	align-self:stretch;
 	margin-top: 30px;
 `;

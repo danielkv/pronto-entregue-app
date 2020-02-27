@@ -8,16 +8,13 @@ import { useNavigation } from '@react-navigation/core';
 
 import Address from '../../components/Address';
 
-import { Paper, Typography, TextField, useTheme, Icon, FormHelperText, Button } from '../../react-native-ui';
+import { Paper, Typography, TextField, useTheme, Icon, FormHelperText, Button, Divider } from '../../react-native-ui';
 import { getErrors } from '../../utils/errors';
 import UserAddresses from './UserAddresses';
 
 import { SEARCH_ADDRESS } from "../../graphql/addresses";
 
-
-// import { Container } from './styles';
-
-export default function AddFirstAddress() {
+export default function SearchAddress() {
 	const { palette } = useTheme();
 	const navigation = useNavigation();
 	const [addressSearch, setAddressSearch] = useState('');
@@ -31,7 +28,7 @@ export default function AddFirstAddress() {
 	
 	// SEARCH
 	function handleSearch(search) {
-		if (search)	searchAddress({ variables: { search } })
+		if (search)	searchAddress({ variables: { search: search } })
 	}
 	
 	// MODAL
@@ -106,18 +103,27 @@ export default function AddFirstAddress() {
 					onChangeText={(text)=>setAddressSearch(text)}
 					placeholderTextColor={palette.background.dark}
 					disabled={loadingSearch}
+					returnKeyType='search'
+					enablesReturnKeyAutomatically
+					onSubmitEditing={({ nativeEvent: { text } }) => handleSearch(text)}
 					style={{
 						inputContainer: {
 							backgroundColor: palette.background.main
 						}
 					}}
-					actionButton={<Icon name='search' color={palette.background.dark} />}
-					actionButtonOnPress={handleSearch}
+					actionButton={Boolean(addressSearch) && <Icon name='x' color='#888' />}
+					actionButtonOnPress={()=> setAddressSearch('')}
 				/>
 				<Button
-					label='Buscar no mapa'
+					label='Buscar'
 					variant='filled'
-					icon='map'
+					color='primary'
+					icon='search'
+					onPress={()=>handleSearch(addressSearch)}
+				/>
+				<Button
+					label='Encontrar no mapa'
+					variant='outlined'
 					onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
 				/>
 			</Paper>
@@ -132,6 +138,16 @@ export default function AddFirstAddress() {
 							<Typography variant='subtitle' style={{ marginBottom: 20 }}>Selecione um dos endereços abaixo</Typography>
 							<View>
 								{addressesFound.map((addr, index) => <Address onPress={handleSelectAddress} divider={index < addressesFound.length -1} key={index} address={addr} />)}
+							</View>
+							<View>
+								<Divider />
+								<Typography style={{ color: '#777', textAlign: 'center', marginVertical: 10 }}>Não encontrou o endereço que procurava?</Typography>
+								<Button
+									label='Encontrar no mapa'
+									variant='outlined'
+									//icon='map'
+									onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
+								/>
 							</View>
 						</Paper>
 					)
