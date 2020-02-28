@@ -1,13 +1,10 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { useRoute } from '@react-navigation/core';
-
 import { TextField, Typography, FormHelperText, useTheme, Button, Paper, Icon } from '../../react-native-ui';
 import { InputsContainer, ButtonsContainer, FormContainer } from './styles';
 
 export default function AddressForm({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
-	const { params: { address = null } = {} } = useRoute();
 	const { palette } = useTheme();
 	const refs = {};
 	const handleNextInput = (fieldName) => () => {
@@ -17,8 +14,8 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 	return (
 		<>
 			<Paper style={{ alignItems: "center" }}>
-				<Typography variant='h4' style={{ fontWeight: 'bold' }}>{`${address.street} ${address.street ? `, ${address.number}` : ''}`}</Typography>
-				<Typography variant='h5'>{`${address.city}  - ${address.state}`}</Typography>
+				<Typography variant='h4' style={{ fontWeight: 'bold' }}>{`${values.street} ${values.street ? `, ${values.number}` : ''}`}</Typography>
+				<Typography variant='h5'>{`${values.city}  - ${values.state}`}</Typography>
 				<FormHelperText variant='outlined' color='primary' style={{  root: { marginTop: 10 } }}>Confirme o endereço</FormHelperText>
 				<Icon name='chevron-down' />
 			</Paper>
@@ -31,11 +28,12 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 						onChangeText={handleChange('name')}
 						onBlur={handleBlur('name')}
 						disabled={isSubmitting}
+						value={values.name}
 
 						inputRef={ref => { refs.name = ref }}
 						blurOnSubmit={false}
 						returnKeyType='next'
-						onSubmitEditing={handleNextInput('street')}
+						onSubmitEditing={handleNextInput('number')}
 					/>
 				
 					<TextField
@@ -79,7 +77,7 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 						inputRef={ref => { refs.district = ref }}
 						blurOnSubmit={false}
 						returnKeyType='next'
-						onSubmitEditing={handleNextInput('city')}
+						onSubmitEditing={handleNextInput('zipcode')}
 					/>
 					<TextField
 						error={Boolean(errors.zipcode)}

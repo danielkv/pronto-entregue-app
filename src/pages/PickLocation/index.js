@@ -9,6 +9,7 @@ import * as Permissions from 'expo-permissions';
 import { cloneDeep } from 'lodash';
 
 
+import { extractAddress } from '../../controller/address';
 import { Icon, useTheme, Button, Paper, FormHelperText, Typography } from '../../react-native-ui';
 // import mapStyle from '../../services/mapStyle.json';
 import { calculateDistance } from '../../utils';
@@ -159,7 +160,7 @@ export default function PickLocation() {
 					label='Confirmar Localização'
 					color='primary'
 					variant='filled'
-					onPress={()=>navigation.navigate('ConfirmAddressScreen', { address: selectedAddress })}
+					onPress={()=>navigation.navigate('ConfirmAddressScreen', { address: extractAddress(selectedAddress) })}
 				/>
 			</Paper>
 		</Container>

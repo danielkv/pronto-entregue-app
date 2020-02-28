@@ -3,16 +3,14 @@ import { Alert, KeyboardAvoidingView } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
 import { useMutation } from '@apollo/react-hooks';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute, CommonActions } from '@react-navigation/core';
 import { Formik } from 'formik';
 import { isNumber } from 'lodash'
 import * as Yup from 'yup';
 
-import ErrorBlock from '../../components/ErrorBlock';
-import LoadingBlock from '../../components/LoadingBlock';
-
 import { sanitizeAddress } from '../../controller/address';
 import { getErrors } from '../../utils/errors';
+import { useLoggedUserId } from '../../utils/hooks';
 import PageForm from './form';
 import { Container, ContainerScroll } from './styles';
 
@@ -26,20 +24,39 @@ const validationSchema = Yup.object().shape({
 	district: Yup.string().required('Obrigatório'),
 	zipcode: Yup.number().typeError('Deve conter apenas números').required('Obrigatório'),
 });
+const address = {
+	name: "outro",
+	street: "Rua Alvaro Silveira",
+	number: 102,
+	complement: "",
+	zipcode: 88960000,
+	district: "centro",
+	city: "Sombrio",
+	state: "SC",
+	location: [-29.1048401,-49.6380229]
 
+}
 export default function ConfirmAddress() {
-	const { params: { address = null } } = useRoute();
-	// const navigation = useNavigation();
+	//const { params: { address = null } } = useRoute();
+	const navigation = useNavigation();
 
-	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES }] });
+	const loggedUserId = useLoggedUserId();
+	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] });
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	
-	const onSubmit = async (result) => {
+	function onSubmit(result) {
 		const dataSave = sanitizeAddress(result);
 		
 		return createAddress({ variables: { data: dataSave } })
 			.then(() => {
 				setSelectedAddress({ variables: { address: dataSave } })
+					.then(()=>{
+						navigation.navigate('HomeRoutes')
+						/* navigation.reset({
+							index: 1,
+							routes: [{ name: 'HomeRoutes' }]
+						}) */
+					})
 
 				Toast.show('Endereço selecionado');
 			})
@@ -56,7 +73,7 @@ export default function ConfirmAddress() {
 		district: address.district || '',
 		zipcode: isNumber(address.zipcode) ? address.zipcode.toString() : address.zipcode,
 		
-		name: '',
+		name: address.name || '',
 		complement: '',
 		city: address.city,
 		state: address.state,

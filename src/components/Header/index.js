@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme, Icon, Avatar, IconButton } from "../../react-native-ui";
+import { getErrors } from '../../utils/errors';
 import { useLoggedUserId } from '../../utils/hooks';
 import { RigthContent } from './styles';
 
@@ -16,7 +17,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 
 	const state = props.scene.route?.state || props.scene.route;
 	const previous =  state?.routes?.length > 1 || false;
-	const headerTransparent = props.scene.descriptor.options.headerTransparent;
+	const headerTransparent = props?.scene?.descriptor?.options?.headerTransparent || false;
 
 	const finalVariant = headerTransparent ? headerTransparent === true ? 'transparent' : variant : variant;
 

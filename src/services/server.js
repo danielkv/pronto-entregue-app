@@ -40,8 +40,6 @@ const authLink = new ApolloLink((operation, forward)=> {
 	const { selectedAddress } = cache.readQuery({ query: GET_SELECTED_ADDRESS });
 	// eslint-disable-next-line camelcase
 	if (selectedAddress) tempHeaders.address_id = selectedAddress;
-
-	// console.log(set_headers);
 	
 	operation.setContext(({ headers }) => {
 		return {

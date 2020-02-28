@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 export default function Routes() {
 	return (
 		<Stack.Navigator
-			initialRouteName='LoginScreen'
+			initialRouteName='SearchAddressScreen'
 			headerMode='none'
 		>
 			<Stack.Screen name='SearchAddressScreen' component={SearchAddressScreen} />

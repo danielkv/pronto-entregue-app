@@ -21,9 +21,7 @@ export default function AppRoutes() {
 			<Stack.Navigator
 				backBehavior='history'
 				initialRouteName='HomeScreen'
-				
 				screenOptions={({ route })=>{
-					//console.log(route);
 					const actualRoute = route?.state?.routes[route.state.index] || route;
 					return {
 						headerTransparent: actualRoute.params?.headerTransparent || false,

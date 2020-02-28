@@ -59,8 +59,9 @@ export const GET_USER_ADDRESS = gql`
 `;
 
 export const CREATE_USER_ADDRESS = gql`
-	mutation ($address: AddressInput!) {
-		createUserAddress(data: $address) {
+	mutation CreateUserAddress ($data: AddressInput!) {
+		createUserAddress(data: $data) {
+			id
 			street
 			number
 			district
