@@ -44,8 +44,6 @@ function FormHelperText(props: FormHelperTextProps) {
 		} : {},
 		props.style);
 
-	console.log(colorVariant);
-
 	return (
 
 		<View style={styles.root}>
