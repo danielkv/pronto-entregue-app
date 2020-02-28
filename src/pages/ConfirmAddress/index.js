@@ -3,7 +3,7 @@ import { Alert, KeyboardAvoidingView } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
 import { useMutation } from '@apollo/react-hooks';
-import { useNavigation, useRoute, CommonActions } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
 import { isNumber } from 'lodash'
 import * as Yup from 'yup';
