@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native-elements';
 
-import { BlockContainer } from './styles';
 import { getErrors } from '../../utils/errors';
+import { BlockContainer } from './styles';
 
 export default function ErrorBlock({ error }) {
 	return (
