@@ -9,6 +9,7 @@ export const GET_CATEGORY_PRODUCTS = gql`
 				id
 				name
 				image
+				price
 				fromPrice
 			}
 		}
@@ -21,6 +22,7 @@ export const GET_BEST_SELLERS = gql`
 			id
 			name
 			image
+			price
 			fromPrice
 		}
 	}
@@ -93,7 +95,7 @@ export const LOAD_PRODUCT = gql`
 			}
 			image
 			active
-			options_groups(filter:$filter) {
+			options_groups(filter: $filter) {
 				...OptionsGroupFields
 			}
 		}
