@@ -36,7 +36,7 @@ export default function UserAddresses() {
 	if (loadingAddresses) return <LoadingBlock />;
 	if (addressesError) return <ErrorBlock error={getErrors(addressesError)} />;
 
-	if (!addresses.length) return;
+	if (!addresses.length) return false;
 
 	return (
 		<Paper>
