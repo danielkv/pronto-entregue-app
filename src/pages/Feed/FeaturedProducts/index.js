@@ -9,6 +9,7 @@ import LoadingBlock from '../../../components/LoadingBlock';
 
 import { useTheme, Paper, Typography } from '../../../react-native-ui';
 import { getErrors } from '../../../utils/errors';
+import { useSelectedAddress } from '../../../utils/hooks';
 import FeaturedItem from './FeaturedItem';
 
 import { GET_PRODUCTS_ON_SALE } from '../../../graphql/products';
@@ -24,7 +25,9 @@ export default function FeaturedProduct() {
 	const theme = useTheme();
 	const carouselRef = useRef();
 	const [activeSlide, setActiveSlide] = useState(0);
-	const { data: { productsOnSale: products = [] } = {}, error, loading: loadingProducts } = useQuery(GET_PRODUCTS_ON_SALE, { variables: { limit: 5 }, fetchPolicy: 'no-cache' });
+	
+	const { location } = useSelectedAddress();
+	const { data: { productsOnSale: products = [] } = {}, error, loading: loadingProducts } = useQuery(GET_PRODUCTS_ON_SALE, { variables: { limit: 5, location }, fetchPolicy: 'no-cache' });
 
 	if (loadingProducts) return <LoadingBlock />
 	if (error) return <ErrorBlock error={getErrors(error)} />
