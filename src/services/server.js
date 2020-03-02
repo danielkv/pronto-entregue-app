@@ -37,6 +37,9 @@ const authLink = new ApolloLink((operation, forward)=> {
 	const { userToken } = cache.readQuery({ query: GET_USER_TOKEN });
 	if (userToken) tempHeaders.authorization = `Bearer ${userToken}`;
 	
+	const { selectedAddress } = cache.readQuery({ query: GET_SELECTED_ADDRESS });
+	if (selectedAddress) tempHeaders.selectedaddress = JSON.stringify(selectedAddress);
+	
 	operation.setContext(({ headers }) => {
 		return {
 			headers: { ...headers, ...tempHeaders }
