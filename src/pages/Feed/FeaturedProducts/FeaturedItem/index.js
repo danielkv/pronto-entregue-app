@@ -5,10 +5,13 @@ import { useNavigation } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Typography, Chip } from '../../../../react-native-ui'
-import { Container, BgImage } from './styles';
+import { Container, BgImage, TextContainer } from './styles';
 
 export default function FeaturedItem({ item, config }) {
 	const navigation = useNavigation();
+
+	const diff = item.price - item.sale.price;
+	const pct = Math.floor(diff * 100 / item.price);
 
 	return (
 		<Container onPress={()=>{navigation.navigate('ProductScreen', { productId: item.id })}}>
@@ -16,13 +19,16 @@ export default function FeaturedItem({ item, config }) {
 				<View>
 					<LinearGradient
 						colors={['#0000', '#000f']}
-						style={{ paddingHorizontal: 15, paddingVertical: 10 }}
+						style={{ paddingHorizontal: 15, paddingBottom: 15, paddingTop: 20 }}
 					>
-						<Typography variant='title' style={{ color: '#fff' }}>{item.name}</Typography>
+						<TextContainer>
+							<Typography variant='subtitle' style={{ color: '#fff' }}>{item.company.displayName}</Typography>
+							<Typography variant='title' style={{ color: '#fff' }}>{item.name}</Typography>
+						</TextContainer>
 					</LinearGradient>
 				</View>
 				<Chip
-					label='10%'
+					label={`-${pct}%`}
 					color='secondary'
 					style={{
 						root: {

@@ -16,6 +16,24 @@ export const GET_CATEGORY_PRODUCTS = gql`
 	}
 `;
 
+export const GET_PRODUCTS_ON_SALE = gql`
+	query GetProductsOnSale ($limit: Int!) {
+		productsOnSale(limit: $limit) {
+			id
+			name
+			image
+			price
+			fromPrice
+			company {
+				displayName
+			}
+			sale {
+				price
+			}
+		}
+	}
+`;
+
 export const GET_BEST_SELLERS = gql`
 	query GetBestSellers ($limit: Int!) {
 		bestSellers (limit: $limit) {
