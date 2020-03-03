@@ -14,5 +14,5 @@ export const Container = styled.View`
 	
 	shadow-opacity: 0.25;
 
-	elevation: 8;
+	elevation: 15;
 `;

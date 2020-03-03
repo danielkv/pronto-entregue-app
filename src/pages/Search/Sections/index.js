@@ -1,0 +1,39 @@
+import React from 'react';
+import { View, ActivityIndicator } from 'react-native';
+
+import { useQuery } from '@apollo/react-hooks';
+
+import ErrorBlock from '../../../components/ErrorBlock';
+import Section from '../../../components/Section';
+
+import { Typography, useTheme } from '../../../react-native-ui';
+import { getErrors } from '../../../utils/errors';
+import { useSelectedAddress } from '../../../utils/hooks';
+import { ItemsContainer } from './styles';
+
+import { GET_SECTIONS } from '../../../graphql/sections';
+
+export default function Sections() {
+	const { palette } = useTheme();
+	const { location } = useSelectedAddress();
+	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
+
+	if (error) return <ErrorBlock error={getErrors(error)} />
+
+	return (
+		<View>
+			<Typography variant='h1' style={{ marginVertical: 20, fontSize: 26 }}>Seções</Typography>
+			
+			{loadingSections
+				? <ActivityIndicator color={palette.primary.main} />
+				: sections.length
+					? (
+						<ItemsContainer>
+							{sections.map((item) => <Section key={item.id} section={item} />)}
+						</ItemsContainer>
+					)
+					: <Typography variant='subtitle'>Nenhuma seção encontrada para entrega nesse local</Typography>
+			}
+		</View>
+	);
+}
