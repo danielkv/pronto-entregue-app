@@ -3,7 +3,7 @@ import { Alert, KeyboardAvoidingView } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
 import { useMutation } from '@apollo/react-hooks';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { Formik } from 'formik';
 import { isNumber } from 'lodash'
 import * as Yup from 'yup';
@@ -24,20 +24,9 @@ const validationSchema = Yup.object().shape({
 	district: Yup.string().required('Obrigatório'),
 	zipcode: Yup.number().typeError('Deve conter apenas números').required('Obrigatório'),
 });
-const address = {
-	name: "outro",
-	street: "Rua Alvaro Silveira",
-	number: 102,
-	complement: "",
-	zipcode: 88960000,
-	district: "centro",
-	city: "Sombrio",
-	state: "SC",
-	location: [-29.1048401,-49.6380229]
 
-}
 export default function ConfirmAddress() {
-	//const { params: { address = null } } = useRoute();
+	const { params: { address = null } } = useRoute();
 	const navigation = useNavigation();
 
 	const loggedUserId = useLoggedUserId();

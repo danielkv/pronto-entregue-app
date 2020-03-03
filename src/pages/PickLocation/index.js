@@ -52,20 +52,23 @@ export default function PickLocation() {
 		if (pickUserLocation) getLocationAsync();
 	}, []);
 
-	async function getLocationAsync() {
-		let { status } = await Permissions.askAsync(Permissions.LOCATION);
-		if (status !== 'granted') {
-			setLocationError('A permissão para acesssar a localização foi negada');
-		}
-	
-		let location = await Location.getCurrentPositionAsync({});
+	function getLocationAsync() {
+		Location.getProviderStatusAsync()
+			.then(async ()=>{
+				let { status } = await Permissions.askAsync(Permissions.LOCATION);
+				if (status !== 'granted') {
+					setLocationError('A permissão para acesssar a localização foi negada');
+				}
+			
+				let location = await Location.getCurrentPositionAsync({});
 
-		geoLocate(location.coords);
+				geoLocate(location.coords);
 
-		const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
-		newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
-		setCamera(newCamera)
-		MapRef.current.animateCamera(newCamera);
+				const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
+				newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+				setCamera(newCamera)
+				MapRef.current.animateCamera(newCamera);
+			});
 	}
 	async function geoLocate(location) {
 		setLocationError('')
