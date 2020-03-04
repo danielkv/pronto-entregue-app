@@ -1,8 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { merge } from 'lodash';
-
 import { useTheme } from '../utils';
 import { getIconComponent } from './iconTypes';
 import { IconProps } from './types';
@@ -12,12 +10,13 @@ export default function Icon(props: IconProps) {
 	const color = props.color || Icon.color;
 	const size = props.size || Icon.size;
 	const type = props.type || Icon.type;
-	const styles = merge(Icon.style, props.style);
+
+	const rootStyles = [Icon.style.root, props.style?.root || {}]
 
 	const IconComponent = getIconComponent(type);
 
 	return (
-		<View {...props} style={styles.root}>
+		<View {...props} style={rootStyles}>
 			<IconComponent name={props.name} color={color} size={size}  />
 		</View>
 	)

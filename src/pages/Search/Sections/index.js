@@ -17,7 +17,7 @@ export default function Sections() {
 	const { palette } = useTheme();
 	const { location } = useSelectedAddress();
 	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
-
+	
 	if (error) return <ErrorBlock error={getErrors(error)} />
 
 	return (
