@@ -7,7 +7,7 @@ const size = (vw(100)-105)/2;
 
 export const Container = styled.TouchableOpacity`
 	width: ${size}px;
-	height: ${size}px;
+	height: 180px;
 	margin: 17.5px;
 `;
 

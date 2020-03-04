@@ -6,9 +6,10 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import Company from '../../../components/Company'
 import ErrorBlock from '../../../components/ErrorBlock';
+import NoResultBlock from '../../../components/NoResultBlock';
 import Product from '../../../components/Product'
 
-import { TextField, useTheme, Typography, Divider, Icon, Button } from '../../../react-native-ui';
+import { TextField, useTheme, Divider } from '../../../react-native-ui';
 import { getErrors } from '../../../utils/errors';
 import { useSelectedAddress } from '../../../utils/hooks';
 
@@ -93,13 +94,7 @@ export default function SearchBlock() {
 						</Tab.Navigator>
 					</View>
 				)
-				: (called && !loadingSearch) && (
-					<View style={{ alignItems: 'center', marginTop: 10 }}>
-						<Icon name='x-circle' size={30} color={palette.background.dark} />
-						<Typography style={{ marginTop: 5, marginBottom: 10, color: palette.background.dark }}>Nenhum resultado encontrado</Typography>
-						<Button icon='message-circle' variant='outlined' color='primary'>Indique um estabelecimento</Button>
-					</View>
-				)
+				: (called && !loadingSearch) && <NoResultBlock />
 			}
 		</View>
 	);

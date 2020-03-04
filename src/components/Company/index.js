@@ -16,7 +16,7 @@ export default function Company({ item: company }) {
 	return (
 		<Container>
 			<Image
-				source={{ uri: 'https://www.pfizer.com.br/sites/default/files/inline-images/alimentos-funcionais-o-que-sao-e-para-que-servem.jpg' }}
+				source={{ uri: company.image }}
 				style={{
 					width: 130,
 					height: 130,

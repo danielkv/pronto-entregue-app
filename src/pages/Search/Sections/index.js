@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/core';
 
 import ErrorBlock from '../../../components/ErrorBlock';
 import Section from '../../../components/Section';
@@ -14,6 +15,7 @@ import { ItemsContainer } from './styles';
 import { GET_SECTIONS } from '../../../graphql/sections';
 
 export default function Sections() {
+	const navigation = useNavigation();
 	const { palette } = useTheme();
 	const { location } = useSelectedAddress();
 	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
@@ -29,7 +31,7 @@ export default function Sections() {
 				: sections.length
 					? (
 						<ItemsContainer>
-							{sections.map((item) => <Section key={item.id} section={item} />)}
+							{sections.map((item) => <Section key={item.id} onPress={()=>navigation.navigate('SectionCompaniesScreen', { sectionId: item.id, sectionName: item.name, sectionImage: item.image })} section={item} />)}
 						</ItemsContainer>
 					)
 					: <Typography variant='subtitle'>Nenhuma seção encontrada para entrega nesse local</Typography>

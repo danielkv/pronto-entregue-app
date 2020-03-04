@@ -20,6 +20,7 @@ export const SEARCH_PRODUCTS_COMPANIES = gql`
 		companies: searchCompaniesOnApp(search: $search, location: $location) {
 			id
 			displayName
+			image
 			rate
 			deliveryTime
 			distance(location: $location)

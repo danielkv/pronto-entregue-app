@@ -8,6 +8,7 @@ import CategoryScreen from '../pages/Category';
 import FeedScreen from '../pages/Feed';
 import ProductScreen from '../pages/Product';
 import SearchScreen from '../pages/Search';
+import SectionCompaniesScreen from '../pages/SectionCompanies';
 import { useSelectedAddress } from '../utils/hooks';
 
 const Stack = createStackNavigator();
@@ -22,6 +23,7 @@ export default function HomeRoutes() {
 			>
 				<Stack.Screen name='FeedScreen' component={FeedScreen} />
 				<Stack.Screen name='SearchScreen' component={SearchScreen} />
+				<Stack.Screen name='SectionCompaniesScreen' component={SectionCompaniesScreen} />
 				<Stack.Screen name='CategoryScreen' component={CategoryScreen} />
 				<Stack.Screen name='ProductScreen' component={ProductScreen} />
 			</Stack.Navigator>

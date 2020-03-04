@@ -1,26 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { useNavigation } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Typography } from '../../react-native-ui'
-import { BRL } from '../../utils/currency';
 import { Container, BgImage } from './styles';
 
-export default function Section({ section }) {
-	const navigation = useNavigation();
-
+export default function Section({ section, onPress }) {
 	return (
-		<Container onPress={() => {} }>
+		<Container onPress={onPress}>
 			<BgImage source={{ uri: section.image }}>
 				<View>
 					<LinearGradient
 						colors={['#0000', '#000f']}
-						style={{ paddingHorizontal: 15, paddingVertical: 10 }}
+						style={{ paddingHorizontal: 15, paddingTop: 30, paddingBottom: 15 }}
 					>
 						<Typography variant='title' style={{ color: '#fff', fontSize: 16 }}>{section.name}</Typography>
-						{Boolean(section.fromPrice) && <Typography variant='subtitle' style={{ color: '#fff', fontSize: 14 }}>{BRL(section.fromPrice).format()}</Typography>}
 					</LinearGradient>
 				</View>
 			</BgImage>
