@@ -6,7 +6,6 @@ import { useQuery } from '@apollo/react-hooks';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme, Icon, Avatar, IconButton } from "../../react-native-ui";
-import { getErrors } from '../../utils/errors';
 import { useLoggedUserId } from '../../utils/hooks';
 import { RigthContent } from './styles';
 

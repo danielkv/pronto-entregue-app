@@ -4,10 +4,10 @@ import { View, ActivityIndicator } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Company from '../../../components/Company'
+import CompanyItem from '../../../components/CompanyItem'
 import ErrorBlock from '../../../components/ErrorBlock';
 import NoResultBlock from '../../../components/NoResultBlock';
-import Product from '../../../components/Product'
+import ProductItem from '../../../components/ProductItem'
 
 import { TextField, useTheme, Divider } from '../../../react-native-ui';
 import { getErrors } from '../../../utils/errors';
@@ -80,7 +80,7 @@ export default function SearchBlock() {
 								{()=>(
 									products.map((product, index) => (
 										<Fragment key={product.id}>
-											<Product key={product.id} item={product} />
+											<ProductItem key={product.id} item={product} />
 											{Boolean(index+1 < products.length) && <Divider />}
 										</Fragment>
 									))
@@ -88,7 +88,7 @@ export default function SearchBlock() {
 							</Tab.Screen>
 							<Tab.Screen name='SearchCompanies' options={{ title: 'Estabelecimentos' }}>
 								{()=>(
-									companies.map(company => <Company key={company.id} item={company} />)
+									companies.map(company => <CompanyItem key={company.id} item={company} />)
 								)}
 							</Tab.Screen>
 						</Tab.Navigator>

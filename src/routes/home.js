@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TabBar from '../components/TabBar';
 
 import CategoryScreen from '../pages/Category';
+import CompanyScreen from '../pages/Company';
 import FeedScreen from '../pages/Feed';
 import ProductScreen from '../pages/Product';
 import SearchScreen from '../pages/Search';
@@ -24,6 +25,7 @@ export default function HomeRoutes() {
 				<Stack.Screen name='FeedScreen' component={FeedScreen} />
 				<Stack.Screen name='SearchScreen' component={SearchScreen} />
 				<Stack.Screen name='SectionCompaniesScreen' component={SectionCompaniesScreen} />
+				<Stack.Screen name='CompanyScreen' component={CompanyScreen} />
 				<Stack.Screen name='CategoryScreen' component={CategoryScreen} />
 				<Stack.Screen name='ProductScreen' component={ProductScreen} />
 			</Stack.Navigator>

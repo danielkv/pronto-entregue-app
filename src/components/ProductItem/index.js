@@ -5,7 +5,7 @@ import { Typography, Chip } from '../../react-native-ui';
 import { BRL } from '../../utils/currency';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
 
-export default function Product({ item: product }) {
+export default function ProductItem({ item: product }) {
 	const featuredPrice = product?.sale?.progress ? product.sale.price : product.fromPrice;
 	const standardPrice = product?.sale?.progress ? product.fromPrice : false;
 

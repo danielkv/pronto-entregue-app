@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Company from '../../components/Company';
+import CompanyItem from '../../components/CompanyItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import NoResultBlock from '../../components/NoResultBlock';
 
@@ -53,7 +53,7 @@ export default function Section() {
 					? <ActivityIndicator color={palette.primary.main} />
 					: section?.companies
 						? (
-							section.companies.map(company => <Company key={company.id} item={company} />)
+							section.companies.map(company => <CompanyItem key={company.id} item={company} />)
 						)
 						: <NoResultBlock />
 				}

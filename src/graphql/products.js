@@ -16,9 +16,27 @@ export const GET_CATEGORY_PRODUCTS = gql`
 	}
 `;
 
+export const LIST_PRODUCT_FRAGMENT = gql`
+	fragment ListProductFragment on Product {
+		id
+		name
+		description
+		image
+		fromPrice
+		company {
+			id
+			displayName
+		}
+		sale {
+			price
+			progress
+		}
+	}
+`;
+
 export const GET_PRODUCTS_ON_SALE = gql`
-	query GetProductsOnSale ($limit: Int!) {
-		productsOnSale(limit: $limit) {
+	query GetProductsOnSale ($limit: Int!, $location: GeoPoint!) {
+		productsOnSale(limit: $limit, location: $location) {
 			id
 			name
 			image

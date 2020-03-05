@@ -21,6 +21,7 @@ export const LOAD_SECTION = gql`
 			companies(location: $location) {
 				id
 				displayName
+				backgroundColor
 				image
 				rate
 				deliveryTime

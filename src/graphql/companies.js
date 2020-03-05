@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import { LIST_PRODUCT_FRAGMENT } from './products';
+
 /**
  * Atualiza infomações da empresa no servidor
  * 
@@ -21,8 +23,41 @@ export const UPDATE_COMPANY = gql`
 	}
 `;
 
+export const LOAD_COMPANY = gql`
+	query LoadCompany ($id: ID!, $location: GeoPoint!) {
+		company (id: $id) {
+			id
+			displayName
+			rate
+			deliveryTime
+			countRatings
+			distance(location: $location)
+			ratings (pagination: { rowsPerPage: 15 }) {
+				id
+				rate
+				comment
+				createdAt
+				user {
+					id
+					fullName
+					image
+				}
+			}
+			categories {
+				id
+				name
+				products {
+					...ListProductFragment
+				}
+			}
+		}
+	}
+
+	${LIST_PRODUCT_FRAGMENT}
+ `;
+
 export const GET_COMPANY_PAYMENT_METHODS = gql`
-	query GetPaymentPaymentMethods ($id:ID!) {
+	query GetPaymentPaymentMethods ($id: ID!) {
 		branch (id:$id) {
 			id
 			paymentMethods {

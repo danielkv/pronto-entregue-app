@@ -1,10 +1,14 @@
 import React from 'react';
 import { Image } from 'react-native';
 
+import { useNavigation } from '@react-navigation/core';
+
 import { Typography, Icon } from '../../react-native-ui';
 import { Container, ContentContainer, Stars, FooterContainer, FooterContent } from './styles';
 
-export default function Company({ item: company }) {
+export default function CompanyItem({ item: company }) {
+	const navigation = useNavigation();
+
 	function renderStars(rate) {
 		const stars = [];
 		for (let i=1; i<=5; i++) {
@@ -14,7 +18,7 @@ export default function Company({ item: company }) {
 	}
 
 	return (
-		<Container>
+		<Container onPress={()=> navigation.navigate('CompanyScreen', { companyId: company.id, companyName: company.displayName, companyImage: company.image, companyBackground: company.backgroundColor })}>
 			<Image
 				source={{ uri: company.image }}
 				style={{
