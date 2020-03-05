@@ -32,28 +32,43 @@ export const LOAD_COMPANY = gql`
 			deliveryTime
 			countRatings
 			distance(location: $location)
-			ratings (pagination: { rowsPerPage: 15 }) {
-				id
-				rate
-				comment
-				createdAt
-				user {
-					id
-					fullName
-					image
-				}
-			}
-			categories {
-				id
-				name
-				products {
-					...ListProductFragment
-				}
+		}
+	}
+`;
+
+export const GET_CATEGORIES = gql`
+	query GetCompanyCategories ($filter: Filter) {
+		categories (filter: $filter) {
+			id
+			name
+			products {
+				...ListProductFragment
 			}
 		}
 	}
 
 	${LIST_PRODUCT_FRAGMENT}
+ `;
+
+export const GET_RATINGS = gql`
+	query LoadRatings ($filter: Filter, $pagination: Pagination) {
+		ratings (filter: $filter, pagination: $pagination) {
+			id
+			rate
+			comment
+			createdAt
+			user {
+				id
+				fullName
+				image
+			}
+
+		}
+		countRatings(filter: $filter)
+		pageInfo {
+			page
+		}
+	}
  `;
 
 export const GET_COMPANY_PAYMENT_METHODS = gql`

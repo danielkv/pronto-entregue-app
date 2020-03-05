@@ -1,5 +1,7 @@
 import React from 'react';
 
+import moment from 'moment';
+
 import { Avatar, Typography, Icon } from '../../react-native-ui';
 import { Container, CommentContainer, Stars, CommentInfo } from './styles';
 
@@ -11,13 +13,17 @@ export default function RatingItem({ item: rating }) {
 		}
 		return stars
 	}
+
+	const createdAt = moment(rating.createdAt);
+	const displayDate = moment().diff(createdAt, 'day') >= 1 ? createdAt.format('DD/MM/YY HH:mm') : createdAt.fromNow();
+	
 	return (
 		<Container>
 			<Avatar size={30} alt={rating.user.fullName} source={{ uri: rating.user.image }} />
 			<CommentContainer>
 				<CommentInfo>
 					<Typography style={{ fontWeight: 'bold', fontSize: 16, color: '#655A51' }}>{rating.user.fullName}</Typography>
-					<Typography style={{ marginLeft: 8, fontWeight: 'normal', fontSize: 12, color: '#655A51' }}>{rating.user.fullName}</Typography>
+					<Typography style={{ marginLeft: 8, fontWeight: 'normal', fontSize: 12, color: '#655A51' }}>{displayDate}</Typography>
 				</CommentInfo>
 				<Stars>{renderStars(rating.rate)}</Stars>
 				<Typography variant='text' style={{ color: '#655A51', marginTop: 15 }}>{rating.comment}</Typography>

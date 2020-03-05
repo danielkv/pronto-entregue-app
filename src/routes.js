@@ -2,6 +2,8 @@ import React from 'react';
 import { View } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context';
 
+import 'moment/locale/pt-br';
+
 import { NavigationContainer } from '@react-navigation/native';
 
 import LoadingBlock from './components/LoadingBlock';

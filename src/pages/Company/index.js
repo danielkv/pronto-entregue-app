@@ -6,7 +6,6 @@ import { useQuery } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/core';
 
 import ErrorBlock from '../../components/ErrorBlock';
-import NoResultBlock from '../../components/NoResultBlock';
 
 import { Paper, Typography, useTheme, Icon } from '../../react-native-ui';
 import { getErrors } from '../../utils/errors';
@@ -24,7 +23,6 @@ export default function Company() {
 	const { palette } = useTheme();
 
 	const { data: { company = null } = {}, loading: loadingCompany, error: companyError } = useQuery(LOAD_COMPANY, { variables: { id: companyId, location } });
-	const filteredCategories = company?.categories?.filter(cat => cat.products.length) || [];
 
 	useEffect(()=>{
 		navigation.setParams({ headerTransparent: true })
@@ -78,11 +76,9 @@ export default function Company() {
 					)}
 			</Paper>
 
-			{!loadingCompany && filteredCategories.length
-				? <ProductsBlock categories={filteredCategories} />
-				: <NoResultBlock suggestCompany={false} message='Nenhum produto encontrado' />}
-
-			{company?.countRatings && <RatingBlock ratings={company.ratings} />}
+			{Boolean(!loadingCompany && company) && <ProductsBlock companyId={company.id} />}
+			
+			{Boolean(!loadingCompany && company) && <RatingBlock companyId={company.id} />}
 		</ScrollView>
 	);
 }
