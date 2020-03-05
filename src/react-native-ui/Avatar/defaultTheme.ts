@@ -2,12 +2,11 @@ import { AvatarType } from "./types";
 
 export default<AvatarType> {
 	variant: 'circle',
+	size: 50,
 	style: {
 		circle: {
 			root: {
 				borderRadius: 50,
-				width: 50,
-				height: 50,
 				alignItems: 'center',
 				justifyContent: 'center',
 				overflow: 'hidden'
@@ -18,8 +17,6 @@ export default<AvatarType> {
 				fontWeight: 'bold'
 			},
 			image: {
-				width: 50,
-				height: 50,
 				resizeMode: 'cover'
 			}
 		},
@@ -34,8 +31,6 @@ export default<AvatarType> {
 			root: {
 				borderRadius: 0,
 				backgroundColor: '#fff',
-				width: 24,
-				height: 24,
 				alignItems: 'center'
 			},
 			text: {},

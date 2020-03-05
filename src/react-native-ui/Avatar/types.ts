@@ -2,6 +2,7 @@ import { StyleProp, ViewStyle, ImageProps, TextStyle, ImageStyle } from 'react-n
 
 export interface AvatarType {
 	variant?: "rounded" | "circle" | 'square',
+	size?: Number,
 	style?: AvatarStyles
 }
 export interface AvatarStyles {
