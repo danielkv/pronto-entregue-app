@@ -2,13 +2,11 @@ import { Text } from 'react-native-elements';
 
 import styled from 'styled-components/native';
 
-import theme from '../../theme';
-
 export const ButtonContainer = styled.TouchableOpacity`
-  	background-color: ${theme.palette.primary};
-	height:50px;
+  	background-color: ${({ theme }) => theme.palette.primary.main};
+	height: 40px;
 	
-	border-radius:4px;
+	border-radius:20px;
 	flex-direction:row;
 	overflow:hidden;
 
@@ -36,7 +34,7 @@ export const ButtonPriceContainer = styled.View`
 `;
 
 export const ButtonPrice = styled(Text)`
-	color:#336535;
+	color:#333;
 	font-size:14px;
 	font-weight:bold;
 `;

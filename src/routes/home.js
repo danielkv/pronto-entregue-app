@@ -19,7 +19,7 @@ export default function HomeRoutes() {
 	return (
 		<>
 			<Stack.Navigator
-				initialRouteName='SearchScreen'
+				initialRouteName='FeedScreen'
 				headerMode='none'
 			>
 				<Stack.Screen name='FeedScreen' component={FeedScreen} />

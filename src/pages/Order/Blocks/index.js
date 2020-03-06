@@ -19,7 +19,7 @@ export default function Blocks({ order }) {
 			<BlocksRow>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='calendar' color={theme.palette.primary} /></BlockIcon>
+						<BlockIcon><Icon type='material-community' name='calendar' color={theme.palette.primary.main} /></BlockIcon>
 						<BlockTitle>Data</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
@@ -29,7 +29,7 @@ export default function Blocks({ order }) {
 				</Block>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='currency-usd' color={theme.palette.primary} /></BlockIcon>
+						<BlockIcon><Icon type='material-community' name='currency-usd' color={theme.palette.primary.main} /></BlockIcon>
 						<BlockTitle>Valor total</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
@@ -40,7 +40,7 @@ export default function Blocks({ order }) {
 			<BlocksRow>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='credit-card' color={theme.palette.primary} /></BlockIcon>
+						<BlockIcon><Icon type='material-community' name='credit-card' color={theme.palette.primary.main} /></BlockIcon>
 						<BlockTitle>Pagamento</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
@@ -50,7 +50,7 @@ export default function Blocks({ order }) {
 				</Block>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='truck' color={theme.palette.primary} /></BlockIcon>
+						<BlockIcon><Icon type='material-community' name='truck' color={theme.palette.primary.main} /></BlockIcon>
 						<BlockTitle>Entrega</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>

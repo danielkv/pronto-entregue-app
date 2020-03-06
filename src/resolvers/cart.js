@@ -14,8 +14,6 @@ export default {
 		cancelCart: (_, args, { cache }) => {
 			cache.writeData({
 				data: {
-					/* cartDelivery: null,
-					cartPayment: null, */
 					cartMessage: '',
 					cartItems: [],
 					cartPrice: 0
@@ -25,9 +23,9 @@ export default {
 		addCartItem: (_, { data }, { cache }) => {
 			const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
 			
-			const new_cart = cartItems.concat(data);
+			const newCart = cartItems.concat(data);
 
-			cache.writeQuery({ query: GET_CART_ITEMS, data: { cartItems: new_cart } });
+			cache.writeQuery({ query: GET_CART_ITEMS, data: { cartItems: newCart } });
 
 			return null;
 		},

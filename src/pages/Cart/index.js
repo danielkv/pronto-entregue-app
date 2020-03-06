@@ -108,7 +108,7 @@ export default function Cart({ navigation }) {
 	const handleRemoveOrderItem = (item) => () => {
 		Alert.alert(
 			`Remover ${item.name}`,
-			'tem certeza que deseja remover esse item do carrinho',
+			'tem certeza que deseja remover esse item da cesta',
 			[
 				{ text: 'Sim', onPress: ()=>removeOrderItem({ variables: { id: item.id } }) },
 				{ text: 'Cancelar' },
@@ -141,7 +141,7 @@ export default function Cart({ navigation }) {
 	
 	// navigate to HomeRoutes if there's no items in Cart
 	const checkConditionCB = useCallback(() => {
-		checkCondition((cartItems && cartItems.length), navigation, 'O carrinho está vazio')
+		checkCondition((cartItems && cartItems.length), navigation, 'A cesta está vazio')
 	}, [])
 	useFocusEffect(checkConditionCB);
 	

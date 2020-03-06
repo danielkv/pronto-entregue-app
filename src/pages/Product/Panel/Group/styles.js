@@ -1,9 +1,6 @@
-import { Text } from 'react-native-elements';
-import { vh, vw } from 'react-native-expo-viewport-units';
-
 import styled from 'styled-components/native';
 
-import theme from '../../../../theme';
+import { Typography } from '../../../../react-native-ui';
 
 
 export const TitleContainer = styled.View`
@@ -12,58 +9,37 @@ export const TitleContainer = styled.View`
 	flex:1;
 `;
 
-export const GroupTitle = styled(Text)`
-	color:#000;
-	font-size:18px;
-	font-weight:bold;
-`;
 export const CenterElementContainer = styled.View`
 	flex:1;
 	flex-direction:row;
 	align-items:center;
 	justify-content:flex-end;
 `;
-export const PriceContainer = styled.View`
-	background-color: #000;
-	padding:4px 10px;
-	border-radius:3px;
-	align-items:center;
-	justify-content:center;
-	margin-left:${vw(3)}px;
-`;
-export const GroupPrice = styled(Text)`
-	font-size:14px;
-	color:#fff;
-`;
 
 export const Container = styled.TouchableOpacity`
 	background-color:#fff;
-	${()=>'shadow-color: #000;	shadow-offset: 0 2px;	shadow-opacity: 0.23;	shadow-radius: 2.62px;	elevation:4;'}
+	${()=>'shadow-color: #000;	shadow-offset: 0 4px;	shadow-opacity: 0.0;	shadow-radius: 4.65px;	elevation: 8;'}
 	
-	padding: 0 ${vw(5)}px;
-	margin:${vh(1)}px 0;
-	height: ${vh(7)}px;
+	padding-left: 15px;
+	margin: 8px 0;
+	height: 50px;
 
-	border-radius:4px;
+	border-radius:25px;
 	flex-direction:row;
 	align-items:center;
 	overflow:hidden;
 `;
 
-export const SelectedOptionsText = styled(Text)`
-	font-size:13px;
-	color:#999;
-`;
-
 export const SelectedOptionsNumber = styled.View`
-	background-color:${theme.palette.primary};
+	background-color:${({ theme })=>theme.palette.primary.main};
 	border-radius:30px;
 	width:30px;
 	height:30px;
 	justify-content:center;
 	align-items:center;
+	margin-right: 10px;
 `;
-export const SelectedOptionsNumberText = styled(Text)`
+export const SelectedOptionsNumberText = styled(Typography)`
 	font-size:14px;
 	line-height:30px;
 	text-align:center;

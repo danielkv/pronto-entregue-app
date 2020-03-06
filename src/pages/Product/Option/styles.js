@@ -1,9 +1,6 @@
-import { Text } from 'react-native-elements';
 import { vh, vw } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
-
-import theme from '../../../theme';
 
 export const TitleContainer = styled.View`
 	flex-direction:row;
@@ -13,31 +10,19 @@ export const TitleContainer = styled.View`
 export const OptionIconContainer = styled.View`
 	margin-right:${vw(3)}px;
 `;
-export const OptionTitle = styled(Text)`
-	
-`;
-export const PriceContainer = styled.View`
-	background-color: #000;
-	padding:4px 10px;
-	border-radius:3px;
-	align-items:center;
-	justify-content:center;
-`;
-export const OptionPrice = styled(Text)`
-	color: #fff;
-	font-size: 12px;
-`;
 
 export const Container = styled.TouchableOpacity`
-	${({ selected })=>(selected ? 'background-color: #fff;' : `background-color: ${theme.palette.divider}`)}
-	${({ selected })=>(selected && 'shadow-color: #000;	shadow-offset: 0 2px;	shadow-opacity: 0.23;	shadow-radius: 2.62px;	elevation:4;')}
-	
-	padding: 0 ${vw(5)}px;
+	border-width: 1px;
+	padding-left: 8px;
 	margin:${vh(1)}px 0;
-	height: ${vh(7)}px;
+	height: 40px;
 
-	border-radius:4px;
+	border-radius:20px;
 	flex-direction:row;
 	align-items:center;
 	overflow:hidden;
+
+	background-color: ${({ selected }) => selected ? '#fff' : 'transparent'};
+	border-color: ${({ theme, selected }) => selected ? 'transparent' : theme.palette.background.main};
+	${({ selected })=>(selected && 'shadow-color: #000;	shadow-offset: 0 2px;	shadow-opacity: 0.23; shadow-radius: 2.62px;	elevation:6;')}
 `;

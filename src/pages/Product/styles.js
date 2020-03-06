@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
 import { Text } from 'react-native-elements';
-import { vh, vw } from 'react-native-expo-viewport-units';
+import { vh } from 'react-native-expo-viewport-units';
+
+import styled from 'styled-components/native';
 
 export const Container = styled.View`
 	flex:1;
@@ -15,22 +16,11 @@ export const HeaderImageBackgroundContainer = styled.ImageBackground`
 	flex:1;
 	justify-content:flex-end;
 `;
-export const ProductDescription = styled(Text)`
-	text-align:left;
-	font-size:14px;
-	font-weight:100;
-	color:#fff;
-	text-shadow:2px 2px 3px rgba(0,0,0,0.5);
-	padding:0 ${vw(5)}px;
-`;
 
-export const GroupsContainer = styled.View`
-	padding:${vh(3)}px ${vw(4)}px;
-`;
 
 export const CartButtonContainer = styled.View`
 	background-color:#111;
-	padding:${vh(4)}px ${vw(5)}px;
+	padding: 15px 35px;
 
 	${()=>'shadow-color: #000;	shadow-offset: 0 2px; shadow-opacity: 0.25; shadow-radius: 3.84px; elevation:5;'}
 `;

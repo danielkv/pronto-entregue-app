@@ -40,7 +40,7 @@ export default function category({ route, navigation }) {
 	const renderProductItem = ({ item: { id, name, description, image, options_qty, price } }) => {
 		const openProduct = () => { navigation.navigate('ProductScreen', { product_id: id }) };
 		const buttonIcon = options_qty ? 'page-next-outline' : 'cart-plus';
-		const buttonTitle = options_qty ? 'Ver opções' : 'Colocar no carrinho';
+		const buttonTitle = options_qty ? 'Ver opções' : 'Colocar na cesta';
 		const buttonPrice = options_qty ? null : price;
 		const buttonAction = options_qty ? openProduct : () => {}
 		

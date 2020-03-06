@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
-import Toast from 'react-native-tiny-toast';
+import { Alert, TouchableOpacity, View } from 'react-native';
 
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { useRoute, useNavigation } from '@react-navigation/core';
@@ -9,8 +7,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
 
 import CartButton from '../../components/CartButton';
+import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
+import Toast from '../../components/Toast';
 
+import { Paper, Typography, Icon, IconButton, TextField, useTheme } from '../../react-native-ui';
 import { getErrors } from '../../utils/errors';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import Inline from './Inline';
@@ -19,10 +20,8 @@ import {
 	Container,
 	HeaderImageBackgroundContainer,
 	HeaderContainer,
-	ProductDescription,
 	ProductContainer,
 	CartButtonContainer,
-	GroupsContainer,
 	QuantityContainer,
 	QuantityTitle,
 	Quantity,
@@ -33,9 +32,11 @@ import { LOAD_PRODUCT } from '../../graphql/products';
 
 
 export default function Product() {
-	const { params: { productId=null } = {} } = useRoute();
+	const { params: { productId, productName, productImage, productDescription } } = useRoute();
+	const { palette } = useTheme();
 	const navigation = useNavigation();
 
+	const [cartButtonHidden, setCartButtonHidden] = useState(false);
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
 	const client = useApolloClient();
@@ -45,29 +46,31 @@ export default function Product() {
 		return 0;
 	}, [product, calculateProductPrice, quantity]);
 
-	const { data: productData, loading: loadingProduct, error } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
+	const { data: productData, loading: loadingProduct, error: productError } = useQuery(LOAD_PRODUCT, { variables: { id: productId }, fetchPolicy: 'cache-and-network' });
 	
 	useEffect(()=>{
-		if (error) setProduct(null);
+		if (productError) setProduct(null);
 		else if (productData) setProduct(cloneDeep(productData.product));
-	}, [productData, loadingProduct, error]);
+	}, [productData, loadingProduct, productError]);
 	
+	// set HEADER transparent
 	useEffect(()=>{
-		if (product && product.name) {
-			navigation.setParams({
-				headerTitle: product.name
-			});
-		}
-	}, [product]);
+		navigation.setParams({ headerTransparent: true });
+	}, []);
 	
 	const resetProduct = () => {
 		setProduct(cloneDeep(productData.product));
 		setQuantity(1);
 	}
 
+	// Share link
+	async function handleShare () {
+		return;
+	}
+
 	const handleItemSelect = useCallback((optionsGroups) => {
 		const newProduct = { ...product };
-		newProduct.options_groups = optionsGroups;
+		newProduct.optionsGroups = optionsGroups;
 
 		setProduct(newProduct);
 	}, [product, setProduct]);
@@ -81,7 +84,7 @@ export default function Product() {
 				})
 					.then(()=>{
 						resetProduct();
-						Toast.show('Produto adicionado ao carrinho');
+						Toast.show('Produto adicionado à cesta');
 					})
 					.catch((err)=>{
 						Alert.alert(getErrors(err));
@@ -92,32 +95,59 @@ export default function Product() {
 		}
 	}
 
-	if (loadingProduct || !product) return <LoadingBlock />;
+	if (productError) return <ErrorBlock error={getErrors(productError)} />
 
 	return (
 		<Container>
 			<ProductContainer>
 				<HeaderContainer>
-					<HeaderImageBackgroundContainer source={{ uri: product.image }}>
+					<HeaderImageBackgroundContainer source={{ uri: productImage }}>
 
 						<LinearGradient
-							colors={['rgba(255,124,3,0)', 'rgba(255,124,3,1)']}
-							style={{ justifyContent: 'flex-end', paddingTop: 30, paddingBottom: 20 }}
+							colors={['#0000', '#000f']}
+							style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
 						>
-							<ProductDescription>{product.description}</ProductDescription>
+							<View style={{ flexDirection: 'row' }}>
+								<IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} />
+								<IconButton icon={{ name: 'heart', color: 'white' }} />
+							</View>
+							<Typography style={{ marginBottom: 10, fontSize: 24, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
+							<Typography style={{ color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 						</LinearGradient>
 
 					</HeaderImageBackgroundContainer>
 				</HeaderContainer>
+				<Paper style={{ marginTop: -45 }}>
+					
+					{loadingProduct || !product
+						? <LoadingBlock />
+						: (
+							<>
+								{product.type === 'inline'
+									? <Inline optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />
+									: <Panel optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />}
 
-				<GroupsContainer>
-					{product.type === 'inline'
-						? <Inline optionsGroups={product.options_groups} onItemSelect={handleItemSelect} />
-						: <Panel optionsGroups={product.options_groups} onItemSelect={handleItemSelect} />}
-				</GroupsContainer>
+								<Typography style={{ marginTop: 20, marginBottom: 10 }}>Observações</Typography>
+								<TextField
+									style={{
+										inputContainer: { backgroundColor: palette.background.main, height: 180 }
+									}}
+									onFocus={()=>setCartButtonHidden(true)}
+									onBlur={()=>setCartButtonHidden(false)}
+									textAlignVertical='top'
+									multiline
+									numberOfLines={8}
+								/>
+							</>
+						)
+					}
+
+				</Paper>
+
 
 			</ProductContainer>
-			<CartButtonContainer>
+
+			{(!cartButtonHidden && !loadingProduct) && <CartButtonContainer>
 				<QuantityContainer>
 					<QuantityTitle>Quantidade</QuantityTitle>
 
@@ -126,7 +156,7 @@ export default function Product() {
 							if (quantity > 1) setQuantity(quantity - 1);
 						}}
 					>
-						<Icon type='material-community' name='minus-circle-outline' color='#fff' />
+						<Icon name='minus-circle' color='#fff' />
 					</TouchableOpacity>
 					
 					<Quantity>{quantity.toString()}</Quantity>
@@ -136,11 +166,11 @@ export default function Product() {
 							setQuantity(quantity + 1);
 						}}
 					>
-						<Icon type='material-community' name='plus-circle-outline' color='#fff' />
+						<Icon name='plus-circle' color='#fff' />
 					</TouchableOpacity>
 				</QuantityContainer>
-				<CartButton title='Adicionar ao Carrinho' forceShowPrice onPress={handleCartButtonPress} price={totalPrice} icon='cart' />
-			</CartButtonContainer>
+				<CartButton title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress} price={totalPrice} icon='cart' />
+			</CartButtonContainer>}
 		</Container>
 	);
 }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, Alert, TouchableOpacity } from 'react-native';
-import { Input, Icon } from 'react-native-elements';
+import { View, Alert } from 'react-native';
+
 
 import { cloneDeep } from 'lodash';
 
 import Panel from '../../../../components/Panel';
 
-import theme from '../../../../theme';
+import { TextField, useTheme } from '../../../../react-native-ui';
 import { calculateOptionsGroupPrice, getGroupNewState } from '../../../../utils/products';
 import Option from '../../Option';
 import {
@@ -14,9 +14,10 @@ import {
 	OptionsContainer
 } from './styles';
 
-export default function modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
+export default function Modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);
 	const [search, setSearch] = useState('');
+	const { palette } = useTheme();
 
 	useEffect(()=>{
 		return () => {
@@ -33,9 +34,9 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 		return calculateOptionsGroupPrice(optionGroup);
 	}, [optionGroup, calculateOptionsGroupPrice]);
 
-	const handlePressOption = useCallback((optionId) => () => {
+	const handlePressOption = useCallback((optionIndex) => () => {
 		try {
-			const newState = getGroupNewState(optionGroup, optionId)
+			const newState = getGroupNewState(optionGroup, optionIndex)
 			
 			setOptionGroup(newState);
 		} catch (err) {
@@ -54,15 +55,12 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 		>
 			{optionGroup.options.length >= 10 && (
 				<SearchContainer>
-					<Input
+					<TextField
+						label='Buscar'
+						style={{ inputContainer: { backgroundColor: palette.background.main } }}
+						placeholderTextColor='#D1C6B1'
 						value={search}
 						onChangeText={(text)=>{ setSearch(text.toLowerCase()) }}
-						placeholder='Buscar'
-						rightIcon={!!search && (
-							<TouchableOpacity onPress={()=>setSearch('')}>
-								<Icon name='close' color={theme.palette.divider} />
-							</TouchableOpacity>
-						)}
 					/>
 				</SearchContainer>
 			)}
@@ -72,7 +70,7 @@ export default function modal({ optionGroup: optionGroupModal, closeModal, confi
 						key={optionIndex}
 						option={option}
 						type={optionGroup.type}
-						onPress={handlePressOption(option.id)}
+						onPress={handlePressOption(optionIndex)}
 					/>
 				))}
 			</OptionsContainer>

@@ -1,12 +1,10 @@
 import React, { useMemo } from 'react';
-import { Icon } from 'react-native-elements';
 
+import { Icon, Chip, Typography } from '../../../../react-native-ui';
 import theme from '../../../../theme';
 import { calculateOptionsGroupPrice } from '../../../../utils/products';
 import {
 	Container,
-	GroupPrice,
-	PriceContainer,
 	CenterElementContainer,
 	GroupTitle,
 	TitleContainer,
@@ -24,7 +22,15 @@ function Group({ onPress, group }) {
 	
 	const CenterElememt = () => {
 		if (selectedOptions.length >= 1) {
-			if (selectedOptions.length < 3) return <SelectedOptionsText>{selectedOptions.map(row=>row.name).join(', ')}</SelectedOptionsText>;
+			if (selectedOptions.length < 3)
+				return (
+					<Typography
+						style={{ marginRight: 10, textAlign: 'right', fontSize: 13, color: '#999' }}
+					>
+						{selectedOptions.map(row=>row.name).join(', ')}
+					</Typography>
+				)
+
 			return (
 				<SelectedOptionsNumber>
 					<SelectedOptionsNumberText>{selectedOptions.length}</SelectedOptionsNumberText>
@@ -32,13 +38,18 @@ function Group({ onPress, group }) {
 			);
 		}
 
-		return <Icon name='keyboard-arrow-right' color={theme.palette.primary} size={24} />;
+		return <Icon name='chevron-right' color={theme.palette.background.dark} size={24} />;
 	}
 	
 	return (
 		<Container onPress={onPress}>
 			<TitleContainer>
-				<GroupTitle>{group.name}</GroupTitle>
+				<Typography
+					variant='title'
+					style={{ color: '#333', fontSize: 18 }}
+				>
+					{group.name}
+				</Typography>
 			</TitleContainer>
 			
 			<CenterElementContainer>
@@ -46,9 +57,11 @@ function Group({ onPress, group }) {
 			</CenterElementContainer>
 
 			{!!price && (
-				<PriceContainer>
-					<GroupPrice>{`R$ ${price.toFixed(2).replace('.', ',')}`}</GroupPrice>
-				</PriceContainer>
+				<Chip
+					style={{ root: { height: 50, borderRadius: 25 }, text: { fontWeight: 'bold', fontSize: 14 } }}
+					label={`R$ ${price.toFixed(2).replace('.', ',')}`}
+					color='secondary'
+				/>
 			)}
 		</Container>
 	);

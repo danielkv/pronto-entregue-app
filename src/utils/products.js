@@ -8,7 +8,7 @@ export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
 }
 
 export const calculateProductPrice = (product) => {
-	const r = product.options_groups.reduce((totalGroup, group) => {
+	const r = product.optionsGroups.reduce((totalGroup, group) => {
 		return calculateOptionsGroupPrice(group, totalGroup);
 	}, product.price);
 	return r;
@@ -21,7 +21,7 @@ export const calculateProductPrice = (product) => {
  * @param {*} optionId 
  */
 
-export function getGroupNewState(optionGroup, optionId) {
+export function getGroupNewState(optionGroup, optionIndex) {
 	const group = cloneDeep(optionGroup);
 	
 	if (group.type === 'single') {
@@ -29,7 +29,6 @@ export function getGroupNewState(optionGroup, optionId) {
 		if (selectedOptionIndex > -1) group.options[selectedOptionIndex].selected = false;
 	}
 
-	const optionIndex = group.options.findIndex(opt => opt.id === optionId)
 	const option = group.options[optionIndex];
 	option.selected = getOptionNewState(group, option);
 	group.options.splice(optionIndex, 1, option);
@@ -44,26 +43,26 @@ export function getOptionNewState(group, option) {
 }
 
 export function checkGroupRules(group, selectionOffset = 0) {
-	let { max_select } = group;
-	const { min_select } = group;
+	let { maxSelect } = group;
+	const { minSelect } = group;
 	const selectedOptions = group.options.filter(opt=>opt.selected);
 	const selectionLength = selectedOptions.length + selectionOffset;
 
 	// Check restraining group max selection
 	if (group.restrainedBy && group.restrainedBy.options) {
 		const otherOption = group.restrainedBy.options[0];
-		max_select = otherOption.max_select_restrain_other;
+		maxSelect = otherOption.maxSelectRestrainOther;
 	}
 	
 	// Check the min selection rule
-	if (min_select !== 0 && selectionLength < min_select) {
-		throw new Error(`Você deve selecionar no mínimo ${min_select} ${min_select > 1 ? 'opções' : 'opção'} em ${group.name}`)
+	if (minSelect !== 0 && selectionLength < minSelect) {
+		throw new Error(`Você deve selecionar no mínimo ${minSelect} ${minSelect > 1 ? 'opções' : 'opção'} em ${group.name}`)
 	}
 
 	// Check the max selection rule
-	if (max_select !== 0 && selectionLength > max_select) {
-		if (max_select === 1) throw new Error(`Você pode selecionar apenas 1 opção em ${group.name}`);
-		throw new Error(`Você pode selecionar apenas ${max_select} opções em ${group.name}`);
+	if (maxSelect !== 0 && selectionLength > maxSelect) {
+		if (maxSelect === 1) throw new Error(`Você pode selecionar apenas 1 opção em ${group.name}`);
+		throw new Error(`Você pode selecionar apenas ${maxSelect} opções em ${group.name}`);
 	}
 	
 	// if all rules above match, return true
@@ -84,8 +83,8 @@ export function getGroupRestrainingRules(optionsGroups, selectedGroup) {
 }
 
 export function checkProductRules(product) {
-	product.options_groups.forEach((group)=>{
-		const groupWithRules = getGroupRestrainingRules(product.options_groups, group);
+	product.optionsGroups.forEach((group)=>{
+		const groupWithRules = getGroupRestrainingRules(product.optionsGroups, group);
 		checkGroupRules(groupWithRules);
 	});
 	return true;
@@ -94,7 +93,7 @@ export function checkProductRules(product) {
 export const sanitizeCartData = (data) => {
 	return {
 		id: uniqueId(),
-		product_id: data.id,
+		productId: data.id,
 		image: data.image,
 		name: data.name,
 		price: data.price,
@@ -102,11 +101,11 @@ export const sanitizeCartData = (data) => {
 		message: data.message || '',
 		__typename: 'CartItem',
 
-		options_groups: data.options_groups.filter(group=>group.options.some(option=>option.selected)).map(group =>{
+		optionsGroups: data.optionsGroups.filter(group=>group.options.some(option=>option.selected)).map(group =>{
 			return {
 				id: uniqueId(),
 				name: group.name,
-				options_group_id: group.id,
+				optionsGroupId: group.id,
 				__typename: 'CartOptionsGroup',
 
 				options: group.options.filter(option=>option.selected).map(option => {
@@ -114,7 +113,7 @@ export const sanitizeCartData = (data) => {
 						id: uniqueId(),
 						name: option.name,
 						price: option.price,
-						option_id: option.id,
+						optionId: option.id,
 						__typename: 'CartOption',
 					};
 				})

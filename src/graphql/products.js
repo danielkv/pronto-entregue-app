@@ -40,6 +40,7 @@ export const GET_PRODUCTS_ON_SALE = gql`
 			id
 			name
 			image
+			description
 			price
 			fromPrice
 			company {
@@ -57,6 +58,7 @@ export const GET_BEST_SELLERS = gql`
 		bestSellers (limit: $limit) {
 			id
 			name
+			description
 			image
 			price
 			fromPrice
@@ -70,8 +72,8 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 		name
 		active
 		type
-		min_select
-		max_select
+		minSelect
+		maxSelect
 		groupRestrained {
 			id
 			name
@@ -84,11 +86,7 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 			id
 			name
 			price
-			item {
-				id
-				name
-			}
-			max_select_restrain_other
+			maxSelectRestrainOther
 		}
 	}
 `;
@@ -131,7 +129,7 @@ export const LOAD_PRODUCT = gql`
 			}
 			image
 			active
-			options_groups(filter: $filter) {
+			optionsGroups(filter: $filter) {
 				...OptionsGroupFields
 			}
 		}

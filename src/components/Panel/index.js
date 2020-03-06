@@ -1,14 +1,11 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
 
+import { IconButton, Chip, Typography } from '../../react-native-ui';
 import {
 	ModalContainer,
 	ModalHeader,
 	ModalClose,
-	ModalTitle,
 	HeaderRightContainer,
-	ModalBadge,
 	ModalConfirm,
 	ModalContent,
 	ModalBadgeContainer,
@@ -18,29 +15,27 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 	const RenderHeaderRight = () => {
 		if (HeaderRight) return <HeaderRight />;
 
-		return (
-			<TouchableOpacity onPress={handleConfirm}>
-				<Icon name='check' color='#fff' size={30} />
-			</TouchableOpacity>
-		)
+		return <IconButton icon={{ name: 'check', size: 30 }} onPress={handleConfirm} />;
 	}
 
 	return (
 		<ModalContainer>
 			<ModalHeader>
 				<ModalClose>
-					<TouchableOpacity onPress={handleCancel}>
-						<Icon name='close' color='#fff' size={30} />
-					</TouchableOpacity>
+					<IconButton icon={{ name: 'x', size: 30 }} onPress={handleCancel} />
 				</ModalClose>
-				<ModalTitle>{title}</ModalTitle>
+				<Typography variant='title' style={{ color: '#333', fontSize: 18 }}>{title}</Typography>
 
 				<HeaderRightContainer>
-					{!!badgeText && (
-						<ModalBadgeContainer>
-							<ModalBadge>{badgeText}</ModalBadge>
-						</ModalBadgeContainer>
-					)}
+					{!!badgeText
+						&&	(
+							<ModalBadgeContainer>
+								<Chip
+									style={{ root: { height: 24, paddingHorizontal: 10 }, text: { fontSize: 13 } }}
+									label={badgeText}
+								/>
+							</ModalBadgeContainer>
+						)}
 
 					<ModalConfirm>
 						<RenderHeaderRight />

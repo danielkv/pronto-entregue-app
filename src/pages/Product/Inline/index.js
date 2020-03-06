@@ -1,31 +1,26 @@
 import React, { useCallback } from 'react';
+import { View } from 'react-native';
 
+import { Typography } from '../../../react-native-ui';
 import { getGroupNewState } from '../../../utils/products';
 import Option from '../Option';
-import {
-	Container,
-	GroupContainer,
-	GroupTitle,
-	OptionsContainer
-} from './styles';
 
 function Inline({ optionsGroups, onItemSelect }) {
 	const handlePressOption = useCallback((groupIndex, optionIndex) => () => {
 		const group = optionsGroups[groupIndex];
-		const option = group.options[optionIndex];
-		const new_state = getGroupNewState(group, option.id);
+		const newState = getGroupNewState(group, optionIndex);
 
-		optionsGroups[groupIndex] = new_state;
+		optionsGroups[groupIndex] = newState;
 
 		onItemSelect(optionsGroups);
 	}, [optionsGroups]);
 
 	return (
-		<Container>
+		<View>
 			{optionsGroups.map((group, groupIndex)=>(
-				<GroupContainer key={groupIndex}>
-					<GroupTitle>{group.name}</GroupTitle>
-					<OptionsContainer>
+				<View key={groupIndex}>
+					<Typography variant='title'>{group.name}</Typography>
+					<View>
 						{group.options.map((option, optionIndex) => (
 							<Option
 								key={optionIndex}
@@ -34,10 +29,10 @@ function Inline({ optionsGroups, onItemSelect }) {
 								onPress={handlePressOption(groupIndex, optionIndex)}
 							/>
 						))}
-					</OptionsContainer>
-				</GroupContainer>
+					</View>
+				</View>
 			))}
-		</Container>
+		</View>
 	);
 }
 

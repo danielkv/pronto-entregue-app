@@ -3,35 +3,30 @@ import { vh, vw } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
 
-import theme from '../../theme';
-
 export const ModalContainer = styled.View`
 	flex:1;
-	background-color:${theme.palette.primary};
+	background-color: #fff;
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
+	overflow: hidden;
 `;
 
 export const ModalHeader = styled.View`
-	border-top-width:4px;
-	border-top-color:#fff;
+	border-top-width: 4px;
+	border-top-color: ${({ theme })=>theme.palette.primary.main};
 	flex-direction:row;
 	padding: 0 10px;
-	height:${vh(7)}px;
+	height: 60px;
 	align-items:center;
 	justify-content:flex-start;
 `;
 
 export const ModalContent = styled.ScrollView`
-	padding: 0 ${vw(6)}px;
+	
 `;
 
 export const ModalClose = styled.View`
 	margin-right:10px;
-`;
-
-export const ModalTitle = styled(Text)`
-	font-size:15px;
-	color:#fff;
-	font-weight:bold;
 `;
 
 export const HeaderRightContainer = styled.View`
@@ -40,14 +35,8 @@ export const HeaderRightContainer = styled.View`
 	align-items:center;
 `;
 export const ModalBadgeContainer = styled.View`
-	background-color: #000;
-	padding:4px 10px;
-	border-radius:3px;
 	align-items:center;
 	justify-content:center;
-`;
-export const ModalBadge = styled(Text)`
-	color:#fff;
 `;
 
 export const ModalConfirm = styled.View`

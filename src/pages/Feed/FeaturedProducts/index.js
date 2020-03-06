@@ -31,6 +31,7 @@ export default function FeaturedProduct() {
 
 	if (loadingProducts) return <LoadingBlock />
 	if (error) return <ErrorBlock error={getErrors(error)} />
+	if (!products.length) return false;
 
 	return (
 		<Paper style={{ paddingHorizontal: 0 }}>

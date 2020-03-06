@@ -56,13 +56,13 @@ export const GET_CART = gql`
 
 		cartItems @client {
 			id
-			product_id
+			productId
 			name
 			message
 			image
 			price
 			quantity
-			options_groups {
+			optionsGroups {
 				id
 				name
 				options {
@@ -97,7 +97,7 @@ export const GET_CART_PAYMENT = gql`
 		cartPayment @client {
 			id
 			name
-			display_name
+			displayName
 			price
 		}
 	}
@@ -107,13 +107,13 @@ export const GET_CART_ITEMS = gql`
 	query GetCartItems {
 		cartItems @client {
 			id
-			product_id
+			productId
 			name
 			message
 			image
 			price
 			quantity
-			options_groups {
+			optionsGroups {
 				id
 				name
 				options {

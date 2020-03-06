@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 import theme from '../../theme';
 
 export const Container = styled.View`
-	background-color: ${theme.palette.primary};
+	background-color: ${theme.palette.primary.main};
 	flex: 1;
 `;
 

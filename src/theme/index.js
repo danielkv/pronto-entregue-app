@@ -27,6 +27,9 @@ export default withTheme({
 			title: {
 				fontSize: 22,
 			},
+			text: {
+				fontSize: 14,
+			},
 			subtitle: {
 				fontSize: 16,
 				color: '#999'
