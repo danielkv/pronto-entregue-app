@@ -49,6 +49,7 @@ export default function PickLocation() {
 	const [camera, setCamera] = useState(()=>initialCamera);
 	
 	useEffect(()=>{
+		navigation.setParams({ headerTransparent: true })
 		if (pickUserLocation) getLocationAsync();
 	}, []);
 
