@@ -54,8 +54,8 @@ export const GET_PRODUCTS_ON_SALE = gql`
 `;
 
 export const GET_BEST_SELLERS = gql`
-	query GetBestSellers ($limit: Int!) {
-		bestSellers (limit: $limit) {
+	query GetBestSellers ($limit: Int!, $location: GeoPoint!) {
+		bestSellers (limit: $limit, location: $location) {
 			id
 			name
 			description
