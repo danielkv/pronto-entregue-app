@@ -28,14 +28,6 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 		: View
 
 	const iconsColor = finalVariant === 'transparent' ? '#fff' : theme.palette.background.dark;
-
-	/*const title = params && params.headerTitle
-		? params.headerTitle
-		: options.headerTitle !== undefined
-			? options.headerTitle
-			: options.title !== undefined
-				? options.title
-				: scene.route.name; */
 	
 	return (
 		
@@ -60,7 +52,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 
 			{rigthContent && <RigthContent>
-				<IconButton onPress={()=>{}} icon={{ name: 'search', color: iconsColor }} />
+				<IconButton onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />
 				<IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} />
 				{loadingUser
 					? <ActivityIndicator />

@@ -21,6 +21,8 @@ export default function AppRoutes() {
 			<Stack.Navigator
 				backBehavior='history'
 				initialRouteName='HomeScreen'
+				headerMode='screen'
+				mode='card'
 				screenOptions={({ route })=>{
 					const actualRoute = route?.state?.routes[route.state.index] || route;
 					return {
