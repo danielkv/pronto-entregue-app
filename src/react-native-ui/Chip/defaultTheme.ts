@@ -7,9 +7,11 @@ export default<ChipType> {
 		default: {
 			root: {
 				paddingHorizontal: 16,
-				paddingVertical: 10,
 				borderRadius: 20,
-				alignSelf: 'flex-start'
+				height: 40,
+				alignSelf: 'flex-start',
+				alignItems: 'center',
+				justifyContent: 'center'
 			},
 			text: {
 				fontSize: 16,
