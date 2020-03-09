@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
 
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute, useNavigation } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
@@ -13,6 +13,7 @@ import Toast from '../../components/Toast';
 
 import { Paper, Typography, Icon, IconButton, TextField, useTheme } from '../../react-native-ui';
 import { getErrors } from '../../utils/errors';
+import { useKeyboardStatus } from '../../utils/hooks';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import Inline from './Inline';
 import Panel from './Panel';
@@ -36,10 +37,11 @@ export default function Product() {
 	const { palette } = useTheme();
 	const navigation = useNavigation();
 
-	const [cartButtonHidden, setCartButtonHidden] = useState(false);
+	const keyboardOpen = useKeyboardStatus();
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
-	const client = useApolloClient();
+	const [addCartItem, { loadingAddToCart }] = useMutation(ADD_CART_ITEM);
+
 	const totalPrice = useMemo(()=>{
 		if (product) return calculateProductPrice(product) * quantity;
 
@@ -75,19 +77,26 @@ export default function Product() {
 		setProduct(newProduct);
 	}, [product, setProduct]);
 
-	const handleCartButtonPress = () => {
+	const handleCartButtonPress = (force=false) => () => {
 		try {
 			if (checkProductRules(product)) {
-				client.mutate({
-					mutation: ADD_CART_ITEM,
-					variables: { data: sanitizeCartData({ ...product, price: totalPrice, quantity }) }
-				})
+				addCartItem({ variables: { force, data: sanitizeCartData({ ...product, price: totalPrice, quantity }) } })
 					.then(()=>{
 						resetProduct();
 						Toast.show('Produto adicionado à cesta');
 					})
 					.catch((err)=>{
-						Alert.alert(getErrors(err));
+						const message = getErrors(err);
+						if (message === 'CartCompanyError')
+							Alert.alert(
+								'Já existem itens de outro estabelecimento na sua cesta.',
+								'Quer mesmo limpar sua cesta e adicionar esse item?',
+								[
+									{ text: 'Sim', onPress: ()=>handleCartButtonPress(true)() },
+									{ text: 'Cancelar' },
+								]
+							);
+						else Alert.alert(message);
 					})
 			}
 		} catch (err) {
@@ -132,8 +141,6 @@ export default function Product() {
 									style={{
 										inputContainer: { backgroundColor: palette.background.main, height: 180 }
 									}}
-									onFocus={()=>setCartButtonHidden(true)}
-									onBlur={()=>setCartButtonHidden(false)}
 									textAlignVertical='top'
 									multiline
 									numberOfLines={8}
@@ -147,11 +154,12 @@ export default function Product() {
 
 			</ProductContainer>
 
-			{(!cartButtonHidden && !loadingProduct) && <CartButtonContainer>
+			{(!keyboardOpen && !loadingProduct) && <CartButtonContainer>
 				<QuantityContainer>
 					<QuantityTitle>Quantidade</QuantityTitle>
 
 					<TouchableOpacity
+						disabled={loadingAddToCart}
 						onPress={()=>{
 							if (quantity > 1) setQuantity(quantity - 1);
 						}}
@@ -162,6 +170,7 @@ export default function Product() {
 					<Quantity>{quantity.toString()}</Quantity>
 
 					<TouchableOpacity
+						disabled={loadingAddToCart}
 						onPress={()=> {
 							setQuantity(quantity + 1);
 						}}
@@ -169,7 +178,7 @@ export default function Product() {
 						<Icon name='plus-circle' color='#fff' />
 					</TouchableOpacity>
 				</QuantityContainer>
-				<CartButton title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress} price={totalPrice} icon='cart' />
+				<CartButton disabled={loadingAddToCart} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='cart' />
 			</CartButtonContainer>}
 		</Container>
 	);

@@ -13,8 +13,7 @@ export function useInitialize() {
 	// logUserOut();
 	// resetAddress()
 
-	// eslint-disable-next-line no-undef
-	// if (__DEV__) client.writeData({ data: require('../../cart.json') });
+	if (__DEV__) client.writeData({ data: require('../../cart.json') });
 
 	const [called, setCalled] = useState(false);
 	const [loading, setLoading] = useState(true);

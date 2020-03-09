@@ -3,29 +3,13 @@ import { vw, vh } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
 
-import theme from '../../theme';
-
 export const Container = styled.View`
 	flex: 1;
-	
 `;
-export const CartContainer = styled.View`
-	flex: 1;
-	margin: ${theme.header.height + vw(2)}px ${vw(5)}px ${vw(5)}px ${vw(5)}px;
-`;
+
 export const CartContainerScroll = styled.ScrollView`
 	
 `;
-
-export const Section = styled.View`
-	margin: ${vh(2)}px 0;
-`;
-export const SectionTitle = styled(Text)`
-	font-weight: 100;
-	margin-bottom: 5px;
-	padding: 0 ${vw(1)}px;
-`;
-export const SectionContent = styled.View``;
 
 export const CardContainer = styled.TouchableOpacity`
 	background-color: #fff;
@@ -67,16 +51,4 @@ export const CartButtonContainer = styled.View`
 	padding:${vh(4)}px ${vw(5)}px;
 
 	${()=>'shadow-color: #000;	shadow-offset: 0 2px; shadow-opacity: 0.25; shadow-radius: 3.84px; elevation:5;'}
-`;
-export const CancelButton = styled.TouchableOpacity`
-	padding: 10px;
-	background-color: ${theme.palette.error};
-	margin-top: 10px;
-	border-radius: 4px;
-`;
-export const CancelButtonText = styled(Text)`
-	color: #fff;
-	text-align: center;
-	font-size: 16px;
-	font-weight: bold;
 `;

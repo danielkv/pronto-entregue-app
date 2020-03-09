@@ -1,23 +1,24 @@
 import React from 'react';
 import { View } from 'react-native';
+
 import { useQuery } from '@apollo/react-hooks';
 
-import LoadingBlock from '../../../components/LoadingBlock';
-import ErrorBlock from '../../../components/ErrorBlock';
-import Panel from '../../../components/Panel';
-import Gateway from '../../../gateway';
+import ErrorBlock from '../../../../components/ErrorBlock';
+import LoadingBlock from '../../../../components/LoadingBlock';
+import Panel from '../../../../components/Panel';
 
-import { GET_COMPANY_PAYMENT_METHODS } from '../../../graphql/companies';
+import Gateway from '../../../../gateway';
 
-export default function deliveryModal({ confirmModal, closeModal }) {
-	const company_id = 1; // fix
+import { GET_COMPANY_PAYMENT_METHODS } from '../../../../graphql/companies';
+
+export default function DeliveryModal({ confirmModal, closeModal, company }) {
 	const { data: userPaymentMethodsData, loading: loadingPaymentMethods, error } = useQuery(GET_COMPANY_PAYMENT_METHODS, {
-		variables: { id: company_id }
+		variables: { id: company.id }
 	});
 	const paymentMethods = userPaymentMethodsData ? userPaymentMethodsData.branch.paymentMethods : [];
 
 	const onPressPayment = (method) => {
-		confirmModal({ id: method.id, name: method.name, display_name: method.display_name });
+		confirmModal({ id: method.id, name: method.name, displayName: method.display_name });
 	}
 
 	if (loadingPaymentMethods) return <LoadingBlock />

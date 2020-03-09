@@ -1,18 +1,15 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/core';
-
 import { Icon, useTheme, Typography } from '../../../react-native-ui';
 import { ContainerButton } from './styles';
 
-export default function MenuItem({ icon, label, selected=false, screenName }) {
+export default function MenuItem({ icon, label, selected=false, onPress }) {
 	const { palette } = useTheme();
-	const navigation = useNavigation();
 	const iconColor = selected ? palette.primary.main : palette.background.dark;
 
 	return (
 		<ContainerButton
-			onPress={()=>navigation.navigate(screenName)}
+			onPress={onPress}
 			selected={selected}
 			underlayColor={palette.primary.main}
 		>

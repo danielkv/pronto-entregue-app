@@ -12,7 +12,9 @@ module.exports = {
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
-        "process": "readonly"
+		"process": "readonly",
+		"require": "readonly",
+		"__DEV__": "readonly"
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -52,7 +54,7 @@ module.exports = {
 		"arrow-spacing":0,
 		"react/no-array-index-key":0,
 		"react/jsx-indent-props":["error", 'tab'],
-		"camelcase": "error",
+		"camelcase": ["error", { "ignoreDestructuring": false }],
 		"max-len": 0,
 		"no-param-reassign": ["error", { "props": false }],
 		"import/prefer-default-export" : 0,

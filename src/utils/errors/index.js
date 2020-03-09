@@ -4,7 +4,7 @@ export function getErrors(err) {
 			return err.graphQLErrors[0].message;
 		}
 	}
-
+	
 	if (err.networkError) {
 		if (err.networkError.result && err.networkError.result.errors) return err.networkError.result.errors[0].message;
 
@@ -14,4 +14,11 @@ export function getErrors(err) {
 	if (err.message) return err.message;
 
 	return err;
+}
+
+export class CartCompanyError extends Error {
+	constructor(message) {
+		super(message);
+		this.type = 'CartCompanyError';
+	}
 }

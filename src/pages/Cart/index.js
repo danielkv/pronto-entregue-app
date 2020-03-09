@@ -1,71 +1,45 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { Alert, ActivityIndicator, Platform, KeyboardAvoidingView } from 'react-native';
-import { Input, Icon } from 'react-native-elements';
-import { vw } from 'react-native-expo-viewport-units';
-import Modal from 'react-native-modal';
-import { useSafeArea } from 'react-native-safe-area-context';
+import React, { useState, useCallback, useMemo, Fragment } from 'react';
+import { Alert, KeyboardAvoidingView, View, Image } from 'react-native';
 
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 
 import CartButton from '../../components/CartButton';
+import CartItem from '../../components/CartItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
-import OrderItem from '../../components/OrderItem';
 
-import theme from '../../theme';
+import { Button, Paper, Typography, Chip, Divider, TextField, useTheme } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
 import { calculateOrderPrice, validadeCart } from '../../utils/cart';
 import { getErrors } from '../../utils/errors';
-import DeliveryModal from './DeliveryModal';
-import PaymentModal from './PaymentModal';
+import { useKeyboardStatus } from '../../utils/hooks';
+import DeliveryBlock from './DeliveryBlock';
+import PaymentBlock from './PaymentBlock';
 import {
 	Container,
-	CartContainer,
-	Section,
-	SectionTitle,
-	SectionContent,
-	CardContainer,
-	CardHeader,
-	CardContent,
-	CardTitle,
-	CardInfo,
-	CardPrice,
 	CartButtonContainer,
-	CancelButton,
-	CancelButtonText,
 	CartContainerScroll,
 } from './styles';
 
-
-import { IS_USER_LOGGED_IN } from '../../graphql/authentication';
 import {
-	SET_CART_DELIVERY,
-	SET_CART_PAYMENT,
 	REMOVE_CART_ITEM,
 	CANCEL_CART,
 	GET_CART,
 } from '../../graphql/cart';
 
-
 export default function Cart({ navigation }) {
+	const { palette } = useTheme();
 	const [message, setMessage] = useState('');
-	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
-	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
-	const client = useApolloClient();
 
-	const insets = useSafeArea();
-	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
-	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
+	const keyboardOpen = useKeyboardStatus();
 	
-	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
-	const [setPayment, { loading: loadingPayment }] = useMutation(SET_CART_PAYMENT);
+	const client = useApolloClient();
+	
 	const [removeOrderItem] = useMutation(REMOVE_CART_ITEM);
 	const [cancelCart] = useMutation(CANCEL_CART);
 	
-	const { data: { cartItems, cartDelivery, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
-	const { data: userLoggedInData, loading: loadingUser } = useQuery(IS_USER_LOGGED_IN);
-	const isUserLoggedIn = userLoggedInData ? userLoggedInData.isUserLoggedIn : false;
+	const { data: { cartItems, cartDelivery, cartCompany, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
 	
 	const cartPrice = useMemo(()=>{
 		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
@@ -73,37 +47,6 @@ export default function Cart({ navigation }) {
 
 		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - cartDiscount);
 	}, [cartItems, cartDelivery, cartPayment, cartDiscount]);
-
-	const handleOpenDeliveryModal = useCallback(()=>{
-		if (isUserLoggedIn) setDeliveryModalOpen(true);
-		else navigation.navigate('LoginScreen', { redirect: 'CartScreen' });
-	})
-	const handleCloseDeliveryModal = useCallback(()=>{
-		setDeliveryModalOpen(false);
-	});
-	
-	const handleConfirmDeliveryModal = useCallback((delivery)=>{
-		setDeliveryModalOpen(false);
-		setDelivery({ variables: { data: delivery } })
-			.catch((err) => {
-				Alert.alert(getErrors(err));
-			});
-	})
-	const handleOpenPaymentModal = useCallback(()=>{
-		if (isUserLoggedIn) setPaymentModalOpen(true);
-		else navigation.navigate('LoginScreen', { redirect: 'CartScreen' });
-	})
-	const handleClosePaymentModal = useCallback(()=>{
-		setPaymentModalOpen(false);
-	})
-
-	const handleConfirmPaymentModal = useCallback((payment)=>{
-		setPaymentModalOpen(false);
-		setPayment({ variables: { data: payment } })
-			.catch((err) => {
-				Alert.alert(getErrors(err));
-			});
-	});
 
 	const handleRemoveOrderItem = (item) => () => {
 		Alert.alert(
@@ -131,10 +74,10 @@ export default function Cart({ navigation }) {
 	const handleCancelCart = () => {
 		Alert.alert(
 			'Cancelar pedido',
-			'Tem certeza que deseja cancelar o pedido atual',
+			'Tem certeza que deseja cancelar o pedido atual?',
 			[
 				{ text: 'Sim', onPress: ()=>cancelCart() },
-				{ text: 'Cancelar' },
+				{ text: 'Não' },
 			]
 		);
 	}
@@ -145,113 +88,58 @@ export default function Cart({ navigation }) {
 	}, [])
 	useFocusEffect(checkConditionCB);
 	
-	if (loadingCart || loadingUser) return <LoadingBlock />;
-	if (error) return <ErrorBlock error={error} />
+	if (loadingCart) return <LoadingBlock />;
+	if (error) return <ErrorBlock error={getErrors(error)} />
 	
 	return (
 		<Container>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
 				<CartContainerScroll>
-					<CartContainer>
-						<Section>
-							<SectionTitle>
-								{`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`}
-							</SectionTitle>
-							<SectionContent>
-								{cartItems.map((item, index)=>(
-									<OrderItem key={index} item={item} onPressDelete={handleRemoveOrderItem(item)} />
-								))}
-							</SectionContent>
-						</Section>
-						<Section>
-							<SectionTitle>Entrega e pagamento</SectionTitle>
-							<CardContainer disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
-								<CardHeader>
-									<Icon type='material-community' name='truck' color={theme.palette.divider} size={24} />
-									<CardTitle>Entrega</CardTitle>
-									{loadingDelivery && <ActivityIndicator color={theme.palette.divider} size='small' />}
-								</CardHeader>
-								<CardContent>
-									<CardInfo>
-										{
-											// eslint-disable-next-line no-nested-ternary
-											cartDelivery
-												? (cartDelivery.type === 'delivery') ? cartDelivery.address.name : 'Retirar no local'
-												: 'Nenhum endereço selecionado'
-										}
-									</CardInfo>
-									<Icon type='material-community' name='pencil' color={theme.palette.divider} size={24} />
-									{!!(cartDelivery && cartDelivery.price)
-										&& <CardPrice>{cartDelivery.price.toFixed(2).replace('.', ',')}</CardPrice>}
-								</CardContent>
-							</CardContainer>
-							<CardContainer disabled={loadingPayment} onPress={handleOpenPaymentModal}>
-								<CardHeader>
-									<Icon type='material-community' name='credit-card' color={theme.palette.divider} size={24} />
-									<CardTitle>Pagamento</CardTitle>
-									{loadingPayment && <ActivityIndicator color={theme.palette.divider} size='small' />}
-								</CardHeader>
-								<CardContent>
-									<CardInfo>{cartPayment ? cartPayment.display_name : 'Nenhum pagamento selecionado'}</CardInfo>
-									<Icon type='material-community' name='pencil' color={theme.palette.divider} size={20} />
-								</CardContent>
-							</CardContainer>
-						</Section>
-						<Section>
-							<SectionTitle>Observações</SectionTitle>
-							<SectionContent>
-								<Input
-									value={message}
-									onChangeText={(text)=>setMessage(text)}
-									multiline
-								/>
-							</SectionContent>
-						</Section>
-					</CartContainer>
+					<Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<Image source={{ uri: cartCompany.image }} style={{ width: 60, height: 60, borderRadius: 15, marginRight: 15 }} />
+						<Typography style={{ flex: 1, fontSize: 18, color: '#333', fontWeight: 'bold', marginRight: 15 }}>{cartCompany.displayName}</Typography>
+						<View style={{ marginLeft: 'auto' }}>
+							<Chip color='secondary' label={`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`} style={{ root: { height: 30 } }} />
+						</View>
+					</Paper>
+					<DeliveryBlock />
+					<Paper>
+						<Typography variant='title'>Itens</Typography>
+						<View style={{ marginTop: 35 }}>
+							{cartItems.map((item, index)=>(
+								<Fragment key={item.id}>
+									{index > 0 && <Divider />}
+									<CartItem item={item} onPressDelete={handleRemoveOrderItem(item)} />
+								</Fragment>
+							))}
+						</View>
+					</Paper>
+					<PaymentBlock />
+					<Paper>
+						<Typography variant='title'>Observações</Typography>
+						<TextField
+							style={{
+								inputContainer: { backgroundColor: palette.background.main, height: 180 }
+							}}
+							onChangeText={(text)=>setMessage(text)}
+							textAlignVertical='top'
+							multiline
+							numberOfLines={8}
+						/>
+					</Paper>
 				</CartContainerScroll>
 			</KeyboardAvoidingView>
-
-			<CartButtonContainer>
-				<CartButton
-					title='Finalizar pedido'
-					forceShowPrice
-					price={cartPrice}
-					onPress={handleFinishCart}
-				/>
-				<CancelButton>
-					<CancelButtonText onPress={handleCancelCart}>Cancelar pedido</CancelButtonText>
-				</CancelButton>
-			</CartButtonContainer>
-			
-			<Modal
-				isVisible={deliveryModalOpen}
-				onModalHide={handleCloseDeliveryModal}
-				onSwipeComplete={handleCloseDeliveryModal}
-				onBackButtonPress={handleCloseDeliveryModal}
-				onBackdropPress={handleCloseDeliveryModal}
-				animationIn='slideInRight'
-				animationOut='slideOutRight'
-				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
-				swipeDirection='right'
-				propagateSwipe
-			>
-				<DeliveryModal confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
-			</Modal>
-
-			<Modal
-				isVisible={paymentModalOpen}
-				onModalHide={handleClosePaymentModal}
-				onSwipeComplete={handleClosePaymentModal}
-				onBackButtonPress={handleClosePaymentModal}
-				onBackdropPress={handleClosePaymentModal}
-				animationIn='slideInRight'
-				animationOut='slideOutRight'
-				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
-				swipeDirection='right'
-				propagateSwipe
-			>
-				<PaymentModal confirmModal={handleConfirmPaymentModal} closeModal={handleClosePaymentModal} />
-			</Modal>
+			{!keyboardOpen &&
+				(<CartButtonContainer>
+					<CartButton
+						title='Finalizar pedido'
+						forceShowPrice
+						price={cartPrice}
+						onPress={handleFinishCart}
+					/>
+					<Button variant='filled' style={{ button: { height: 40 } }} onPress={handleCancelCart}>Cancelar pedido</Button>
+				</CartButtonContainer>)
+			}
 		</Container>
 	);
 }

@@ -21,6 +21,7 @@ const initialData = {
 	selectedAddress: null,
 
 	// CART
+	cartCompany: null,
 	cartDelivery: null,
 	cartPayment: null,
 	cartItems: [],

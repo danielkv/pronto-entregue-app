@@ -1,10 +1,16 @@
 import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import { Text } from 'react-native-elements';
+
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import LoadingBlock from '../../components/LoadingBlock';
+import CartItem from '../../components/CartItem';
 import ErrorBlock from '../../components/ErrorBlock';
+import LoadingBlock from '../../components/LoadingBlock';
+
+import { getStatusText } from '../../utils';
+import { getErrors } from '../../utils/errors';
+import Blocks from './Blocks';
 import {
 	Container,
 	ContainerScroll,
@@ -17,12 +23,7 @@ import {
 	StatusCardText,
 } from './styles';
 
-import Blocks from './Blocks';
-import OrderItem from '../../components/OrderItem';
-
 import { LOAD_ORDER, UPDATE_ORDER } from '../../graphql/orders';
-import { getStatusText } from '../../utils';
-import { getErrors } from '../../utils/errors';
 
 export default function Order({ route }) {
 	const { order_id } = route.params;
@@ -70,7 +71,7 @@ export default function Order({ route }) {
 					<Text h3>{`${order.products.length} ${order.products.length > 1 ? 'itens' : 'item'}`}</Text>
 					<ItemsContainer>
 						{order.products.map((item, index)=>(
-							<OrderItem key={index} item={item} />
+							<CartItem key={index} item={item} />
 						))}
 					</ItemsContainer>
 				</OrderItems>

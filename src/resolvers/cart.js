@@ -1,6 +1,8 @@
 import { uniqueId } from 'lodash';
 
-import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT } from '../graphql/cart';
+import { CartCompanyError } from '../utils/errors';
+
+import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY } from '../graphql/cart';
 import { CALCULATE_DELIVERY_PRICE } from '../graphql/orders';
 
 /* eslint-disable no-underscore-dangle */
@@ -15,16 +17,27 @@ export default {
 			cache.writeData({
 				data: {
 					cartMessage: '',
+					cartCompany: null,
 					cartItems: [],
 					cartPrice: 0
 				}
 			});
 		},
-		addCartItem: (_, { data }, { cache }) => {
-			const { cartItems } = cache.readQuery({ query: GET_CART_ITEMS });
+		addCartItem: (_, { data, force = false }, { cache }) => {
+			const { cartItems, cartCompany } = cache.readQuery({ query: GET_CART });
 			
-			const newCart = cartItems.concat(data);
+			// check company
+			const company = data.company;
+			if ((cartCompany !== null && cartCompany?.id !== company.id) && !force) {
+				throw new CartCompanyError('CartCompanyError');
+			}
 
+			const newCart = force ? [data] : cartItems.concat(data);
+
+			// set cart company
+			cache.writeQuery({ query: GET_CART_COMPANY, data: { cartCompany: company } })
+			
+			// set cart items
 			cache.writeQuery({ query: GET_CART_ITEMS, data: { cartItems: newCart } });
 
 			return null;

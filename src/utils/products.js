@@ -99,6 +99,10 @@ export const sanitizeCartData = (data) => {
 		price: data.price,
 		quantity: data.quantity,
 		message: data.message || '',
+		company: {
+			...data.company,
+			__typename: 'CartCompany'
+		},
 		__typename: 'CartItem',
 
 		optionsGroups: data.optionsGroups.filter(group=>group.options.some(option=>option.selected)).map(group =>{

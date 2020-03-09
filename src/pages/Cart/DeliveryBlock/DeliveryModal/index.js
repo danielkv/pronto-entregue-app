@@ -1,17 +1,19 @@
 import React from 'react';
 import { TouchableOpacity, FlatList } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
 import { Icon } from 'react-native-elements';
+
+import { useQuery } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
 
-import LoadingBlock from '../../../components/LoadingBlock';
-import ErrorBlock from '../../../components/ErrorBlock';
-import Panel from '../../../components/Panel';
-import Address from '../../../components/Address';
+import Address from '../../../../components/Address';
+import ErrorBlock from '../../../../components/ErrorBlock';
+import LoadingBlock from '../../../../components/LoadingBlock';
+import Panel from '../../../../components/Panel';
+
 import { TakeoutContainer, TakeoutTitle } from './styles';
 
-import { GET_USER_ADDRESSES } from '../../../graphql/users';
-import { LOGGED_USER_ID } from '../../../graphql/authentication';
+import { LOGGED_USER_ID } from '../../../../graphql/authentication';
+import { GET_USER_ADDRESSES } from '../../../../graphql/users';
 
 export default function deliveryModal({ confirmModal, closeModal }) {
 	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
