@@ -42,8 +42,8 @@ export default function Cart({ navigation }) {
 	const { data: { cartItems, cartDelivery, cartCompany, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
 	
 	const cartPrice = useMemo(()=>{
-		const paymentPrice = cartPayment && cartPayment.price ? cartPayment.price : 0;
-		const deliveryPrice = cartDelivery && cartDelivery.price ? cartDelivery.price : 0;
+		const paymentPrice = cartPayment?.price || 0;
+		const deliveryPrice = cartDelivery?.price || 0;
 
 		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - cartDiscount);
 	}, [cartItems, cartDelivery, cartPayment, cartDiscount]);
@@ -84,7 +84,7 @@ export default function Cart({ navigation }) {
 	
 	// navigate to HomeRoutes if there's no items in Cart
 	const checkConditionCB = useCallback(() => {
-		checkCondition((cartItems && cartItems.length), navigation, 'A cesta está vazio')
+		checkCondition((cartItems && cartItems.length && cartCompany), navigation, 'A cesta está vazia')
 	}, [])
 	useFocusEffect(checkConditionCB);
 	

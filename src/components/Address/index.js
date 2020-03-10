@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, TouchableOpacity } from 'react-native';
 
 import { useTheme, Icon, Typography, Divider } from '../../react-native-ui';
 import {
@@ -10,7 +9,7 @@ import {
 } from './styles';
 
 
-export default function Address({ divider=false, onPress, address }) {
+export default function Address({ divider=false, onPress, item: address }) {
 	const { palette } = useTheme()
 	const WrapperComponent = onPress ? TouchableOpacity : View;
 

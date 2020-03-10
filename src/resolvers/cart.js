@@ -2,6 +2,7 @@ import { uniqueId } from 'lodash';
 
 import { CartCompanyError } from '../utils/errors';
 
+import { GET_SELECTED_ADDRESS, SET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY } from '../graphql/cart';
 import { CALCULATE_DELIVERY_PRICE } from '../graphql/orders';
 
@@ -13,7 +14,7 @@ export default {
 	},
 	Mutation: {
 		// eslint-disable-next-line consistent-return
-		cancelCart: (_, args, { cache }) => {
+		cancelCart: (_, __, { cache }) => {
 			cache.writeData({
 				data: {
 					cartMessage: '',
@@ -52,33 +53,31 @@ export default {
 
 			return null;
 		},
-		setDelivery: async (_, { data }, { cache, client }) => {
-			if (data.type === 'delivery') {
-				const { data: deliveryPriceData, error } = await client.query({
-					query: CALCULATE_DELIVERY_PRICE,
-					variables: { zipcode: parseFloat(data.address.zipcode) }
+		setDelivery: async (_, { type, address }, { cache, client }) => {
+			const delivery = { type };
+			
+			if (type === 'delivery') {
+				delete address.__typename;
+				await client.mutate({ mutation: SET_SELECTED_ADDRESS, variables: { address } });
+				
+				const { cartCompany } = cache.readQuery({ query: GET_CART_COMPANY });
+				
+				delete address.__typename;
+				const { data: deliveryPriceData, error } = await client.mutate({
+					mutation: CALCULATE_DELIVERY_PRICE,
+					variables: { companyId: cartCompany.id, address }
 				});
 				
-				data.price = deliveryPriceData.calculateDeliveryPrice.price;
+				delivery.price = deliveryPriceData.calculateDeliveryPrice.price;
 				if (error) throw error;
 			} else {
-				data.price = 0;
-				data.address = {
-					__typename: 'Address',
-					id: uniqueId(),
-					name: '',
-					street: '',
-					number: '',
-					district: '',
-					city: '',
-					state: '',
-					zipcode: '',
-				};
+				delivery.price = 0;
 			}
 
-			data.__typename = 'Delivery';
+			delivery.__typename = 'Delivery';
+			delivery.id = uniqueId();
 
-			cache.writeData({ query: GET_CART_DELIVERY, data: { cartDelivery: data } });
+			cache.writeQuery({ query: GET_CART_DELIVERY, data: { cartDelivery: delivery } });
 
 			return null;
 		},

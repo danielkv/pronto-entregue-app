@@ -22,7 +22,7 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 		<ModalContainer>
 			<ModalHeader>
 				<ModalClose>
-					<IconButton icon={{ name: 'x', size: 30 }} onPress={handleCancel} />
+					<IconButton icon={{ name: 'x' }} onPress={handleCancel} />
 				</ModalClose>
 				<Typography variant='title' style={{ color: '#333', fontSize: 18 }}>{title}</Typography>
 

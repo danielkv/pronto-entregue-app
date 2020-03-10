@@ -42,7 +42,7 @@ export default function UserAddresses() {
 		<Paper>
 			<Typography variant='title' style={{ marginBottom: 20 }}>Endereços cadastrados</Typography>
 			<View>
-				{addresses.map((addr, index) => <Address onPress={handleAddressPress} divider={index < addresses.length-1} key={index} address={addr} />)}
+				{addresses.map((addr, index) => <Address onPress={handleAddressPress} divider={index < addresses.length-1} key={index} item={addr} />)}
 			</View>
 		</Paper>
 	);

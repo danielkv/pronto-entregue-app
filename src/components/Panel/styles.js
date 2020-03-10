@@ -1,6 +1,3 @@
-import { Text } from 'react-native-elements';
-import { vh, vw } from 'react-native-expo-viewport-units';
-
 import styled from 'styled-components/native';
 
 export const ModalContainer = styled.View`

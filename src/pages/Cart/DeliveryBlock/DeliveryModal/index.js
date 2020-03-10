@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, FlatList } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { View } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
@@ -10,13 +9,13 @@ import ErrorBlock from '../../../../components/ErrorBlock';
 import LoadingBlock from '../../../../components/LoadingBlock';
 import Panel from '../../../../components/Panel';
 
-import { TakeoutContainer, TakeoutTitle } from './styles';
+import { IconButton, Button } from '../../../../react-native-ui';
+import { useLoggedUserId } from '../../../../utils/hooks';
 
-import { LOGGED_USER_ID } from '../../../../graphql/authentication';
 import { GET_USER_ADDRESSES } from '../../../../graphql/users';
 
-export default function deliveryModal({ confirmModal, closeModal }) {
-	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
+export default function DeliveryModal({ confirmModal, closeModal }) {
+	const loggedUserId = useLoggedUserId();
 	const {
 		data: { user: { addresses = [] } = {} } = {},
 		loading: loadingUserAddresses,
@@ -28,36 +27,24 @@ export default function deliveryModal({ confirmModal, closeModal }) {
 	const onPressAddress = (address) => {
 		confirmModal({ type: 'delivery', address });
 	}
-	
-	const renderAddress = ({ item }) => (
-		<Address
-			address={item}
-			onPress={()=>onPressAddress(item)}
-		/>
-	)
 		
 	if (loadingUserAddresses) return <LoadingBlock />
 	if (error) return <ErrorBlock error={error} />
+
 	return (
 		<Panel
 			title='Endereço de entrega'
 			handleCancel={closeModal}
-			HeaderRight={()=>(
-				<TouchableOpacity onPress={()=>{ closeModal(); navigation.navigate('CreateAddressScreen') }}>
-					<Icon type='material-community' name='plus' color='#fff' size={30} />
-				</TouchableOpacity>
-			)}
+			HeaderRight={()=><IconButton onPress={()=>{ closeModal(); navigation.navigate('SelectAddressScreen') }} icon='plus' />}
 		>
-
-			<FlatList
-				renderItem={renderAddress}
-				data={addresses}
-				keyExtractor={(item, index)=>index.toString()}
-			/>
-
-			<TakeoutContainer onPress={()=>confirmModal({ type: 'takeout' })}>
-				<TakeoutTitle>Retirar no local</TakeoutTitle>
-			</TakeoutContainer>
+			<View style={{ marginHorizontal: 35 }}>
+				
+				<View>
+					{/* addresses.map(item => <Button key={item.id} onPress={()=>confirmModal({ type: 'takeout' })}>{item.street}</Button>) */}
+					{addresses.map((item, index) => (<Address key={index} item={item} onPress={onPressAddress} />))}
+				</View>
+				<Button variant='filled' onPress={()=>confirmModal({ type: 'takeout' })}>Retirar no local</Button>
+			</View>
 		</Panel>
 	);
 }

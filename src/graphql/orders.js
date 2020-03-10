@@ -58,17 +58,17 @@ export const ORDER_FRAGMENT = gql`
 `;
 
 export const CALCULATE_DELIVERY_PRICE = gql`
-	query ($zipcode:Int!) {
-		calculateDeliveryPrice(zipcode: $zipcode) {
+	mutation ($companyId: ID!, $address: AddressInput!) {
+		calculateDeliveryPrice(companyId: $companyId, address: $address) {
 			id
-			name
+			distance
 			price
 		}
 	}
 `;
 
 export const CREATE_ORDER = gql`
-	mutation ($data:OrderInput!) {
+	mutation ($data: OrderInput!) {
 		createOrder(data:$data) {
 			id
 			price

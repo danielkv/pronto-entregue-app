@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Platform, Alert } from 'react-native';
+import { View } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
@@ -10,24 +11,24 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
-import { Paper, Icon, Typography, useTheme } from '../../../react-native-ui';
+import { Paper, Icon, Typography } from '../../../react-native-ui';
 import { getErrors } from '../../../utils/errors';
+import { useSelectedAddress } from '../../../utils/hooks';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import DeliveryModal from './DeliveryModal';
 
 import { GET_CART, SET_CART_DELIVERY } from '../../../graphql/cart';
 
-// import { Container } from './styles';
-
 export default function DeliveryBlock() {
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
+	const selectedAddress = useSelectedAddress();
 
 	// modal margins
 	const insets = useSafeArea();
 	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
 	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 
-	const { data: { cartDelivery }, error: cartError } = useQuery(GET_CART);
+	const { data: { cartDelivery, cartCompany }, error: cartError } = useQuery(GET_CART);
 	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
 
 	const handleOpenDeliveryModal = useCallback(()=>{
@@ -37,18 +38,22 @@ export default function DeliveryBlock() {
 		setDeliveryModalOpen(false);
 	});
 
-	const handleConfirmDeliveryModal = useCallback((delivery)=>{
+	const handleConfirmDeliveryModal = useCallback(({ type, address }) => {
 		setDeliveryModalOpen(false);
-		setDelivery({ variables: { data: delivery } })
+		setDelivery({ variables: { type, address } })
 			.catch((err) => {
 				Alert.alert(getErrors(err));
 			});
 	})
 
+	useEffect(()=>{
+		if (cartCompany) handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
+	}, [])
+
 	if (cartError) return <ErrorBlock error={getErrors(cartError)} />
 		
 	return (
-		<>
+		<View>
 			<TouchableOpacity disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
 				<Paper style={{ paddingVertical: 25 }}>
 					<CardHeader>
@@ -61,7 +66,7 @@ export default function DeliveryBlock() {
 							{
 							// eslint-disable-next-line no-nested-ternary
 								cartDelivery
-									? (cartDelivery.type === 'delivery') ? cartDelivery.address.name : 'Retirar no local'
+									? (cartDelivery.type === 'delivery') ? selectedAddress.name : 'Retirar no local'
 									: 'Nenhum endereço selecionado'
 							}
 						</CardInfo>
@@ -81,10 +86,10 @@ export default function DeliveryBlock() {
 				animationOut='slideOutRight'
 				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
 				swipeDirection='right'
-				propagateSwipe
+				propagateSwipe={false}
 			>
 				<DeliveryModal confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
 			</Modal>
-		</>
+		</View>
 	);
 }

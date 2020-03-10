@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
+	flex: 1;
 	flex-direction: row;
 	margin: 10px 0;
 `;
@@ -14,5 +15,5 @@ export const IconBlock = styled.View`
 	margin-right: 20px;
 `;
 export const TextBlock = styled.View`
-	
+	flex: 1;
 `;

@@ -1,20 +1,5 @@
 {
-	"cartDelivery": {
-		"__typename": "Delivery",
-		"address": {
-			"__typename": "Address",
-			"city": "Houston",
-			"district": "Waubesa",
-			"name": "Youspan",
-			"number": "6455",
-			"state": "Texas",
-			"street": "Meadow Vale",
-			"zipcode": 88955000,
-			"location": [-29.105390, -49.635260]
-		},
-		"price": 5,
-		"type": "delivery"
-	},
+	"cartDelivery": null,
 	"cartCompany": {
 		"__typename": "CartCompany",
 		"displayName": "Pizzaria Temperoma",

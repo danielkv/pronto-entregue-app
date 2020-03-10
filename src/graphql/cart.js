@@ -16,8 +16,8 @@ export const CANCEL_CART = gql`
 	}
 `;
 export const SET_CART_DELIVERY = gql`
-	mutation SetCartDelivery ($data: DeliveryInput!) {
-		setDelivery (data: $data) @client
+	mutation SetCartDelivery ($type: String!, $address: AddressInput!) {
+		setDelivery(type: $type, address: $address) @client
 	}
 `;
 export const SET_CART_PAYMENT = gql`
@@ -28,18 +28,9 @@ export const SET_CART_PAYMENT = gql`
 export const GET_CART = gql`
 	query GetCart {
 		cartDelivery @client {
+			id
 			type
 			price
-			address {
-				name,
-				street
-				number
-				district
-				city
-				state
-				zipcode
-				location
-			}
 		}
 
 		cartCompany @client {
@@ -84,17 +75,9 @@ export const GET_CART = gql`
 export const GET_CART_DELIVERY = gql`
 	query GetCartDeliveryType {
 		cartDelivery @client {
+			id
 			type
 			price
-			address {
-				name,
-				street
-				number
-				district
-				city
-				state
-				zipcode
-			}
 		}
 	}
 `;
