@@ -107,7 +107,7 @@ export default function Cart({ navigation }) {
 						<Typography variant='title'>Itens</Typography>
 						<View style={{ marginTop: 35 }}>
 							{cartItems.map((item, index)=>(
-								<Fragment key={item.id}>
+								<Fragment key={`item_${item.id}_${index}`}>
 									{index > 0 && <Divider />}
 									<CartItem item={item} onPressDelete={handleRemoveOrderItem(item)} />
 								</Fragment>
@@ -127,6 +127,10 @@ export default function Cart({ navigation }) {
 							numberOfLines={8}
 						/>
 					</Paper>
+					<Paper>
+						<Button variant='filled' style={{ button: { height: 40, backgroundColor: palette.error.main } }} onPress={handleCancelCart}>Cancelar pedido</Button>
+						<Typography style={{ color: '#666', textAlign: 'center' }}>Isso irá limpar todos os produtos da sua cesta.</Typography>
+					</Paper>
 				</CartContainerScroll>
 			</KeyboardAvoidingView>
 			{!keyboardOpen &&
@@ -137,7 +141,7 @@ export default function Cart({ navigation }) {
 						price={cartPrice}
 						onPress={handleFinishCart}
 					/>
-					<Button variant='filled' style={{ button: { height: 40 } }} onPress={handleCancelCart}>Cancelar pedido</Button>
+					
 				</CartButtonContainer>)
 			}
 		</Container>
