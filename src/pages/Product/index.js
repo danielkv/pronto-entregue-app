@@ -12,7 +12,7 @@ import LoadingBlock from '../../components/LoadingBlock';
 import Toast from '../../components/Toast';
 
 import { Paper, Typography, Icon, IconButton, TextField, useTheme } from '../../react-native-ui';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { useKeyboardStatus } from '../../utils/hooks';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import Inline from './Inline';
@@ -86,7 +86,7 @@ export default function Product() {
 						Toast.show('Produto adicionado à cesta');
 					})
 					.catch((err)=>{
-						const message = getErrors(err);
+						const message = getErrorMessage(err);
 						if (message === 'CartCompanyError')
 							Alert.alert(
 								'Já existem itens de outro estabelecimento na sua cesta.',
@@ -104,7 +104,7 @@ export default function Product() {
 		}
 	}
 
-	if (productError) return <ErrorBlock error={getErrors(productError)} />
+	if (productError) return <ErrorBlock error={getErrorMessage(productError)} />
 
 	return (
 		<Container>

@@ -7,7 +7,7 @@ import LoadingBlock from '../../../components/LoadingBlock';
 import RatingItem from '../../../components/RatingItem';
 
 import { Paper, Divider, Typography, Button } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 
 import { GET_RATINGS } from '../../../graphql/companies';
 
@@ -35,7 +35,7 @@ export default function RatingBlock({ companyId }) {
 		})
 	}
 
-	if (ratingsError) return <ErrorBlock error={getErrors(ratingsError)} />;
+	if (ratingsError) return <ErrorBlock error={getErrorMessage(ratingsError)} />;
 	if (loadingRatings && !ratings.length) return <LoadingBlock />;
 	if (!ratings.length) return false;
 

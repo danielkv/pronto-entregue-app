@@ -8,7 +8,7 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import Section from '../../../components/Section';
 
 import { Typography, useTheme } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 import { useSelectedAddress } from '../../../utils/hooks';
 import { ItemsContainer } from './styles';
 
@@ -20,7 +20,7 @@ export default function Sections() {
 	const { location } = useSelectedAddress();
 	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
 	
-	if (error) return <ErrorBlock error={getErrors(error)} />
+	if (error) return <ErrorBlock error={getErrorMessage(error)} />
 
 	return (
 		<View>

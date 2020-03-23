@@ -1,19 +1,21 @@
 import React, { useCallback } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
+
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
 
-import { Container } from './styles';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
-import Gateway from '../../gateway';
-import { sanitizeOrderData, validadeCart } from '../../utils/cart';
-import { checkCondition } from '../../utils';
 
+import Gateway from '../../gateway';
+import { checkCondition } from '../../utils';
+import { sanitizeOrderData, validadeCart } from '../../utils/cart';
+import { Container } from './styles';
+
+import { LOGGED_USER_ID } from '../../graphql/authentication';
 import { GET_CART, CANCEL_CART } from '../../graphql/cart';
 import { CREATE_ORDER, GET_USER_ORDERS } from '../../graphql/orders';
 import { GET_USER } from '../../graphql/users';
-import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 export default function Payment({ navigation }) {
 	const { data: cartData, loading: loadingCart, error } = useQuery(GET_CART);

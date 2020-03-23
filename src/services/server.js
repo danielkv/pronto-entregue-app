@@ -1,6 +1,7 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
+import { onError, ErrorLink } from "apollo-link-error";
 import { HttpLink } from 'apollo-link-http';
 
 import resolvers from '../resolvers';
@@ -50,11 +51,21 @@ const authLink = new ApolloLink((operation, forward)=> {
 	return forward(operation);
 })
 
+const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+	
+	if (graphQLErrors)
+		graphQLErrors.map(({ message, locations, path }) =>
+			console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+		);
+  
+	if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const client = new ApolloClient({
 	cache,
 	link: ApolloLink.from([authLink, httpLink]),
 	resolvers,
-	typeDefs,
+	typeDefs
 });
 
 client.onResetStore(()=>cache.writeData({ data: initialData }));

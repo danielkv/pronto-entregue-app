@@ -11,7 +11,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import NoResultBlock from '../../components/NoResultBlock';
 
 import { Paper, Typography, useTheme } from '../../react-native-ui';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { useSelectedAddress } from '../../utils/hooks';
 
 import { LOAD_SECTION } from '../../graphql/sections';
@@ -26,7 +26,7 @@ export default function Section() {
 	// QUERY
 	const { data: { section = null } = {}, loading: loadingSection, error: sectionError } = useQuery(LOAD_SECTION, { variables: { id: sectionId, location } });
 
-	if (sectionError) return <ErrorBlock error={getErrors(sectionError)} />
+	if (sectionError) return <ErrorBlock error={getErrorMessage(sectionError)} />
 
 	return (
 		<ScrollView>

@@ -12,7 +12,7 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
 import { Paper, Icon, Typography } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage, extractFirstError } from '../../../utils/errors';
 import { useSelectedAddress } from '../../../utils/hooks';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import DeliveryModal from './DeliveryModal';
@@ -38,19 +38,27 @@ export default function DeliveryBlock() {
 		setDeliveryModalOpen(false);
 	});
 
-	const handleConfirmDeliveryModal = useCallback(({ type, address }) => {
+	const handleConfirmDeliveryModal = useCallback(({ type, address, force=false }) => {
 		setDeliveryModalOpen(false);
-		setDelivery({ variables: { type, address } })
+		setDelivery({ variables: { type, address, force } })
 			.catch((err) => {
-				Alert.alert(getErrors(err));
+				const error = extractFirstError(err);
+				if (error.code === 'DELIVERY_LOCATION') {
+					Alert.alert(error.message, 'Realmente deseja alterar o endereço e limpar a cesta?', [
+						{ text: 'Sim', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }) },
+						{ text: 'Não' }
+					])
+				} else {
+					Alert.alert(error.message);
+				}
 			});
 	})
 
 	useEffect(()=>{
-		if (cartCompany) handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
+		if (cartCompany?.id && !loadingDelivery) handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
 	}, [])
 
-	if (cartError) return <ErrorBlock error={getErrors(cartError)} />
+	if (cartError) return <ErrorBlock error={getErrorMessage(cartError)} />
 		
 	return (
 		<View>

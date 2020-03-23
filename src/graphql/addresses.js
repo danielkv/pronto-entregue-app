@@ -44,7 +44,7 @@ export const GET_SELECTED_ADDRESS = gql`
 `;
 
 export const SET_SELECTED_ADDRESS = gql`
-	mutation setSelectedAddress ($address: AddressInput!) {
-		setSelectedAddress (address: $address) @client
+	mutation setSelectedAddress ($address: AddressInput!, $force: Boolean) {
+		setSelectedAddress (address: $address, force: $force) @client
 	}
 `;

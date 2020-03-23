@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/core';
 import Address from '../../components/Address';
 
 import { Paper, Typography, TextField, useTheme, Icon, FormHelperText, Button, Divider } from '../../react-native-ui';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import UserAddresses from './UserAddresses';
 
 import { SEARCH_ADDRESS } from "../../graphql/addresses";
@@ -127,7 +127,7 @@ export default function SearchAddress() {
 					onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
 				/>
 			</Paper>
-			{!!searchError && <FormHelperText error>{getErrors(searchError)}</FormHelperText>}
+			{!!searchError && <FormHelperText error>{getErrorMessage(searchError)}</FormHelperText>}
 
 			{loadingSearch
 				? <ActivityIndicator color={palette.primary.main} size='large' />

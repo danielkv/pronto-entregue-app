@@ -8,7 +8,7 @@ import { useNavigation, useRoute } from '@react-navigation/core';
 import ErrorBlock from '../../components/ErrorBlock';
 
 import { Paper, Typography, useTheme, Icon } from '../../react-native-ui';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { useSelectedAddress } from '../../utils/hooks';
 import ProductsBlock from './ProductsBlock';
 import RatingBlock from './RatingBlock';
@@ -36,7 +36,7 @@ export default function Company() {
 		return stars
 	}
 
-	if (companyError) return <ErrorBlock error={getErrors(companyError)} />
+	if (companyError) return <ErrorBlock error={getErrorMessage(companyError)} />
 
 	return (
 		<ScrollView>

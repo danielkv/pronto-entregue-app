@@ -1,3 +1,5 @@
+import { sanitizeAddress } from "../controller/address";
+
 export const calculateOrderPrice = (products, initialValue = 0) => {
 	if (!products || !products.length) return initialValue;
 	return parseFloat(products.reduce((totalProduct, product) => {
@@ -15,27 +17,21 @@ export const validadeCart = ({ cartItems, cartDelivery, cartPayment }) => {
 	return true;
 }
 
-export const sanitizeOrderData = ({ user, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment }) => {
+export const sanitizeOrderData = ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment }) => {
 	return {
-		user_id: user.id,
+		userId: userId || user.id,
+		type: cartDelivery.type,
 		status: cartStatus || 'waiting',
+		paymentMethodId: cartPayment.id,
+		companyId: cartCompany.id,
+
+		paymentFee: cartPayment.price || 0,
+		deliveryPrice: cartDelivery.price || 0,
+		discount: cartDiscount || 0,
 		price: cartPrice,
 		message: cartMessage,
-		discount: cartDiscount || 0,
 		
-		payment_method_id: cartPayment.id,
-		payment_fee: cartPayment.price || 0,
-
-		type: cartDelivery.type,
-		delivery_price: cartDelivery.price || 0,
-		
-		street: cartDelivery.address && cartDelivery.address.street ? cartDelivery.address.street : null,
-		number: cartDelivery.address && cartDelivery.address.number ? cartDelivery.address.number : null,
-		complement: cartDelivery.address && cartDelivery.address.complement ? cartDelivery.address.complement : null,
-		city: cartDelivery.address && cartDelivery.address.city ? cartDelivery.address.city : null,
-		state: cartDelivery.address && cartDelivery.address.state ? cartDelivery.address.state : null,
-		district: cartDelivery.address && cartDelivery.address.district ? cartDelivery.address.district : null,
-		zipcode: cartDelivery.address && cartDelivery.address.zipcode ? cartDelivery.address.zipcode : null,
+		address: sanitizeAddress(address),
 		
 		products: cartItems.map(product => ({
 			action: 'create',
@@ -43,19 +39,18 @@ export const sanitizeOrderData = ({ user, cartItems, cartStatus, cartPrice, cart
 			price: product.price,
 			quantity: product.quantity,
 			message: product.message || '',
-			product_id: product.id,
+			productRelatedId: product.id,
 
-			options_groups: product.options_groups.map(group => ({
+			optionsGroups: product.optionsGroups?.map(group => ({
 				name: group.name,
-				options_group_id: group.id,
+				optionsGroupRelatedId: group.id,
 
-				options: group.options.map(option => ({
+				options: group.options?.map(option => ({
 					name: option.name,
 					price: option.price,
-					item_id: option.item ? option.item.id : null,
-					option_id: option.id,
-				}))
-			}))
+					optionRelatedId: option.id,
+				})) || []
+			})) || []
 		}))
 	}
 }

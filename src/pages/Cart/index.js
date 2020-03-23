@@ -12,7 +12,7 @@ import LoadingBlock from '../../components/LoadingBlock';
 import { Button, Paper, Typography, Chip, Divider, TextField, useTheme } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
 import { calculateOrderPrice, validadeCart } from '../../utils/cart';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { useKeyboardStatus } from '../../utils/hooks';
 import DeliveryBlock from './DeliveryBlock';
 import PaymentBlock from './PaymentBlock';
@@ -89,19 +89,19 @@ export default function Cart({ navigation }) {
 	useFocusEffect(checkConditionCB);
 	
 	if (loadingCart) return <LoadingBlock />;
-	if (error) return <ErrorBlock error={getErrors(error)} />
+	if (error) return <ErrorBlock error={getErrorMessage(error)} />
 	
 	return (
 		<Container>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
 				<CartContainerScroll>
-					<Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
+					{cartCompany && <Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Image source={{ uri: cartCompany.image }} style={{ width: 60, height: 60, borderRadius: 15, marginRight: 15 }} />
 						<Typography style={{ flex: 1, fontSize: 18, color: '#333', fontWeight: 'bold', marginRight: 15 }}>{cartCompany.displayName}</Typography>
 						<View style={{ marginLeft: 'auto' }}>
 							<Chip color='secondary' label={`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`} style={{ root: { height: 30 } }} />
 						</View>
-					</Paper>
+					</Paper>}
 					<DeliveryBlock />
 					<Paper>
 						<Typography variant='title'>Itens</Typography>

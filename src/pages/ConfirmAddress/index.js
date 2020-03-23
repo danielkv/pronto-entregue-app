@@ -9,7 +9,7 @@ import { isNumber } from 'lodash'
 import * as Yup from 'yup';
 
 import { sanitizeAddress } from '../../controller/address';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { useLoggedUserId } from '../../utils/hooks';
 import PageForm from './form';
 import { Container, ContainerScroll } from './styles';
@@ -50,7 +50,7 @@ export default function ConfirmAddress() {
 				Toast.show('Endereço selecionado');
 			})
 			.catch(err => {
-				Alert.alert(getErrors(err));
+				Alert.alert(getErrorMessage(err));
 			});
 	}
 

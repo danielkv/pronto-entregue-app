@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 
 
@@ -67,7 +67,7 @@ export default function EditUser({ userId }) {
 				navigation.navigate('ProfileScreen');
 			})
 			.catch(err => {
-				Alert.alert(getErrors(err));
+				Alert.alert(getErrorMessage(err));
 			});
 	}
 

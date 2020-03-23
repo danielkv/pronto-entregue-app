@@ -11,7 +11,7 @@ import imageGoogle from '../../assets/images/logo-google.png';
 import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { TextField, Button, Typography } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 
 import { LOGIN } from '../../graphql/authentication';
@@ -49,7 +49,7 @@ export default function Login() {
 				}
 			})
 			.catch(err => {
-				Alert.alert(getErrors(err));
+				Alert.alert(getErrorMessage(err));
 			})
 	}
 

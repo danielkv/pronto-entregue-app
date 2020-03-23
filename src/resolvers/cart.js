@@ -1,10 +1,9 @@
 import { uniqueId } from 'lodash';
 
-import { CartCompanyError } from '../utils/errors';
+import { CartCompanyError, extractFirstError } from '../utils/errors';
 
-import { GET_SELECTED_ADDRESS, SET_SELECTED_ADDRESS } from '../graphql/addresses';
-import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY } from '../graphql/cart';
-import { CALCULATE_DELIVERY_PRICE } from '../graphql/orders';
+import { SET_SELECTED_ADDRESS } from '../graphql/addresses';
+import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY, CHECK_DELIVERY_LOCATION } from '../graphql/cart';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -19,12 +18,14 @@ export default {
 				data: {
 					cartMessage: '',
 					cartCompany: null,
+					carrDelivery: null,
 					cartItems: [],
 					cartPrice: 0
 				}
 			});
 		},
 		addCartItem: (_, { data, force = false }, { cache }) => {
+			// get cart
 			const { cartItems, cartCompany } = cache.readQuery({ query: GET_CART });
 			
 			// check company
@@ -53,33 +54,38 @@ export default {
 
 			return null;
 		},
-		setDelivery: async (_, { type, address }, { cache, client }) => {
-			const delivery = { type };
+		setDelivery: async (_, { type, address, force=false }, { cache, client }) => {
+			try {
+				const delivery = { type };
 			
-			if (type === 'delivery') {
-				delete address.__typename;
-				await client.mutate({ mutation: SET_SELECTED_ADDRESS, variables: { address } });
+				if (type === 'delivery') {
+					delete address.__typename;
+					await client.mutate({ mutation: SET_SELECTED_ADDRESS, variables: { address, force } });
 				
-				const { cartCompany } = cache.readQuery({ query: GET_CART_COMPANY });
+					const { cartCompany } = cache.readQuery({ query: GET_CART_COMPANY });
+
+					if (!cartCompany) throw new Error('Nenhum item no carrinho');
 				
-				delete address.__typename;
-				const { data: deliveryPriceData, error } = await client.mutate({
-					mutation: CALCULATE_DELIVERY_PRICE,
-					variables: { companyId: cartCompany.id, address }
-				});
+					delete address.__typename;
+					const { data: { checkDeliveryLocation }, error } = await client.mutate({
+						mutation: CHECK_DELIVERY_LOCATION,
+						variables: { companyId: cartCompany.id, address }
+					})
 				
-				delivery.price = deliveryPriceData.calculateDeliveryPrice.price;
-				if (error) throw error;
-			} else {
-				delivery.price = 0;
+					delivery.price = checkDeliveryLocation.price;
+					if (error) throw error;
+				} else {
+					delivery.price = 0;
+				}
+
+				delivery.__typename = 'Delivery';
+				delivery.id = uniqueId();
+
+				cache.writeQuery({ query: GET_CART_DELIVERY, data: { cartDelivery: delivery } });
+
+			} catch(err) {
+				throw new Error(JSON.stringify(extractFirstError(err)));
 			}
-
-			delivery.__typename = 'Delivery';
-			delivery.id = uniqueId();
-
-			cache.writeQuery({ query: GET_CART_DELIVERY, data: { cartDelivery: delivery } });
-
-			return null;
 		},
 		setPayment: (_, { data }, { cache }) => {
 			data.__typename = 'Payment';

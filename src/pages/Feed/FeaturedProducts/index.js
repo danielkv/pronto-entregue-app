@@ -8,7 +8,7 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
 import { useTheme, Paper, Typography } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 import { useSelectedAddress } from '../../../utils/hooks';
 import FeaturedItem from './FeaturedItem';
 
@@ -30,7 +30,7 @@ export default function FeaturedProduct() {
 	const { data: { productsOnSale: products = [] } = {}, error, loading: loadingProducts } = useQuery(GET_PRODUCTS_ON_SALE, { variables: { limit: 5, location }, fetchPolicy: 'no-cache' });
 
 	if (loadingProducts) return <LoadingBlock />
-	if (error) return <ErrorBlock error={getErrors(error)} />
+	if (error) return <ErrorBlock error={getErrorMessage(error)} />
 	if (!products.length) return false;
 
 	return (

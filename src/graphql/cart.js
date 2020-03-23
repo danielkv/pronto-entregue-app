@@ -16,8 +16,8 @@ export const CANCEL_CART = gql`
 	}
 `;
 export const SET_CART_DELIVERY = gql`
-	mutation SetCartDelivery ($type: String!, $address: AddressInput!) {
-		setDelivery(type: $type, address: $address) @client
+	mutation SetCartDelivery ($type: String!, $address: AddressInput!, $force: Boolean) {
+		setDelivery(type: $type, address: $address, force: $force) @client
 	}
 `;
 export const SET_CART_PAYMENT = gql`
@@ -123,5 +123,28 @@ export const GET_CART_ITEMS = gql`
 				}
 			}
 		}
+	}
+`;
+
+export const CHECK_DELIVERY_LOCATION = gql`
+	mutation CheckDeliveryLocation ($companyId: ID!, $address: AddressInput!) {
+		checkDeliveryLocation(companyId: $companyId, address: $address) {
+			id
+			distance
+			price
+		}
+	}
+`;
+
+export const CHECK_ORDER_PRODUCTS = gql`
+	mutation CheckOrderProducts ($order: OrderInput!) {
+		checkOrderProducts(order: $order)
+	}
+`;
+
+export const CHECK_ORDER = gql`
+	mutation CheckOrder ($order: OrderInput!) {
+		checkOrderAddress(order: $order)
+		checkOrderProducts(order: $order)
 	}
 `;

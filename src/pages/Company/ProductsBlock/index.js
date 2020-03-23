@@ -10,7 +10,7 @@ import NoResultBlock from '../../../components/NoResultBlock';
 import ProductItem from '../../../components/ProductItem';
 
 import { useTheme, Divider, Paper } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 
 import { GET_CATEGORIES } from '../../../graphql/companies';
 const Tab = createMaterialTopTabNavigator();
@@ -23,7 +23,7 @@ export default function ProductsBlock({ companyId }) {
 	const { data: { categories = [] } = {}, loading: loadingCategories, error: categoriesError } = useQuery(GET_CATEGORIES, { variables: { filter: { companyId } } });
 	const filteredCategories = categories?.filter(cat => cat.products.length) || [];
 
-	if (categoriesError) return <ErrorBlock error={getErrors(categoriesError)} />;
+	if (categoriesError) return <ErrorBlock error={getErrorMessage(categoriesError)} />;
 	if (loadingCategories) return <LoadingBlock />;
 	if (!filteredCategories.length) return <NoResultBlock suggestCompany={false} message='Nenhum produto encontrado' />;
 

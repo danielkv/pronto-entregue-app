@@ -9,7 +9,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { getStatusText } from '../../utils';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import Blocks from './Blocks';
 import {
 	Container,
@@ -45,7 +45,7 @@ export default function Order({ route }) {
 							.catch((err)=>{
 								Alert.alert(
 									'Ocorreu um erro',
-									getErrors(err)
+									getErrorMessage(err)
 								)
 							})
 					}

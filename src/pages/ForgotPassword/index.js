@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { TextField, Button, Typography } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 
 import { LOGIN } from '../../graphql/authentication';
@@ -43,7 +43,7 @@ export default function ForgotPassword() {
 				}
 			})
 			.catch(err => {
-				Alert.alert(getErrors(err));
+				Alert.alert(getErrorMessage(err));
 			})
 	}
 

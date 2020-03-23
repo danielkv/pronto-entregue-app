@@ -10,7 +10,7 @@ import NoResultBlock from '../../../components/NoResultBlock';
 import ProductItem from '../../../components/ProductItem'
 
 import { TextField, useTheme, Divider } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 import { useSelectedAddress } from '../../../utils/hooks';
 
 import { SEARCH_PRODUCTS_COMPANIES } from '../../../graphql/search';
@@ -44,7 +44,7 @@ export default function SearchBlock() {
 		}, timeOutLimit)
 	}
 
-	if (searchError) return <ErrorBlock error={getErrors(searchError)} />
+	if (searchError) return <ErrorBlock error={getErrorMessage(searchError)} />
 
 	return (
 		<View>

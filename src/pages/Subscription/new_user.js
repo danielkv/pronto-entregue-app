@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { Button, Typography } from '../../react-native-ui';
-import { getErrors } from '../../utils/errors';
+import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 
 import { CREATE_USER } from '../../graphql/users';
@@ -65,7 +65,7 @@ export default function NewUser() {
 				);
 			})
 			.catch(err => {
-				Alert.alert(getErrors(err));
+				Alert.alert(getErrorMessage(err));
 			});
 	}
 

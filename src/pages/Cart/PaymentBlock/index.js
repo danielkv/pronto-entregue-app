@@ -11,7 +11,7 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
 import { Paper, Icon, Typography } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import PaymentModal from './PaymentModal';
 
@@ -39,11 +39,11 @@ export default function DeliveryBlock() {
 		setPaymentModalOpen(false);
 		setPayment({ variables: { data: payment } })
 			.catch((err) => {
-				Alert.alert(getErrors(err));
+				Alert.alert(getErrorMessage(err));
 			});
 	});
 
-	if (cartError) return <ErrorBlock error={getErrors(cartError)} />
+	if (cartError) return <ErrorBlock error={getErrorMessage(cartError)} />
 		
 	return (
 		<>

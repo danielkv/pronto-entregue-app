@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 
 import theme from '../theme';
-import { getErrors } from './errors';
+import { getErrorMessage } from './errors';
 
 export function regionFromCoordinates(coordinates, distance) {
 	const finalDistance = distance/2
@@ -90,7 +90,7 @@ export const getStatusColors = (status) => {
 	}
 }
 
-export function checkCondition(condition, navigation, errorMessage, navigateTo = 'HomeScreen') {
+export function checkCondition(condition, navigation, errorMessage, navigateTo = 'FeedScreen') {
 	let result = condition;
 	if (typeof condition === 'function') {
 		try {
@@ -99,7 +99,7 @@ export function checkCondition(condition, navigation, errorMessage, navigateTo =
 		} catch (err) {
 			result = false;
 			// eslint-disable-next-line no-param-reassign
-			errorMessage = getErrors(err);
+			errorMessage = getErrorMessage(err);
 		}
 	}
 	

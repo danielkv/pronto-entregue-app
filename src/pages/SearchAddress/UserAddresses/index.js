@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useNavigation } from '@react-navigation/core';
@@ -9,7 +9,7 @@ import ErrorBlock from "../../../components/ErrorBlock";
 import LoadingBlock from "../../../components/LoadingBlock";
 
 import { Paper, Typography } from '../../../react-native-ui';
-import { getErrors } from '../../../utils/errors';
+import { getErrorMessage } from '../../../utils/errors';
 import { useLoggedUserId } from '../../../utils/hooks'
 
 import { SET_SELECTED_ADDRESS } from '../../../graphql/addresses';
@@ -28,13 +28,16 @@ export default function UserAddresses() {
 	function handleAddressPress(address) {
 		setSelectedAddress({ variables: { address } })
 			.then(()=>{
-				navigation.navigate('HomeRoutes')
+				navigation.navigate('FeedScreen')
+			})
+			.catch((err)=>{
+				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
 			})
 	}
 		
 
 	if (loadingAddresses) return <LoadingBlock />;
-	if (addressesError) return <ErrorBlock error={getErrors(addressesError)} />;
+	if (addressesError) return <ErrorBlock error={getErrorMessage(addressesError)} />;
 
 	if (!addresses.length) return false;
 
