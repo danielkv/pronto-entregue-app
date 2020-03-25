@@ -2,13 +2,14 @@
 import React from 'react';
 
 const gateways = {
-	Money: require('./Money'),
-	CreditDebit: require('./CreditDebit')
+	money: require('./Money'),
+	delivery: require('./Delivery'),
+	//app: require('./App')
 }
 
-export default function Gateway({ step, name, onPress, cart, onFinish }) {
-	const { Finish, Option } = gateways[name];
+export default function Gateway({ step, method, onPress, cart, onFinish }) {
+	const { Finish, Option } = gateways[method.type];
 
-	if (step === 'option') return <Option onPress={onPress} />
-	if (step === 'finish') return <Finish cart={cart} onFinish={onFinish} />
+	if (step === 'option') return <Option method={method} onPress={onPress} />
+	if (step === 'finish') return <Finish method={method} cart={cart} onFinish={onFinish} />
 }

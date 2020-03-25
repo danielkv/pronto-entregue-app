@@ -73,12 +73,13 @@ export const GET_RATINGS = gql`
 
 export const GET_COMPANY_PAYMENT_METHODS = gql`
 	query GetPaymentPaymentMethods ($id: ID!) {
-		branch (id:$id) {
+		company (id:$id) {
 			id
 			paymentMethods {
 				id
-				name
-				display_name
+				type
+				image
+				displayName
 			}
 		}
 	}

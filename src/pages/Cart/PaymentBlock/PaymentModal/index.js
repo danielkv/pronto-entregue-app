@@ -8,17 +8,18 @@ import LoadingBlock from '../../../../components/LoadingBlock';
 import Panel from '../../../../components/Panel';
 
 import Gateway from '../../../../gateway';
+import { Typography, Paper, useTheme } from '../../../../react-native-ui';
 
 import { GET_COMPANY_PAYMENT_METHODS } from '../../../../graphql/companies';
 
-export default function DeliveryModal({ confirmModal, closeModal, company }) {
-	const { data: userPaymentMethodsData, loading: loadingPaymentMethods, error } = useQuery(GET_COMPANY_PAYMENT_METHODS, {
+export default function PaymentModal({ confirmModal, closeModal, company }) {
+	const { palette } = useTheme();
+	const { data: { company: { paymentMethods = [] } = {} } = {}, loading: loadingPaymentMethods, error } = useQuery(GET_COMPANY_PAYMENT_METHODS, {
 		variables: { id: company.id }
 	});
-	const paymentMethods = userPaymentMethodsData ? userPaymentMethodsData.branch.paymentMethods : [];
 
 	const onPressPayment = (method) => {
-		confirmModal({ id: method.id, name: method.name, displayName: method.display_name });
+		confirmModal(method);
 	}
 
 	if (loadingPaymentMethods) return <LoadingBlock />
@@ -26,13 +27,18 @@ export default function DeliveryModal({ confirmModal, closeModal, company }) {
 
 	return (
 		<Panel
-			title='Método de pagamento'
+			title='Forma de pagamento'
 			handleCancel={closeModal}
 			HeaderRight={()=>(<View />)}
 		>
-			{paymentMethods.map((method, index) => (
-				<Gateway key={index} step='option' name={method.name} onPress={()=>onPressPayment(method)} />
-			))}
+			<View style={{ backgroundColor: palette.background.main, paddingHorizontal: 35, paddingVertical: 15, marginVertical: 15 }}>
+				<Typography style={{ fontSize: 16, color: palette.background.dark }}>Crédito/Débito na entrega</Typography>
+			</View>
+			<View style={{ paddingHorizontal: 15 }}>
+				{paymentMethods.map((method, index) => (
+					<Gateway key={index} step='option' method={method} onPress={()=>onPressPayment(method)} />
+				))}
+			</View>
 		</Panel>
 	);
 }

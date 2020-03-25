@@ -1,7 +1,6 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import { onError, ErrorLink } from "apollo-link-error";
 import { HttpLink } from 'apollo-link-http';
 
 import resolvers from '../resolvers';
@@ -10,7 +9,7 @@ import { schema as typeDefs } from '../schema/cart';
 import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { GET_USER_TOKEN } from '../graphql/authentication';
 
-const host = process.env.NODE_ENV === 'production' ? 'https://flakery-backend.herokuapp.com/graphql' : 'http://10.1.1.170:4000/graphql';
+const host = process.env.NODE_ENV === 'production' ? 'https://pronto-entregue-backend.herokuapp.com/graphql' : 'http://10.1.1.170:4000/graphql';
 
 const httpLink = new HttpLink({ uri: host });
 
@@ -50,16 +49,6 @@ const authLink = new ApolloLink((operation, forward)=> {
 	
 	return forward(operation);
 })
-
-const errorLink = onError(({ graphQLErrors, networkError, response }) => {
-	
-	if (graphQLErrors)
-		graphQLErrors.map(({ message, locations, path }) =>
-			console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-		);
-  
-	if (networkError) console.log(`[Network error]: ${networkError}`);
-});
 
 const client = new ApolloClient({
 	cache,

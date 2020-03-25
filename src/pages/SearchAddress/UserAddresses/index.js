@@ -15,8 +15,6 @@ import { useLoggedUserId } from '../../../utils/hooks'
 import { SET_SELECTED_ADDRESS } from '../../../graphql/addresses';
 import { GET_USER_ADDRESSES } from "../../../graphql/users";
 
-// import { Container } from './styles';
-
 export default function UserAddresses() {
 	// get user addresses
 	const userId = useLoggedUserId();
@@ -28,7 +26,7 @@ export default function UserAddresses() {
 	function handleAddressPress(address) {
 		setSelectedAddress({ variables: { address } })
 			.then(()=>{
-				navigation.navigate('FeedScreen')
+				navigation.navigate('HomeRoutes', { screen: 'FeedScreen' })
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))

@@ -3,13 +3,14 @@ import { View } from 'react-native';
 import { Icon, CheckBox, Input } from 'react-native-elements';
 import { TextInputMask } from 'react-native-masked-text'
 
+import CartButton from '../../components/CartButton';
+
 import {
 	GataweyContainer,
 	GetawayTitle,
 	GetawayIconContainer,
 	LabelText,
 } from '../styles'
-
 import {
 	FinishContainer,
 	ErrorMessage,
@@ -18,7 +19,6 @@ import {
 	Title,
 } from './styles';
 
-import CartButton from '../../components/CartButton';
 
 export const Option = ({ onPress }) => {
 	return (
