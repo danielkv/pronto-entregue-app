@@ -47,9 +47,9 @@ export const GET_CART = gql`
 
 		cartPayment @client {
 			id
-			name
-			display_name
-			price
+			image
+			type
+			displayName
 		}
 
 		cartItems @client {
@@ -96,9 +96,9 @@ export const GET_CART_PAYMENT = gql`
 	query GetCartPaymentMethod {
 		cartPayment @client {
 			id
-			name
+			image
+			type
 			displayName
-			price
 		}
 	}
 `;

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Icon, CheckBox, Input } from 'react-native-elements';
 import { TextInputMask } from 'react-native-masked-text'
 
 import CartButton from '../../components/CartButton';
 
+import { Typography } from '../../react-native-ui';
 import {
 	GataweyContainer,
-	GetawayTitle,
 	GetawayIconContainer,
 	LabelText,
 } from '../styles'
@@ -20,13 +20,13 @@ import {
 } from './styles';
 
 
-export const Option = ({ onPress }) => {
+export const Option = ({ method, onPress }) => {
 	return (
 		<GataweyContainer onPress={onPress}>
 			<GetawayIconContainer>
-				<Icon type='material-community' name='cash' size={24} color='#fff' />
+				<Image source={{ uri: method.image }} style={{ width: 60, height: 40 }} resizeMode='contain' />
 			</GetawayIconContainer>
-			<GetawayTitle>Dinheiro</GetawayTitle>
+			<Typography variant='h5' style={{ color: '#666' }}>Dinheiro</Typography>
 		</GataweyContainer>
 	);
 }

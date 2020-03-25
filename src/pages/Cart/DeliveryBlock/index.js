@@ -71,12 +71,13 @@ export default function DeliveryBlock() {
 					</CardHeader>
 					<CardContent>
 						<CardInfo>
-							{
-							// eslint-disable-next-line no-nested-ternary
-								cartDelivery
-									? (cartDelivery.type === 'delivery') ? selectedAddress.name : 'Retirar no local'
-									: 'Nenhum endereço selecionado'
-							}
+							<Typography>
+								{
+									cartDelivery
+										? (cartDelivery.type === 'delivery') ? selectedAddress.name : 'Retirar no local'
+										: 'Nenhum endereço selecionado'
+								}
+							</Typography>
 						</CardInfo>
 						<Icon name='edit' size={24} color='#333' />
 						{!!(cartDelivery && cartDelivery.price)

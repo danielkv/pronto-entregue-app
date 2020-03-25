@@ -60,12 +60,6 @@
 		}
 	],
 	"cartMessage": "",
-	"cartPayment": {
-		"__typename": "Payment",
-		"display_name": "Cartão de Crédito/Débito",
-		"id": "1",
-		"name": "Money",
-		"price": 0
-	},
+	"cartPayment": null,
 	"cartPrice": 40.46
 }

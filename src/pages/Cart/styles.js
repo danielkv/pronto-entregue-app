@@ -1,7 +1,8 @@
-import { Text } from 'react-native-elements';
 import { vw, vh } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
+
+import { Typography } from '../../react-native-ui';
 
 export const Container = styled.View`
 	flex: 1;
@@ -28,16 +29,18 @@ export const CardContent = styled.View`
 	align-items: center;
 	justify-content: flex-start;
 `;
-export const CardTitle = styled(Text)`
+export const CardTitle = styled(Typography)`
 	color: #aaa;
 	font-size: 16px;
 	font-weight: 100;
 	margin-left: 10px;
 `;
-export const CardInfo = styled(Text)`
+export const CardInfo = styled.View`
+	flex-direction: row;
+	align-items: center;
 	margin-right: 10px;
 `;
-export const CardPrice = styled(Text)`
+export const CardPrice = styled(Typography)`
 	position: absolute;
 	right: 0;
 	bottom: 0;

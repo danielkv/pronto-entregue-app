@@ -1,15 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import { Platform, Alert } from 'react-native';
+import { Platform, Alert, Image } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import { useSafeArea } from 'react-native-safe-area-context';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/core'
+
 
 import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
+import { sanitizePaymentMethod } from '../../../controller/paymentMethods';
 import { Paper, Icon, Typography } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
 import { CardHeader, CardContent, CardInfo } from '../styles';
@@ -18,6 +21,7 @@ import PaymentModal from './PaymentModal';
 import { GET_CART, SET_CART_PAYMENT } from '../../../graphql/cart';
 
 export default function DeliveryBlock() {
+	const navigation = useNavigation();
 	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
 	// modal margins
@@ -29,7 +33,13 @@ export default function DeliveryBlock() {
 	const [setPayment, { loading: loadingPayment }] = useMutation(SET_CART_PAYMENT);
 
 	const handleOpenPaymentModal = useCallback(()=>{
-		setPaymentModalOpen(true);
+		if (cartCompany) {
+			setPaymentModalOpen(true);
+		} else {
+			Alert.alert('Ops! Tem algo errado', 'Parece que não há nenhum item na sua cesta', [
+				{ text: 'OK', onPress: ()=> navigation.navigate('FeedScreen') }
+			])
+		}
 	})
 	const handleClosePaymentModal = useCallback(()=>{
 		setPaymentModalOpen(false);
@@ -37,7 +47,7 @@ export default function DeliveryBlock() {
 
 	const handleConfirmPaymentModal = useCallback((payment)=>{
 		setPaymentModalOpen(false);
-		setPayment({ variables: { data: payment } })
+		setPayment({ variables: { data: sanitizePaymentMethod(payment) } })
 			.catch((err) => {
 				Alert.alert(getErrorMessage(err));
 			});
@@ -54,9 +64,18 @@ export default function DeliveryBlock() {
 						<Typography variant='title' style={{ marginLeft: 10, fontSize: 20 }}>Forma de pagamento</Typography>
 						{loadingPayment && <LoadingBlock />}
 					</CardHeader>
+					
 					<CardContent>
 						<CardInfo>
-							{cartPayment?.displayName || 'Nenhum pagamento selecionado'}
+							{cartPayment
+								? (
+									<>
+										<Image source={{ uri: cartPayment.image }} style={{ width: 40, height: 35, resizeMode: 'center' }} />
+										<Typography>{cartPayment.displayName}</Typography>
+									</>
+								)
+								: <Typography>Nenhum pagamento selecionado</Typography>
+							}
 						</CardInfo>
 						<Icon name='edit' size={24} color='#333' />
 					</CardContent>

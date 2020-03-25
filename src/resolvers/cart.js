@@ -18,7 +18,8 @@ export default {
 				data: {
 					cartMessage: '',
 					cartCompany: null,
-					carrDelivery: null,
+					cartDelivery: null,
+					cartPayment: null,
 					cartItems: [],
 					cartPrice: 0
 				}
@@ -89,9 +90,9 @@ export default {
 		},
 		setPayment: (_, { data }, { cache }) => {
 			data.__typename = 'Payment';
-			data.price = 0;
-
-			cache.writeData({ query: GET_CART_PAYMENT, data: { cartPayment: data } });
+			
+			console.log(data);
+			cache.writeQuery({ query: GET_CART_PAYMENT, data: { cartPayment: data } });
 
 			return null;
 		},

@@ -75,7 +75,19 @@ export const GET_COMPANY_PAYMENT_METHODS = gql`
 	query GetPaymentPaymentMethods ($id: ID!) {
 		company (id:$id) {
 			id
-			paymentMethods {
+			appMethods: paymentMethods(filter: { type: "app" }) {
+				id
+				type
+				image
+				displayName
+			}
+			moneyMethods: paymentMethods(filter: { type: "money" }) {
+				id
+				type
+				image
+				displayName
+			}
+			deliveryMethods: paymentMethods(filter: { type: "delivery" }) {
 				id
 				type
 				image
