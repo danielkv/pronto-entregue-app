@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
-import { View, Image } from 'react-native';
-import { Icon, CheckBox, Input } from 'react-native-elements';
+import { View, Image, ScrollView } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text'
 
 import CartButton from '../../components/CartButton';
 
-import { Typography } from '../../react-native-ui';
+import { Typography, TextField, Paper, Button, useTheme } from '../../react-native-ui';
 import {
 	GataweyContainer,
 	GetawayIconContainer,
-	LabelText,
 } from '../styles'
 import {
 	FinishContainer,
 	ErrorMessage,
 	CartButtonContainer,
-	FormContainer,
-	Title,
 } from './styles';
-
 
 export const Option = ({ method, onPress }) => {
 	return (
@@ -32,7 +27,8 @@ export const Option = ({ method, onPress }) => {
 }
 
 export const Finish = ({ onFinish, cart }) => {
-	const { cartItems, cartDelivery, cartPayment, cartDiscount, cartPrice } = cart;
+	const { palette } = useTheme();
+	const { cartItems, cartDelivery, cartPayment, cartDiscount, cartPrice, cartCompany } = cart;
 
 	const [needChange, setNeedChange] = useState(false);
 	const [change, setChange] = useState(Math.ceil(cartPrice / 10) * 10);
@@ -47,43 +43,48 @@ export const Finish = ({ onFinish, cart }) => {
 			cartMessage = `${cartMessage}\r\n\r\n----------------\r\nVou precisar de troco para ${change}`;
 		}
 		
-		return onFinish({ cartItems, cartDelivery, cartPayment, cartDiscount, cartMessage, cartPrice });
+		return onFinish({ cartItems, cartDelivery, cartPayment, cartDiscount, cartMessage, cartPrice, cartCompany });
 	}
 	
 	return (
 		<FinishContainer>
-			<FormContainer>
-				<Icon type='material-community' name='cash' size={75} color='#fff' />
-				<Title>Pagamento em dinheiro</Title>
-				<View>
-					<CheckBox
-						title='Vou precisar de troco'
-						checked={needChange}
-						onPress={()=>{ setError(''); setNeedChange(!needChange) }}
-					/>
-					{needChange && (
-						<>
-							<LabelText h3>Troco para quanto?</LabelText>
-							<TextInputMask
-								type='money'
-								value={change}
-								onChangeText={(value)=>setChange(value)}
-								options={{
-									unit: 'R$ ',
-								}}
-								customTextInput={Input}
-								customTextInputProps={{
-									placeholder: 'Troco para quanto?',
-									// type: 'number',
+			<ScrollView style={{ flex: 1 }}>
+				<Paper style={{ alignItems: "center" }}>
+					<Image source={{ uri: cartPayment.image }} style={{ width: 100, height: 80, resizeMode: 'contain' }} />
+					<Typography variant='title'>Pagamento em dinheiro</Typography>
+					<View style={{ width: '100%', marginTop: 20 }}>
+						<Button
+							variant='filled'
+							label='Vou precisar de troco'
+							icon={needChange ? 'check-square' : 'square'}
+							checked={needChange}
+							onPress={()=>{ setError(''); setNeedChange(!needChange) }}
+						/>
+						{needChange && (
+							<View style={{ marginTop: 20 }}>
+								<Typography variant='subtitle'>Troco para quanto?</Typography>
+								<TextInputMask
+									type='money'
+									value={change}
+									onChangeText={(value)=>setChange(value)}
+									options={{
+										unit: 'R$ ',
+									}}
+									customTextInput={TextField}
+									customTextInputProps={{
+										placeholder: 'Troco para quanto?',
+										// type: 'number',
+										style: { inputContainer: { backgroundColor: palette.background.main } },
 									
-									keyboardType: 'numeric'
-								}}
-							/>
-						</>
-					)}
-				</View>
-				{!!error && <ErrorMessage>{error}</ErrorMessage>}
-			</FormContainer>
+										keyboardType: 'numeric'
+									}}
+								/>
+							</View>
+						)}
+					</View>
+					{!!error && <ErrorMessage>{error}</ErrorMessage>}
+				</Paper>
+			</ScrollView>
 			<CartButtonContainer>
 				<CartButton
 					title='Finalizar pedido'

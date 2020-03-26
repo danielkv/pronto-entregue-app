@@ -1,23 +1,23 @@
 import { sanitizeAddress } from "../controller/address";
 
-export const calculateOrderPrice = (products, initialValue = 0) => {
+export function calculateOrderPrice(products, initialValue = 0) {
 	if (!products || !products.length) return initialValue;
 	return parseFloat(products.reduce((totalProduct, product) => {
 		return totalProduct + product.price;
 	}, initialValue));
 }
 
-export const validadeCart = ({ cartItems, cartDelivery, cartPayment }) => {
-	if (cartItems.length === 0) throw new Error('Não há nenhum item no carrinho');
+export function validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany }) {
+	if (!cartCompany || cartItems.length === 0) throw new Error('Não há nenhum item no carrinho');
 
 	if (!cartDelivery || !cartDelivery.type) throw new Error('Selecione um tipo de entrega');
 	
-	if (!cartPayment || !cartPayment.id || !cartPayment.name) throw new Error('Selecione uma método de pagamento');
+	if (!cartPayment || !cartPayment.id) throw new Error('Selecione uma método de pagamento');
 
 	return true;
 }
 
-export const sanitizeOrderData = ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment }) => {
+export function sanitizeOrderData ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment }) {
 	return {
 		userId: userId || user.id,
 		type: cartDelivery.type,
@@ -25,7 +25,7 @@ export const sanitizeOrderData = ({ userId, user, address, cartCompany, cartItem
 		paymentMethodId: cartPayment.id,
 		companyId: cartCompany.id,
 
-		paymentFee: cartPayment.price || 0,
+		paymentFee: cartPayment?.price || 0,
 		deliveryPrice: cartDelivery.price || 0,
 		discount: cartDiscount || 0,
 		price: cartPrice,

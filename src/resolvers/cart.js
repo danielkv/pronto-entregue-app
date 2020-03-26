@@ -90,8 +90,6 @@ export default {
 		},
 		setPayment: (_, { data }, { cache }) => {
 			data.__typename = 'Payment';
-			
-			console.log(data);
 			cache.writeQuery({ query: GET_CART_PAYMENT, data: { cartPayment: data } });
 
 			return null;

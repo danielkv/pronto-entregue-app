@@ -23,16 +23,18 @@ export const ORDER_FRAGMENT = gql`
 		price
 		type
 		message
-		delivery_price
+		deliveryPrice
 		discount
-		payment_fee
-		payment_method {
+		paymentFee
+		paymentMethod {
 			id
-			display_name
+			displayName
 		}
 
-		street
-		number
+		address {
+			street
+			number
+		}
 		
 		products {
 			id
@@ -40,7 +42,7 @@ export const ORDER_FRAGMENT = gql`
 			price
 			quantity
 			message
-			options_groups {
+			optionsGroups {
 				id
 				name
 				options {
@@ -51,19 +53,18 @@ export const ORDER_FRAGMENT = gql`
 			}
 		}
 		status
-		createdDate
-		createdTime
+		createdAt
 	}
 	
 `;
 
 export const CREATE_ORDER = gql`
 	mutation ($data: OrderInput!) {
-		createOrder(data:$data) {
-			id
-			price
+		createOrder(data: $data) {
+			...OrderFields
 		}
 	}
+	${ORDER_FRAGMENT}
 `;
 
 export const UPDATE_ORDER = gql`
@@ -85,23 +86,24 @@ export const LOAD_ORDER = gql`
 `;
 
 export const GET_USER_ORDERS = gql`
-	query ($id: ID!) {
+	query GetUserOrders($id: ID!) {
 		user (id: $id) {
 			id
 			orders {
 				id
 				type
+				price
+				countProducts
+				status
+				createdAt
 				user {
 					id
 					fullName
 				}
-				street
-				number
-				price
-				products_qty
-				status
-				createdDate
-				createdTime
+				address {
+					street
+					number
+				}
 			}
 		}
 	}

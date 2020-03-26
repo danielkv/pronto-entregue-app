@@ -61,8 +61,7 @@ export default function Cart({ navigation }) {
 
 	const handleFinishCart = () => {
 		try {
-			validadeCart({ cartItems, cartDelivery, cartPayment });
-
+			validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany });
 			client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
 			navigation.navigate('PaymentScreen');

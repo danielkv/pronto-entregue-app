@@ -1,5 +1,3 @@
-import { Text } from 'react-native-elements';
-
 import styled from 'styled-components/native';
 
 export const GataweyContainer = styled.TouchableOpacity`
@@ -15,9 +13,4 @@ export const GataweyContainer = styled.TouchableOpacity`
 
 export const GetawayIconContainer = styled.View`
 	
-`;
-export const LabelText = styled(Text)`
-	color: #fff;
-	margin-top: 15px;
-	padding: 0 7px;
 `;

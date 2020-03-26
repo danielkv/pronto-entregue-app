@@ -30,7 +30,7 @@ export function extractAddress(address) {
 
 export function sanitizeAddress(result) {
 	const address = {
-		name: result.name || '',
+		name: result?.name || '',
 		street: result.street,
 		number: parseInt(result.number),
 		complement: result.complement,

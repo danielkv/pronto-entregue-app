@@ -8,17 +8,7 @@ import theme from '../../theme';
 export const FinishContainer = styled.View`
 	flex:1;
 `;
-export const FormContainer = styled.ScrollView`
-	flex:1;
-	margin: ${theme.header.height}px ${vw(3)}px 0 ${vw(3)}px;
-`;
-export const Title = styled(Text)`
-	color: #fff;
-	text-align: center;
-	font-size: 18px;
-	font-weight: bold;
-	margin-bottom: 20px;
-`;
+
 export const ErrorMessage = styled(Text)`
 	color: ${theme.palette.error};
 	text-align: center;
