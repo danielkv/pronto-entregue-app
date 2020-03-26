@@ -20,7 +20,7 @@ export default function TabBar(props) {
 			<Badge color='primary' badgeContent={cartItems.length} style={{ badge: { marginTop: 5 } }}>
 				<MenuItem icon='shopping-bag' label='Cesta' onPress={()=>navigation.navigate('CartRoutes', { screen: 'CartScreen' })} />
 			</Badge>
-			<MenuItem icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('CartRoutes', { screen: 'CartScreen' })} />
+			<MenuItem icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
 			<MenuItem icon='settings' label='Opções' screenName='HomeRoutes' />
 		</Container>
 	);
