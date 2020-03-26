@@ -1,4 +1,5 @@
 import AvatarDefaultTheme from '../Avatar/defaultTheme';
+import BadgeDefaultTheme from '../Badge/defaultTheme';
 import ButtonDefaultTheme from '../Button/defaultTheme';
 import ChipDefaultTheme from '../Chip/defaultTheme';
 import DividerDefaultTheme from '../Divider/defaultTheme';
@@ -66,4 +67,5 @@ export default<Theme> {
 	Paper: PaperDefaultTheme,
 	Avatar: AvatarDefaultTheme,
 	Divider: DividerDefaultTheme,
+	Badge: BadgeDefaultTheme,
 }

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { AvatarType } from '../Avatar/types';
+import { BadgeType } from '../Badge/types';
 import { ButtonType } from '../Button/types';
 import { ChipType } from '../Chip/types';
 import { DividerType } from '../Divider/types';
@@ -42,6 +43,7 @@ export interface Theme {
 	Paper?: PaperType,
 	Avatar?: AvatarType,
 	Divider?: DividerType,
+	Badge?: BadgeType,
 }
 
 interface ColorVariants {
