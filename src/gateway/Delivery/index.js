@@ -1,10 +1,10 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import CartButton from '../../components/CartButton';
 
-import { Typography } from '../../react-native-ui';
+import { Typography, Paper } from '../../react-native-ui';
 import {
 	GataweyContainer,
 	GetawayIconContainer,
@@ -37,10 +37,13 @@ export const Finish = ({ cart, onFinish }) => {
 	
 	return (
 		<FinishContainer>
-			<FormContainer>
-				<Icon type='material-community' name='credit-card' size={75} color='#fff' />
-				<Title>Pagamento com Cartão de Crédito/Débito</Title>
-			</FormContainer>
+			<View style={{ flex: 1}}>
+				<Paper style={{ alignItems: "center" }}>
+					<Image source={{ uri: cart.cartPayment.image }} style={{ width: 100, height: 80, resizeMode: 'contain' }} />
+					<Typography style={{ textAlign: "center" }} variant='title'>{cart.cartPayment.displayName}</Typography>
+					<Typography style={{ textAlign: "center" }} variant='subtitle'>Cartão de Crédito/Débito na entrega</Typography>
+				</Paper>
+			</View>
 			<CartButtonContainer>
 				<CartButton
 					title='Finalizar pedido'
