@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, View } from 'react-native';
-import { Icon } from 'react-native-elements';
 
 import CartButton from '../../components/CartButton';
 
@@ -12,8 +11,6 @@ import {
 import {
 	FinishContainer,
 	CartButtonContainer,
-	FormContainer,
-	Title,
 } from './styles';
 
 
@@ -37,7 +34,7 @@ export const Finish = ({ cart, onFinish }) => {
 	
 	return (
 		<FinishContainer>
-			<View style={{ flex: 1}}>
+			<View style={{ flex: 1 }}>
 				<Paper style={{ alignItems: "center" }}>
 					<Image source={{ uri: cart.cartPayment.image }} style={{ width: 100, height: 80, resizeMode: 'contain' }} />
 					<Typography style={{ textAlign: "center" }} variant='title'>{cart.cartPayment.displayName}</Typography>
