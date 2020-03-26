@@ -15,7 +15,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 	const theme = useTheme();
 
 	const state = props.scene.route?.state || props.scene.route;
-	const previous =  state?.routes?.length > 1 || false;
+	const canGoBack = state?.index > 0 || (navigation.dangerouslyGetState().index > 0 || false);
 	const headerTransparent = props?.scene?.descriptor?.options?.headerTransparent || false;
 
 	const finalVariant = headerTransparent ? headerTransparent === true ? 'transparent' : variant : variant;
@@ -42,7 +42,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 			}}
 			colors={['#000d', '#0000']}
 		>
-			{previous
+			{canGoBack
 				&& (
 					<TouchableOpacity onPress={navigation.goBack}>
 						<Icon name='chevron-left' color={iconsColor} />

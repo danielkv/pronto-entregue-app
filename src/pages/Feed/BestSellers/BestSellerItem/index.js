@@ -19,7 +19,7 @@ export default function BestSellerItem({ item: product }) {
 	}
 
 	return (
-		<Container onPress={() => navigation.navigate('ProductScreen', params) }>
+		<Container onPress={() => navigation.push('ProductScreen', params) }>
 			<BgImage source={{ uri: product.image }}>
 				<View>
 					<LinearGradient
