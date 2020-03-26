@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
 	background-color: ${({ theme })=> theme.palette.background.main};
 	height: 60px;
-	overflow: hidden;
 	flex-direction: row;
 	align-items: center;
 	justify-content:space-around;
