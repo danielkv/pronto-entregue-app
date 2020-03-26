@@ -6,6 +6,7 @@ import 'moment/locale/pt-br';
 
 import { NavigationContainer } from '@react-navigation/native';
 
+import FontLoader from './components/FontLoader';
 import LoadingBlock from './components/LoadingBlock';
 
 import AuthenticationRoutes from './routes/authentication';
@@ -19,16 +20,18 @@ export default function SplashScreen() {
 
 	return (
 		<View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
-			<NavigationContainer theme={NavigatorTheme}>
-				{
+			<FontLoader>
+				<NavigationContainer theme={NavigatorTheme}>
+					{
 					// eslint-disable-next-line no-nested-ternary
-					loading
-						? <LoadingBlock />
-						: !loggedUserId
-							? <AuthenticationRoutes />
-							: <MainRoutes />
-				}
-			</NavigationContainer>
+						loading
+							? <LoadingBlock />
+							: !loggedUserId
+								? <AuthenticationRoutes />
+								: <MainRoutes />
+					}
+				</NavigationContainer>
+			</FontLoader>
 		</View>
 	);
 }
