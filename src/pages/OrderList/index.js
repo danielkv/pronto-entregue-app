@@ -1,27 +1,34 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { ScrollView } from 'react-native';
+
 import { useQuery } from '@apollo/react-hooks';
 
-import { Container, ContainerScroll } from './styles';
 import LoadingBlock from '../../components/LoadingBlock';
-import Order from './Order';
+import OrderItem from '../../components/OrderItem';
+
+import { Paper, Typography, Divider } from '../../react-native-ui';
+import { useLoggedUserId } from '../../utils/hooks';
 
 import { GET_USER_ORDERS } from '../../graphql/orders';
-import { LOGGED_USER_ID } from '../../graphql/authentication';
 
 export default function OrderList() {
-	const { data: loggedUserIdData } = useQuery(LOGGED_USER_ID);
-	const { data: ordersData, loading: loadingOrders } = useQuery(GET_USER_ORDERS, { variables: { id: loggedUserIdData.loggedUserId } });
+	const loggedUserId = useLoggedUserId();
+	const { data: ordersData, loading: loadingOrders } = useQuery(GET_USER_ORDERS, { variables: { id: loggedUserId } });
 	const orders = ordersData && ordersData.user ? ordersData.user.orders : [];
 
 	if (loadingOrders) return <LoadingBlock />;
 
 	return (
-		<ContainerScroll>
-			<Container>
+		<ScrollView>
+			<Paper>
+				<Typography variant='title' style={{ marginBottom: 20 }}>Meus Pedidos</Typography>
 				{orders.map((order, index) => (
-					<Order order={order} key={index} />
+					<Fragment key={order.id}>
+						{index > 0 && <Divider />}
+						<OrderItem item={order} key={index} />
+					</Fragment>
 				))}
-			</Container>
-		</ContainerScroll>
+			</Paper>
+		</ScrollView>
 	);
 }
