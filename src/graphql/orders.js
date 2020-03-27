@@ -86,10 +86,11 @@ export const LOAD_ORDER = gql`
 `;
 
 export const GET_USER_ORDERS = gql`
-	query GetUserOrders($id: ID!) {
+	query GetUserOrders($id: ID!, $pagination: Pagination) {
 		user (id: $id) {
 			id
-			orders {
+			countOrders
+			orders(pagination: $pagination) {
 				id
 				type
 				price
@@ -105,6 +106,9 @@ export const GET_USER_ORDERS = gql`
 					number
 				}
 			}
+		}
+		pageInfo {
+			page
 		}
 	}
 `;
