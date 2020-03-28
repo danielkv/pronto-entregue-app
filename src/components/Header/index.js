@@ -14,8 +14,8 @@ import { GET_USER } from '../../graphql/users';
 export default function  AppHeader({ variant='solid', rigthContent=true, navigation, ...props }) {
 	const theme = useTheme();
 
-	const state = props.scene.route?.state || props.scene.route;
-	const canGoBack = state?.index > 0 || (navigation.dangerouslyGetState().index > 0 || false);
+	const parentState = navigation.dangerouslyGetParent().dangerouslyGetState();
+	const canGoBack = parentState?.index > 0 || (navigation.dangerouslyGetState().index > 0 || false);
 	const headerTransparent = props?.scene?.descriptor?.options?.headerTransparent || false;
 
 	const finalVariant = headerTransparent ? headerTransparent === true ? 'transparent' : variant : variant;

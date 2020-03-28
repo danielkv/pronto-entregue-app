@@ -22,7 +22,7 @@ export default function OrderItem({ item: order }) {
 	const statusColor = getStatusColors(order.status);
 
 	return (
-		<TouchableOpacity onPress={()=>navigation.push('OrderScreen', { orderId: order.id })}>
+		<TouchableOpacity onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderScreen', params: { orderId: order.id } })}>
 			<Container>
 				<IconBlock>
 					<Icon name='list' color={palette.background.dark} />

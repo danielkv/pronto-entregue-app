@@ -2,6 +2,7 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 
 import OrderScreen from '../pages/Order';
@@ -16,7 +17,7 @@ export default function OrderRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='OrderScreen'
-				headerMode='none'
+				screenOptions= {{ header: Header }}
 			>
 				<Stack.Screen name='OrderScreen' component={OrderScreen} />
 				<Stack.Screen name='OrderListScreen' component={OrderListScreen} />
