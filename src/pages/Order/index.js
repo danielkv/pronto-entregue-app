@@ -15,11 +15,7 @@ import Blocks from './Blocks';
 import {
 	Container,
 	ContainerScroll,
-	BlocksContainer,
-	OrderItems,
-	ItemsContainer,
-	CancelButton,
-	CancelButtonText,
+	BlocksContainer
 } from './styles';
 
 import { LOAD_ORDER, UPDATE_ORDER } from '../../graphql/orders';
