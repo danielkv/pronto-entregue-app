@@ -5,6 +5,6 @@ export const ContainerButton = styled.TouchableHighlight`
 	justify-content: center;
 
 	border-radius: 40px;
-	width: 70px;
+	width: 80px;
 	height: 60px;
 `;
