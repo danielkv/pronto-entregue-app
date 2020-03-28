@@ -115,6 +115,23 @@ export const LOAD_BRANCH_FETURED_PRODUCTS = gql`
 	}
 `;
 
+export const ADD_FAVORITE_PRODUCT = gql`
+	mutation AddFavoriteProduct ($productId: ID!, $userId: ID!) {
+		addFavoriteProduct(productId: $productId, userId: $userId) {
+			id
+			#favorite(id: $productId) @client
+		}
+	}
+`;
+export const REMOVE_FAVORITE_PRODUCT = gql`
+	mutation RemoveFavoriteProduct ($productId: ID!, $userId: ID!) {
+		removeFavoriteProduct(productId: $productId, userId: $userId) {
+			id
+			#favorite(id: $productId) @client
+		}
+	}
+`;
+
 export const LOAD_PRODUCT = gql`
 	query loadProducts ($id: ID!, $filter:Filter) {
 		product (id: $id) {
@@ -123,10 +140,12 @@ export const LOAD_PRODUCT = gql`
 			type
 			price
 			description
+			favorite(id: $id) @client
 			company {
 				id
 				displayName
 				image
+				rate
 			}
 			category {
 				id

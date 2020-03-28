@@ -47,6 +47,10 @@ export const schema = gql`
 		option_id: ID!
 	}
 
+	extend type Product {
+		favorite(id: ID!): Boolean!
+	}
+
 	#input DeliveryInput {
 	#	type: String!
 	#	price: Float!

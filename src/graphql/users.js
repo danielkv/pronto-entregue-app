@@ -20,6 +20,18 @@ export const GET_USER_ADDRESSES = gql`
 	}
 `;
 
+export const GET_USER_FAVORITE_PRODUCTS = gql`
+	query GetUserFavoriteProducts ($id: ID!) {
+		user (id: $id)  {
+			id
+			favoriteProducts {
+				id
+				name
+			}
+		}
+	}
+`;
+
 export const GET_USER = gql`
 	query getUser ($id: ID!) {
 		user (id: $id)  {

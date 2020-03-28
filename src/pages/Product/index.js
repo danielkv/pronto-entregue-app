@@ -9,12 +9,13 @@ import { cloneDeep } from 'lodash';
 import CartButton from '../../components/CartButton';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
+import RatingStars from '../../components/RatingStars';
 import Toast from '../../components/Toast';
 
-import { Paper, Typography, Icon, IconButton, TextField, useTheme } from '../../react-native-ui';
+import { Paper, Typography, Icon, IconButton, TextField, useTheme, Avatar } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { useKeyboardStatus } from '../../utils/hooks';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
+import FavoriteButton from './FavoriteButton';
 import Inline from './Inline';
 import Panel from './Panel';
 import {
@@ -22,7 +23,6 @@ import {
 	HeaderImageBackgroundContainer,
 	HeaderContainer,
 	ProductContainer,
-	CartButtonContainer,
 	QuantityContainer,
 	QuantityTitle,
 	Quantity,
@@ -37,7 +37,6 @@ export default function Product() {
 	const { palette } = useTheme();
 	const navigation = useNavigation();
 
-	const keyboardOpen = useKeyboardStatus();
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
 	const [addCartItem, { loadingAddToCart }] = useMutation(ADD_CART_ITEM);
@@ -49,7 +48,7 @@ export default function Product() {
 	}, [product, calculateProductPrice, quantity]);
 
 	const { data: productData, loading: loadingProduct, error: productError } = useQuery(LOAD_PRODUCT, { variables: { id: productId }, fetchPolicy: 'cache-and-network' });
-	
+
 	useEffect(()=>{
 		if (productError) setProduct(null);
 		else if (productData) setProduct(cloneDeep(productData.product));
@@ -111,23 +110,28 @@ export default function Product() {
 			<ProductContainer>
 				<HeaderContainer>
 					<HeaderImageBackgroundContainer source={{ uri: productImage }}>
-
 						<LinearGradient
 							colors={['#0000', '#000f']}
 							style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
 						>
-							<View style={{ flexDirection: 'row' }}>
+							{Boolean(!loadingProduct && product) && <View style={{ flexDirection: 'row' }}>
 								<IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} />
-								<IconButton icon={{ name: 'heart', color: 'white' }} />
-							</View>
+								<FavoriteButton product={product} />
+							</View>}
+							
 							<Typography style={{ marginBottom: 10, fontSize: 24, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
 							<Typography style={{ color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 						</LinearGradient>
-
 					</HeaderImageBackgroundContainer>
 				</HeaderContainer>
-				<Paper style={{ marginTop: -45 }}>
-					
+				{Boolean(!loadingProduct && product?.company) && <Paper style={{ paddingVertical: 25, flexDirection: 'row', alignItems: 'center' }}>
+					<Avatar size={60} source={{ uri: product.company.image }} alt={product.company.displayName} />
+					<View style={{ marginLeft: 10 }}>
+						<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{product.company.displayName}</Typography>
+						<RatingStars rate={product.company.rate} size={13} />
+					</View>
+				</Paper>}
+				<Paper>
 					{loadingProduct || !product
 						? <LoadingBlock />
 						: (
@@ -152,34 +156,34 @@ export default function Product() {
 				</Paper>
 
 
+				{!loadingProduct && <Paper style={{ backgroundColor: '#111' }}>
+					<QuantityContainer>
+						<QuantityTitle>Quantidade</QuantityTitle>
+
+						<TouchableOpacity
+							disabled={loadingAddToCart}
+							onPress={()=>{
+								if (quantity > 1) setQuantity(quantity - 1);
+							}}
+						>
+							<Icon name='minus-circle' color='#fff' />
+						</TouchableOpacity>
+					
+						<Quantity>{quantity.toString()}</Quantity>
+
+						<TouchableOpacity
+							disabled={loadingAddToCart}
+							onPress={()=> {
+								setQuantity(quantity + 1);
+							}}
+						>
+							<Icon name='plus-circle' color='#fff' />
+						</TouchableOpacity>
+					</QuantityContainer>
+					<CartButton disabled={loadingAddToCart} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='cart' />
+				</Paper>}
 			</ProductContainer>
 
-			{(!keyboardOpen && !loadingProduct) && <CartButtonContainer>
-				<QuantityContainer>
-					<QuantityTitle>Quantidade</QuantityTitle>
-
-					<TouchableOpacity
-						disabled={loadingAddToCart}
-						onPress={()=>{
-							if (quantity > 1) setQuantity(quantity - 1);
-						}}
-					>
-						<Icon name='minus-circle' color='#fff' />
-					</TouchableOpacity>
-					
-					<Quantity>{quantity.toString()}</Quantity>
-
-					<TouchableOpacity
-						disabled={loadingAddToCart}
-						onPress={()=> {
-							setQuantity(quantity + 1);
-						}}
-					>
-						<Icon name='plus-circle' color='#fff' />
-					</TouchableOpacity>
-				</QuantityContainer>
-				<CartButton disabled={loadingAddToCart} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='cart' />
-			</CartButtonContainer>}
 		</Container>
 	);
 }
