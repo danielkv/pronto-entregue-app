@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { View, Image } from 'react-native';
 
-import { merge, cloneDeep } from 'lodash';
-
 import Typography from '../Typography';
 import { useTheme } from '../utils';
 import { AvatarProps } from './types';
