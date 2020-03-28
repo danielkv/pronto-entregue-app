@@ -1,7 +1,6 @@
 import React from 'react';
-import { Icon } from 'react-native-elements';
 
-import theme from '../../../theme';
+import { useTheme, Icon, Typography } from '../../../react-native-ui';
 import {
 	Container,
 	Block,
@@ -14,12 +13,13 @@ import {
 } from './styles';
 
 export default function Blocks({ order }) {
+	const { palette } = useTheme();
 	return (
 		<Container>
 			<BlocksRow>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='calendar' color={theme.palette.primary.main} /></BlockIcon>
+						<BlockIcon><Icon name='calendar' color={palette.primary.main} /></BlockIcon>
 						<BlockTitle>Data</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
@@ -29,7 +29,7 @@ export default function Blocks({ order }) {
 				</Block>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='currency-usd' color={theme.palette.primary.main} /></BlockIcon>
+						<BlockIcon><Icon name='dollar-sign' color={palette.primary.main} /></BlockIcon>
 						<BlockTitle>Valor total</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
@@ -40,22 +40,22 @@ export default function Blocks({ order }) {
 			<BlocksRow>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='credit-card' color={theme.palette.primary.main} /></BlockIcon>
+						<BlockIcon><Icon name='credit-card' color={palette.primary.main} /></BlockIcon>
 						<BlockTitle>Pagamento</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
-						{!!order.payment_fee && <BlockInfo h4>{`R$ ${order.payment_fee.toFixed(2).replace('.', ',')}`}</BlockInfo>}
-						<BlockInfo h1>{order.payment_method.display_name}</BlockInfo>
+						{order.paymentMethod.type !== 'app' && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Na entrega</Typography>}
+						<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
 					</BlockFooter>
 				</Block>
 				<Block>
 					<BlockHeader>
-						<BlockIcon><Icon type='material-community' name='truck' color={theme.palette.primary.main} /></BlockIcon>
+						<BlockIcon><Icon name='truck' color={palette.primary.main} /></BlockIcon>
 						<BlockTitle>Entrega</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
-						<BlockInfo h4>{order.type === 'takeout' ? 'Retirada no local' : `${order.street}, ${order.number}`}</BlockInfo>
-						{!!order.delivery_price && <BlockInfo h1>{`R$ ${order.delivery_price.toFixed(2).replace('.', ',')}`}</BlockInfo>}
+						<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>{order.type === 'takeout' ? 'Retirada no local' : `${order.address.street}, ${order.address.number}`}</Typography>
+						{!!order.deliveryPrice && <BlockInfo h1>{`R$ ${order.deliveryPrice.toFixed(2).replace('.', ',')}`}</BlockInfo>}
 					</BlockFooter>
 				</Block>
 			</BlocksRow>

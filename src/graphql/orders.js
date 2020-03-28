@@ -10,7 +10,7 @@ export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
 		price
 		description
 		image
-		options_groups(filter:$filter) {
+		optionsGroups(filter:$filter) {
 			...OptionsGroupFields
 		}
 	}
@@ -29,6 +29,7 @@ export const ORDER_FRAGMENT = gql`
 		paymentMethod {
 			id
 			displayName
+			type
 		}
 
 		address {
@@ -40,6 +41,7 @@ export const ORDER_FRAGMENT = gql`
 			id
 			name
 			price
+			image
 			quantity
 			message
 			optionsGroups {

@@ -1,6 +1,5 @@
 import { Alert } from 'react-native';
 
-import theme from '../theme';
 import { getErrorMessage } from './errors';
 
 export function regionFromCoordinates(coordinates, distance) {
@@ -77,7 +76,7 @@ export const getStatusColors = (status) => {
 			};
 		case 'canceled':
 			return {
-				background: theme.palette.error,
+				background: '#f44336',
 				text: '#fff'
 			};
 		case 'preparing':

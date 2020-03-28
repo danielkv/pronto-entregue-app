@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
-import { Text } from 'react-native-elements';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useRoute } from '@react-navigation/core';
 
 import CartItem from '../../components/CartItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { getStatusText } from '../../utils';
+import { Chip, Paper, Divider, Typography, Button, useTheme } from '../../react-native-ui';
+import { getStatusText, getStatusColors } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import Blocks from './Blocks';
 import {
@@ -19,19 +20,17 @@ import {
 	ItemsContainer,
 	CancelButton,
 	CancelButtonText,
-	StatusCard,
-	StatusCardText,
 } from './styles';
 
 import { LOAD_ORDER, UPDATE_ORDER } from '../../graphql/orders';
 
-export default function Order({ route }) {
-	const { order_id } = route.params;
+export default function Order() {
+	const { params: { orderId } } = useRoute();
+	const { palette } = useTheme();
 
-	const { data: orderData, loading: loadingOrder, error: orderError } = useQuery(LOAD_ORDER, { variables: { id: order_id } });
-	const order = orderData && orderData.order ? orderData.order : null;
+	const { data: { order = null } = {}, loading: loadingOrder, error: orderError } = useQuery(LOAD_ORDER, { variables: { id: orderId } });
 
-	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: order_id, data: { status: 'canceled' } } });
+	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: orderId, data: { status: 'canceled' } } });
 
 	const handleCancelOrder = () => {
 		Alert.alert(
@@ -56,31 +55,39 @@ export default function Order({ route }) {
 	}
 
 	if (loadingOrder) return <LoadingBlock />
-	if (orderError) return <ErrorBlock error={orderError} />
+	if (orderError) return <ErrorBlock error={getErrorMessage(orderError)} />
+
+	const statusColor = getStatusColors(order.status);
 
 	return (
 		<ContainerScroll>
 			<Container>
-				<StatusCard status={order.status}>
-					<StatusCardText status={order.status}>{getStatusText(order.status)}</StatusCardText>
-				</StatusCard>
+				<Chip
+					label={getStatusText(order.status)}
+					style={{
+						root: { backgroundColor: statusColor.background, alignSelf: 'stretch', marginHorizontal: 35 },
+						text: { color: statusColor.text  }
+					}}
+				/>
+				
 				<BlocksContainer>
 					<Blocks order={order} />
 				</BlocksContainer>
-				<OrderItems>
-					<Text h3>{`${order.products.length} ${order.products.length > 1 ? 'itens' : 'item'}`}</Text>
-					<ItemsContainer>
-						{order.products.map((item, index)=>(
-							<CartItem key={index} item={item} />
-						))}
-					</ItemsContainer>
-				</OrderItems>
+				<Paper>
+					<Typography variant='title' style={{ marginBottom: 20 }}>Itens</Typography>
+					{order.products.map((item, index)=>(
+						<Fragment key={item.id}>
+							{index > 0 && <Divider />}
+							<CartItem item={item} />
+						</Fragment>
+					))}
+				</Paper>
 				{order.status === 'waiting' && (
-					<CancelButton disabled={loadingCancelOrder} onPress={handleCancelOrder}>
+					<Button disabled={loadingCancelOrder} onPress={handleCancelOrder} variant='outlined' style={{ button: { borderColor: palette.error.main }, text: { color: palette.error.main } }}>
 						{loadingCancelOrder
 							? <ActivityIndicator color='#fff' size='small' />
-							: <CancelButtonText h2>Cancelar Pedido</CancelButtonText>}
-					</CancelButton>
+							: 'Cancelar Pedido'}
+					</Button>
 				)}
 			</Container>
 		</ContainerScroll>
