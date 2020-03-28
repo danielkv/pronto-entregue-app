@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { merge, cloneDeep } from 'lodash';
-
 import { useTheme } from '../utils';
 import { ChipProps } from './types';
 
@@ -11,7 +9,7 @@ export default function Chip(props: ChipProps) {
 	const variant = props.variant || Chip.variant;
 	const colorVariant = props.color || Chip.color;
 	
-	const componentStyle = merge({
+	const addStyle = {
 		default: {
 			text: {
 				color: palette[colorVariant].contrastText
@@ -30,16 +28,17 @@ export default function Chip(props: ChipProps) {
 			}
 		},
 		
-	}, cloneDeep(Chip.style));
+	}
 
-	const componentStandardStyle = componentStyle.default;
-	const componentVariantStyle = componentStyle[variant];
+	const componentStandardStyle = Chip.style.default;
+	const componentVariantStyle = Chip.style[variant];
 
-	const styles = merge(componentStandardStyle, componentVariantStyle, props.style);
+	const rootStyle = [componentStandardStyle.root, addStyle[variant]?.root, componentVariantStyle.root, props?.style?.root];
+	const textStyle = [componentStandardStyle.text, addStyle[variant]?.text, componentVariantStyle.text, componentVariantStyle.text, props?.style?.text];
 
 	return (
-		<View style={styles.root}>
-			<Text {...props} style={styles.text}>{props.label || props.children}</Text>
+		<View style={rootStyle}>
+			<Text {...props} style={textStyle}>{props.label || props.children}</Text>
 		</View>
 	);
 }
