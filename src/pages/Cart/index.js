@@ -72,8 +72,8 @@ export default function Cart({ navigation }) {
 
 	const handleCancelCart = () => {
 		Alert.alert(
-			'Cancelar pedido',
-			'Tem certeza que deseja cancelar o pedido atual?',
+			'Limpar cesta',
+			'Tem certeza que deseja limpar sua cesta de itens?',
 			[
 				{ text: 'Sim', onPress: ()=>cancelCart() },
 				{ text: 'Não' },
@@ -126,16 +126,16 @@ export default function Cart({ navigation }) {
 							numberOfLines={8}
 						/>
 					</Paper>
-					<Paper>
-						<Button variant='filled' style={{ button: { height: 40, backgroundColor: palette.error.main } }} onPress={handleCancelCart}>Cancelar pedido</Button>
-						<Typography style={{ color: '#666', textAlign: 'center' }}>Isso irá limpar todos os produtos da sua cesta.</Typography>
-					</Paper>
+					{Boolean(cartItems && cartCompany) && <Paper>
+						<Button variant='filled' style={{ button: { height: 40, backgroundColor: palette.error.main } }} onPress={handleCancelCart}>Limpar Cesta</Button>
+						<Typography style={{ color: '#666', textAlign: 'center' }}>Isso irá limpar todos os itens da sua cesta.</Typography>
+					</Paper>}
 				</CartContainerScroll>
 			</KeyboardAvoidingView>
 			{!keyboardOpen &&
 				(<CartButtonContainer>
 					<CartButton
-						title='Finalizar pedido'
+						title='Confirmar pedido'
 						forceShowPrice
 						price={cartPrice}
 						onPress={handleFinishCart}

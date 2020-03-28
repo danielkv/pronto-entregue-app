@@ -1,15 +1,13 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { useFocusEffect } from '@react-navigation/core';
 
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import Gateway from '../../gateway';
-import { checkCondition } from '../../utils';
-import { sanitizeOrderData, validadeCart } from '../../utils/cart';
+import { sanitizeOrderData } from '../../utils/cart';
 import { useLoggedUserId, useSelectedAddress } from '../../utils/hooks';
 import { Container } from './styles';
 
@@ -31,17 +29,18 @@ export default function Payment({ navigation }) {
 		
 		createOrder({ variables: { data: sanitizedCart } })
 			.then(async ({ data: { createOrder } }) => {
-				navigation.navigate('OrderRoutes', { screen: 'OrderScreen', params: { orderId: createOrder.id } })
+				navigation.reset({
+					index: 1,
+					key: null,
+					routes: [
+						{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } },
+						{ name: 'OrderRoutes', params: { screen: 'OrderScreen', params: { orderId: createOrder.id } } }
+					]
+				})
+				//navigation.navigate('OrderRoutes', { screen: 'OrderScreen', params: { orderId: createOrder.id } })
 				cancelCart();
 			})
 	}
-		
-	// navigate to HomeScreen if there's no items in Cart
-	useFocusEffect(
-		useCallback(() => {
-			checkCondition(()=>validadeCart(cartData), navigation)
-		}, [])
-	);
 			
 	if (loadingCart) return <LoadingBlock />;
 	if (loadingCreateOrder || loadingCancelCart) return <LoadingBlock message='Enviando seu pedido' />;

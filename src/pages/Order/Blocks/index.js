@@ -1,5 +1,7 @@
 import React from 'react';
 
+import moment from 'moment';
+
 import { useTheme, Icon, Typography } from '../../../react-native-ui';
 import {
 	Container,
@@ -12,8 +14,12 @@ import {
 	BlockInfo,
 } from './styles';
 
+
 export default function Blocks({ order }) {
 	const { palette } = useTheme();
+
+	const displayDate = moment(order.createdAt).format('DD/MM/YY HH:mm');
+
 	return (
 		<Container>
 			<BlocksRow>
@@ -23,8 +29,7 @@ export default function Blocks({ order }) {
 						<BlockTitle>Data</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
-						<BlockInfo h1>{order.createdDate}</BlockInfo>
-						<BlockInfo h3>{order.createdTime}</BlockInfo>
+						<BlockInfo>{displayDate}</BlockInfo>
 					</BlockFooter>
 				</Block>
 				<Block>
