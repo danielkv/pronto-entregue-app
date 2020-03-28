@@ -4,18 +4,11 @@ import { Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { Typography, Icon } from '../../react-native-ui';
-import { Container, ContentContainer, Stars, FooterContainer, FooterContent } from './styles';
+import RatingStars from '../RatingStars';
+import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
 
 export default function CompanyItem({ item: company }) {
 	const navigation = useNavigation();
-
-	function renderStars(rate) {
-		const stars = [];
-		for (let i=1; i<=5; i++) {
-			stars.push(<Icon key={i} style={{ root: { margin: 0, marginRight: 2 } }}  name='star' color={i > rate ? '#999999': '#D41450'} size={15} />)
-		}
-		return stars
-	}
 
 	return (
 		<Container onPress={()=> navigation.navigate('CompanyScreen', { companyId: company.id, companyName: company.displayName, companyImage: company.image, companyBackground: company.backgroundColor })}>
@@ -28,7 +21,7 @@ export default function CompanyItem({ item: company }) {
 			/>
 			<ContentContainer>
 				<Typography style={{ fontSize: 20, fontWeight: 'bold' }}>{company.displayName}</Typography>
-				<Stars>{renderStars(company.rate)}</Stars>
+				<RatingStars rate={company.rate} />
 				<FooterContainer>
 					<FooterContent>
 						<Icon name='clock' size={15} color='#818181' />

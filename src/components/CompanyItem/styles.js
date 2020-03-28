@@ -15,10 +15,6 @@ export const ContentContainer = styled.View`
 	justify-content: center;
 `;
 
-export const Stars = styled.View`
-	flex-direction: row;
-	margin-top: 4px;
-`;
 export const FooterContainer = styled.View`
 	flex-direction: row;
 	margin-top: 12px;

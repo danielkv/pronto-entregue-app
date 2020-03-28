@@ -6,13 +6,14 @@ import { useQuery } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/core';
 
 import ErrorBlock from '../../components/ErrorBlock';
+import RatingStars from '../../components/RatingStars';
 
 import { Paper, Typography, useTheme, Icon } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import { useSelectedAddress } from '../../utils/hooks';
 import ProductsBlock from './ProductsBlock';
 import RatingBlock from './RatingBlock';
-import { Stars,	FooterContainer, FooterContent } from './styles';
+import { FooterContainer, FooterContent } from './styles';
 
 import { LOAD_COMPANY } from '../../graphql/companies';
 
@@ -27,14 +28,6 @@ export default function Company() {
 	useEffect(()=>{
 		navigation.setParams({ headerTransparent: true })
 	}, [])
-
-	function renderStars(rate) {
-		const stars = [];
-		for (let i=1; i<=5; i++) {
-			stars.push(<Icon key={i} style={{ root: { margin: 0, marginRight: 2 } }} name='star' color={i > rate ? '#999999': '#D41450'} size={15} />)
-		}
-		return stars
-	}
 
 	if (companyError) return <ErrorBlock error={getErrorMessage(companyError)} />
 
@@ -57,7 +50,7 @@ export default function Company() {
 					? <ActivityIndicator color={palette.primary.main} />
 					: (
 						<>
-							<Stars>{renderStars(company.rate)}</Stars>
+							<RatingStars rate={company.rate} />
 							<FooterContainer>
 								<FooterContent>
 									<Icon name='clock' size={15} color='#818181' />
