@@ -20,14 +20,6 @@ export default function AppRoutes() {
 				initialRouteName='HomeScreen'
 				headerMode='none'
 				mode='card'
-				/* screenOptions={({ route })=>{
-					const actualRoute = route?.state?.routes[route.state.index] || route;
-					return {
-						//headerMode: 'none',
-						headerTransparent: actualRoute.params?.headerTransparent || false,
-						//header: Header
-					}
-				}} */
 			>
 				{selectedAddress && (
 					<>
