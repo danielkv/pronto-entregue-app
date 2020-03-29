@@ -30,6 +30,7 @@ import {
 
 import { ADD_CART_ITEM } from '../../graphql/cart';
 import { LOAD_PRODUCT } from '../../graphql/products';
+import CompanyPanel from '../../components/CompanyPanel';
 
 
 export default function Product() {
@@ -124,13 +125,7 @@ export default function Product() {
 						</LinearGradient>
 					</HeaderImageBackgroundContainer>
 				</HeaderContainer>
-				{Boolean(!loadingProduct && product?.company) && <Paper style={{ paddingVertical: 25, flexDirection: 'row', alignItems: 'center' }}>
-					<Avatar size={60} source={{ uri: product.company.image }} alt={product.company.displayName} />
-					<View style={{ marginLeft: 10 }}>
-						<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{product.company.displayName}</Typography>
-						<RatingStars rate={product.company.rate} size={13} />
-					</View>
-				</Paper>}
+				{Boolean(!loadingProduct && product?.company) && <CompanyPanel company={product.company} />}
 				<Paper>
 					{loadingProduct || !product
 						? <LoadingBlock />

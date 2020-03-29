@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
-import { ActivityIndicator, Alert } from 'react-native';
+import React, { Fragment, useState } from 'react';
+import { ActivityIndicator, Alert, ScrollView, RefreshControl } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 
 import CartItem from '../../components/CartItem';
+import CompanyPanel from '../../components/CompanyPanel';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
@@ -14,7 +15,6 @@ import { getErrorMessage } from '../../utils/errors';
 import Blocks from './Blocks';
 import {
 	Container,
-	ContainerScroll,
 	BlocksContainer
 } from './styles';
 
@@ -23,8 +23,9 @@ import { LOAD_ORDER, UPDATE_ORDER } from '../../graphql/orders';
 export default function Order() {
 	const { params: { orderId } } = useRoute();
 	const { palette } = useTheme();
+	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { order = null } = {}, loading: loadingOrder, error: orderError } = useQuery(LOAD_ORDER, { variables: { id: orderId } });
+	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch } = useQuery(LOAD_ORDER, { variables: { id: orderId } });
 
 	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: orderId, data: { status: 'canceled' } } });
 
@@ -50,13 +51,20 @@ export default function Order() {
 		)
 	}
 
+	function onRefresh() {
+		setRefreshing(true);
+		refetch()
+			.then(()=>setRefreshing(false));
+	}
+
 	if (loadingOrder) return <LoadingBlock />
 	if (orderError) return <ErrorBlock error={getErrorMessage(orderError)} />
 
 	const statusColor = getStatusColors(order.status);
 
 	return (
-		<ContainerScroll>
+		<ScrollView
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 			<Container>
 				<Chip
 					label={getStatusText(order.status)}
@@ -69,6 +77,9 @@ export default function Order() {
 				<BlocksContainer>
 					<Blocks order={order} />
 				</BlocksContainer>
+
+				<CompanyPanel company={order.company} />
+				
 				<Paper>
 					<Typography variant='title' style={{ marginBottom: 20 }}>Itens</Typography>
 					{order.products.map((item, index)=>(
@@ -86,6 +97,6 @@ export default function Order() {
 					</Button>
 				)}
 			</Container>
-		</ContainerScroll>
+		</ScrollView>
 	);
 }

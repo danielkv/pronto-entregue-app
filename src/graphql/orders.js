@@ -36,6 +36,13 @@ export const ORDER_FRAGMENT = gql`
 			street
 			number
 		}
+
+		company {
+			id
+			displayName
+			image
+			rate
+		}
 		
 		products {
 			id
