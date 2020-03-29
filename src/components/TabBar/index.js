@@ -22,7 +22,7 @@ export default function TabBar(props) {
 				<MenuItem selected={routeName === 'CartRoutes'} icon='shopping-bag' label='Cesta' onPress={()=>navigation.navigate('CartRoutes', { screen: 'CartScreen' })} />
 			</Badge>
 			<MenuItem selected={routeName === 'OrderRoutes'} icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
-			<MenuItem selected={routeName === 'SettingsRoutes'} icon='settings' label='Opções' screenName='HomeRoutes' />
+			{/* <MenuItem selected={routeName === 'SettingsRoutes'} icon='settings' label='Opções' screenName='HomeRoutes' /> */}
 		</Container>
 	);
 }
