@@ -6,7 +6,7 @@ export default<AvatarType> {
 	style: {
 		circle: {
 			root: {
-				borderRadius: 50,
+				borderRadius: 100,
 				alignItems: 'center',
 				justifyContent: 'center',
 				overflow: 'hidden'

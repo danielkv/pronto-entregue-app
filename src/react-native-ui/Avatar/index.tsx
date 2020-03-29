@@ -11,7 +11,7 @@ export default function Avatar(props: AvatarProps) {
 	const variant = props.variant || Avatar.variant;
 	const size = props.size || Avatar.size;
 
-	const shotAlt = props.alt.split(' ').map(word => word.substr(0,1)).join('');
+	const shortAlt = props.alt.split(' ').map(word => word.substr(0,1)).join('');
 
 	const rootStyle = [
 		Avatar.style.circle.root,
@@ -43,8 +43,8 @@ export default function Avatar(props: AvatarProps) {
 	
 	return (
 		<View style={rootStyle}>
-			{alternative || props.children
-				? <Typography variant='title' style={textStyle}>{props.children || shotAlt}</Typography>
+			{alternative || props.children || !props.source
+				? <Typography variant='title' style={textStyle}>{props.children || shortAlt}</Typography>
 				: <Image resizeMode='cover' {...props} style={imageStyle} onError={()=>{setAlternative(true)}} />}
 		</View>
 	);
