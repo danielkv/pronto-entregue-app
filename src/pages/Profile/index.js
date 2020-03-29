@@ -80,7 +80,7 @@ export default function Profile({ navigation }) {
 				</UserHeader>
 				<Paper>
 					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
-					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('AddressListScreen')} />
+					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('FavoriteProductsScreen')} />
 				</Paper>
 			</View>
 		</ContainerScroll>

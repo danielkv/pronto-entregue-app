@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import { LIST_PRODUCT_FRAGMENT } from './products';
+
 export const GET_USER_ADDRESSES = gql`
 	query getUserAddresses ($id: ID!) {
 		user (id: $id)  {
@@ -25,11 +27,11 @@ export const GET_USER_FAVORITE_PRODUCTS = gql`
 		user (id: $id)  {
 			id
 			favoriteProducts {
-				id
-				name
+				...ListProductFragment
 			}
 		}
 	}
+	${LIST_PRODUCT_FRAGMENT}
 `;
 
 export const GET_USER = gql`
