@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useTheme, Icon, Avatar, IconButton } from "../../react-native-ui";
-import { useLoggedUserId } from '../../utils/hooks';
+import { useLoggedUserId, useSelectedAddress } from '../../utils/hooks';
 import { RigthContent } from './styles';
 
 import { GET_USER } from '../../graphql/users';
@@ -16,10 +16,11 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 
 	const parentState = navigation.dangerouslyGetParent().dangerouslyGetState();
 	const canGoBack = parentState?.index > 0 || (navigation.dangerouslyGetState().index > 0 || false);
-	const headerTransparent = props?.scene?.descriptor?.options?.headerTransparent || false;
+	const { profileAvatar=true, searchProductsIcon=true, headerTransparent=false } = props?.scene?.descriptor?.options || {};
 
 	const finalVariant = headerTransparent ? headerTransparent === true ? 'transparent' : variant : variant;
 
+	const selectedAddress = useSelectedAddress();
 	const loggedUserId = useLoggedUserId();
 	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
 
@@ -52,12 +53,12 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 
 			{rigthContent && <RigthContent>
-				<IconButton onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />
-				<IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} />
+				{searchProductsIcon && <IconButton onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />}
+				{/* <IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} /> */}
 				{loadingUser
 					? <ActivityIndicator />
-					: (
-						<TouchableOpacity onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'ProfileScreen' })}>
+					: profileAvatar && (
+						<TouchableOpacity onPress={()=>{if (selectedAddress) navigation.navigate('ProfileRoutes', { screen: 'ProfileScreen' })}}>
 							<Avatar
 								source={{ uri: user.image }}
 								alt={user.fullName}
