@@ -39,6 +39,7 @@ export const GET_USER = gql`
 			fullName
 			firstName
 			lastName
+			image
 			email
 			role
 			metas (type: "phone") {
@@ -110,7 +111,7 @@ export const GET_COMPANY_USERS = gql`
 `;
 
 export const UPDATE_USER = gql`
-	mutation ($id:ID!, $data:UserInput!) {
+	mutation UpdateUser($id: ID!, $data: UserInput!) {
 		updateUser (id: $id, data:$data) {
 			id
 			fullName
@@ -122,6 +123,15 @@ export const UPDATE_USER = gql`
 				key
 				value
 			}
+		}
+	}
+`;
+
+export const UPDATE_USER_IMAGE = gql`
+	mutation UpdateUserImage($userId: ID!, $image: Upload!) {
+		updateUserImage (userId: $userId, image: $image) {
+			id
+			image
 		}
 	}
 `;

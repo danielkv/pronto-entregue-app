@@ -56,10 +56,15 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 				<IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} />
 				{loadingUser
 					? <ActivityIndicator />
-					: <Avatar
-						source={{ uri: 'https://s3.amazonaws.com/37assets/svn/1065-IMG_2529.jpg' }}
-						alt={user ? user.fullName : ''}
-					/>}
+					: (
+						<TouchableOpacity onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'ProfileScreen' })}>
+							<Avatar
+								source={{ uri: user.image }}
+								alt={user.fullName}
+								size={40}
+							/>
+						</TouchableOpacity>
+					)}
 			</RigthContent>}
 		</ContainerComponent>
 
