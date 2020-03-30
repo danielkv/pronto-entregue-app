@@ -25,7 +25,7 @@ export default function Order() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch } = useQuery(LOAD_ORDER, { variables: { id: orderId } });
+	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, fetchPolicy: 'cache-and-network' });
 
 	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: orderId, data: { status: 'canceled' } } });
 
@@ -57,10 +57,12 @@ export default function Order() {
 			.then(()=>setRefreshing(false));
 	}
 
-	if (loadingOrder) return <LoadingBlock />
+	if (loadingOrder && !called) return <LoadingBlock />
 	if (orderError) return <ErrorBlock error={getErrorMessage(orderError)} />
 
 	const statusColor = getStatusColors(order.status);
+
+	console.log(statusColor, order.status);
 
 	return (
 		<ScrollView

@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 import moment from 'moment';
 
-import { useTheme, Icon, Typography, Chip } from '../../react-native-ui';
+import { useTheme, Icon, Typography, Chip, Avatar } from '../../react-native-ui';
 import { getStatusText, getStatusColors } from '../../utils';
 import {
 	Container,
@@ -28,7 +28,9 @@ export default function OrderItem({ item: order }) {
 					<Icon name='list' color={palette.background.dark} />
 				</IconBlock>
 				<TextBlock>
-					<Typography variant='h4' style={{ fontWeight: "bold" }}>{displayDate}</Typography>
+					<Typography variant='subtitle'>{displayDate}</Typography>
+					<Typography variant='h4' style={{ fontWeight: "bold" }}>{order.company.displayName}</Typography>
+					
 					<Typography variant='subtitle'>{`${order.countProducts} ${order.countProducts > 1 ? 'itens' : 'item'}`}</Typography>
 
 					<Typography variant='h5' style={{ fontWeight: 'bold', marginTop: 15 }}>{`R$ ${order.price.toFixed(2).replace('.', ',')}`}</Typography>

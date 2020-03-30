@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, RefreshControl } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -7,7 +7,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import OrderItem from '../../components/OrderItem';
 
-import { Paper, Typography, Divider, Button } from '../../react-native-ui';
+import { Paper, Typography, Divider, Button, useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import { useLoggedUserId } from '../../utils/hooks';
 
@@ -15,7 +15,10 @@ import { GET_USER_ORDERS } from '../../graphql/orders';
 
 export default function OrderList() {
 	const loggedUserId = useLoggedUserId();
+	const { palette } = useTheme();
 	const rowsPerPage = 8;
+	const [refreshing, setRefreshing] = useState(false);
+
 	const {
 		data: {
 			user: { orders = [], countOrders = 0 } = {},
@@ -23,7 +26,9 @@ export default function OrderList() {
 		} = {},
 		loading: loadingOrders,
 		error: ordersError,
-		fetchMore = null
+		fetchMore = null,
+		called,
+		refetch
 	} = useQuery(GET_USER_ORDERS, { notifyOnNetworkStatusChange: true, variables: { id: loggedUserId, pagination: { page: 0, rowsPerPage } } });
 
 	function loadMore(nexPage) {
@@ -47,11 +52,20 @@ export default function OrderList() {
 		})
 	}
 
-	if (loadingOrders && !orders.length) return <LoadingBlock />;
+	function onRefresh() {
+		setRefreshing(true);
+		refetch()
+			.then(()=>setRefreshing(false));
+	}
+
+	if (loadingOrders && !orders.length && !called) return <LoadingBlock />;
 	if (ordersError) return <ErrorBlock error={getErrorMessage(ordersError)} />;
 
 	return (
-		<ScrollView style={{ flex: 1 }}>
+		<ScrollView
+			style={{ flex: 1 }}
+			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}
+		>
 			<Paper>
 				<Typography variant='title' style={{ marginBottom: 20 }}>Meus Pedidos</Typography>
 				{orders.map((order, index) => (

@@ -69,10 +69,10 @@ export const getStatusColors = (status) => {
 				background: '#fff',
 				text: '#000'
 			};
-		case 'delivery':
+		case 'delivering':
 			return {
 				background: '#FFCA39',
-				text: '#000'
+				text: '#333'
 			};
 		case 'canceled':
 			return {

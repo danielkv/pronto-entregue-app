@@ -5,7 +5,6 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { useTheme, Icon } from '../../react-native-ui';
 import FavoriteProducts from '../FavoriteProducts';
-import OrderListScreen from '../OrderList';
 
 const Tab = createMaterialTopTabNavigator();
 

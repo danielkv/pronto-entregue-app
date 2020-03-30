@@ -101,18 +101,14 @@ export const GET_USER_ORDERS = gql`
 			countOrders
 			orders(pagination: $pagination) {
 				id
-				type
 				price
 				countProducts
 				status
 				createdAt
-				user {
+				company {
 					id
-					fullName
-				}
-				address {
-					street
-					number
+					displayName
+					image
 				}
 			}
 		}
