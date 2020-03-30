@@ -7,6 +7,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { useNavigation } from '@react-navigation/core';
 
 import Address from '../../components/Address';
+import LoadingBlock from '../../components/LoadingBlock';
 
 import { Paper, Typography, TextField, useTheme, Icon, FormHelperText, Button, Divider } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
@@ -14,13 +15,15 @@ import UserAddresses from './UserAddresses';
 
 import { SEARCH_ADDRESS } from "../../graphql/addresses";
 
+const askedInitialState = { street: '', number: '' };
+
 export default function SearchAddress() {
 	const { palette } = useTheme();
 	const navigation = useNavigation();
 	const [addressSearch, setAddressSearch] = useState('');
 	const [askFormOpen, setAskFormOpen] = useState(false);
-	const [formAked, setFormAked] = useState({ street: '', number: '' });
-	const [errorFormAsked, setErrorFormAsked] = useState({ street: '', number: '' });
+	const [formAsked, setFormAsked] = useState(()=>askedInitialState);
+	const [errorFormAsked, setErrorFormAsked] = useState(()=>askedInitialState);
 	const [selectedAddress, setSelectedAddress] = useState(null);
 	
 	// setup search mutation
@@ -28,7 +31,18 @@ export default function SearchAddress() {
 	
 	// SEARCH
 	function handleSearch(search) {
+		setFormAsked(()=>askedInitialState);
+		setErrorFormAsked(()=>askedInitialState);
+		setSelectedAddress(null);
+
 		if (search)	searchAddress({ variables: { search: search } })
+	}
+
+	function handleResetSearch () {
+		setAddressSearch('');
+		setFormAsked(()=>askedInitialState);
+		setErrorFormAsked(()=>askedInitialState);
+		setSelectedAddress(null);
 	}
 	
 	// MODAL
@@ -37,22 +51,26 @@ export default function SearchAddress() {
 	}
 
 	function handleSearchWithNumber() {
-		if ((!formAked.number && !selectedAddress.number) || (!formAked.street && !selectedAddress.street)) {
-			if (!formAked.number) setErrorFormAsked({ ...errorFormAsked, number: 'Digite o número' })
-			if (!formAked.street) setErrorFormAsked({ ...errorFormAsked, street: 'Digite o nome da rua' })
+		if ((!formAsked.number && !selectedAddress.number) || (!formAsked.street && !selectedAddress.street)) {
+			if (!formAsked.number && !selectedAddress.number) setErrorFormAsked({ ...errorFormAsked, number: 'Digite o número' })
+			if (!formAsked.street && !selectedAddress.street) setErrorFormAsked({ ...errorFormAsked, street: 'Digite o nome da rua' })
 		} else {
 			let newSearch = addressSearch;
-			if (formAked.street) newSearch += `, ${formAked.street}`;
-			if (formAked.number) newSearch += `, ${formAked.number}`;
+			if (formAsked.street) newSearch += `, ${formAsked.street}`;
+			if (formAsked.number) newSearch += `, ${formAsked.number}`;
 
-			setAddressSearch(newSearch);
-			handleSearch(newSearch);
-			setAskFormOpen(false);
+			setErrorFormAsked(()=>askedInitialState);
+			searchAddress({ variables: { search: newSearch } })
+				.then(({ data: { searchAddress: addressesFound = [] } })=>{
+					if (addressesFound.length) navigation.navigate('PickLocationScreen', { address: addressesFound[0] })
+				})
+				.finally(handleCloseModal)
 		}
 	}
 
 	// ADDRESS
 	function handleSelectAddress(address) {
+		setErrorFormAsked(()=>askedInitialState);
 		setSelectedAddress(address);
 		if (!address.number || !address.street) {
 			setAskFormOpen(true)
@@ -75,23 +93,30 @@ export default function SearchAddress() {
 				swipeDirection='down'
 			>
 				<Paper>
-					<Typography variant='h3' style={{ fontWeight: "bold", marginBottom: 8 }}>Faltaram alguns dados para encontrar seu endereço</Typography>
-					<Typography variant='h5' style={{ marginBottom: 10 }}>Digite os dados abaixo</Typography>
+					<Typography variant='h3' style={{ fontWeight: "bold", marginBottom: 8 }}>Faltaram alguns dados</Typography>
+					<Typography variant='h5' style={{ marginBottom: 10 }}>Digite essas informações abaixo para localizarmos melhor seu endereço</Typography>
 					{!!askFormOpen && !selectedAddress.street && <TextField
 						label='Rua, avenida, etc'
-						onChangeText={(text)=>setFormAked((form)=>({ ...form, street: text }))}
+						onChangeText={(text)=>setFormAsked((form)=>({ ...form, street: text }))}
 						error={!!errorFormAsked.street}
 						helperText={!!errorFormAsked.street && errorFormAsked.street}
 						style={{ inputContainer: { backgroundColor: '#f0f0f0' } }}
 					/>}
 					<TextField
 						label='Número'
-						onChangeText={(text)=>setFormAked((form)=>({ ...form, number: text }))}
+						onChangeText={(text)=>setFormAsked((form)=>({ ...form, number: text }))}
 						error={!!errorFormAsked.number}
 						helperText={!!errorFormAsked.number && errorFormAsked.number}
 						style={{ inputContainer: { backgroundColor: '#f0f0f0' } }}
 					/>
-					<Button icon={{ name: 'search' }} label='Buscar' color='secondary' variant='filled' onPress={handleSearchWithNumber} />
+					{loadingSearch
+						? <View style={{ marginTop: 20 }}><LoadingBlock /></View>
+						: (
+							<>
+								<Button icon={{ name: 'map-pin' }} label='Localizar' color='secondary' variant='filled' onPress={handleSearchWithNumber} />
+								<Button label='cancelar' variant='outlined' onPress={handleCloseModal} />
+							</>
+						)}
 				</Paper>
 			</Modal>
 
@@ -112,7 +137,7 @@ export default function SearchAddress() {
 						}
 					}}
 					actionButton={Boolean(addressSearch) && <Icon name='x' color='#888' />}
-					actionButtonOnPress={()=> setAddressSearch('')}
+					actionButtonOnPress={handleResetSearch}
 				/>
 				<Button
 					label='Buscar'
@@ -120,11 +145,6 @@ export default function SearchAddress() {
 					color='primary'
 					icon='search'
 					onPress={()=>handleSearch(addressSearch)}
-				/>
-				<Button
-					label='Encontrar no mapa'
-					variant='outlined'
-					onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
 				/>
 			</Paper>
 			{!!searchError && <FormHelperText error>{getErrorMessage(searchError)}</FormHelperText>}
@@ -137,7 +157,7 @@ export default function SearchAddress() {
 							<Typography variant='title'>Endereços encontrados</Typography>
 							<Typography variant='subtitle' style={{ marginBottom: 20 }}>Selecione um dos endereços abaixo</Typography>
 							<View>
-								{addressesFound.map((addr, index) => <Address onPress={handleSelectAddress} divider={index < addressesFound.length -1} key={index} address={addr} />)}
+								{addressesFound.map((addr, index) => <Address onPress={handleSelectAddress} divider={index < addressesFound.length -1} key={index} item={addr} />)}
 							</View>
 							<View>
 								<Divider />
