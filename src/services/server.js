@@ -1,7 +1,6 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
 import { createUploadLink } from 'apollo-upload-client';
 
 import resolvers from '../resolvers';
@@ -12,7 +11,6 @@ import { GET_USER_TOKEN } from '../graphql/authentication';
 
 const host = process.env.NODE_ENV === 'production' ? 'https://pronto-entregue-backend.herokuapp.com/graphql' : 'http://10.1.1.170:4000/graphql';
 
-const httpLink = new HttpLink({ uri: host });
 const uploadLink = createUploadLink({ uri: host });
 
 const cache = new InMemoryCache({});

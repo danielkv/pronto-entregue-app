@@ -66,8 +66,9 @@ export async function logUserIn(user, token) {
 
 export async function logUserOut() {
 	await AsyncStorage.removeItem('@prontoEntregue/userToken');
-	
 	client.writeData({ data: { userToken: '', loggedUserId: null } });
+	
+	resetAddress();
 }
 
 export async function resetAddress() {
