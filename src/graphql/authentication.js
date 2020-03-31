@@ -63,9 +63,9 @@ export const LOGIN = gql`
 	}
 `;
 
-export const GOOGLE_LOGIN = gql`
-	mutation GoogleLogin($result: GoogleLoginResult!) {
-		googleLogin (result: $result) {
+export const SOCIAL_LOGIN = gql`
+	mutation SocialLogin($type: String!, $data: SocialUser!) {
+		socialLogin (type: $type, data: $data) {
 			user {
 				id
 				fullName
