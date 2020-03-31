@@ -1,17 +1,18 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView, ActivityIndicator, Image, } from 'react-native';
+import { Alert, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/native';
+import * as Device from 'expo-device';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import imageFB from '../../assets/images/logo-fb.png';
-import imageGoogle from '../../assets/images/logo-google.png';
 import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { TextField, Button, Typography } from '../../react-native-ui';
 import { logUserIn } from '../../services/init';
 import { getErrorMessage } from '../../utils/errors';
+import FacebookButton from './FacebookButton';
+import GoogleButtton from './GoogleButtton';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 
 import { LOGIN } from '../../graphql/authentication';
@@ -39,6 +40,8 @@ export default function Login() {
 	const handleNextInput = (fieldName) => () => {
 		refs[fieldName].focus();
 	}
+	
+	const caretHidden = Device.brand === 'Xiaomi';
 
 	function onSubmit({ email, password }, { resetForm }) {
 		return login({ variables: { email, password } })
@@ -70,13 +73,14 @@ export default function Login() {
 						<InputsContainer>
 							<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
 							<TextField
+								caretHidden={caretHidden}
 								label='Email'
 								keyboardType='email-address'
 								autoCapitalize='none'
 								autoCompleteType='email'
 								onChangeText={handleChange('email')}
 								onBlur={handleBlur('email')}
-								disabled={isSubmitting}
+								disabled={isSubmitting }
 								value={email}
 
 								error={Boolean(errors.email)}
@@ -127,24 +131,8 @@ export default function Login() {
 								onPress={() => navigation.navigate('ForgotPasswordScreen')}
 								label='Esqueci minha senha'
 							/>
-							<Button
-								variant='filled'
-								disabled={isSubmitting}
-							>
-								<>
-									<Image source={imageGoogle} />
-									<Typography variant='button' style={{ color: '#fff' }}>Logar com Google</Typography>
-								</>
-							</Button>
-							<Button
-								variant='filled'
-								disabled={isSubmitting}
-							>
-								<>
-									<Image source={imageFB} style={{ marginRight: 10 }} />
-									<Typography variant='button' style={{ color: '#fff' }}>Logar com Facebook</Typography>
-								</>
-							</Button>
+							<GoogleButtton disabled={isSubmitting} />
+							<FacebookButton disabled={isSubmitting} />
 						</ButtonsContainer>
 					</FormContainer>
 				</Container>

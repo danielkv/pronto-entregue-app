@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as Device from 'expo-device';
+
 import { TextField, Button } from '../../react-native-ui';
 import { FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
@@ -8,6 +10,8 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 	const handleNextInput = (fieldName) => () => {
 		refs[fieldName].focus();
 	}
+
+	const caretHidden = Device.brand === 'Xiaomi';
 
 	return (
 		<FormContainer>
@@ -58,6 +62,7 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					onSubmitEditing={handleNextInput('email')}
 				/>
 				<TextField
+					caretHidden={caretHidden}
 					label='Email'
 					keyboardType='email-address'
 					autoCapitalize='none'

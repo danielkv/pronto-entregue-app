@@ -89,8 +89,8 @@ export const CREATE_USER_ADDRESS = gql`
 `;
 
 export const CREATE_USER = gql`
-	mutation ($data:UserInput!) {
-		createUser (data:$data) {
+	mutation ($data: UserInput!) {
+		createUser (data: $data) {
 			id
 			fullName
 		}

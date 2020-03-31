@@ -53,6 +53,25 @@ export const LOGIN = gql`
 				fullName
 				firstName
 				lastName
+				socialLogin
+				email
+				role
+				active
+			}
+			token
+		}
+	}
+`;
+
+export const GOOGLE_LOGIN = gql`
+	mutation GoogleLogin($result: GoogleLoginResult!) {
+		googleLogin (result: $result) {
+			user {
+				id
+				fullName
+				firstName
+				lastName
+				socialLogin
 				email
 				role
 				active
