@@ -11,12 +11,12 @@ import { Button, Typography } from '../../../react-native-ui';
 import { logUserIn } from '../../../services/init';
 import { getErrorMessage } from '../../../utils/errors';
 
-import { GOOGLE_LOGIN } from '../../../graphql/authentication';
+import { SOCIAL_LOGIN } from '../../../graphql/authentication';
 
 export default function GoogleButtton({ disabled }) {
 	const [loading, setLoading] = useState(false);
 
-	const [googleLogin] = useMutation(GOOGLE_LOGIN)
+	const [socialLogin] = useMutation(SOCIAL_LOGIN)
 
 	async function signIn() {
 		setLoading(true)
@@ -29,8 +29,15 @@ export default function GoogleButtton({ disabled }) {
 			})
 			
 			if (result.type === "success") {
-				await googleLogin({ variables: { result } })
-					.then(({ data: { googleLogin: { token, user } } })=>{
+				const userData = {
+					id: result.user.id,
+					firstName: result.user.givenName,
+					lastName: result.user.familyName,
+					email: result.user.email,
+					image: result.user.photoUrl
+				}
+				await socialLogin({ variables: { type: 'google', data: userData } })
+					.then(({ data: { socialLogin: { token, user } } })=>{
 						logUserIn(user, token);
 					})
 			}
