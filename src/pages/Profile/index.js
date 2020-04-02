@@ -11,6 +11,7 @@ import * as Permissions from 'expo-permissions';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { Avatar, Paper, Typography, Button, useTheme, IconButton } from '../../react-native-ui';
+import { logUserOut } from '../../services/init';
 import { useLoggedUserId } from '../../utils/hooks';
 import {
 	ContainerScroll,
@@ -18,7 +19,6 @@ import {
 } from './styles';
 
 import { GET_USER, UPDATE_USER_IMAGE } from '../../graphql/users';
-import { logUserOut } from '../../services/init';
 
 export default function Profile({ navigation }) {
 	const { palette } = useTheme();
@@ -71,7 +71,7 @@ export default function Profile({ navigation }) {
 				<UserHeader>
 					<TouchableOpacity onPress={handleUserAvatarPress}>
 						<View>
-							<Avatar source={{ uri: user.image }} style={{ text: { fontSize: 60 }, image: { opacity: loadingUpdateUserImage ? .5 : 1 } }} alt={user.fullName} size={160} />
+							<Avatar image={user.image} style={{ text: { fontSize: 60 }, image: { opacity: loadingUpdateUserImage ? .5 : 1 } }} alt={user.fullName} size={160} />
 							<IconButton icon='edit' variant='filled' color='primary' style={{ root: { position: 'absolute', right: 0, top: 0 } }} />
 							{loadingUpdateUserImage && <ActivityIndicator size='large' style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -18, marginTop: -18 }} color={palette.primary.main} />}
 						</View>

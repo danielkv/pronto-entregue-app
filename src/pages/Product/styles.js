@@ -1,7 +1,6 @@
-import { Text } from 'react-native-elements';
-import { vh } from 'react-native-expo-viewport-units';
-
 import styled from 'styled-components/native';
+
+import { Typography } from '../../react-native-ui';
 
 export const Container = styled.View`
 	flex:1;
@@ -10,7 +9,7 @@ export const ProductContainer = styled.ScrollView`
 	flex:1;
 `;
 export const HeaderContainer = styled.View`
-	height:${vh(50)}px;
+	height:300px;
 	margin-bottom: -45px;
 `;
 export const HeaderImageBackgroundContainer = styled.ImageBackground`
@@ -25,13 +24,13 @@ export const QuantityContainer = styled.View`
 	align-items: center;
 	margin-bottom: 15px;
 `;
-export const QuantityTitle = styled(Text)`
+export const QuantityTitle = styled(Typography)`
 	color: #aaa;
 	font-size: 12px;
 	font-weight: 100;
 	margin-right: 15px;
 `;
-export const Quantity = styled(Text)`
+export const Quantity = styled(Typography)`
 	margin: 0 15px;
 	color: #fff;
 	font-size: 16px;

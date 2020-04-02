@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 import moment from 'moment';
 
-import { useTheme, Icon, Typography, Chip, Avatar } from '../../react-native-ui';
+import { useTheme, Icon, Typography, Chip } from '../../react-native-ui';
 import { getStatusText, getStatusColors } from '../../utils';
 import {
 	Container,

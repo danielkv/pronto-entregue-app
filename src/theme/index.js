@@ -2,11 +2,7 @@ import { withTheme } from '../react-native-ui';
 
 export default withTheme({
 	header: {
-		height: 80,
-		backgroundColor: {
-			transparent: ['black', 'rgba(0,0,0,0)'],
-			solid: '#EFE8DA'
-		}
+		height: 80
 	},
 	margin: {
 		top: 15,

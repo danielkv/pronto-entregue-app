@@ -2,17 +2,17 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { useRoute, useNavigation } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
 
 import CartButton from '../../components/CartButton';
+import CompanyPanel from '../../components/CompanyPanel';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
-import RatingStars from '../../components/RatingStars';
 import Toast from '../../components/Toast';
 
-import { Paper, Typography, Icon, IconButton, TextField, useTheme, Avatar } from '../../react-native-ui';
+import { Paper, Typography, Icon, IconButton, TextField, useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import FavoriteButton from './FavoriteButton';
@@ -30,13 +30,10 @@ import {
 
 import { ADD_CART_ITEM } from '../../graphql/cart';
 import { LOAD_PRODUCT } from '../../graphql/products';
-import CompanyPanel from '../../components/CompanyPanel';
-
 
 export default function Product() {
 	const { params: { productId, productName, productImage, productDescription } } = useRoute();
 	const { palette } = useTheme();
-	const navigation = useNavigation();
 
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
@@ -54,11 +51,6 @@ export default function Product() {
 		if (productError) setProduct(null);
 		else if (productData) setProduct(cloneDeep(productData.product));
 	}, [productData, loadingProduct, productError]);
-	
-	// set HEADER transparent
-	useEffect(()=>{
-		navigation.setParams({ headerTransparent: true });
-	}, []);
 	
 	const resetProduct = () => {
 		setProduct(cloneDeep(productData.product));
@@ -116,7 +108,7 @@ export default function Product() {
 							style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
 						>
 							{Boolean(!loadingProduct && product) && <View style={{ flexDirection: 'row' }}>
-								<IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} />
+								{/* <IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} /> */}
 								<FavoriteButton product={product} />
 							</View>}
 							

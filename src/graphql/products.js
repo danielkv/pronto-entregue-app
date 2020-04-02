@@ -145,6 +145,7 @@ export const LOAD_PRODUCT = gql`
 				id
 				displayName
 				image
+				backgroundColor
 				rate
 			}
 			category {

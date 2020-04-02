@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Image, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { useQuery } from '@apollo/react-hooks';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/core';
 
 import ErrorBlock from '../../components/ErrorBlock';
 import RatingStars from '../../components/RatingStars';
@@ -19,15 +19,10 @@ import { LOAD_COMPANY } from '../../graphql/companies';
 
 export default function Company() {
 	const { params: { companyId, companyName, companyImage, companyBackground } } = useRoute();
-	const navigation = useNavigation();
 	const { location } = useSelectedAddress();
 	const { palette } = useTheme();
 
 	const { data: { company = null } = {}, loading: loadingCompany, error: companyError } = useQuery(LOAD_COMPANY, { variables: { id: companyId, location } });
-
-	useEffect(()=>{
-		navigation.setParams({ headerTransparent: true })
-	}, [])
 
 	if (companyError) return <ErrorBlock error={getErrorMessage(companyError)} />
 

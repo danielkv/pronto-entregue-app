@@ -16,10 +16,12 @@ export default function RatingItem({ item: rating }) {
 
 	const createdAt = moment(rating.createdAt);
 	const displayDate = moment().diff(createdAt, 'day') >= 1 ? createdAt.format('DD/MM/YY HH:mm') : createdAt.fromNow();
+
+	console.log(rating.user.image)
 	
 	return (
 		<Container>
-			<Avatar size={30} alt={rating.user.fullName} source={{ uri: rating.user.image }} />
+			<Avatar size={30} alt={rating.user.fullName} image={rating.user.image} />
 			<CommentContainer>
 				<CommentInfo>
 					<Typography style={{ fontWeight: 'bold', fontSize: 16, color: '#655A51' }}>{rating.user.fullName}</Typography>

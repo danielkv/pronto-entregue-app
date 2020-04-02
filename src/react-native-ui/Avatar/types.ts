@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle, ImageProps, TextStyle, ImageStyle } from 'react-native';
+import { StyleProp, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
 export interface AvatarType {
 	variant?: "rounded" | "circle" | 'square',
@@ -17,8 +17,9 @@ interface AvatarVariantStyles {
 	image?: StyleProp<ImageStyle>,
 }
 
-export interface AvatarProps extends Omit<AvatarType, 'style'>, Omit<ImageProps, 'style'> {
+export interface AvatarProps extends Omit<AvatarType, 'style'> {
 	style?: AvatarVariantStyles,
+	image?: string,
 	children: string,
-	alt?: string
+	alt: string
 }
