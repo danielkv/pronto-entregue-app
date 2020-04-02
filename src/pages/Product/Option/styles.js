@@ -22,7 +22,8 @@ export const Container = styled.TouchableOpacity`
 	align-items: center;
 	overflow: hidden;
 
-	background-color: ${({ selected }) => selected ? '#fff' : 'transparent'};
+	background-color: #fff;
+	/* background-color: ${({ selected }) => selected ? '#fff' : 'transparent'}; */
 	border-color: ${({ theme, selected }) => selected ? 'transparent' : theme.palette.background.main};
 
 	${({ selected })=>(selected && 'shadow-color: #000;	shadow-offset: 0 2px; shadow-opacity: 0.23; shadow-radius: 2.62px; elevation:6;')}

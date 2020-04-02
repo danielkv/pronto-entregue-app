@@ -16,7 +16,6 @@ export default function CompanyPanel({ company }) {
 		companyImage: company.image,
 		companyBackground: company.backgroundColor
 	}
-	console.log(routeState);
 	
 	return (
 		<Paper style={{ paddingVertical: 25 }}>
