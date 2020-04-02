@@ -25,7 +25,7 @@ export default function Order() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, fetchPolicy: 'cache-and-network' });
+	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, fetchPolicy: 'cache-and-network', notifyOnNetworkStatusChange: true });
 
 	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: orderId, data: { status: 'canceled' } } });
 
@@ -57,16 +57,15 @@ export default function Order() {
 			.then(()=>setRefreshing(false));
 	}
 
-	if (loadingOrder && !called) return <LoadingBlock />
+	if (loadingOrder && (!called || !order)) return <LoadingBlock />
 	if (orderError) return <ErrorBlock error={getErrorMessage(orderError)} />
+	if (!order) return <ErrorBlock error={'Nenhum pedido encontrado'} />
 
 	const statusColor = getStatusColors(order.status);
 
-	console.log(statusColor, order.status);
-
 	return (
 		<ScrollView
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}>
 			<Container>
 				<Chip
 					label={getStatusText(order.status)}

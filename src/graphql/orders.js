@@ -40,6 +40,7 @@ export const ORDER_FRAGMENT = gql`
 		company {
 			id
 			displayName
+			backgroundColor
 			image
 			rate
 		}

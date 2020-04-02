@@ -16,8 +16,6 @@ export default function RatingItem({ item: rating }) {
 
 	const createdAt = moment(rating.createdAt);
 	const displayDate = moment().diff(createdAt, 'day') >= 1 ? createdAt.format('DD/MM/YY HH:mm') : createdAt.fromNow();
-
-	console.log(rating.user.image)
 	
 	return (
 		<Container>

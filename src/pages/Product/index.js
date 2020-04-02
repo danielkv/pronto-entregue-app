@@ -12,7 +12,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import Toast from '../../components/Toast';
 
-import { Paper, Typography, Icon, IconButton, TextField, useTheme } from '../../react-native-ui';
+import { Paper, Typography, Icon, TextField, useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import FavoriteButton from './FavoriteButton';
@@ -58,9 +58,9 @@ export default function Product() {
 	}
 
 	// Share link
-	async function handleShare () {
+	/* async function handleShare () {
 		return;
-	}
+	} */
 
 	const handleItemSelect = useCallback((optionsGroups) => {
 		const newProduct = { ...product };

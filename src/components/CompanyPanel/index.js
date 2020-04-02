@@ -16,10 +16,11 @@ export default function CompanyPanel({ company }) {
 		companyImage: company.image,
 		companyBackground: company.backgroundColor
 	}
+	console.log(routeState);
 	
 	return (
 		<Paper style={{ paddingVertical: 25 }}>
-			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('CompanyScreen', routeState)}>
+			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('HomeRoutes', { screen: 'CompanyScreen', params: routeState })}>
 				<Avatar size={60} image={company.image} alt={company.displayName} />
 				<View style={{ marginLeft: 10 }}>
 					<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{company.displayName}</Typography>

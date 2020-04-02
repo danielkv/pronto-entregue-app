@@ -13,17 +13,15 @@ export default function Container({ children, transparent }) {
 	
 	
 	const style = {
-		height: 80,
+		flex: 1,
 		flexDirection: "row",
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 15,
 	}
-
-	const bgStyle = !transparent ? { backgrounColor: '#EFE8DA' } : {}
 	
 	return (
-		<View style={bgStyle}>
+		<View style={{ height: 70 }}>
 			<ContainerComponent
 				style={style}
 				colors={['#000d', '#0000']}
