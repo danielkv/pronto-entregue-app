@@ -38,6 +38,11 @@ export default withTheme({
 			}
 		}
 	},
+	TextField: {
+		text: {
+			backgroundColor: '#333'
+		}
+	},
 	Icon: {
 		type: 'feather',
 	}

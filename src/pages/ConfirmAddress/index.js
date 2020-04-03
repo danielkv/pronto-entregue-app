@@ -19,6 +19,7 @@ import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
+	street: Yup.string().required('Obrigatório'),
 	number: Yup.number().typeError('Deve conter apenas números').required('Obrigatório'),
 	complement: Yup.string().notRequired(),
 	district: Yup.string().required('Obrigatório'),
@@ -56,7 +57,7 @@ export default function ConfirmAddress() {
 	// ------- END OF FUNCIONS -------
 
 	const initialValues = {
-		street: address.street,
+		street: address.street || '',
 		number: isNumber(address.number) ? address.number.toString() : address.number,
 		district: address.district || '',
 		zipcode: isNumber(address.zipcode) ? address.zipcode.toString() : address.zipcode,

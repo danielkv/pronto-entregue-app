@@ -74,7 +74,7 @@ export default function PickLocation() {
 		setLocationError('')
 		const { data: { searchLocation: address } } = await searchLocation({ variables: { location: [location.latitude, location.longitude] } });
 
-		if (address.street && address.state && address.city)
+		if (address.state && address.city)
 			setSelectedAddress(address);
 		else {
 			setSelectedAddress(null);
@@ -153,8 +153,8 @@ export default function PickLocation() {
 				{loadingGeoLocation
 					? <ActivityIndicator color={palette.primary.main} style={{ marginBottom: 20 }} />
 					: !!selectedAddress && (<View style={{ marginBottom: 20 }}>
-						<Typography variant='h4' style={{ fontWeight: "bold", textAlign: 'center' }}>{`${selectedAddress.street} ${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
-						<Typography variant='h5' style={{ textAlign: 'center' }}>{`${selectedAddress.city}, ${selectedAddress.state}`}</Typography>
+						<Typography variant='h4' style={{ fontWeight: "bold", textAlign: 'center' }}>{`${selectedAddress?.street || ''}${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
+						<Typography variant='h5' style={{ textAlign: 'center' }}>{`${selectedAddress.city} - ${selectedAddress.state}`}</Typography>
 					</View>)}
 
 				{!!locationError && <FormHelperText style={{ textAlign: 'center', }} error>{locationError}</FormHelperText>}

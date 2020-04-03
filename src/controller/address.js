@@ -18,7 +18,7 @@ export function extractAddress(address) {
 	return {
 		name: address.name || '',
 		street: address.street,
-		number: parseInt(address.number),
+		number: address.number ? parseInt(address.number) : '',
 		complement: address.complement,
 		zipcode: isInteger(address.zipcode) ? address.zipcode : address.zipcode ? parseInt(address.zipcode.replace(/[\D]/g, '')) : '',
 		district: address.district,
