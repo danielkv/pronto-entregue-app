@@ -21,6 +21,7 @@ export default function HomeRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='FeedScreen'
+				headerMode='screen'
 				screenOptions={{ header: Header }}
 			>
 				<Stack.Screen name='FeedScreen' component={FeedScreen} options={{ showBackButton: false }} />

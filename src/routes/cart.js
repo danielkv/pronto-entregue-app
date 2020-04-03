@@ -18,6 +18,7 @@ export default function CartRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='CartScreen'
+				headerMode='screen'
 				screenOptions= {{ header: Header }}
 			>
 				<Stack.Screen name='CartScreen' component={CartScreen} />

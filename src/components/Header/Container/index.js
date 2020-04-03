@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-// import { Container } from './styles';
-
 export default function Container({ children, transparent }) {
+	const insets = useSafeArea();
 	
 	const ContainerComponent = transparent
 		? LinearGradient
@@ -18,10 +18,18 @@ export default function Container({ children, transparent }) {
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 15,
+		paddingTop: insets.top,
 	}
+
+	const bgStyle = {
+		height: 70 + insets.top,
+		
+	}
+
+	if (!transparent) bgStyle.backgroundColor = '#EFE8DA'
 	
 	return (
-		<View style={{ height: 70 }}>
+		<View style={bgStyle}>
 			<ContainerComponent
 				style={style}
 				colors={['#000d', '#0000']}

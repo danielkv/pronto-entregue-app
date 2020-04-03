@@ -18,6 +18,7 @@ export default function ProfileRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='ProfileScreen'
+				headerMode='screen'
 				screenOptions={{ header: Header }}
 			>
 				<Stack.Screen name='ProfileScreen' component={ProfileScreen} />

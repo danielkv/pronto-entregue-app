@@ -14,6 +14,7 @@ export default function Routes() {
 	return (
 		<Stack.Navigator
 			initialRouteName='SearchAddressScreen'
+			headerMode='screen'
 			screenOptions={{ header: Header, searchProductsIcon: false }}
 		>
 			<Stack.Screen name='SearchAddressScreen' component={SearchAddressScreen} />

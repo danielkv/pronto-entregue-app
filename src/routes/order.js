@@ -17,6 +17,7 @@ export default function OrderRoutes() {
 		<>
 			<Stack.Navigator
 				initialRouteName='OrderScreen'
+				headerMode='screen'
 				screenOptions= {{ header: Header }}
 			>
 				<Stack.Screen name='OrderScreen' component={OrderScreen} />

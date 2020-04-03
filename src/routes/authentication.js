@@ -12,7 +12,6 @@ export default function Routes() {
 	return (
 		<Stack.Navigator
 			initialRouteName='LoginScreen'
-			mode='card'
 			headerMode='none'
 		>
 			<Stack.Screen name='LoginScreen' component={LoginScreen} />

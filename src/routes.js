@@ -19,7 +19,7 @@ export default function SplashScreen() {
 	const insets = useSafeArea();
 
 	return (
-		<View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
+		<View style={{ flex: 1, paddingBottom: insets.bottom }}>
 			<FontLoader>
 				<NavigationContainer theme={NavigatorTheme}>
 					{

@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
+import { StatusBar } from 'react-native';
 
 import { IconButton } from "../../react-native-ui";
 import BackButton from './BackButton';
@@ -17,6 +18,7 @@ export default function  AppHeader({ variant='solid', showBackButton=true, rigth
 	
 	return (
 		<Container transparent={headerTransparent}>
+			<StatusBar barStyle={finalVariant === 'transparent' ? 'light-content' : 'dark-content'} />
 			{showBackButton && <BackButton color={iconsColor} />}
 					
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
