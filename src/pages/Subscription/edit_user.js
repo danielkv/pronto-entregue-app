@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
+import { useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 
@@ -41,15 +42,16 @@ export default function EditUser({ userId }) {
 	}, [navigation]);
 	
 	const { data: { loggedUserId } } = useQuery(LOGGED_USER_ID);
-	const { data: userData, loading: loadingUser, error: userError } = useQuery(GET_USER, { variables: { id: loggedUserId } });
+	const { data: { user = null } = {}, loading: loadingUser, error: userError } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 	const [updateUser] = useMutation(UPDATE_USER, { variables: { id: userId } });
 	
-	const onSubmit = async (result, { resetForm }) => {
+	const onSubmit = (result, { resetForm }) => {
 		const saveData = {
 			firstName: result.firstName,
 			lastName: result.lastName,
 			email: result.email,
 			metas: [{
+				id: user.metas[0].id,
 				action: 'update',
 				key: 'phone',
 				value: result.phone,
@@ -59,7 +61,7 @@ export default function EditUser({ userId }) {
 		// troca de senha
 		if (result.password !== '') saveData.password = result.password;
 		
-		await updateUser({ variables: { data: saveData } })
+		return updateUser({ variables: { data: saveData } })
 			.then(() => {
 				resetForm();
 
@@ -77,10 +79,10 @@ export default function EditUser({ userId }) {
 	if (userError) return <ErrorBlock error={userError} />;
 		
 	const initialValues = {
-		firstName: userData.user.firstName,
-		lastName: userData.user.lastName,
-		phone: userData.user.metas[0].value,
-		email: userData.user.email,
+		firstName: user.firstName,
+		lastName: user.lastName,
+		phone: user.metas[0].value,
+		email: user.email,
 		password: '',
 		repeatPassword: '',
 	}

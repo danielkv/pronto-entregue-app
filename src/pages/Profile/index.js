@@ -80,6 +80,7 @@ export default function Profile({ navigation }) {
 					<Typography variant='subtitle'>{user.email}</Typography>
 				</UserHeader>
 				<Paper>
+					<Button variant='filled' icon='user' label='Editar perfil' onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId } })} />
 					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
 					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('FavoriteProductsScreen')} />
 					<Button variant='outlined' icon='log-out' label='Sair' onPress={()=>logUserOut()} />

@@ -120,7 +120,7 @@ export const UPDATE_USER = gql`
 			firstName
 			lastName
 			email
-			metas {
+			metas (type: "phone") {
 				id
 				key
 				value
