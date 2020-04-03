@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text } from 'react-native-elements';
 
+import { Typography } from '../../react-native-ui';
 import { BlockContainer } from './styles';
 
 export default function ErrorBlock({ error }) {
 	return (
 		<BlockContainer>
-			<Text h1>Ocorreu um erro</Text>
-			<Text>{error}</Text>
+			<Typography variant='h3'>Ocorreu um erro</Typography>
+			<Typography>{error}</Typography>
 		</BlockContainer>
 	)
 }

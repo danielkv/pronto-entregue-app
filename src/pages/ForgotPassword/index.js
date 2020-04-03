@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 
 import { useApolloClient } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/native';
@@ -56,57 +56,55 @@ export default function ForgotPassword() {
 	});
 
 	return (
-		<KeyboardAvoidingView style={{ margin: 0, flex: 1 }} behavior='height'>
-			<ContainerScroll>
-				<Container>
-					<LogoImage source={logoResource} />
-					<FormContainer>
-						<InputsContainer>
-							<Typography variant='h1' style={{ marginBottom: 10 }}>Recuperar senha</Typography>
-							<TextField
-								label='Email'
-								//autoFocus
-								keyboardType='email-address'
-								autoCapitalize='none'
-								autoCompleteType='email'
-								onChangeText={handleChange('email')}
-								onBlur={handleBlur('email')}
-								disabled={isSubmitting}
-								value={email}
+		<ContainerScroll>
+			<Container>
+				<LogoImage source={logoResource} />
+				<FormContainer>
+					<InputsContainer>
+						<Typography variant='h1' style={{ marginBottom: 10 }}>Recuperar senha</Typography>
+						<TextField
+							label='Email'
+							//autoFocus
+							keyboardType='email-address'
+							autoCapitalize='none'
+							autoCompleteType='email'
+							onChangeText={handleChange('email')}
+							onBlur={handleBlur('email')}
+							disabled={isSubmitting}
+							value={email}
 
-								error={Boolean(errors.email)}
-								helperText={errors.email || ''}
+							error={Boolean(errors.email)}
+							helperText={errors.email || ''}
 
-								blurOnSubmit={false}
-								returnKeyType='next'
-								onSubmitEditing={handleNextInput('password')}
-							/>
-						</InputsContainer>
-						<ButtonsContainer>
-							<Button
-								color='primary'
-								variant='filled'
-								type='outline'
-								onPress={handleSubmit}
-								disabled={isSubmitting}
-								loading={isSubmitting}
-								containerStyle={{ borderRadius: 25 }}
-							>
-								{isSubmitting
-									? <ActivityIndicator />
-									: 'Enviar'}
-							</Button>
-							<Button
-								variant='outlined'
-								onPress={() => navigation.navigate('LoginScreen')}
-								disabled={isSubmitting}
-								label='Já sei meu Login'
-							/>
+							blurOnSubmit={false}
+							returnKeyType='next'
+							onSubmitEditing={handleNextInput('password')}
+						/>
+					</InputsContainer>
+					<ButtonsContainer>
+						<Button
+							color='primary'
+							variant='filled'
+							type='outline'
+							onPress={handleSubmit}
+							disabled={isSubmitting}
+							loading={isSubmitting}
+							containerStyle={{ borderRadius: 25 }}
+						>
+							{isSubmitting
+								? <ActivityIndicator />
+								: 'Enviar'}
+						</Button>
+						<Button
+							variant='outlined'
+							onPress={() => navigation.navigate('LoginScreen')}
+							disabled={isSubmitting}
+							label='Já sei meu Login'
+						/>
 							
-						</ButtonsContainer>
-					</FormContainer>
-				</Container>
-			</ContainerScroll>
-		</KeyboardAvoidingView>
+					</ButtonsContainer>
+				</FormContainer>
+			</Container>
+		</ContainerScroll>
 	);
 }

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { Text } from 'react-native-elements';
+
+import { Typography } from '../../react-native-ui';
 
 export const ErrorContainer = styled.View`
 	flex: 1;
@@ -9,13 +10,13 @@ export const ErrorContainer = styled.View`
 export const ErrorIconContainer = styled.View`
 	
 `;
-export const ErrorTitle = styled(Text)`
+export const ErrorTitle = styled(Typography)`
 	color: #c00;
 	font-weight:bold;
 	font-size:16px;
 	text-align:center;
 `;
-export const ErrorMessage = styled(Text)`
+export const ErrorMessage = styled(Typography)`
 	color: #c00;
 	font-weight:normal;
 	font-size:14px;

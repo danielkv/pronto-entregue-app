@@ -1,5 +1,4 @@
 import React from 'react';
-import { KeyboardAvoidingView } from 'react-native';
 
 import { useRoute } from '@react-navigation/core';
 
@@ -12,16 +11,14 @@ export default function Subscription() {
 	const { params: { userId = null } = {} } = useRoute();
 
 	return (
-		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
-			<ContainerScroll>
-				<Container>
-					<LogoImage source={logoResource} />
+		<ContainerScroll>
+			<Container>
+				<LogoImage source={logoResource} />
 
-					{userId
-						? <EditUser userId={userId} />
-						: <NewUser />}
-				</Container>
-			</ContainerScroll>
-		</KeyboardAvoidingView>
+				{userId
+					? <EditUser userId={userId} />
+					: <NewUser />}
+			</Container>
+		</ContainerScroll>
 	);
 }

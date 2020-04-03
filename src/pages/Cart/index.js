@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, Fragment } from 'react';
-import { Alert, KeyboardAvoidingView, View, Image } from 'react-native';
+import { Alert, View, Image } from 'react-native';
 
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
@@ -92,46 +92,45 @@ export default function Cart({ navigation }) {
 	
 	return (
 		<Container>
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
-				<CartContainerScroll>
-					{cartCompany && <Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<Image source={{ uri: cartCompany.image }} style={{ width: 60, height: 60, borderRadius: 15, marginRight: 15 }} />
-						<Typography style={{ flex: 1, fontSize: 18, color: '#333', fontWeight: 'bold', marginRight: 15 }}>{cartCompany.displayName}</Typography>
-						<View style={{ marginLeft: 'auto' }}>
-							<Chip color='secondary' label={`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`} style={{ root: { height: 30 } }} />
-						</View>
-					</Paper>}
-					<DeliveryBlock />
-					<Paper>
-						<Typography variant='title'>Itens</Typography>
-						<View style={{ marginTop: 35 }}>
-							{cartItems.map((item, index)=>(
-								<Fragment key={`item_${item.id}_${index}`}>
-									{index > 0 && <Divider />}
-									<CartItem item={item} onPressDelete={handleRemoveOrderItem(item)} />
-								</Fragment>
-							))}
-						</View>
-					</Paper>
-					<PaymentBlock />
-					<Paper>
-						<Typography variant='title'>Observações</Typography>
-						<TextField
-							style={{
-								inputContainer: { backgroundColor: palette.background.main, height: 180 }
-							}}
-							onChangeText={(text)=>setMessage(text)}
-							textAlignVertical='top'
-							multiline
-							numberOfLines={8}
-						/>
-					</Paper>
-					{Boolean(cartItems && cartCompany) && <Paper>
-						<Button variant='filled' style={{ button: { height: 40, backgroundColor: palette.error.main } }} onPress={handleCancelCart}>Limpar Cesta</Button>
-						<Typography style={{ color: '#666', textAlign: 'center' }}>Isso irá limpar todos os itens da sua cesta.</Typography>
-					</Paper>}
-				</CartContainerScroll>
-			</KeyboardAvoidingView>
+			
+			<CartContainerScroll>
+				{cartCompany && <Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<Image source={{ uri: cartCompany.image }} style={{ width: 60, height: 60, borderRadius: 15, marginRight: 15 }} />
+					<Typography style={{ flex: 1, fontSize: 18, color: '#333', fontWeight: 'bold', marginRight: 15 }}>{cartCompany.displayName}</Typography>
+					<View style={{ marginLeft: 'auto' }}>
+						<Chip color='secondary' label={`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`} style={{ root: { height: 30 } }} />
+					</View>
+				</Paper>}
+				<DeliveryBlock />
+				<Paper>
+					<Typography variant='title'>Itens</Typography>
+					<View style={{ marginTop: 35 }}>
+						{cartItems.map((item, index)=>(
+							<Fragment key={`item_${item.id}_${index}`}>
+								{index > 0 && <Divider />}
+								<CartItem item={item} onPressDelete={handleRemoveOrderItem(item)} />
+							</Fragment>
+						))}
+					</View>
+				</Paper>
+				<PaymentBlock />
+				<Paper>
+					<Typography variant='title'>Observações</Typography>
+					<TextField
+						style={{
+							inputContainer: { backgroundColor: palette.background.main, height: 180 }
+						}}
+						onChangeText={(text)=>setMessage(text)}
+						textAlignVertical='top'
+						multiline
+						numberOfLines={8}
+					/>
+				</Paper>
+				{Boolean(cartItems && cartCompany) && <Paper>
+					<Button variant='filled' style={{ button: { height: 40, backgroundColor: palette.error.main } }} onPress={handleCancelCart}>Limpar Cesta</Button>
+					<Typography style={{ color: '#666', textAlign: 'center' }}>Isso irá limpar todos os itens da sua cesta.</Typography>
+				</Paper>}
+			</CartContainerScroll>
 			{!keyboardOpen &&
 				(<CartButtonContainer>
 					<CartButton

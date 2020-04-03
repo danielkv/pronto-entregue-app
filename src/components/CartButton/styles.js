@@ -1,6 +1,6 @@
-import { Text } from 'react-native-elements';
-
 import styled from 'styled-components/native';
+
+import { Typography } from '../../react-native-ui';
 
 export const ButtonContainer = styled.TouchableOpacity`
   	background-color: ${({ theme }) => theme.palette.primary.main};
@@ -20,7 +20,7 @@ export const ButtonTextContainer = styled.View`
 	padding:10px 15px;
 `;
 
-export const ButtonTitle = styled(Text)`
+export const ButtonTitle = styled(Typography)`
 	color:#fff;
 	font-size:16px;
 	font-weight:bold;
@@ -33,7 +33,7 @@ export const ButtonPriceContainer = styled.View`
 	justify-content:center;
 `;
 
-export const ButtonPrice = styled(Text)`
+export const ButtonPrice = styled(Typography)`
 	color:#333;
 	font-size:14px;
 	font-weight:bold;

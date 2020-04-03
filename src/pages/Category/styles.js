@@ -1,7 +1,8 @@
-import styled from 'styled-components/native';
 import { vw, vh } from 'react-native-expo-viewport-units';
-import { Text } from 'react-native-elements';
 
+import styled from 'styled-components/native';
+
+import { Typography } from '../../react-native-ui';
 import theme from '../../theme';
 
 export const Container = styled.View`
@@ -46,10 +47,10 @@ export const ProductInfoContainer = styled.View`
 	padding-left: ${vw(5)}px;
 `;
 
-export const ProductTitle = styled(Text)`
+export const ProductTitle = styled(Typography)`
 	color:#000;
 	font-size:18px;
 `;
-export const ProductDescription = styled(Text)`
+export const ProductDescription = styled(Typography)`
 	color:#ccc;
 `;

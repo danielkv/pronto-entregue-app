@@ -1,6 +1,7 @@
-import { Text } from 'react-native-elements';
 
 import styled from 'styled-components/native';
+
+import { Typography } from '../../react-native-ui';
 
 export const Container = styled.View`
 	margin-bottom: 14px;
@@ -17,7 +18,7 @@ export const ItemFooter = styled.View`
 	margin-top:10px;
 `;
 
-export const ItemMessage = styled(Text)`
+export const ItemMessage = styled(Typography)`
 	font-weight: 100;
 	font-size: 13px;
 	margin-bottom: 8px;

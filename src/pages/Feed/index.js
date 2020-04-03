@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native-elements';
+import { Image } from 'react-native';
 
 import logoResource from '../../assets/images/logo-simbolo.png';
 import BestSellers from './BestSellers'

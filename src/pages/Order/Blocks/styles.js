@@ -1,4 +1,3 @@
-import { Text } from 'react-native-elements';
 import { vw } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
@@ -31,7 +30,7 @@ export const BlockHeader = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
 `;
-export const BlockTitle = styled(Text)`
+export const BlockTitle = styled(Typography)`
 	font-size: 15px;
 	color: #aaa;
 `;

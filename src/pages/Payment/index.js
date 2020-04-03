@@ -1,5 +1,4 @@
 import React from 'react';
-import { KeyboardAvoidingView } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
@@ -47,12 +46,10 @@ export default function Payment({ navigation }) {
 	if (error) return <ErrorBlock error={error} />
 			
 	return (
-		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
-			<Container>
-				{(!!cartData.cartPayment && !!cartData.cartPayment.displayName)
+		<Container>
+			{(!!cartData.cartPayment && !!cartData.cartPayment.displayName)
 					&& <Gateway step='finish' method={cartData.cartPayment} cart={cartData} onFinish={handleFinishOrder} />}
-			</Container>
-		</KeyboardAvoidingView>
+		</Container>
 	);
 }
 				

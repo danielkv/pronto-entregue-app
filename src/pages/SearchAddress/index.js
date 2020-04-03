@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/core';
 import Address from '../../components/Address';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { Paper, Typography, TextField, useTheme, Icon, FormHelperText, Button, Divider } from '../../react-native-ui';
+import { Paper, Typography, TextField, useTheme, Icon, FormHelperText, Button } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import UserAddresses from './UserAddresses';
 
@@ -62,7 +62,14 @@ export default function SearchAddress() {
 			setErrorFormAsked(()=>askedInitialState);
 			searchAddress({ variables: { search: newSearch } })
 				.then(({ data: { searchAddress: addressesFound = [] } })=>{
-					if (addressesFound.length) navigation.navigate('PickLocationScreen', { address: addressesFound[0] })
+					if (addressesFound.length) {
+						const address = addressesFound[0];
+						if (!address.street || !address.number || !address.city || !address.state) throw new Error('Não foi encontrado nenhum endereço');
+						navigation.navigate('PickLocationScreen', { address })
+					}
+				})
+				.catch((err) => {
+					Alert.alert('Ops! Ocorreu um erro', getErrorMessage(err));
 				})
 				.finally(handleCloseModal)
 		}
@@ -123,7 +130,7 @@ export default function SearchAddress() {
 			<Paper>
 				<Typography variant='title' style={{ marginBottom: 20 }}>Busque sua localização</Typography>
 				<TextField
-					label='Pesquisar'
+					label='Ex.: Rua Alves Brito, 44, Criciuma SC'
 					value={addressSearch}
 					onChangeText={(text)=>setAddressSearch(text)}
 					placeholderTextColor={palette.background.dark}
@@ -153,14 +160,15 @@ export default function SearchAddress() {
 				? <ActivityIndicator color={palette.primary.main} size='large' />
 				: addressesFound.length && addressSearch
 					? (
-						<Paper>
-							<Typography variant='title'>Endereços encontrados</Typography>
-							<Typography variant='subtitle' style={{ marginBottom: 20 }}>Selecione um dos endereços abaixo</Typography>
-							<View>
-								{addressesFound.map((addr, index) => <Address onPress={handleSelectAddress} divider={index < addressesFound.length -1} key={index} item={addr} />)}
-							</View>
-							<View>
-								<Divider />
+						<>
+							<Paper>
+								<Typography variant='title'>Endereços encontrados</Typography>
+								<Typography variant='subtitle' style={{ marginBottom: 20 }}>Selecione um dos endereços abaixo</Typography>
+								<View>
+									{addressesFound.map((addr, index) => <Address onPress={handleSelectAddress} divider={index < addressesFound.length -1} key={index} item={addr} />)}
+								</View>
+							</Paper>
+							<View style={{ marginHorizontal: 35 }}>
 								<Typography style={{ color: '#777', textAlign: 'center', marginVertical: 10 }}>Não encontrou o endereço que procurava?</Typography>
 								<Button
 									label='Encontrar no mapa'
@@ -169,14 +177,25 @@ export default function SearchAddress() {
 									onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
 								/>
 							</View>
-						</Paper>
+						</>
 					)
 					: addressSearch
 						? (
-							<Paper variant='transparent' style={{ alignItems: 'center' }}>
-								<Icon name='alert-circle' color={palette.background.dark} size={30} />
-								<Typography variant='h4' style={{ textAlign: 'center', color: palette.background.dark }}>Nenhum endereço foi encontrado, tente digitar mais informações</Typography>
-							</Paper>
+							<>
+								<Paper variant='transparent' style={{ alignItems: 'center' }}>
+									<Icon name='alert-circle' color={palette.background.dark} size={30} />
+									<Typography variant='h4' style={{ textAlign: 'center', color: palette.background.dark }}>Nenhum endereço foi encontrado, tente digitar mais informações</Typography>
+								</Paper>
+								<View style={{ marginHorizontal: 35 }}>
+									<Typography style={{ color: '#777', textAlign: 'center', marginVertical: 10 }}>...ou tente encontrar no mapa</Typography>
+									<Button
+										label='Encontrar no mapa'
+										variant='outlined'
+										//icon='map'
+										onPress={()=>navigation.navigate('PickLocationScreen', { pickUserLocation: true })}
+									/>
+								</View>
+							</>
 						)
 						: (
 							<>

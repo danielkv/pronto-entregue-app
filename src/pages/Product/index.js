@@ -167,7 +167,7 @@ export default function Product() {
 							<Icon name='plus-circle' color='#fff' />
 						</TouchableOpacity>
 					</QuantityContainer>
-					<CartButton disabled={loadingAddToCart} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='cart' />
+					<CartButton disabled={loadingAddToCart} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='shopping-bag' />
 				</Paper>}
 			</ProductContainer>
 

@@ -1,8 +1,8 @@
-import { Text } from 'react-native-elements';
 import { vh, vw } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
 
+import { Typography } from '../../react-native-ui';
 import theme from '../../theme';
 
 export const FinishContainer = styled.View`
@@ -13,14 +13,14 @@ export const FormContainer = styled.View`
 	justify-content:center;
 	margin: ${theme.header.height}px ${vw(3)}px 0 ${vw(3)}px;
 `;
-export const Title = styled(Text)`
+export const Title = styled(Typography)`
 	color: #fff;
 	text-align: center;
 	font-size: 18px;
 	font-weight: bold;
 	margin-bottom: 20px;
 `;
-export const ErrorMessage = styled(Text)`
+export const ErrorMessage = styled(Typography)`
 	color: ${theme.palette.error};
 	text-align: center;
 `;

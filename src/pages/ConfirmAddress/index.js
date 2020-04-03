@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView } from 'react-native';
+import { Alert } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 
 import { useMutation } from '@apollo/react-hooks';
@@ -69,19 +69,18 @@ export default function ConfirmAddress() {
 	}
 
 	return (
-		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
-			<ContainerScroll>
-				<Container>
-					<Formik
-						validationSchema={validationSchema}
-						initialValues={initialValues}
-						onSubmit={onSubmit}
-						validateOnChange={false}
-						validateOnBlur={false}
-						component={PageForm}
-					/>
-				</Container>
-			</ContainerScroll>
-		</KeyboardAvoidingView>
+		
+		<ContainerScroll>
+			<Container>
+				<Formik
+					validationSchema={validationSchema}
+					initialValues={initialValues}
+					onSubmit={onSubmit}
+					validateOnChange={false}
+					validateOnBlur={false}
+					component={PageForm}
+				/>
+			</Container>
+		</ContainerScroll>
 	);
 }

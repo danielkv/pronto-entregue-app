@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/native';
@@ -65,78 +65,76 @@ export default function Login() {
 	});
 
 	return (
-		<KeyboardAvoidingView style={{ margin: 0, flex: 1 }} behavior='height'>
-			<ContainerScroll>
-				<Container>
-					<LogoImage source={logoResource} />
-					<FormContainer>
-						<InputsContainer>
-							<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
-							<TextField
-								caretHidden={caretHidden}
-								label='Email'
-								keyboardType='email-address'
-								autoCapitalize='none'
-								autoCompleteType='email'
-								onChangeText={handleChange('email')}
-								onBlur={handleBlur('email')}
-								disabled={isSubmitting }
-								value={email}
+		<ContainerScroll>
+			<Container>
+				<LogoImage source={logoResource} />
+				<FormContainer>
+					<InputsContainer>
+						<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
+						<TextField
+							caretHidden={caretHidden}
+							label='Email'
+							keyboardType='email-address'
+							autoCapitalize='none'
+							autoCompleteType='email'
+							onChangeText={handleChange('email')}
+							onBlur={handleBlur('email')}
+							disabled={isSubmitting }
+							value={email}
 
-								error={Boolean(errors.email)}
-								helperText={errors.email || ''}
+							error={Boolean(errors.email)}
+							helperText={errors.email || ''}
 
-								blurOnSubmit={false}
-								returnKeyType='next'
-								onSubmitEditing={handleNextInput('password')}
-							/>
-							<TextField
-								secureTextEntry
-								autoCompleteType='password'
-								label='Senha'
-								onChangeText={handleChange('password')}
-								onBlur={handleBlur('password')}
-								disabled={isSubmitting}
-								value={password}
+							blurOnSubmit={false}
+							returnKeyType='next'
+							onSubmitEditing={handleNextInput('password')}
+						/>
+						<TextField
+							secureTextEntry
+							autoCompleteType='password'
+							label='Senha'
+							onChangeText={handleChange('password')}
+							onBlur={handleBlur('password')}
+							disabled={isSubmitting}
+							value={password}
 
-								helperText={errors.password || ''}
-								error={Boolean(errors.password)}
+							helperText={errors.password || ''}
+							error={Boolean(errors.password)}
 								
-								inputRef={ref => { refs.password = ref }}
-								onSubmitEditing={handleSubmit}
-							/>
-						</InputsContainer>
-						<ButtonsContainer>
-							<Button
-								color='primary'
-								variant='filled'
-								type='outline'
-								onPress={handleSubmit}
-								disabled={isSubmitting}
-								loading={isSubmitting}
-								containerStyle={{ borderRadius: 25 }}
-							>
-								{isSubmitting
-									? <ActivityIndicator />
-									: 'Entrar'}
-							</Button>
-							<Button
-								variant='outlined'
-								onPress={() => navigation.navigate('SubscriptionScreen')}
-								disabled={isSubmitting}
-								label='Quero me cadastrar'
-							/>
-							<Button
-								disabled={isSubmitting}
-								onPress={() => navigation.navigate('ForgotPasswordScreen')}
-								label='Esqueci minha senha'
-							/>
-							<GoogleButtton disabled={isSubmitting} />
-							<FacebookButton disabled={isSubmitting} />
-						</ButtonsContainer>
-					</FormContainer>
-				</Container>
-			</ContainerScroll>
-		</KeyboardAvoidingView>
+							inputRef={ref => { refs.password = ref }}
+							onSubmitEditing={handleSubmit}
+						/>
+					</InputsContainer>
+					<ButtonsContainer>
+						<Button
+							color='primary'
+							variant='filled'
+							type='outline'
+							onPress={handleSubmit}
+							disabled={isSubmitting}
+							loading={isSubmitting}
+							containerStyle={{ borderRadius: 25 }}
+						>
+							{isSubmitting
+								? <ActivityIndicator />
+								: 'Entrar'}
+						</Button>
+						<Button
+							variant='outlined'
+							onPress={() => navigation.navigate('SubscriptionScreen')}
+							disabled={isSubmitting}
+							label='Quero me cadastrar'
+						/>
+						<Button
+							disabled={isSubmitting}
+							onPress={() => navigation.navigate('ForgotPasswordScreen')}
+							label='Esqueci minha senha'
+						/>
+						<GoogleButtton disabled={isSubmitting} />
+						<FacebookButton disabled={isSubmitting} />
+					</ButtonsContainer>
+				</FormContainer>
+			</Container>
+		</ContainerScroll>
 	);
 }

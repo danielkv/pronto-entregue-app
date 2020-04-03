@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native'
+import { View, KeyboardAvoidingView } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context';
 
 import 'moment/locale/pt-br';
@@ -18,20 +18,26 @@ export default function SplashScreen() {
 	const { loading, loggedUserId } = useInitialize();
 	const insets = useSafeArea();
 
+	//const keyboardVerticalOffset = 70 + (insets?.top || 0);
+
 	return (
 		<View style={{ flex: 1, paddingBottom: insets.bottom }}>
-			<FontLoader>
-				<NavigationContainer theme={NavigatorTheme}>
-					{
-					// eslint-disable-next-line no-nested-ternary
-						loading
-							? <LoadingBlock />
-							: !loggedUserId
-								? <AuthenticationRoutes />
-								: <MainRoutes />
-					}
-				</NavigationContainer>
-			</FontLoader>
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+
+				<FontLoader>
+					<NavigationContainer theme={NavigatorTheme}>
+						{
+							// eslint-disable-next-line no-nested-ternary
+							loading
+								? <LoadingBlock />
+								: !loggedUserId
+									? <AuthenticationRoutes />
+									: <MainRoutes />
+						}
+					</NavigationContainer>
+				</FontLoader>
+			</KeyboardAvoidingView>
+
 		</View>
 	);
 }

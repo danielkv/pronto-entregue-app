@@ -11,7 +11,6 @@ export default function Container({ children, transparent }) {
 		? LinearGradient
 		: View
 	
-	
 	const style = {
 		flex: 1,
 		flexDirection: "row",
@@ -23,7 +22,6 @@ export default function Container({ children, transparent }) {
 
 	const bgStyle = {
 		height: 70 + insets.top,
-		
 	}
 
 	if (!transparent) bgStyle.backgroundColor = '#EFE8DA'

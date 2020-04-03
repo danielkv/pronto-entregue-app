@@ -1,13 +1,13 @@
-import { Text } from 'react-native-elements';
-
 import styled from 'styled-components/native';
 
-export const ProductTitle = styled(Text)`
+import { Typography } from '../../../react-native-ui';
+
+export const ProductTitle = styled(Typography)`
 	color: #fff;
 	text-transform:uppercase;
 	text-align:center;
 `;
-export const ProductSubtitle = styled(Text)`
+export const ProductSubtitle = styled(Typography)`
 	color: #fff;
 	text-align:	center;
 `;
