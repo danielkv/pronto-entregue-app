@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Alert, View, ActivityIndicator } from 'react-native';
-import MapView, { Circle } from 'react-native-maps';
+import { StyleSheet, Alert, View, ActivityIndicator, Dimensions } from 'react-native';
+import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useRoute, useNavigation } from '@react-navigation/core';
@@ -8,9 +8,10 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { cloneDeep } from 'lodash';
 
+import LoadingBlock from '../../components/LoadingBlock';
 
 import { extractAddress } from '../../controller/address';
-import { Icon, useTheme, Button, Paper, FormHelperText, Typography } from '../../react-native-ui';
+import { Icon, useTheme, Button, Paper, FormHelperText, Typography, IconButton } from '../../react-native-ui';
 // import mapStyle from '../../services/mapStyle.json';
 import { calculateDistance } from '../../utils';
 import { Container, PointerContainer, PinShadow } from './styles';
@@ -28,14 +29,20 @@ const clearCamera = {
 	zoom: 18
 }
 
+const dimensionWidth = Math.round(Dimensions.get('window').width);
+const paddingOffset = 20;
 
 export default function PickLocation() {
 	const { params: { address, pickUserLocation } } = useRoute();
 	const navigation = useNavigation();
-	const { palette, header } = useTheme();
+	const { palette } = useTheme();
 	const MapRef = useRef();
+	const [loadingLocation, setLoadingLocation] = useState(false);
 	const [locationError, setLocationError] = useState('');
 	const [selectedAddress, setSelectedAddress] = useState(()=>address || null);
+
+	const [screenWidth, setScreenWidth] = useState(()=>dimensionWidth-1);
+	const [mapPadding, setMapPadding] = useState(215);
 
 	const [searchLocation, { loading: loadingGeoLocation }] = useMutation(SEARCH_LOCATION)
 	
@@ -53,6 +60,8 @@ export default function PickLocation() {
 	}, []);
 
 	function getLocationAsync() {
+		setLoadingLocation(true)
+
 		Location.getProviderStatusAsync()
 			.then(async ()=>{
 				let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -62,13 +71,16 @@ export default function PickLocation() {
 			
 				let location = await Location.getCurrentPositionAsync({});
 
-				geoLocate(location.coords);
+				await geoLocate(location.coords);
 
 				const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
 				newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
 				setCamera(newCamera)
 				MapRef.current.animateCamera(newCamera);
-			});
+			})
+			.finally(()=>{
+				setLoadingLocation(false)
+			})
 	}
 	async function geoLocate(location) {
 		setLocationError('')
@@ -116,16 +128,17 @@ export default function PickLocation() {
 				showsTraffic={false}
 				ref={MapRef}
 				showsMyLocationButton={false}
+				showsUserLocation={true}
 			
-				provider='google'
-				style={styles.mapStyle}
+				provider={PROVIDER_GOOGLE}
+				style={[styles.mapStyle, { width: screenWidth }]}
+				onMapReady={()=>{setScreenWidth(dimensionWidth)}}
 				initialCamera={initialCamera}
 				onRegionChangeComplete={handleRegionChange}
 				//customMapStyle={mapStyle}
 				rotateEnabled={false}
-				legalLabelInsets={{
-					top: header.height+10,
-					bottom: 80
+				mapPadding={{
+					bottom: mapPadding
 				}}
 			>
 				{!!address && <Circle
@@ -136,11 +149,15 @@ export default function PickLocation() {
 					fillColor='rgba(164,216,43,.1)'
 				/>}
 			</MapView>
-			<PointerContainer>
+			<PointerContainer style={{ marginTop: 58 - 215 }}>
 				<PinShadow />
 				<Icon name='map-pin' size={60} color={palette.primary.main} />
 			</PointerContainer>
-			<Paper
+			{<Paper
+				onLayout={(event)=>{
+					const { height } = event.nativeEvent.layout;
+					setMapPadding(height + paddingOffset);
+				}}
 				style={{
 					elevation: 8,
 					position: 'absolute',
@@ -150,7 +167,7 @@ export default function PickLocation() {
 					alignItems: 'center'
 				}}
 			>
-				{loadingGeoLocation
+				{loadingLocation || loadingGeoLocation
 					? <ActivityIndicator color={palette.primary.main} style={{ marginBottom: 20 }} />
 					: !!selectedAddress && (<View style={{ marginBottom: 20 }}>
 						<Typography variant='h4' style={{ fontWeight: "bold", textAlign: 'center' }}>{`${selectedAddress?.street || ''}${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
@@ -165,7 +182,19 @@ export default function PickLocation() {
 					variant='filled'
 					onPress={()=>navigation.navigate('ConfirmAddressScreen', { address: extractAddress(selectedAddress) })}
 				/>
-			</Paper>
+			</Paper>}
+
+			<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>
+				{!loadingLocation && !loadingGeoLocation &&
+					<IconButton
+						icon={{ name: 'crosshairs-gps', type: 'material-community' }}
+						onPress={()=>{getLocationAsync()}}
+						disabled={loadingLocation}
+						variant='filled'
+						color='primary'
+					/>
+				}
+			</View>
 		</Container>
 	);
 }
@@ -173,7 +202,8 @@ export default function PickLocation() {
 			
 const styles = StyleSheet.create({
 	mapStyle: {
-		width: '100%',
-		height: '100%',
+		flex: 1,
+		/* width: '100%',
+		height: '100%', */
 	},
 });
