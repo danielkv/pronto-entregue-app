@@ -6,6 +6,7 @@ import 'moment/locale/pt-br';
 
 import { NavigationContainer } from '@react-navigation/native';
 
+import ConnectionInfoPanel from './components/ConnectionInfoPanel';
 import FontLoader from './components/FontLoader';
 import LoadingBlock from './components/LoadingBlock';
 
@@ -36,6 +37,7 @@ export default function SplashScreen() {
 						}
 					</NavigationContainer>
 				</FontLoader>
+				<ConnectionInfoPanel />
 			</KeyboardAvoidingView>
 
 		</View>
