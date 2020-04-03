@@ -8,12 +8,11 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { cloneDeep } from 'lodash';
 
-import LoadingBlock from '../../components/LoadingBlock';
-
 import { extractAddress } from '../../controller/address';
 import { Icon, useTheme, Button, Paper, FormHelperText, Typography, IconButton } from '../../react-native-ui';
 // import mapStyle from '../../services/mapStyle.json';
 import { calculateDistance } from '../../utils';
+import { getErrorMessage } from '../../utils/errors';
 import { Container, PointerContainer, PinShadow } from './styles';
 
 import { SEARCH_LOCATION } from '../../graphql/addresses';
@@ -63,6 +62,17 @@ export default function PickLocation() {
 		setLoadingLocation(true)
 
 		Location.getProviderStatusAsync()
+			.then(({ locationServicesEnabled }) => {
+				if (!locationServicesEnabled) {
+					Alert.alert(
+						'Ops, Ocorreu um erro!',
+						'O serviço de localização está desabilitado. Ative primeiro para localizar seu local.',
+						[
+							{ text: 'Tentar novamente', onPress: ()=>getLocationAsync() },
+						]
+					);
+				}
+			})
 			.then(async ()=>{
 				let { status } = await Permissions.askAsync(Permissions.LOCATION);
 				if (status !== 'granted') {
@@ -77,6 +87,9 @@ export default function PickLocation() {
 				newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
 				setCamera(newCamera)
 				MapRef.current.animateCamera(newCamera);
+			})
+			.catch((err) => {
+				Alert.alert('Ops, Ocorreu um erro!', getErrorMessage(err));
 			})
 			.finally(()=>{
 				setLoadingLocation(false)
