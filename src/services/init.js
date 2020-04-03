@@ -66,6 +66,7 @@ export async function logUserIn(user, token) {
 
 export async function logUserOut() {
 	await AsyncStorage.removeItem('@prontoEntregue/userToken');
+	await AsyncStorage.removeItem('@prontoEntregue/address');
 	client.writeData({ data: { userToken: '', loggedUserId: null, selectedAddress: null } });
 }
 

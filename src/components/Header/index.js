@@ -1,17 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
 
-import { Icon, IconButton } from "../../react-native-ui";
+import { IconButton } from "../../react-native-ui";
+import BackButton from './BackButton';
 import Container from './Container';
 import { RigthContent } from './styles';
 import UserAvatar from './UserAvatar';
 
 
-export default function  AppHeader({ variant='solid', rigthContent=true, navigation, ...props }) {
-	const parentState = navigation.dangerouslyGetParent().dangerouslyGetState();
-	const navigationState = navigation.dangerouslyGetState();
-	const canGoBack = parentState?.index > 0 || (navigationState.index > 0 || false);
+export default function  AppHeader({ variant='solid', showBackButton=true, rigthContent=true, navigation, ...props }) {
 	const { profileAvatar=true, searchProductsIcon=true, headerTransparent=false } = props?.scene?.descriptor?.options || {};
 
 	const finalVariant = headerTransparent ? headerTransparent === true ? 'transparent' : variant : variant;
@@ -20,12 +17,7 @@ export default function  AppHeader({ variant='solid', rigthContent=true, navigat
 	
 	return (
 		<Container transparent={headerTransparent}>
-			{canGoBack
-				&& (
-					<TouchableOpacity onPress={navigation.goBack}>
-						<Icon name='chevron-left' color={iconsColor} />
-					</TouchableOpacity>
-				)}
+			{showBackButton && <BackButton color={iconsColor} />}
 					
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 

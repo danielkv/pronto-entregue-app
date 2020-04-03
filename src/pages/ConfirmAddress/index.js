@@ -40,11 +40,10 @@ export default function ConfirmAddress() {
 			.then(() => {
 				setSelectedAddress({ variables: { address: dataSave } })
 					.then(()=>{
-						navigation.navigate('HomeRoutes')
-						/* navigation.reset({
-							index: 1,
-							routes: [{ name: 'HomeRoutes' }]
-						}) */
+						navigation.dangerouslyGetParent().reset({
+							index: 0,
+							routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+						})
 					})
 
 				Toast.show('Endereço selecionado');

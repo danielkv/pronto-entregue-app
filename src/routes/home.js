@@ -23,7 +23,7 @@ export default function HomeRoutes() {
 				initialRouteName='FeedScreen'
 				screenOptions={{ header: Header }}
 			>
-				<Stack.Screen name='FeedScreen' component={FeedScreen} />
+				<Stack.Screen name='FeedScreen' component={FeedScreen} options={{ showBackButton: false }} />
 				<Stack.Screen name='SearchScreen' component={SearchScreen} />
 				<Stack.Screen name='SectionCompaniesScreen' component={SectionCompaniesScreen} />
 				<Stack.Screen name='CompanyScreen' component={CompanyScreen} options={{ headerTransparent: true }} />

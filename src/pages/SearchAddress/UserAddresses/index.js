@@ -26,7 +26,10 @@ export default function UserAddresses() {
 	function handleAddressPress(address) {
 		setSelectedAddress({ variables: { address } })
 			.then(()=>{
-				navigation.navigate('HomeRoutes', { screen: 'FeedScreen' })
+				navigation.dangerouslyGetParent().reset({
+					index: 0,
+					routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+				})
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
