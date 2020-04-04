@@ -17,14 +17,14 @@ export default function UserInfo() {
 	const navigation = useNavigation();
 
 	const loggedUserId = useLoggedUserId();
-	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
+	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 
 	return (
 		<Container>
 			<UserNameContainer>
 				{loadingUser
 					? <LoadingBlock />
-					: <UserName variant='h1'>{`Oi,\n${user.firstName}`}</UserName>}
+					: Boolean(user) && <UserName variant='h1'>{`Oi,\n${user.firstName}`}</UserName>}
 			</UserNameContainer>
 			{selectedAddress && (
 				<UserLocationContainer>

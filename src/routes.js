@@ -19,6 +19,8 @@ export default function SplashScreen() {
 	const { loading, loggedUserId } = useInitialize();
 	const insets = useSafeArea();
 
+	console.log('asd', loggedUserId);
+
 	//const keyboardVerticalOffset = 70 + (insets?.top || 0);
 
 	return (
