@@ -23,7 +23,7 @@ import { GET_USER, UPDATE_USER_IMAGE } from '../../graphql/users';
 export default function Profile({ navigation }) {
 	const { palette } = useTheme();
 	const loggedUserId = useLoggedUserId()
-	const { data: { user }, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } });
+	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } });
 	const [updateUserImage, { loading: loadingUpdateUserImage }] = useMutation(UPDATE_USER_IMAGE, { variables: { userId: loggedUserId } });
 	
 	async function getCameraRollPermission() {
@@ -64,6 +64,7 @@ export default function Profile({ navigation }) {
 	}
 	
 	if (loadingUser) return <LoadingBlock />
+	if (!user) return false;
 	
 	return (
 		<ContainerScroll>

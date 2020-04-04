@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useQuery } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
 
-import { Avatar } from '../../../react-native-ui';
+import { Avatar, useTheme } from '../../../react-native-ui';
 import { useLoggedUserId, useSelectedAddress } from '../../../utils/hooks';
 
 import { GET_USER } from '../../../graphql/users';
@@ -13,6 +13,8 @@ import { GET_USER } from '../../../graphql/users';
 // import { Container } from './styles';
 
 export default function UserAvatar() {
+	const { palette } = useTheme();
+	
 	const navigation = useNavigation();
 	const selectedAddress = useSelectedAddress();
 	const loggedUserId = useLoggedUserId();
@@ -20,12 +22,12 @@ export default function UserAvatar() {
 
 	return (
 		loadingUser
-			? <ActivityIndicator />
+			? <ActivityIndicator color={palette.primary.main} />
 			: (
 				<TouchableOpacity onPress={()=>{if (selectedAddress) navigation.navigate('ProfileRoutes', { screen: 'ProfileScreen' })}}>
 					<Avatar
-						image={user.image}
-						alt={user.fullName}
+						image={user?.image || ''}
+						alt={user?.fullName || ''}
 						size={40}
 					/>
 				</TouchableOpacity>

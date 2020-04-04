@@ -14,8 +14,6 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 		refs[fieldName].focus();
 	}
 
-	//console.log(values.street);
-
 	return (
 		<>
 			<Paper style={{ alignItems: "center" }}>
