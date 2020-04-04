@@ -13,7 +13,8 @@ export default function FontLoader({ children }) {
 		Font.loadAsync({
 			'Roboto': require('../../assets/fonts/Roboto-Regular.ttf')
 		})
-			.then(()=> {
+			.then((te)=> {
+				console.log(te);
 				setLoading(false)
 			})
 	})

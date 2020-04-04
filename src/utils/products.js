@@ -2,9 +2,23 @@ import { uniqueId, cloneDeep } from 'lodash';
 
 export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
 	if (!optionsGroup) return 0;
-	return optionsGroup.options.reduce((totalOption, option) => {
-		return (option.selected) ? totalOption + option.price : totalOption;
-	}, initialValue);
+	let optionsGroupValue = initialValue;
+
+	if (optionsGroup.priceType === 'sum') {
+		// case group should SUM all selected options' prices
+		optionsGroupValue = optionsGroup.options.reduce((totalOption, option) => {
+			return (option.selected) ? totalOption + option.price : totalOption;
+		}, optionsGroupValue);
+	} else if (optionsGroup.priceType === 'higher') {
+		// case group should consider only the highest selected options' prices
+		const options = optionsGroup.options.filter(o => o.selected);
+		if (options.length) {
+			options.sort((a, b) => a.price > b.price ? -1 : 1);
+			optionsGroupValue += options[0].price;
+		}
+	}
+
+	return optionsGroupValue;
 }
 
 export const calculateProductPrice = (product) => {

@@ -24,7 +24,6 @@ export default function SplashScreen() {
 	return (
 		<View style={{ flex: 1, paddingBottom: insets.bottom }}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
-
 				<FontLoader>
 					<NavigationContainer theme={NavigatorTheme}>
 						{
@@ -36,8 +35,8 @@ export default function SplashScreen() {
 									: <MainRoutes />
 						}
 					</NavigationContainer>
+					<ConnectionInfoPanel />
 				</FontLoader>
-				<ConnectionInfoPanel />
 			</KeyboardAvoidingView>
 
 		</View>
