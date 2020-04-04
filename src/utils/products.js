@@ -22,10 +22,11 @@ export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
 }
 
 export const calculateProductPrice = (product) => {
-	const r = product.optionsGroups.reduce((totalGroup, group) => {
+	const productPrice = product?.sale?.progress ? product.sale.price : product.price;
+
+	return product.optionsGroups.reduce((totalGroup, group) => {
 		return calculateOptionsGroupPrice(group, totalGroup);
-	}, product.price);
-	return r;
+	}, productPrice);
 };
 
 /**

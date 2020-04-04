@@ -46,6 +46,10 @@ export const GET_BEST_SELLERS = gql`
 			image
 			price
 			fromPrice
+			sale {
+				price
+				progress
+			}
 		}
 	}
 `;

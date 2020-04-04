@@ -11,7 +11,7 @@ export default function FeaturedItem({ item: product, config }) {
 	const navigation = useNavigation();
 
 	const diff = product.price - product.sale.price;
-	const pct = Math.floor(diff * 100 / (product.price || product.fromPrice));
+	const pct = Math.abs(Math.floor(diff * 100 / (product.price || product.fromPrice)));
 
 	const params = {
 		productId: product.id,
@@ -35,15 +35,20 @@ export default function FeaturedItem({ item: product, config }) {
 					</LinearGradient>
 				</View>
 				<Chip
-					label={`${pct}%`}
+					label={`-${pct}%`}
 					color='secondary'
 					style={{
 						root: {
+							height: 50,
 							borderTopRightRadius: 0,
 							borderBottomRightRadius: 15,
 							position: 'absolute',
 							bottom: 0,
 							right: 0
+						},
+						text: {
+							fontWeight: 'bold',
+							fontSize: 18
 						}
 					}}
 				/>

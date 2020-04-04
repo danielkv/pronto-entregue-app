@@ -12,7 +12,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import Toast from '../../components/Toast';
 
-import { Paper, Typography, Icon, TextField, useTheme } from '../../react-native-ui';
+import { Paper, Typography, Icon, TextField, useTheme, Chip } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import FavoriteButton from './FavoriteButton';
@@ -112,7 +112,10 @@ export default function Product() {
 								<FavoriteButton product={product} />
 							</View>}
 							
+							{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 33, marginTop: 5 } }} color='secondary' />}
+
 							<Typography style={{ marginBottom: 10, fontSize: 24, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
+
 							<Typography style={{ color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 						</LinearGradient>
 					</HeaderImageBackgroundContainer>

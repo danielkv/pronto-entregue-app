@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { Typography } from '../../../../react-native-ui'
+import { Typography, Chip } from '../../../../react-native-ui'
 import { BRL } from '../../../../utils/currency';
 import { Container, BgImage } from './styles';
 
@@ -27,7 +27,17 @@ export default function BestSellerItem({ item: product }) {
 						style={{ paddingHorizontal: 15, paddingVertical: 10 }}
 					>
 						<Typography variant='title' style={{ color: '#fff', fontSize: 16 }}>{product.name}</Typography>
-						{Boolean(product.fromPrice) && <Typography variant='subtitle' style={{ color: '#fff', fontSize: 14 }}>{BRL(product.fromPrice).format()}</Typography>}
+						
+						<View>
+							{Boolean(product.fromPrice) && <Typography variant='subtitle' style={{ color: '#fff', fontSize: 13, textDecorationLine: product?.sale?.progress ? 'line-through' : 'none' }}>{BRL(product.fromPrice).format()}</Typography>}
+							{Boolean(product?.sale?.progress) && (
+								<Chip
+									label={BRL(product.sale.price).format()}
+									style={{ root: { height: 25, paddingHorizontal: 10, marginTop: 4 }, text: { fontSize: 13 } }}
+									color='secondary'
+								/>)}
+
+						</View>
 					</LinearGradient>
 				</View>
 			</BgImage>
