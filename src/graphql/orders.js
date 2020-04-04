@@ -86,6 +86,15 @@ export const UPDATE_ORDER = gql`
 	}
 `;
 
+export const CANCEL_ORDER = gql`
+	mutation cancelOrder ($id: ID!) {
+		cancelOrder(id: $id) {
+			id
+			status
+		}
+	}
+`;
+
 export const LOAD_ORDER = gql`
 	query loadOrder ($id:ID!) {
 		order (id:$id) {

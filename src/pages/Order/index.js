@@ -18,7 +18,7 @@ import {
 	BlocksContainer
 } from './styles';
 
-import { LOAD_ORDER, UPDATE_ORDER } from '../../graphql/orders';
+import { LOAD_ORDER, CANCEL_ORDER } from '../../graphql/orders';
 
 export default function Order() {
 	const { params: { orderId } } = useRoute();
@@ -27,7 +27,7 @@ export default function Order() {
 
 	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, fetchPolicy: 'cache-and-network', notifyOnNetworkStatusChange: true });
 
-	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(UPDATE_ORDER, { variables: { id: orderId, data: { status: 'canceled' } } });
+	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(CANCEL_ORDER, { variables: { id: orderId } });
 
 	const handleCancelOrder = () => {
 		Alert.alert(
