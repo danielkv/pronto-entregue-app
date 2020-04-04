@@ -2,27 +2,6 @@ import gql from 'graphql-tag';
 
 import { LIST_PRODUCT_FRAGMENT } from './products';
 
-/**
- * Atualiza infomações da empresa no servidor
- * 
- */
-export const UPDATE_COMPANY = gql`
-	mutation ($id: ID!, $data:CompanyInput!) {
-		updateCompany (id: $id, data:$data) {
-			id
-			name
-			display_name
-			createdAt
-			active
-			metas {
-				id
-				key
-				value
-			}
-		}
-	}
-`;
-
 export const LOAD_COMPANY = gql`
 	query LoadCompany ($id: ID!, $location: GeoPoint!) {
 		company (id: $id) {
@@ -73,7 +52,7 @@ export const GET_RATINGS = gql`
 
 export const GET_COMPANY_PAYMENT_METHODS = gql`
 	query GetPaymentPaymentMethods ($id: ID!) {
-		company (id:$id) {
+		company (id: $id) {
 			id
 			appMethods: paymentMethods(filter: { type: "app" }) {
 				id
@@ -96,28 +75,3 @@ export const GET_COMPANY_PAYMENT_METHODS = gql`
 		}
 	}
  `;
-
-export const GET_USER_COMPANIES = gql`
-	query {
-		userCompanies {
-			id
-			name
-			display_name
-			createdAt
-			last_month_revenue
-			active
-		}
-	}
-`;
-
-
-
-/**
- * Retorna empresa selecionada
- */
-
-export const GET_SELECTED_COMPANY = gql`
-	{
-		selectedCompany
-	}
-`;

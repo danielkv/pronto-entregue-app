@@ -51,7 +51,6 @@ async function init() {
 
 	if (userToken) {
 		const { data } = await client.mutate({ mutation: AUTHENTICATE, variables: { token: userToken } });
-		console.log(data);
 		await logUserIn(data.authenticate, userToken);
 	}
 

@@ -97,21 +97,6 @@ export const CREATE_USER = gql`
 	}
 `;
 
-export const GET_COMPANY_USERS = gql`
-	query ($id:ID!) {
-		company (id:$id) {
-			id
-			users {
-				id
-				fullName
-				role
-				createdAt
-				active
-			}
-		}
-	}
-`;
-
 export const UPDATE_USER = gql`
 	mutation UpdateUser($id: ID!, $data: UserInput!) {
 		updateUser (id: $id, data:$data) {

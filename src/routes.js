@@ -19,10 +19,6 @@ export default function SplashScreen() {
 	const { loading, loggedUserId } = useInitialize();
 	const insets = useSafeArea();
 
-	console.log('asd', loggedUserId);
-
-	//const keyboardVerticalOffset = 70 + (insets?.top || 0);
-
 	return (
 		<View style={{ flex: 1, paddingBottom: insets.bottom }}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
