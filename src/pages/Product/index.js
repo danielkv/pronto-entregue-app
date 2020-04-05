@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Alert, TouchableOpacity, View } from 'react-native';
+import { Alert, TouchableOpacity, View, RefreshControl } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
@@ -19,7 +19,6 @@ import FavoriteButton from './FavoriteButton';
 import Inline from './Inline';
 import Panel from './Panel';
 import {
-	Container,
 	HeaderImageBackgroundContainer,
 	HeaderContainer,
 	ProductContainer,
@@ -34,6 +33,7 @@ import { LOAD_PRODUCT } from '../../graphql/products';
 export default function Product() {
 	const { params: { productId, productName, productImage, productDescription } } = useRoute();
 	const { palette } = useTheme();
+	const [refreshing, setRefreshing] = useState(false);
 
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
@@ -45,7 +45,7 @@ export default function Product() {
 		return 0;
 	}, [product, calculateProductPrice, quantity]);
 
-	const { data: productData, loading: loadingProduct, error: productError } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
+	const { data: productData, loading: loadingProduct, error: productError, refetch } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
 
 	useEffect(()=>{
 		if (productError) setProduct(null);
@@ -91,84 +91,89 @@ export default function Product() {
 		}
 	}
 
+	function onRefresh() {
+		setRefreshing(true);
+		refetch()
+			.then(()=>setRefreshing(false));
+	}
+
 	if (productError) return <ErrorBlock error={getErrorMessage(productError)} />
 
 	return (
-		<Container>
-			<ProductContainer>
-				<HeaderContainer>
-					<HeaderImageBackgroundContainer source={{ uri: productImage }}>
-						<LinearGradient
-							colors={['#0000', '#000f']}
-							style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
-						>
-							{Boolean(!loadingProduct && product) && <View style={{ flexDirection: 'row' }}>
-								{/* <IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} /> */}
-								<FavoriteButton product={product} />
-							</View>}
+		<ProductContainer
+			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}
+		>
+			<HeaderContainer>
+				<HeaderImageBackgroundContainer source={{ uri: productImage }}>
+					<LinearGradient
+						colors={['#0000', '#000f']}
+						style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
+					>
+						{Boolean(!loadingProduct && product) && <View style={{ flexDirection: 'row' }}>
+							{/* <IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} /> */}
+							<FavoriteButton product={product} />
+						</View>}
 							
-							{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 30, marginTop: 8 }, text: { fontSize: 14 } }} color='secondary' />}
+						{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 30, marginTop: 8 }, text: { fontSize: 14 } }} color='secondary' />}
 
-							<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
+						<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
 
-							<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
-						</LinearGradient>
-					</HeaderImageBackgroundContainer>
-				</HeaderContainer>
-				{Boolean(!loadingProduct && product?.company) && <CompanyPanel company={product.company} />}
-				<Paper>
-					{loadingProduct || !product
-						? <LoadingBlock />
-						: (
-							<>
-								{product.type === 'inline'
-									? <Inline optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />
-									: <Panel optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />}
+						<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
+					</LinearGradient>
+				</HeaderImageBackgroundContainer>
+			</HeaderContainer>
+			{Boolean(!loadingProduct && product?.company) && <CompanyPanel company={product.company} />}
+			<Paper>
+				{loadingProduct || !product
+					? <LoadingBlock />
+					: (
+						<>
+							{product.type === 'inline'
+								? <Inline optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />
+								: <Panel optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />}
 
-								<Typography style={{ marginTop: 20, marginBottom: 10 }}>Observações</Typography>
-								<TextField
-									style={{
-										inputContainer: { backgroundColor: palette.background.main, height: 180 }
-									}}
-									textAlignVertical='top'
-									multiline
-									numberOfLines={8}
-								/>
-							</>
-						)
-					}
+							<Typography style={{ marginTop: 20, marginBottom: 10 }}>Observações</Typography>
+							<TextField
+								style={{
+									inputContainer: { backgroundColor: palette.background.main, height: 180 }
+								}}
+								textAlignVertical='top'
+								multiline
+								numberOfLines={8}
+							/>
+						</>
+					)
+				}
 
-				</Paper>
+			</Paper>
 
 
-				{!loadingProduct && <Paper style={{ backgroundColor: '#111' }}>
-					<QuantityContainer>
-						<QuantityTitle>Quantidade</QuantityTitle>
+			{Boolean(!loadingProduct || product) && <Paper style={{ backgroundColor: '#111' }}>
+				<QuantityContainer>
+					<QuantityTitle>Quantidade</QuantityTitle>
 
-						<TouchableOpacity
-							disabled={loadingAddToCart}
-							onPress={()=>{
-								if (quantity > 1) setQuantity(quantity - 1);
-							}}
-						>
-							<Icon name='minus-circle' color='#fff' />
-						</TouchableOpacity>
+					<TouchableOpacity
+						disabled={loadingAddToCart}
+						onPress={()=>{
+							if (quantity > 1) setQuantity(quantity - 1);
+						}}
+					>
+						<Icon name='minus-circle' color='#fff' />
+					</TouchableOpacity>
 					
-						<Quantity>{quantity.toString()}</Quantity>
+					<Quantity>{quantity.toString()}</Quantity>
 
-						<TouchableOpacity
-							disabled={loadingAddToCart}
-							onPress={()=> {
-								setQuantity(quantity + 1);
-							}}
-						>
-							<Icon name='plus-circle' color='#fff' />
-						</TouchableOpacity>
-					</QuantityContainer>
-					<CartButton disabled={loadingAddToCart} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='shopping-bag' />
-				</Paper>}
-			</ProductContainer>
-
-		</Container>
+					<TouchableOpacity
+						disabled={loadingAddToCart}
+						onPress={()=> {
+							setQuantity(quantity + 1);
+						}}
+					>
+						<Icon name='plus-circle' color='#fff' />
+					</TouchableOpacity>
+				</QuantityContainer>
+				<CartButton disabled={loadingAddToCart || refreshing} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='shopping-bag' />
+			</Paper>}
+		</ProductContainer>
 	);
 }
