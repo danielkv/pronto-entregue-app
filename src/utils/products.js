@@ -1,5 +1,10 @@
 import { uniqueId, cloneDeep } from 'lodash';
 
+import client from '../services/server';
+import { CartValidationError } from './errors';
+
+import { GET_CART } from '../graphql/cart';
+
 export function calculateOptionsGroupPrice (optionsGroup, initialValue = 0, filterSelected=true) {
 	if (!optionsGroup) return 0;
 	let optionsGroupValue = initialValue;
@@ -99,7 +104,18 @@ export function getGroupRestrainingRules(optionsGroups, selectedGroup) {
 	return selectedGroup;
 }
 
-export function checkProductRules(product) {
+export function checkProductRules(product, force) {
+	const { cartItems, cartCompany } = client.readQuery({ query: GET_CART });
+
+	// check is Company is is open
+	if (!product.company.isOpen) throw new Error('Esse estabelecimento está fechado no momento');
+
+	// check if there is other company in cart
+	if (!force && (cartCompany !== null && cartCompany?.id !== product.company.id)) throw new CartValidationError('Já existem itens de outro estabelecimento na sua cesta.', 'Quer mesmo limpar sua cesta e adicionar esse item?');
+
+	// check if there is same items in cart
+	if (!force && cartItems.find(item => item.productId === product.id)) throw new CartValidationError('Esse item já foi adicionado à cesta', 'Deseja adicionar mais um?');
+		
 	product.optionsGroups.forEach((group)=>{
 		const groupWithRules = getGroupRestrainingRules(product.optionsGroups, group);
 		checkGroupRules(groupWithRules);

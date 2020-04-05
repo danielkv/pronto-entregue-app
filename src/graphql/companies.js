@@ -8,6 +8,7 @@ export const LOAD_COMPANY = gql`
 			id
 			displayName
 			rate
+			isOpen
 			deliveryTime
 			countRatings
 			distance(location: $location)
@@ -54,6 +55,7 @@ export const GET_COMPANY_PAYMENT_METHODS = gql`
 	query GetPaymentPaymentMethods ($id: ID!) {
 		company (id: $id) {
 			id
+			isOpen
 			appMethods: paymentMethods(filter: { type: "app" }) {
 				id
 				type

@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useQuery } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 
+import ClosedCompanyChip from '../../components/ClosedCompanyChip';
 import ErrorBlock from '../../components/ErrorBlock';
 import RatingStars from '../../components/RatingStars';
 
@@ -40,25 +41,26 @@ export default function Company() {
 				<Image source={{ uri: companyImage }} style={{ width: 160, height: 160 }} resizeMode='contain' />
 			</View>
 			<Paper>
-				<Typography style={{ fontSize: 30, color: palette.background.dark, fontWeight: 'bold' }}>{companyName}</Typography>
+				{!company?.isOpen && <View style={{ marginBottom: 5 }}><ClosedCompanyChip /></View>}
+				<Typography style={{ fontSize: 28, color: palette.background.dark, fontWeight: 'bold' }}>{companyName}</Typography>
 				{loadingCompany
 					? <ActivityIndicator color={palette.primary.main} />
 					: (
 						<>
 							<RatingStars rate={company.rate} />
 							<FooterContainer>
-								<FooterContent>
+								{Boolean(company.deliveryTime) && <FooterContent>
 									<Icon name='clock' size={15} color='#818181' />
 									<Typography style={{ fontSize: 12, color: '#818181' }}>{`~${company.deliveryTime} min`}</Typography>
-								</FooterContent>
+								</FooterContent>}
 								<FooterContent>
 									<Icon name='map-pin' size={15} color='#818181' />
 									<Typography style={{ fontSize: 12, color: '#818181' }}>{`${company.distance} km`}</Typography>
 								</FooterContent>
-								<FooterContent>
+								{Boolean(company.countRatings) && <FooterContent>
 									<Icon name='message-square' size={15} color='#818181' />
 									<Typography style={{ fontSize: 12, color: '#818181' }}>{`${company.countRatings} avaliações`}</Typography>
-								</FooterContent>
+								</FooterContent>}
 							</FooterContainer>
 						</>
 					)}

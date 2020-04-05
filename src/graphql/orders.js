@@ -40,6 +40,7 @@ export const ORDER_FRAGMENT = gql`
 		company {
 			id
 			displayName
+			isOpen
 			backgroundColor
 			image
 			rate
@@ -118,6 +119,7 @@ export const GET_USER_ORDERS = gql`
 				company {
 					id
 					displayName
+					isOpen
 					image
 				}
 			}

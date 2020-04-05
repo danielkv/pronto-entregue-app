@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
@@ -7,6 +8,7 @@ import LoadingBlock from '../../components/LoadingBlock';
 
 import Gateway from '../../gateway';
 import { sanitizeOrderData } from '../../utils/cart';
+import { getErrorMessage } from '../../utils/errors';
 import { useLoggedUserId, useSelectedAddress } from '../../utils/hooks';
 import { Container } from './styles';
 
@@ -19,7 +21,7 @@ export default function Payment({ navigation }) {
 	const { data: cartData, loading: loadingCart, error } = useQuery(GET_CART);
 	
 	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
-	const [createOrder, { loading: loadingCreateOrder, error: createOrderError }] = useMutation(CREATE_ORDER, {
+	const [createOrder, { loading: loadingCreateOrder }] = useMutation(CREATE_ORDER, {
 		refetchQueries: [{ query: GET_USER_ORDERS, variables: { id: loggedUserId } }]
 	});
 	
@@ -38,17 +40,19 @@ export default function Payment({ navigation }) {
 				//navigation.navigate('OrderRoutes', { screen: 'OrderScreen', params: { orderId: createOrder.id } })
 				cancelCart();
 			})
+			.catch((err) => {
+				Alert.alert('Não foi possível enviar seu pedido', getErrorMessage(err));
+			})
 	}
 			
 	if (loadingCart) return <LoadingBlock />;
 	if (loadingCreateOrder || loadingCancelCart)return <LoadingBlock size='large' message='Enviando seu pedido' />;
-	if (createOrderError) return <ErrorBlock error={createOrderError} />
-	if (error) return <ErrorBlock error={error} />
+	if (error) return <ErrorBlock error={getErrorMessage(error)} />
 			
 	return (
 		<Container>
 			{(!!cartData.cartPayment && !!cartData.cartPayment.displayName)
-					&& <Gateway step='finish' method={cartData.cartPayment} cart={cartData} onFinish={handleFinishOrder} />}
+				&& <Gateway step='finish' method={cartData.cartPayment} cart={cartData} onFinish={handleFinishOrder} />}
 		</Container>
 	);
 }

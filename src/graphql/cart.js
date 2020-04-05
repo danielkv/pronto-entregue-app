@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const ADD_CART_ITEM = gql`
-	mutation AddCartItem ($data: CartItemInput!, $force: Boolean) {
-		addCartItem (data: $data, force: $force) @client
+	mutation AddCartItem ($data: CartItemInput!) {
+		addCartItem (data: $data) @client
 	}
 `;
 export const REMOVE_CART_ITEM = gql`

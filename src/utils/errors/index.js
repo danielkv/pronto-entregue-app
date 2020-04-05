@@ -33,9 +33,10 @@ export function extractFirstError(err) {
 	
 }
 
-export class CartCompanyError extends Error {
-	constructor(message) {
+export class CartValidationError extends Error {
+	constructor(title, message) {
 		super(message);
-		this.type = 'CartCompanyError';
+		this.title = title;
+		this.type = 'CartValidationError';
 	}
 }

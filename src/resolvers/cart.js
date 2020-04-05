@@ -1,6 +1,6 @@
 import { uniqueId } from 'lodash';
 
-import { CartCompanyError, extractFirstError } from '../utils/errors';
+import { extractFirstError } from '../utils/errors';
 
 import { SET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY, CHECK_DELIVERY_LOCATION } from '../graphql/cart';
@@ -25,17 +25,19 @@ export default {
 				}
 			});
 		},
-		addCartItem: (_, { data, force = false }, { cache }) => {
+		addCartItem: (_, { data }, { cache }) => {
 			// get cart
 			const { cartItems, cartCompany } = cache.readQuery({ query: GET_CART });
+			let newCart;
 			
 			// check company
 			const company = data.company;
-			if ((cartCompany !== null && cartCompany?.id !== company.id) && !force) {
-				throw new CartCompanyError('CartCompanyError');
+			// if company is different, forces reset cart
+			if ((cartCompany !== null && cartCompany?.id !== company.id)) {
+				newCart =  [data];
+			} else {
+				newCart = cartItems.concat(data);
 			}
-
-			const newCart = force ? [data] : cartItems.concat(data);
 
 			// set cart company
 			cache.writeQuery({ query: GET_CART_COMPANY, data: { cartCompany: company } });

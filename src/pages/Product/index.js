@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
 
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
@@ -28,13 +28,12 @@ import {
 	Quantity,
 } from './styles';
 
-import { ADD_CART_ITEM, GET_CART } from '../../graphql/cart';
+import { ADD_CART_ITEM } from '../../graphql/cart';
 import { LOAD_PRODUCT } from '../../graphql/products';
 
 export default function Product() {
 	const { params: { productId, productName, productImage, productDescription } } = useRoute();
 	const { palette } = useTheme();
-	const client = useApolloClient();
 
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
@@ -70,45 +69,25 @@ export default function Product() {
 		setProduct(newProduct);
 	}, [product, setProduct]);
 
-	const handleCartButtonPress = (force=false, duplicate=false) => () => {
+	const handleCartButtonPress = (force=false) => () => {
 		try {
-			if (checkProductRules(product)) {
-				// Verifica se item existe no carrinho
-				const { cartItems } = client.readQuery({ query: GET_CART });
-				if (!duplicate && cartItems.find(item => item.productId === product.id)) {
-					return Alert.alert(
-						'Esse item já foi adicionado à cesta',
-						'Deseja adicionar mais um?',
-						[
-							{ text: 'Sim', onPress: ()=>handleCartButtonPress(force, true)() },
-							{ text: 'Cancelar' },
-						]
-					);
-				}
-
+			if (checkProductRules(product, force)) {
 				// Add cart Item
 				const sanitizedProduct = sanitizeCartData({ ...product, quantity });
-				addCartItem({ variables: { force, data: sanitizedProduct } })
+				addCartItem({ variables: { data: sanitizedProduct } })
 					.then(()=>{
 						resetProduct();
 						Toast.show('Produto adicionado à cesta');
 					})
-					.catch((err)=>{
-						const message = getErrorMessage(err);
-						if (message === 'CartCompanyError')
-							Alert.alert(
-								'Já existem itens de outro estabelecimento na sua cesta.',
-								'Quer mesmo limpar sua cesta e adicionar esse item?',
-								[
-									{ text: 'Sim', onPress: ()=>handleCartButtonPress(true, duplicate)() },
-									{ text: 'Cancelar' },
-								]
-							);
-						else Alert.alert(message);
-					})
 			}
 		} catch (err) {
-			Alert.alert(err.message);
+			if (err.type === 'CartValidationError')
+				Alert.alert(err.title, err.message, [
+					{ text: 'Sim', onPress: ()=>handleCartButtonPress(true)() },
+					{ text: 'Cancelar' },
+				]);
+			else
+				Alert.alert('Não é possivel adicionar esse item à cesta', getErrorMessage(err.message));
 		}
 	}
 
