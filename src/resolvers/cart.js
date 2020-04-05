@@ -38,7 +38,7 @@ export default {
 			const newCart = force ? [data] : cartItems.concat(data);
 
 			// set cart company
-			cache.writeQuery({ query: GET_CART_COMPANY, data: { cartCompany: company } })
+			cache.writeQuery({ query: GET_CART_COMPANY, data: { cartCompany: company } });
 
 			// set cart items
 			cache.writeQuery({ query: GET_CART_ITEMS, data: { cartItems: newCart } });

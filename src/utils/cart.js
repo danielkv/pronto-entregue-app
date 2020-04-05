@@ -40,7 +40,7 @@ export function sanitizeOrderData ({ userId, user, address, cartCompany, cartIte
 			price: product.price,
 			quantity: product.quantity,
 			message: product.message || '',
-			productRelatedId: product.id,
+			productRelatedId: product.productId,
 
 			optionsGroups: product.optionsGroups?.map(group => ({
 				name: group.name,

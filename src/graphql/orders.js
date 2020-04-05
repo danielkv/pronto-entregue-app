@@ -10,7 +10,7 @@ export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
 		price
 		description
 		image
-		optionsGroups(filter:$filter) {
+		optionsGroups(filter: $filter) {
 			...OptionsGroupFields
 		}
 	}

@@ -107,7 +107,7 @@ export function checkProductRules(product) {
 	return true;
 }
 
-export const sanitizeCartData = (data) => {
+export function sanitizeCartData(data) {
 	return {
 		id: uniqueId(),
 		productId: data.id,
