@@ -7,31 +7,32 @@ import { GET_CART } from '../graphql/cart';
 
 export function calculateOptionsGroupPrice (optionsGroup, initialValue = 0, filterSelected=true) {
 	if (!optionsGroup) return 0;
-	let optionsGroupValue = initialValue;
+	let optionsGroupValue = 0;
 	const options = filterSelected ? optionsGroup.options.filter(o => o.selected) : optionsGroup.options;
-
 	if (optionsGroup.priceType === 'sum') {
 		// case group should SUM all selected options' prices
 
-		optionsGroupValue += options.reduce((totalOption, option) => {
+		optionsGroupValue = options.reduce((totalOption, option) => {
 			return totalOption + option.price;
-		}, optionsGroupValue);
+		}, 0);
 	} else if (optionsGroup.priceType === 'higher') {
 		// case group should consider only the highest selected options' prices
 
 		if (options.length) {
 			options.sort((a, b) => a.price > b.price ? -1 : 1);
-			optionsGroupValue += options[0].price;
+			optionsGroupValue = options[0].price;
 		}
 	}
 
-	return optionsGroupValue;
+	
+	return optionsGroupValue + initialValue;
 }
 
 export function calculateProductPrice(product, filterSelected=true) {
 	const productPrice = product?.sale?.progress ? product.sale.price : product.price;
 	
 	return product.optionsGroups.reduce((totalGroup, group) => {
+	
 		return calculateOptionsGroupPrice(group, totalGroup, filterSelected);
 	}, productPrice);
 }
@@ -48,7 +49,7 @@ export function getGroupNewState(optionGroup, optionIndex) {
 	
 	if (group.type === 'single') {
 		const selectedOptionIndex = group.options.findIndex(opt => opt.selected);
-		if (selectedOptionIndex > -1) group.options[selectedOptionIndex].selected = false;
+		if (selectedOptionIndex > -1 && selectedOptionIndex !== optionIndex) group.options[selectedOptionIndex].selected = false;
 	}
 
 	const option = group.options[optionIndex];
