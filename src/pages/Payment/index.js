@@ -41,7 +41,7 @@ export default function Payment({ navigation }) {
 	}
 			
 	if (loadingCart) return <LoadingBlock />;
-	if (loadingCreateOrder || loadingCancelCart) return <LoadingBlock message='Enviando seu pedido' />;
+	if (loadingCreateOrder || loadingCancelCart)return <LoadingBlock size='large' message='Enviando seu pedido' />;
 	if (createOrderError) return <ErrorBlock error={createOrderError} />
 	if (error) return <ErrorBlock error={error} />
 			
