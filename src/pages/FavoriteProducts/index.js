@@ -17,7 +17,7 @@ import { GET_USER_FAVORITE_PRODUCTS } from '../../graphql/users';
 
 export default function FavoriteProducts() {
 	const loggedUserId = useLoggedUserId();
-	const { data: { user: { favoriteProducts = [] } = {} } = {}, loading: loadingFavoriteProducts, error: favoriteProductsError } = useQuery(GET_USER_FAVORITE_PRODUCTS, { variables: { id: loggedUserId }, fetchPolicy: 'cache-and-network' });
+	const { data: { user: { favoriteProducts = [] } = {} } = {}, loading: loadingFavoriteProducts, error: favoriteProductsError } = useQuery(GET_USER_FAVORITE_PRODUCTS, { variables: { id: loggedUserId } });
 
 	if (favoriteProductsError) return <ErrorBlock error={getErrorMessage(favoriteProductsError)} />;
 

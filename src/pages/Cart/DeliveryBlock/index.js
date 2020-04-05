@@ -12,13 +12,13 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
 import { Paper, Icon, Typography } from '../../../react-native-ui';
+import { BRL } from '../../../utils/currency';
 import { getErrorMessage, extractFirstError } from '../../../utils/errors';
 import { useSelectedAddress } from '../../../utils/hooks';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import DeliveryModal from './DeliveryModal';
 
 import { GET_CART, SET_CART_DELIVERY } from '../../../graphql/cart';
-import { BRL } from '../../../utils/currency';
 
 export default function DeliveryBlock() {
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);

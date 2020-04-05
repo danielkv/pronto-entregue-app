@@ -54,7 +54,12 @@ const client = new ApolloClient({
 	cache,
 	link: ApolloLink.from([authLink, uploadLink]),
 	resolvers,
-	typeDefs
+	typeDefs,
+	defaultOptions: {
+		watchQuery: {
+			fetchPolicy: 'cache-and-network'
+		}
+	}
 });
 
 client.onResetStore(()=>cache.writeData({ data: initialData }));

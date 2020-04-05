@@ -45,7 +45,7 @@ export default function Product() {
 		return 0;
 	}, [product, calculateProductPrice, quantity]);
 
-	const { data: productData, loading: loadingProduct, error: productError } = useQuery(LOAD_PRODUCT, { variables: { id: productId }, fetchPolicy: 'cache-and-network' });
+	const { data: productData, loading: loadingProduct, error: productError } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
 
 	useEffect(()=>{
 		if (productError) setProduct(null);

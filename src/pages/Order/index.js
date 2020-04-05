@@ -25,7 +25,7 @@ export default function Order() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, fetchPolicy: 'cache-and-network', notifyOnNetworkStatusChange: true });
+	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, notifyOnNetworkStatusChange: true });
 
 	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(CANCEL_ORDER, { variables: { id: orderId } });
 
