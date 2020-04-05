@@ -13,6 +13,7 @@ import {
 	BlockFooter,
 	BlockInfo,
 } from './styles';
+import { BRL } from '../../../utils/currency';
 
 
 export default function Blocks({ order }) {
@@ -38,7 +39,7 @@ export default function Blocks({ order }) {
 						<BlockTitle>Valor total</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
-						<BlockInfo h1>{`R$ ${order.price.toFixed(2).replace('.', ',')}`}</BlockInfo>
+						<BlockInfo h1>{BRL(order.price).format()}</BlockInfo>
 					</BlockFooter>
 				</Block>
 			</BlocksRow>
@@ -60,7 +61,7 @@ export default function Blocks({ order }) {
 					</BlockHeader>
 					<BlockFooter>
 						<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>{order.type === 'takeout' ? 'Retirada no local' : `${order.address.street}, ${order.address.number}`}</Typography>
-						{!!order.deliveryPrice && <BlockInfo h1>{`R$ ${order.deliveryPrice.toFixed(2).replace('.', ',')}`}</BlockInfo>}
+						{!!order.deliveryPrice && <BlockInfo h1>{BRL(order.deliveryPrice).format()}</BlockInfo>}
 					</BlockFooter>
 				</Block>
 			</BlocksRow>

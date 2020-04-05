@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { vh, vw } from 'react-native-expo-viewport-units';
 
 import styled from 'styled-components/native';
@@ -24,7 +25,7 @@ export const Container = styled.TouchableOpacity`
 
 	background-color: #fff;
 	/* background-color: ${({ selected }) => selected ? '#fff' : 'transparent'}; */
-	border-color: ${({ theme, selected }) => selected ? 'transparent' : theme.palette.background.main};
+	border-color: ${({ theme, selected }) => selected ? (Platform.OS === 'ios' ? theme.palette.background.main : 'transparent') : '#f0f0f0'};
 
 	${({ selected })=>(selected && 'shadow-color: #000;	shadow-offset: 0 2px; shadow-opacity: 0.23; shadow-radius: 2.62px; elevation:6;')}
 `;

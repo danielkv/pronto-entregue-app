@@ -18,6 +18,7 @@ import { CardHeader, CardContent, CardInfo } from '../styles';
 import DeliveryModal from './DeliveryModal';
 
 import { GET_CART, SET_CART_DELIVERY } from '../../../graphql/cart';
+import { BRL } from '../../../utils/currency';
 
 export default function DeliveryBlock() {
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
@@ -81,7 +82,7 @@ export default function DeliveryBlock() {
 						</CardInfo>
 						<Icon name='edit' size={24} color='#333' />
 						{!!(cartDelivery && cartDelivery.price)
-							&& <Typography>R$ {cartDelivery.price.toFixed(2).replace('.', ',')}</Typography>}
+							&& <Typography>{BRL(cartDelivery.price).format()}</Typography>}
 					</CardContent>
 				</Paper>
 			</TouchableOpacity>

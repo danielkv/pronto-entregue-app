@@ -6,6 +6,7 @@ import {
 	TitleContainer,
 	OptionIconContainer
 } from './styles';
+import { BRL } from '../../../utils/currency';
 
 function ProductOption({ option, onPress, type }) {
 	const { palette } = useTheme();
@@ -32,10 +33,10 @@ function ProductOption({ option, onPress, type }) {
 				<Chip
 					color='secondary'
 					style={{
-						root: { height: 38, backgroundColor: option.selected ? palette.secondary.main : 'transparent' },
-						text: { color: '#333', fontSize: 14, fontWeight: 'bold' }
+						root: { height: 38, backgroundColor: option.selected ? palette.secondary.main : 'transparent', paddingHorizontal: 12 },
+						text: { color: '#333', fontSize: 13 }
 					}}
-					label={`R$ ${option.price.toFixed(2).replace('.', ',')}`} />
+					label={BRL(option.price).format()} />
 			)}
 		</Container>
 	);

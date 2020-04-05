@@ -13,6 +13,7 @@ import {
 	SearchContainer,
 	OptionsContainer
 } from './styles';
+import { BRL } from '../../../../utils/currency';
 
 export default function Modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);
@@ -51,7 +52,7 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 			title={optionGroup.name}
 			handleCancel={closeModal}
 			handleConfirm={()=>confirmModal(optionGroup)}
-			badgeText={`R$ ${price.toFixed(2).replace('.', ',')}`}
+			badgeText={BRL(price).format()}
 		>
 			{optionGroup.options.length >= 10 && (
 				<SearchContainer>

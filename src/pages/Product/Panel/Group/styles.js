@@ -1,7 +1,25 @@
+import { Platform } from 'react-native';
+
 import styled from 'styled-components/native';
 
 import { Typography } from '../../../../react-native-ui';
 
+
+export const Container = styled.TouchableOpacity`
+	background-color:#fff;
+	elevation: 6;
+	
+	padding-left: 15px;
+	margin: 8px 0;
+	height: 44px;
+
+	border-radius:25px;
+	flex-direction:row;
+	align-items:center;
+	overflow:hidden;
+
+	${()=>Platform.OS === 'ios' && 'border: 1px solid #f0f0f0'}
+`;
 
 export const TitleContainer = styled.View`
 	flex-direction:row;
@@ -16,19 +34,6 @@ export const CenterElementContainer = styled.View`
 	justify-content:flex-end;
 `;
 
-export const Container = styled.TouchableOpacity`
-	background-color:#fff;
-	${()=>'shadow-color: #000;	shadow-offset: 0 4px;	shadow-opacity: 0.0;	shadow-radius: 4.65px;	elevation: 8;'}
-	
-	padding-left: 15px;
-	margin: 8px 0;
-	height: 50px;
-
-	border-radius:25px;
-	flex-direction:row;
-	align-items:center;
-	overflow:hidden;
-`;
 
 export const SelectedOptionsNumber = styled.View`
 	background-color:${({ theme })=>theme.palette.primary.main};

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Icon } from '../../react-native-ui';
+import { BRL } from '../../utils/currency';
 import { ButtonContainer, ButtonTextContainer, ButtonPriceContainer, ButtonPrice, ButtonTitle } from './styles';
 
 export default function CartButton({ title, iconSize = 24, price = 0, forceShowPrice = false, icon, onPress, disabled=false }) {
@@ -12,7 +13,7 @@ export default function CartButton({ title, iconSize = 24, price = 0, forceShowP
 			</ButtonTextContainer>
 			{!!(price || forceShowPrice) && (
 				<ButtonPriceContainer>
-					<ButtonPrice>{`R$ ${price.toFixed(2).replace('.', ',')}`}</ButtonPrice>
+					<ButtonPrice>{BRL(price).format()}</ButtonPrice>
 				</ButtonPriceContainer>
 			)}
 		</ButtonContainer>

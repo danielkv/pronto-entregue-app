@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
@@ -6,7 +8,10 @@ export const Container = styled.TouchableOpacity`
 	margin: 15px 0;
 	overflow: hidden;
 	flex-direction: row;
-	${'shadow-color: #000; shadow-offset: 0 2px; shadow-opacity: 0.25; shadow-radius: 3.84px; elevation: 5;'}
+	elevation: 5;
+	
+	${()=>Platform.OS === 'ios' && 'border: 1px solid #f0f0f0'}
+	
 `;
 
 export const ContentContainer = styled.View`

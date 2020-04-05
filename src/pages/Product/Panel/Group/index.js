@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Icon, Chip, Typography } from '../../../../react-native-ui';
 import theme from '../../../../theme';
+import { BRL } from '../../../../utils/currency';
 import { calculateOptionsGroupPrice } from '../../../../utils/products';
 import {
 	Container,
@@ -56,8 +57,8 @@ function Group({ onPress, group }) {
 
 			{!!price && (
 				<Chip
-					style={{ root: { height: 50, borderRadius: 25 }, text: { fontWeight: 'bold', fontSize: 14 } }}
-					label={`R$ ${price.toFixed(2).replace('.', ',')}`}
+					style={{ root: { height: 42, borderRadius: 25, paddingHorizontal: 12 }, text: { fontSize: 13 } }}
+					label={BRL(price).format()}
 					color='secondary'
 				/>
 			)}

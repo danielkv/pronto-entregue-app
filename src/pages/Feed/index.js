@@ -20,15 +20,17 @@ import { LOAD_FEED } from '../../graphql/products';
 export default function Feed() {
 	const { location } = useSelectedAddress();
 	const { palette } = useTheme();
-	const { data: { productsOnSale = [], bestSellers = [] } = {}, error: feedError, loading: loadingFeed, refetch, called } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location }, fetchPolicy: 'no-cache' });
+	const { data: { productsOnSale = [], bestSellers = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location }, fetchPolicy: 'no-cache' });
+
+	const feedIsEmpty = !productsOnSale.length && !bestSellers.length;
 
 	return (
 		<ScrollView
-			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={loadingFeed && called} onRefresh={()=>refetch()} />}
+			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={loadingFeed && !feedIsEmpty} onRefresh={()=>refetch()} />}
 		>
 			<UserInfo />
 
-			{loadingFeed && (!productsOnSale.length && !bestSellers.length)
+			{loadingFeed && feedIsEmpty
 				? feedError ? <ErrorBlock error={getErrorMessage(feedError)} /> : <LoadingBlock />
 				: (
 					<>

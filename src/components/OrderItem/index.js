@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { useTheme, Icon, Typography, Chip } from '../../react-native-ui';
 import { getStatusText, getStatusColors } from '../../utils';
+import { BRL } from '../../utils/currency';
 import {
 	Container,
 	IconBlock,
@@ -33,7 +34,7 @@ export default function OrderItem({ item: order }) {
 					
 					<Typography variant='subtitle'>{`${order.countProducts} ${order.countProducts > 1 ? 'itens' : 'item'}`}</Typography>
 
-					<Typography variant='h5' style={{ fontWeight: 'bold', marginTop: 15 }}>{`R$ ${order.price.toFixed(2).replace('.', ',')}`}</Typography>
+					<Typography variant='h5' style={{ fontWeight: 'bold', marginTop: 15 }}>{BRL(order.price).format()}</Typography>
 					<Chip
 						style={{
 							root: { paddingHorizontal: 10, height: 30, position: 'absolute', right: 0, bottom: 0, backgroundColor: statusColor.background },
