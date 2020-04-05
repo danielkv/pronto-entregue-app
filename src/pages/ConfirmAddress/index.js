@@ -71,7 +71,7 @@ export default function ConfirmAddress() {
 
 	return (
 		
-		<ContainerScroll>
+		<ContainerScroll keyboardShouldPersistTaps='always'>
 			<Container>
 				<Formik
 					validationSchema={validationSchema}
