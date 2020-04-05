@@ -42,7 +42,10 @@ export default function CartItem({ item, onPressDelete }) {
 				</ItemOptionsContainer>
 				{!!item.message && <ItemMessage>{`Obs.: ${item.message}`}</ItemMessage>}
 				<ItemFooter>
-					<Chip color='secondary' style={{ root: { height: 30, paddingHorizontal: 10 }, text: { fontSize: 14, color: palette.background.dark, fontWeight: "bold" } }} label={BRL(calculateProductPrice(item)*item.quantity).format()} />
+					<Chip
+						color='secondary'
+						style={{ root: { height: 30, paddingHorizontal: 10 }, text: { fontSize: 14, color: palette.background.dark, fontWeight: "bold" } }}
+						label={BRL(calculateProductPrice(item, false)*item.quantity).format()} />
 					<Typography style={{ marginLeft: 10, color: palette.background.dark }}>{`Qtde: ${item.quantity}`}</Typography>
 				</ItemFooter>
 			</ItemContent>

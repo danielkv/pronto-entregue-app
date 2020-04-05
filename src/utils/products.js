@@ -1,17 +1,19 @@
 import { uniqueId, cloneDeep } from 'lodash';
 
-export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
+export function calculateOptionsGroupPrice (optionsGroup, initialValue = 0, filterSelected=true) {
 	if (!optionsGroup) return 0;
 	let optionsGroupValue = initialValue;
+	const options = filterSelected ? optionsGroup.options.filter(o => o.selected) : optionsGroup.options;
 
 	if (optionsGroup.priceType === 'sum') {
 		// case group should SUM all selected options' prices
-		optionsGroupValue = optionsGroup.options.reduce((totalOption, option) => {
-			return (option.selected) ? totalOption + option.price : totalOption;
+
+		optionsGroupValue += options.reduce((totalOption, option) => {
+			return totalOption + option.price;
 		}, optionsGroupValue);
 	} else if (optionsGroup.priceType === 'higher') {
 		// case group should consider only the highest selected options' prices
-		const options = optionsGroup.options.filter(o => o.selected);
+
 		if (options.length) {
 			options.sort((a, b) => a.price > b.price ? -1 : 1);
 			optionsGroupValue += options[0].price;
@@ -21,13 +23,13 @@ export const calculateOptionsGroupPrice = (optionsGroup, initialValue = 0) => {
 	return optionsGroupValue;
 }
 
-export const calculateProductPrice = (product) => {
+export function calculateProductPrice(product, filterSelected=true) {
 	const productPrice = product?.sale?.progress ? product.sale.price : product.price;
-
+	
 	return product.optionsGroups.reduce((totalGroup, group) => {
-		return calculateOptionsGroupPrice(group, totalGroup);
+		return calculateOptionsGroupPrice(group, totalGroup, filterSelected);
 	}, productPrice);
-};
+}
 
 /**
  * Return group new state after select option
@@ -124,6 +126,7 @@ export const sanitizeCartData = (data) => {
 			return {
 				id: uniqueId(),
 				name: group.name,
+				priceType: group.priceType,
 				optionsGroupId: group.id,
 				__typename: 'CartOptionsGroup',
 

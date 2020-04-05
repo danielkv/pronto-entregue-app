@@ -6,9 +6,7 @@ import { calculateOptionsGroupPrice } from '../../../../utils/products';
 import {
 	Container,
 	CenterElementContainer,
-	GroupTitle,
 	TitleContainer,
-	SelectedOptionsText,
 	SelectedOptionsNumber,
 	SelectedOptionsNumberText
 } from './styles';

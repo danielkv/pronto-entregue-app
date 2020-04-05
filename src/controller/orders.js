@@ -95,7 +95,7 @@ export const getOrderStatusIcon = (status) => {
 export const calculateOrderPrice = (products, initialValue=0) => {
 	if (!products || !products.length) return initialValue;
 	return parseFloat(products.filter(row=>row.action !== 'remove').reduce((totalProduct, product) => {
-		return totalProduct + calculateProductPrice(product);
+		return totalProduct + calculateProductPrice(product, false);
 	}, initialValue).toFixed(2).replace(',', '.'));
 }
 

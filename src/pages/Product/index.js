@@ -40,7 +40,7 @@ export default function Product() {
 	const [addCartItem, { loadingAddToCart }] = useMutation(ADD_CART_ITEM);
 
 	const totalPrice = useMemo(()=>{
-		if (product) return calculateProductPrice(product) * quantity;
+		if (product) return calculateProductPrice(product, true) * quantity;
 
 		return 0;
 	}, [product, calculateProductPrice, quantity]);

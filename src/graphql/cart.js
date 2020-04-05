@@ -62,6 +62,7 @@ export const GET_CART = gql`
 			quantity
 			optionsGroups {
 				id
+				priceType
 				name
 				options {
 					id
@@ -115,6 +116,7 @@ export const GET_CART_ITEMS = gql`
 			quantity
 			optionsGroups {
 				id
+				priceType
 				name
 				options {
 					id
