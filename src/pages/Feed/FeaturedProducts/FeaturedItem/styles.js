@@ -6,7 +6,7 @@ export const Container = styled.TouchableOpacity`
 
 `;
 
-export const TextContainer = styled.TouchableOpacity`
+export const TextContainer = styled.View`
 	max-width: 80%;
 `;
 
