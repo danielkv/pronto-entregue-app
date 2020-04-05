@@ -24,7 +24,7 @@ export default function  AppHeader({ variant='solid', showBackButton=true, rigth
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 
 			{rigthContent && <RigthContent>
-				{searchProductsIcon && <IconButton onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />}
+				{searchProductsIcon && <IconButton style={{ root: { marginRight: 10 } }} onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />}
 				{/* <IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} /> */}
 				{profileAvatar && <UserAvatar />}
 			</RigthContent>}

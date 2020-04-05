@@ -18,7 +18,7 @@ import { SEARCH_PRODUCTS_COMPANIES } from '../../../graphql/search';
 
 const Tab = createMaterialTopTabNavigator();
 
-const timeOutLimit = 700;
+const timeOutLimit = 600;
 
 export default function SearchBlock() {
 	const { palette } = useTheme();
@@ -27,19 +27,18 @@ export default function SearchBlock() {
 	let timeOut = null;
 	const locationStr = location.join(',');
 
+	// MUTATION
+	const [handleSearch, { called, loading, error: searchError, data: { products = [], companies = [] } = {} }] = useMutation(SEARCH_PRODUCTS_COMPANIES, { variables: { location }, fetchPolicy: 'no-cache' })
+
 	useEffect(() => {
 		if (actualSearch) handleSearch({ variables: { search: actualSearch } })
 	}, [locationStr, actualSearch])
-
-	// MUTATION
-	const [handleSearch, { called, loading: loadingSearch, error: searchError, data: { products = [], companies = [] } = {} }] = useMutation(SEARCH_PRODUCTS_COMPANIES, { variables: { location } })
 
 	function handleChangeSearch(searchText) {
 		if (timeOut) clearTimeout(timeOut);
 		if (!searchText) return setActualSearch('');
 
 		timeOut = setTimeout(()=>{
-			//handleSearch({ variables: { search: searchText } })
 			setActualSearch(searchText);
 		}, timeOutLimit)
 	}
@@ -49,16 +48,19 @@ export default function SearchBlock() {
 	return (
 		<View>
 			<TextField
+				autoFocus
 				label='Pesquisar'
 				style={{ inputContainer: { backgroundColor: palette.background.main } }}
 				onChangeText={handleChangeSearch}
 			/>
 
-			{loadingSearch && <ActivityIndicator color={palette.primary.main} />}
+			{loading && <View style={{ marginTop: 20 }}>
+				<ActivityIndicator color={palette.primary.main} />
+			</View>}
 
 			{(products.length || companies.length)
 				? (
-					<View style={{ marginHorizontal: -35 }}>
+					<View style={{ marginTop: 20, marginHorizontal: -35 }}>
 						<Tab.Navigator
 							initialRouteName='SearchProducts'
 							sceneContainerStyle={{
@@ -70,7 +72,7 @@ export default function SearchBlock() {
 							tabBarOptions={{
 								activeTintColor: palette.primary.main,
 								inactiveTintColor: '#D1C6B1',
-								labelStyle: { fontWeight: 'bold', textTransform: 'capitalize', fontSize: 18, },
+								labelStyle: { textTransform: 'capitalize', fontSize: 16, },
 								style: { elevation: 0, marginHorizontal: 35 },
 								tabStyle: { padding: 0 },
 								indicatorStyle: { backgroundColor: palette.primary.main, height: 3 }
@@ -94,7 +96,7 @@ export default function SearchBlock() {
 						</Tab.Navigator>
 					</View>
 				)
-				: (called && !loadingSearch) && <NoResultBlock />
+				: (called && !loading) && <NoResultBlock />
 			}
 		</View>
 	);
