@@ -9,7 +9,7 @@ export const ProductContainer = styled.ScrollView`
 	flex:1;
 `;
 export const HeaderContainer = styled.View`
-	height:300px;
+	height:350px;
 	margin-bottom: -45px;
 `;
 export const HeaderImageBackgroundContainer = styled.ImageBackground`

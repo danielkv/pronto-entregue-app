@@ -113,11 +113,11 @@ export default function Product() {
 								<FavoriteButton product={product} />
 							</View>}
 							
-							{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 33, marginTop: 5 } }} color='secondary' />}
+							{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 30, marginTop: 8 }, text: { fontSize: 14 } }} color='secondary' />}
 
-							<Typography style={{ marginBottom: 10, fontSize: 24, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
+							<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
 
-							<Typography style={{ color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
+							<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 						</LinearGradient>
 					</HeaderImageBackgroundContainer>
 				</HeaderContainer>

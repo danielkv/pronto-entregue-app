@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 import { useMutation } from '@apollo/react-hooks';
 
-import { IconButton } from '../../../react-native-ui';
+import { IconButton, useTheme } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
 import { useLoggedUserId } from '../../../utils/hooks';
 
@@ -13,10 +13,17 @@ import { ADD_FAVORITE_PRODUCT, REMOVE_FAVORITE_PRODUCT } from '../../../graphql/
 
 export default function FavoriteButton({ product }) {
 	const loggedUserId = useLoggedUserId();
-	const [favorite, setFavorite] = useState(product.favorite);
+	const { palette } = useTheme();
+	const [favorite, setFavorite] = useState(()=>product.favorite);
 
 	const [addFavoriteProduct, { loading: loadingAddFavorite }] = useMutation(ADD_FAVORITE_PRODUCT, { variables: { productId: product.id, userId: loggedUserId } });
 	const [removeFavoriteProduct, { loading: loadingRemoveFavorite }] = useMutation(REMOVE_FAVORITE_PRODUCT, { variables: { productId: product.id, userId: loggedUserId } });
+
+	const style = favorite ? {} : {
+		button: {
+			backgroundColor: '#fff',
+		}
+	}
 
 	const handlePressFavorite = (newStatus) => () => {
 		try {
@@ -32,6 +39,12 @@ export default function FavoriteButton({ product }) {
 		}
 	}
 	return (
-		<IconButton disabled={loadingAddFavorite || loadingRemoveFavorite} onPress={handlePressFavorite(!favorite)} variant={favorite ? 'filled' : 'default'} color='primary' icon={{ name: 'heart', color: 'white' }} />
+		<IconButton
+			disabled={loadingAddFavorite || loadingRemoveFavorite}
+			onPress={handlePressFavorite(!favorite)}
+			variant='filled'
+			color='primary'
+			style={style}
+			icon={{ name: 'heart', color: favorite ? 'white' : palette.primary.main }} />
 	);
 }
