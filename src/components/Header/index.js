@@ -18,7 +18,7 @@ export default function  AppHeader({ variant='solid', showBackButton=true, rigth
 	
 	return (
 		<Container transparent={headerTransparent}>
-			<StatusBar barStyle={finalVariant === 'transparent' ? 'light-content' : 'dark-content'} />
+			<StatusBar backgroundColor='transparent' translucent={true} barStyle={finalVariant === 'transparent' ? 'light-content' : 'dark-content'} />
 			{showBackButton && <BackButton color={iconsColor} />}
 					
 			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}

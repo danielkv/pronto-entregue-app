@@ -29,7 +29,7 @@ export default function ConnectionInfoPanel() {
 				padding: 35,
 			}}
 		>
-			<StatusBar barStyle='light-content' />
+			<StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content' />
 			<Icon name='wifi-off' color={palette.secondary.main} size={50} />
 			<Chip color='primary' style={{ root: { alignSelf: 'auto', marginTop: 10 } }}>Falha na conexão</Chip>
 			<Typography variant='h5' style={{ color: '#fff', textAlign: "center", marginTop: 10 }}>O App ficará disponível assim que sua internet for ativada</Typography>
