@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cloneDeep } from 'lodash';
@@ -28,12 +28,13 @@ import {
 	Quantity,
 } from './styles';
 
-import { ADD_CART_ITEM } from '../../graphql/cart';
+import { ADD_CART_ITEM, GET_CART } from '../../graphql/cart';
 import { LOAD_PRODUCT } from '../../graphql/products';
 
 export default function Product() {
 	const { params: { productId, productName, productImage, productDescription } } = useRoute();
 	const { palette } = useTheme();
+	const client = useApolloClient();
 
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
@@ -69,9 +70,23 @@ export default function Product() {
 		setProduct(newProduct);
 	}, [product, setProduct]);
 
-	const handleCartButtonPress = (force=false) => () => {
+	const handleCartButtonPress = (force=false, duplicate=false) => () => {
 		try {
 			if (checkProductRules(product)) {
+				// Verifica se item existe no carrinho
+				const { cartItems } = client.readQuery({ query: GET_CART });
+				if (!duplicate && cartItems.find(item => item.productId === product.id)) {
+					return Alert.alert(
+						'Esse item já foi adicionado à cesta',
+						'Deseja adicionar mais um?',
+						[
+							{ text: 'Sim', onPress: ()=>handleCartButtonPress(force, true)() },
+							{ text: 'Cancelar' },
+						]
+					);
+				}
+
+				// Add cart Item
 				const sanitizedProduct = sanitizeCartData({ ...product, quantity });
 				addCartItem({ variables: { force, data: sanitizedProduct } })
 					.then(()=>{
@@ -85,7 +100,7 @@ export default function Product() {
 								'Já existem itens de outro estabelecimento na sua cesta.',
 								'Quer mesmo limpar sua cesta e adicionar esse item?',
 								[
-									{ text: 'Sim', onPress: ()=>handleCartButtonPress(true)() },
+									{ text: 'Sim', onPress: ()=>handleCartButtonPress(true, duplicate)() },
 									{ text: 'Cancelar' },
 								]
 							);

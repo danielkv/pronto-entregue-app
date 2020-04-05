@@ -92,7 +92,6 @@ export default function Cart({ navigation }) {
 	
 	return (
 		<Container>
-			
 			<CartContainerScroll>
 				{cartCompany && <Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<Image source={{ uri: cartCompany.image }} style={{ width: 60, height: 60, borderRadius: 15, marginRight: 15 }} />
