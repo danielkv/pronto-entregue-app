@@ -18,6 +18,38 @@ export const LIST_PRODUCT_FRAGMENT = gql`
 	}
 `;
 
+export const LOAD_FEED = gql`
+	query LOAD_FEED ($onSaleLimit: Int!, $bestSellersLimit: Int!, $location: GeoPoint!) {
+		productsOnSale(limit: $onSaleLimit, location: $location) {
+			id
+			name
+			image
+			description
+			price
+			fromPrice
+			company {
+				displayName
+			}
+			sale {
+				price
+			}
+		}
+
+		bestSellers (limit: $bestSellersLimit, location: $location) {
+			id
+			name
+			description
+			image
+			price
+			fromPrice
+			sale {
+				price
+				progress
+			}
+		}
+	}
+`;
+
 export const GET_PRODUCTS_ON_SALE = gql`
 	query GetProductsOnSale ($limit: Int!, $location: GeoPoint!) {
 		productsOnSale(limit: $limit, location: $location) {

@@ -2,17 +2,8 @@ import React, { useState, useRef } from 'react';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { useQuery } from '@apollo/react-hooks';
-
-import ErrorBlock from '../../../components/ErrorBlock';
-import LoadingBlock from '../../../components/LoadingBlock';
-
 import { useTheme, Paper, Typography } from '../../../react-native-ui';
-import { getErrorMessage } from '../../../utils/errors';
-import { useSelectedAddress } from '../../../utils/hooks';
 import FeaturedItem from './FeaturedItem';
-
-import { GET_PRODUCTS_ON_SALE } from '../../../graphql/products';
 
 const carouselConfig = {
 	sliderWidth: vw(100),
@@ -21,16 +12,11 @@ const carouselConfig = {
 	itemHeight: vh(28),
 }
 
-export default function FeaturedProduct() {
+export default function FeaturedProduct({ products }) {
 	const theme = useTheme();
 	const carouselRef = useRef();
 	const [activeSlide, setActiveSlide] = useState(0);
 	
-	const { location } = useSelectedAddress();
-	const { data: { productsOnSale: products = [] } = {}, error, loading: loadingProducts } = useQuery(GET_PRODUCTS_ON_SALE, { variables: { limit: 5, location }, fetchPolicy: 'no-cache' });
-
-	if (loadingProducts) return <LoadingBlock />
-	if (error) return <ErrorBlock error={getErrorMessage(error)} />
 	if (!products.length) return false;
 
 	return (
