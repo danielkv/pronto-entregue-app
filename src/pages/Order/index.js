@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, RefreshControl } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, RefreshControl, View } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
@@ -9,7 +9,7 @@ import CompanyPanel from '../../components/CompanyPanel';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { Chip, Paper, Divider, Typography, Button, useTheme } from '../../react-native-ui';
+import { Chip, Paper, Divider, Typography, Button, useTheme, Icon } from '../../react-native-ui';
 import { getStatusText, getStatusColors } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import Blocks from './Blocks';
@@ -67,6 +67,10 @@ export default function Order() {
 		<ScrollView
 			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}>
 			<Container>
+				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+					<Icon name='chevron-down' size={15} color={palette.background.dark} />
+					<Typography style={{ fontSize: 12, color: palette.background.dark }}>Arraste para atualizar</Typography>
+				</View>
 				<Chip
 					label={getStatusText(order.status)}
 					style={{
