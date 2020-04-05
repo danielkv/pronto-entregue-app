@@ -1,9 +1,10 @@
 import { sanitizeAddress } from "../controller/address";
+import { calculateProductPrice } from "./products";
 
 export function calculateOrderPrice(products, initialValue = 0) {
 	if (!products || !products.length) return initialValue;
 	return parseFloat(products.reduce((totalProduct, product) => {
-		return totalProduct + product.price;
+		return totalProduct + (calculateProductPrice(product) * product.quantity);
 	}, initialValue));
 }
 

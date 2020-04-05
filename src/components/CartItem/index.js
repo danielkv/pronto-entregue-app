@@ -2,6 +2,8 @@ import React from 'react';
 import { Image } from 'react-native';
 
 import { useTheme, IconButton, Chip, Typography } from '../../react-native-ui';
+import { BRL } from '../../utils/currency';
+import { calculateProductPrice } from '../../utils/products';
 import {
 	Container,
 	ItemContent,
@@ -40,7 +42,7 @@ export default function CartItem({ item, onPressDelete }) {
 				</ItemOptionsContainer>
 				{!!item.message && <ItemMessage>{`Obs.: ${item.message}`}</ItemMessage>}
 				<ItemFooter>
-					<Chip color='secondary' style={{ root: { height: 30, paddingHorizontal: 10 }, text: { fontSize: 14, color: palette.background.dark, fontWeight: "bold" } }} label={`R$ ${item.price.toFixed(2).replace('.', ',')}`} />
+					<Chip color='secondary' style={{ root: { height: 30, paddingHorizontal: 10 }, text: { fontSize: 14, color: palette.background.dark, fontWeight: "bold" } }} label={BRL(calculateProductPrice(item)*item.quantity).format()} />
 					<Typography style={{ marginLeft: 10, color: palette.background.dark }}>{`Qtde: ${item.quantity}`}</Typography>
 				</ItemFooter>
 			</ItemContent>

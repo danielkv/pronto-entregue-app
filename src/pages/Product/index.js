@@ -72,7 +72,8 @@ export default function Product() {
 	const handleCartButtonPress = (force=false) => () => {
 		try {
 			if (checkProductRules(product)) {
-				addCartItem({ variables: { force, data: sanitizeCartData({ ...product, price: totalPrice, quantity }) } })
+				const sanitizedProduct = sanitizeCartData({ ...product, quantity });
+				addCartItem({ variables: { force, data: sanitizedProduct } })
 					.then(()=>{
 						resetProduct();
 						Toast.show('Produto adicionado à cesta');

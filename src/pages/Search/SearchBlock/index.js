@@ -76,7 +76,7 @@ export default function SearchBlock() {
 								indicatorStyle: { backgroundColor: palette.primary.main, height: 3 }
 							}}
 						>
-							<Tab.Screen name='SearchProducts'  options={{ title: 'Produtos' }}>
+							{Boolean(products.length) && <Tab.Screen name='SearchProducts'  options={{ title: 'Produtos' }}>
 								{()=>(
 									products.map((product, index) => (
 										<Fragment key={product.id}>
@@ -85,12 +85,12 @@ export default function SearchBlock() {
 										</Fragment>
 									))
 								)}
-							</Tab.Screen>
-							<Tab.Screen name='SearchCompanies' options={{ title: 'Estabelecimentos' }}>
+							</Tab.Screen>}
+							{Boolean(companies.length) && <Tab.Screen name='SearchCompanies' options={{ title: 'Estabelecimentos' }}>
 								{()=>(
 									companies.map(company => <CompanyItem key={company.id} item={company} />)
 								)}
-							</Tab.Screen>
+							</Tab.Screen>}
 						</Tab.Navigator>
 					</View>
 				)
