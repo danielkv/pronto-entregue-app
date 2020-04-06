@@ -70,9 +70,10 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 			id
 			name
 		}
-		options (filter:$filter) {
+		options (filter: $filter) {
 			id
 			name
+			description
 			price
 			maxSelectRestrainOther
 		}

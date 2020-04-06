@@ -26,7 +26,7 @@ export default function Payment({ navigation }) {
 	});
 	
 	const handleFinishOrder = (cartResult) => {
-		const sanitizedCart = sanitizeOrderData({ ...cartResult, userId: loggedUserId, address: selectedAddress });
+		const sanitizedCart = sanitizeOrderData({ ...cartResult, userId: loggedUserId, address: selectedAddress })
 		
 		createOrder({ variables: { data: sanitizedCart } })
 			.then(async ({ data: { createOrder } }) => {

@@ -1,6 +1,6 @@
-import { AsyncStorage, Alert } from "react-native";
+import { AsyncStorage } from "react-native";
 
-import { ApolloError } from "apollo-client";
+import { cloneDeep } from 'lodash';
 
 import { sanitizeAddress } from "../controller/address";
 import { extractFirstError } from "../utils/errors";
@@ -14,22 +14,24 @@ export default {
 	Mutation: {
 		async setSelectedAddress (_, { address, force = false }, { cache, client }) {
 			try {
+				const newAddress = cloneDeep(address);
 				const cart = cache.readQuery({ query: GET_CART });
 
 				if (cart?.cartItems?.length && (cart?.cartDelivery && cart?.cartDelivery?.type === 'delivery') && cart.cartCompany) {
 					if (!force) {
 						// Check if delivery location is OK
-						await client.mutate({ mutation: CHECK_DELIVERY_LOCATION, variables: { companyId: cart.cartCompany.id, address: sanitizeAddress(address) } })
+						await client.mutate({ mutation: CHECK_DELIVERY_LOCATION, variables: { companyId: cart.cartCompany.id, address: sanitizeAddress(newAddress) } })
 					} else {
 						// check cart
 						await client.mutate({ mutation: CANCEL_CART });
 					}
 				}
 
-				address.__typename = 'Address';
-				delete address.id;
-				await AsyncStorage.setItem('@prontoEntregue/address', JSON.stringify(address));
-				cache.writeQuery({ query: GET_SELECTED_ADDRESS, data: { selectedAddress: address } });
+				
+				newAddress.__typename = 'Address';
+				delete newAddress.id;
+				await AsyncStorage.setItem('@prontoEntregue/address', JSON.stringify(newAddress));
+				cache.writeQuery({ query: GET_SELECTED_ADDRESS, data: { selectedAddress: newAddress } });
 			} catch(err) {
 				const error = extractFirstError(err);
 				throw new Error(JSON.stringify(error))

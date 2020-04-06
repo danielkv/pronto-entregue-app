@@ -62,17 +62,21 @@ export const GET_CART = gql`
 			quantity
 			optionsGroups {
 				id
+				optionsGroupId
 				priceType
 				name
 				options {
 					id
+					optionId
 					name
+					description
 					price
 				}
 			}
 		}
 	}
 `;
+
 export const GET_CART_DELIVERY = gql`
 	query GetCartDeliveryType {
 		cartDelivery @client {
@@ -116,11 +120,14 @@ export const GET_CART_ITEMS = gql`
 			quantity
 			optionsGroups {
 				id
+				optionsGroupId
 				priceType
 				name
 				options {
 					id
+					optionId
 					name
+					description
 					price
 				}
 			}

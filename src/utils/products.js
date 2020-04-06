@@ -151,6 +151,7 @@ export function sanitizeCartData(data) {
 					return {
 						id: uniqueId(),
 						name: option.name,
+						description: option.description,
 						price: option.price,
 						optionId: option.id,
 						__typename: 'CartOption',

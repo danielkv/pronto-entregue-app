@@ -44,12 +44,13 @@ export function sanitizeOrderData ({ userId, user, address, cartCompany, cartIte
 
 			optionsGroups: product.optionsGroups?.map(group => ({
 				name: group.name,
-				optionsGroupRelatedId: group.id,
+				optionsGroupRelatedId: group.optionsGroupId,
 
 				options: group.options?.map(option => ({
 					name: option.name,
+					description: option.description,
 					price: option.price,
-					optionRelatedId: option.id,
+					optionRelatedId: option.optionId,
 				})) || []
 			})) || []
 		}))
