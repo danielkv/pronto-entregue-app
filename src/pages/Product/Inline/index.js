@@ -18,7 +18,7 @@ function Inline({ optionsGroups, onItemSelect }) {
 	return (
 		<View>
 			{optionsGroups.map((group, groupIndex)=>(
-				<View key={groupIndex}>
+				<View key={groupIndex} style={{ marginBottom: 10 }}>
 					<Typography variant='title'>{group.name}</Typography>
 					<View>
 						{group.options.map((option, optionIndex) => (

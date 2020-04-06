@@ -7,13 +7,13 @@ import { cloneDeep } from 'lodash';
 import Panel from '../../../../components/Panel';
 
 import { TextField, useTheme } from '../../../../react-native-ui';
+import { BRL } from '../../../../utils/currency';
 import { calculateOptionsGroupPrice, getGroupNewState } from '../../../../utils/products';
 import Option from '../../Option';
 import {
 	SearchContainer,
 	OptionsContainer
 } from './styles';
-import { BRL } from '../../../../utils/currency';
 
 export default function Modal({ optionGroup: optionGroupModal, closeModal, confirmModal }) {
 	const [optionGroup, setOptionGroup] = useState(null);
