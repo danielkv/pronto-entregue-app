@@ -109,6 +109,7 @@ export const LOAD_PRODUCT = gql`
 			company {
 				id
 				displayName
+				acceptTakeout
 				isOpen
 				image
 				backgroundColor

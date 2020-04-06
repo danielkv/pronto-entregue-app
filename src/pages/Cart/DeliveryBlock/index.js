@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import { useSafeArea } from 'react-native-safe-area-context';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/core';
 
 import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
@@ -23,6 +24,7 @@ import { GET_CART, SET_CART_DELIVERY } from '../../../graphql/cart';
 export default function DeliveryBlock() {
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
 	const selectedAddress = useSelectedAddress();
+	const navigation = useNavigation();
 
 	// modal margins
 	const insets = useSafeArea();
@@ -39,21 +41,23 @@ export default function DeliveryBlock() {
 		setDeliveryModalOpen(false);
 	});
 
-	const handleConfirmDeliveryModal = useCallback(({ type, address, force=false }) => {
-		setDeliveryModalOpen(false);
-		setDelivery({ variables: { type, address, force } })
+	function handleConfirmDeliveryModal({ type, address, force=false }) {
+		return setDelivery({ variables: { type, address, force } })
+			.then(()=>{
+				setDeliveryModalOpen(false)
+			})
 			.catch((err) => {
 				const error = extractFirstError(err);
 				if (error.code === 'DELIVERY_LOCATION') {
 					Alert.alert(error.message, 'Realmente deseja alterar o endereço e limpar a cesta?', [
-						{ text: 'Sim', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }) },
+						{ text: 'Sim', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
 						{ text: 'Não' }
 					])
 				} else {
 					Alert.alert(error.message);
 				}
 			});
-	})
+	}
 
 	useEffect(()=>{
 		if (cartCompany?.id && !loadingDelivery) handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
@@ -98,7 +102,7 @@ export default function DeliveryBlock() {
 				swipeDirection='right'
 				propagateSwipe={false}
 			>
-				<DeliveryModal confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
+				<DeliveryModal acceptTakeout={cartCompany?.acceptTakeout} loading={loadingDelivery} confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
 			</Modal>
 		</View>
 	);

@@ -36,6 +36,7 @@ export const GET_CART = gql`
 		cartCompany @client {
 			id
 			displayName
+			acceptTakeout
 			image
 		}
 
@@ -92,6 +93,7 @@ export const GET_CART_COMPANY = gql`
 		cartCompany @client {
 			id
 			displayName
+			acceptTakeout
 			image
 		}
 	}

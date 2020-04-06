@@ -9,12 +9,12 @@ import ErrorBlock from '../../../../components/ErrorBlock';
 import LoadingBlock from '../../../../components/LoadingBlock';
 import Panel from '../../../../components/Panel';
 
-import { IconButton, Button } from '../../../../react-native-ui';
+import { IconButton, Button, Typography } from '../../../../react-native-ui';
 import { useLoggedUserId } from '../../../../utils/hooks';
 
 import { GET_USER_ADDRESSES } from '../../../../graphql/users';
 
-export default function DeliveryModal({ confirmModal, closeModal }) {
+export default function DeliveryModal({ confirmModal, closeModal, loading, acceptTakeout }) {
 	const loggedUserId = useLoggedUserId();
 	const {
 		data: { user: { addresses = [] } = {} } = {},
@@ -27,9 +27,9 @@ export default function DeliveryModal({ confirmModal, closeModal }) {
 	const onPressAddress = (address) => {
 		confirmModal({ type: 'delivery', address });
 	}
-		
-	if (loadingUserAddresses) return <LoadingBlock />
 	if (error) return <ErrorBlock error={error} />
+
+	const opacity = (loading || loadingUserAddresses) ? .2 : 1;
 
 	return (
 		<Panel
@@ -37,14 +37,18 @@ export default function DeliveryModal({ confirmModal, closeModal }) {
 			handleCancel={closeModal}
 			HeaderRight={()=><IconButton onPress={()=>{ closeModal(); navigation.navigate('SelectAddressScreen') }} icon='plus' />}
 		>
-			<View style={{ marginHorizontal: 35 }}>
-				
+			<View style={{ marginHorizontal: 35, opacity }}>
+				{acceptTakeout && <Button variant='filled' onPress={()=>confirmModal({ type: 'takeout' })}>Retirar no local</Button>}
 				<View>
-					{/* addresses.map(item => <Button key={item.id} onPress={()=>confirmModal({ type: 'takeout' })}>{item.street}</Button>) */}
-					{addresses.map((item, index) => (<Address key={index} item={item} onPress={onPressAddress} />))}
+					<Typography style={{ marginVertical: 10 }} variant='title'>Receber em</Typography>
+					<View>
+						{addresses.map((item, index) => (<Address key={index} item={item} onPress={onPressAddress} />))}
+					</View>
 				</View>
-				<Button variant='filled' onPress={()=>confirmModal({ type: 'takeout' })}>Retirar no local</Button>
 			</View>
+			{(loading || loadingUserAddresses) && <View style={{ width: '100%', height: '100%', position: "absolute" }}>
+				<LoadingBlock />
+			</View>}
 		</Panel>
 	);
 }
