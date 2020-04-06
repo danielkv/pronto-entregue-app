@@ -15,7 +15,7 @@ import { CREATE_USER } from '../../graphql/users';
 const validationSchema = Yup.object().shape({
 	firstName: Yup.string().required('Obrigatório'),
 	lastName: Yup.string().required('Obrigatório'),
-	phone: Yup.number().required('Obrigatório'),
+	phone: Yup.string().required('Obrigatório'),
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),

@@ -10,7 +10,6 @@ import * as Yup from 'yup';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 
@@ -21,7 +20,7 @@ import { UPDATE_USER, GET_USER } from '../../graphql/users';
 const validationSchema = Yup.object().shape({
 	firstName: Yup.string().required('Obrigatório'),
 	lastName: Yup.string().required('Obrigatório'),
-	phone: Yup.number().required('Obrigatório'),
+	phone: Yup.string().required('Obrigatório'),
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),

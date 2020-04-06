@@ -1,4 +1,5 @@
 import React from 'react';
+import { TextInputMask } from 'react-native-masked-text'
 
 import * as Device from 'expo-device';
 
@@ -46,7 +47,8 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					returnKeyType='next'
 					onSubmitEditing={handleNextInput('phone')}
 				/>
-				<TextField
+
+				<TextInputMask
 					label='Telefone'
 					autoCompleteType='tel'
 					onChangeText={handleChange('phone')}
@@ -60,6 +62,15 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 					blurOnSubmit={false}
 					returnKeyType='next'
 					onSubmitEditing={handleNextInput('email')}
+
+					type='cel-phone'
+					options={{
+						maskType: 'BRL',
+						withDDD: true,
+						dddMask: '(99) '
+					}}
+					customTextInput={TextField}
+					
 				/>
 				<TextField
 					caretHidden={caretHidden}
