@@ -16,7 +16,7 @@ import { useInitialize } from './services/init';
 import NavigatorTheme from './theme/navigator';
 
 export default function SplashScreen() {
-	const { loading, loggedUserId } = useInitialize();
+	const { loading, loggedUserId, error } = useInitialize();
 	const insets = useSafeArea();
 
 	return (
@@ -25,12 +25,12 @@ export default function SplashScreen() {
 				<FontLoader>
 					<NavigationContainer theme={NavigatorTheme}>
 						{
-							// eslint-disable-next-line no-nested-ternary
-							loading
+							
+							(loading
 								? <LoadingBlock />
 								: !loggedUserId
-									? <AuthenticationRoutes />
-									: <MainRoutes />
+									? <AuthenticationRoutes error={error} />
+									: <MainRoutes />)
 						}
 					</NavigationContainer>
 					<ConnectionInfoPanel />

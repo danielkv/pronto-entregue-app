@@ -28,13 +28,13 @@ export function useInitialize() {
 	if (!called) {
 		setCalled(true);
 		init()
-			.then(()=>{
-				setLoading(false);
-			})
 			.catch((err) => {
 				setError(err);
 				logUserOut();
 				resetAddress();
+			})
+			.finally(()=>{
+				setLoading(false);
 			})
 	}
 	
