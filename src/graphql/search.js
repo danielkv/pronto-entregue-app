@@ -10,6 +10,7 @@ export const SEARCH_PRODUCTS_COMPANIES = gql`
 		companies: searchCompaniesOnApp(search: $search, location: $location) {
 			id
 			displayName
+			isOpen
 			image
 			backgroundColor
 			rate
