@@ -23,7 +23,7 @@ export function useInitialize() {
 
 	useEffect(()=>{
 		if (loading) setCalled(false);
-	}, [loading])
+	}, [loading, loggedUserId])
 	
 	if (!called) {
 		setCalled(true);
