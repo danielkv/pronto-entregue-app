@@ -25,6 +25,7 @@ export default function GoogleButtton({ disabled }) {
 			const result = await Google.logInAsync({
 				androidClientId: "48328149169-31fusqf9oag07hb23akrfbhje89n04kd.apps.googleusercontent.com",
 				iosClientId: '48328149169-an6eotcn0f18rhqjc2ibsdqrcfbbpfkm.apps.googleusercontent.com',
+				androidStandaloneAppClientId: '48328149169-np1pgafh4qfmq2n35fm2foc40pmhov0e.apps.googleusercontent.com',
 				scopes: ["profile", "email"]
 			})
 			

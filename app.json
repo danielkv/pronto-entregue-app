@@ -25,10 +25,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+	  "supportsTablet": true,
+	  "bundleIdentifier": "com.flaker.prontoentregue",
+	  "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.prontoentregue.flaker"
+      "package": "com.flaker.prontoentregue",
+	  "versionCode": 1,
+	  "config": {
+		  "googleMaps": {
+			  "apiKey": "AIzaSyDz8WuCOZQucFn-HkQewugwgRQqvjofxz8"
+		  }
+	  }
     },
     "description": "",
     "githubUrl": "https://github.com/danielkv/pronto-entregue-app"
