@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import { Typography } from '../../../react-native-ui';
 import { getGroupNewState } from '../../../utils/products';
@@ -7,12 +7,16 @@ import Option from '../Option';
 
 function Inline({ optionsGroups, onItemSelect }) {
 	const handlePressOption = useCallback((groupIndex, optionIndex) => () => {
-		const group = optionsGroups[groupIndex];
-		const newState = getGroupNewState(group, optionIndex);
+		try {
+			const group = optionsGroups[groupIndex];
+			const newState = getGroupNewState(group, optionIndex);
 
-		optionsGroups[groupIndex] = newState;
+			optionsGroups[groupIndex] = newState;
 
-		onItemSelect(optionsGroups);
+			onItemSelect(optionsGroups);
+		} catch (err) {
+			Alert.alert('Opa! Acho que você não pode fazer isso', err.message);
+		}
 	}, [optionsGroups]);
 
 	return (

@@ -84,8 +84,8 @@ export function checkGroupRules(group, selectionOffset = 0) {
 
 	// Check the max selection rule
 	if (maxSelect !== 0 && selectionLength > maxSelect) {
-		if (maxSelect === 1) throw new Error(`Você pode selecionar apenas 1 opção em ${group.name}`);
-		throw new Error(`Você pode selecionar apenas ${maxSelect} opções em ${group.name}`);
+		if (maxSelect === 1) throw new Error(`Você deve selecionar apenas 1 opção em ${group.name}`);
+		throw new Error(`Você deve selecionar apenas ${maxSelect} opções em ${group.name}`);
 	}
 	
 	// if all rules above match, return true

@@ -18,7 +18,7 @@ export default function UserAvatar() {
 	const navigation = useNavigation();
 	const selectedAddress = useSelectedAddress();
 	const loggedUserId = useLoggedUserId();
-	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } })
+	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId }, fetchPolicy: 'cache-first' })
 
 	return (
 		loadingUser

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Alert, View, ActivityIndicator, Dimensions } from 'react-native';
 import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -32,7 +32,8 @@ const dimensionWidth = Math.round(Dimensions.get('window').width);
 const paddingOffset = 20;
 
 export default function PickLocation() {
-	const { params: { address, pickUserLocation } } = useRoute();
+	const { params: { address = null, pickUserLocation = null } } = useRoute();
+	
 	const navigation = useNavigation();
 	const { palette } = useTheme();
 	const MapRef = useRef();
@@ -54,9 +55,11 @@ export default function PickLocation() {
 	} : null
 	const [camera, setCamera] = useState(()=>initialCamera);
 	
-	useEffect(()=>{
+	function handleMapReady() {
+		setScreenWidth(dimensionWidth)
+		
 		if (pickUserLocation) getLocationAsync();
-	}, []);
+	}
 
 	function getLocationAsync() {
 		setLoadingLocation(true)
@@ -145,7 +148,7 @@ export default function PickLocation() {
 			
 				provider={PROVIDER_GOOGLE}
 				style={[styles.mapStyle, { width: screenWidth }]}
-				onMapReady={()=>{setScreenWidth(dimensionWidth)}}
+				onMapReady={handleMapReady}
 				initialCamera={initialCamera}
 				onRegionChangeComplete={handleRegionChange}
 				//customMapStyle={mapStyle}
@@ -215,8 +218,6 @@ export default function PickLocation() {
 			
 const styles = StyleSheet.create({
 	mapStyle: {
-		flex: 1,
-		/* width: '100%',
-		height: '100%', */
+		...StyleSheet.absoluteFillObject
 	},
 });

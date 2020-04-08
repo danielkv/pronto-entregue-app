@@ -42,7 +42,7 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 			
 			setOptionGroup(newState);
 		} catch (err) {
-			Alert.alert(err.message)
+			Alert.alert('Opa! Acho que você não pode fazer isso', err.message)
 		}
 	}, [optionGroup, setOptionGroup]);
 

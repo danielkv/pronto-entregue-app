@@ -18,7 +18,7 @@ export default function Routes() {
 			screenOptions={{ header: Header, searchProductsIcon: false }}
 		>
 			<Stack.Screen name='SearchAddressScreen' component={SearchAddressScreen} />
-			<Stack.Screen name='PickLocationScreen' component={PickLocationScreen} options={{ headerTransparent: true, ...TransitionPresets.ModalSlideFromBottomIOS }} />
+			<Stack.Screen name='PickLocationScreen' component={PickLocationScreen} options={{ headerTransparent: true/* , ...TransitionPresets.ModalSlideFromBottomIOS */ }} />
 			<Stack.Screen name='ConfirmAddressScreen' component={ConfirmAddressScreen} />
 		</Stack.Navigator>
 	);

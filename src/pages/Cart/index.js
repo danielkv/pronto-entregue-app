@@ -53,7 +53,7 @@ export default function Cart({ navigation }) {
 			`Remover ${item.name}`,
 			'tem certeza que deseja remover esse item da cesta',
 			[
-				{ text: 'Sim', onPress: ()=>removeOrderItem({ variables: { id: item.id } }) },
+				{ text: 'Sim', onPress: () => removeOrderItem({ variables: { id: item.id } }) },
 				{ text: 'Cancelar' },
 			]
 		);
