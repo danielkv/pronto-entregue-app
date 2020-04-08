@@ -10,6 +10,7 @@ export const LIST_PRODUCT_FRAGMENT = gql`
 		company {
 			id
 			displayName
+			deliveryTime
 			isOpen
 		}
 		sale {
@@ -110,6 +111,7 @@ export const LOAD_PRODUCT = gql`
 				id
 				displayName
 				acceptTakeout
+				deliveryTime
 				isOpen
 				image
 				backgroundColor

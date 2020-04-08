@@ -7,6 +7,7 @@ export const LOAD_COMPANY = gql`
 		company (id: $id) {
 			id
 			displayName
+			deliveryTime
 			rate
 			isOpen
 			deliveryTime

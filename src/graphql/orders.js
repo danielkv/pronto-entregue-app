@@ -40,6 +40,7 @@ export const ORDER_FRAGMENT = gql`
 		company {
 			id
 			displayName
+			deliveryTime
 			isOpen
 			backgroundColor
 			image
@@ -119,6 +120,7 @@ export const GET_USER_ORDERS = gql`
 				company {
 					id
 					displayName
+					deliveryTime
 					isOpen
 					image
 				}

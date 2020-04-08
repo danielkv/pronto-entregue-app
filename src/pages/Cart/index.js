@@ -132,6 +132,7 @@ export default function Cart({ navigation }) {
 			</CartContainerScroll>
 			{!keyboardOpen &&
 				(<CartButtonContainer>
+					{Boolean(cartCompany?.deliveryTime) && <Typography style={{ marginBottom: 8, textAlign: 'center', color: '#fff', fontSize: 12 }}>{`Previsão de entrega: ${cartCompany.deliveryTime} minutos`}</Typography>}
 					<CartButton
 						title='Confirmar pedido'
 						forceShowPrice
