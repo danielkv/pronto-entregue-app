@@ -21,6 +21,12 @@ export default function OrderItem({ item: order }) {
 	const displayDate = moment().diff(createdAt, 'day') >= 1 ? createdAt.format('DD/MM/YY HH:mm') : createdAt.fromNow();
 
 	const statusColor = getStatusColors(order.status);
+	const statusText = getStatusText(order.status);
+
+	const now = moment();
+	const deliver = createdAt.clone().add(order.deliveryTime, 'm');
+	const forecast = order.deliveryTime ? now.to(deliver) : null;
+	const anyMinute = deliver.diff(now, 'm') < 0 ? true : false;
 
 	return (
 		<TouchableOpacity onPress={()=>navigation.navigate('OrderScreen', { orderId: order.id })}>
@@ -40,7 +46,7 @@ export default function OrderItem({ item: order }) {
 							root: { paddingHorizontal: 10, height: 30, position: 'absolute', right: 0, bottom: 0, backgroundColor: statusColor.background },
 							text: { fontSize: 13, color: statusColor.text }
 						}}
-						label={getStatusText(order.status)}
+						label={order.status === 'waiting' && forecast && !anyMinute ? forecast : statusText}
 					/>
 				</TextBlock>
 			</Container>

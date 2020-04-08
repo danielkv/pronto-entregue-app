@@ -15,7 +15,7 @@ export default<TextFieldType> {
 				paddingHorizontal: 20,
 				paddingVertical: 10,
 				flexDirection: 'row',
-				alignItems: 'center',
+				alignItems: 'stretch',
 				justifyContent: 'space-between'
 			},
 			text: {

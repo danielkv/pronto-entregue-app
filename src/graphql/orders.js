@@ -24,6 +24,7 @@ export const ORDER_FRAGMENT = gql`
 		type
 		message
 		deliveryPrice
+		deliveryTime
 		discount
 		paymentFee
 		paymentMethod {
@@ -115,12 +116,12 @@ export const GET_USER_ORDERS = gql`
 				id
 				price
 				countProducts
+				deliveryTime
 				status
 				createdAt
 				company {
 					id
 					displayName
-					deliveryTime
 					isOpen
 					image
 				}

@@ -3,6 +3,7 @@ import { ActivityIndicator, Alert, ScrollView, RefreshControl, View } from 'reac
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
+import moment from 'moment';
 
 import CartItem from '../../components/CartItem';
 import CompanyPanel from '../../components/CompanyPanel';
@@ -63,6 +64,11 @@ export default function Order() {
 
 	const statusColor = getStatusColors(order.status);
 
+	const now = moment();
+	const deliver = moment(order.createdAt).add(order.deliveryTime, 'm');
+	const forecast = order.deliveryTime ? now.to(deliver) : null;
+	const anyMinute = deliver.diff(now, 'm') < 0 ? true : false;
+
 	return (
 		<ScrollView
 			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -78,6 +84,12 @@ export default function Order() {
 						text: { color: statusColor.text  }
 					}}
 				/>
+				{order.status === 'waiting' && forecast && <Chip
+					style={{
+						root: { backgroundColor: '#fff', alignSelf: 'stretch', marginHorizontal: 35 },
+						text: { color: '#333', fontSize: 14 }
+					}}
+					label={anyMinute ? 'Em qualquer momento' : `Aproximadamente ${forecast}`} />}
 				
 				<BlocksContainer>
 					<Blocks order={order} />
@@ -94,6 +106,12 @@ export default function Order() {
 						</Fragment>
 					))}
 				</Paper>
+				
+				{Boolean(order.message) && <Paper>
+					<Typography variant='title' style={{ marginBottom: 20 }}>Observações</Typography>
+					<Typography variant='text'>{order.message}</Typography>
+				</Paper>}
+
 				{order.status === 'waiting' && (
 					<Button disabled={loadingCancelOrder} onPress={handleCancelOrder} variant='outlined' style={{ button: { borderColor: palette.error.main }, text: { color: palette.error.main } }}>
 						{loadingCancelOrder
@@ -101,6 +119,7 @@ export default function Order() {
 							: 'Cancelar Pedido'}
 					</Button>
 				)}
+				
 			</Container>
 		</ScrollView>
 	);

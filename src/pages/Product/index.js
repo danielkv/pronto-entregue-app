@@ -35,6 +35,7 @@ export default function Product() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
+	const [message, setMessage] = useState('');
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
 	const [addCartItem, { loadingAddToCart }] = useMutation(ADD_CART_ITEM);
@@ -73,7 +74,7 @@ export default function Product() {
 		try {
 			if (checkProductRules(product, force)) {
 				// Add cart Item
-				const sanitizedProduct = sanitizeCartData({ ...product, quantity });
+				const sanitizedProduct = sanitizeCartData({ ...product, message, quantity });
 				addCartItem({ variables: { data: sanitizedProduct } })
 					.then(()=>{
 						resetProduct();
@@ -137,6 +138,8 @@ export default function Product() {
 								style={{
 									inputContainer: { backgroundColor: palette.background.main, height: 180 }
 								}}
+								onChangeText={(text)=>setMessage(text)}
+								value={message}
 								textAlignVertical='top'
 								multiline
 								numberOfLines={8}

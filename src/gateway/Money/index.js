@@ -30,7 +30,7 @@ export const Finish = ({ onFinish, cart }) => {
 	const { palette } = useTheme();
 	const { cartItems, cartDelivery, cartPayment, cartDiscount, cartPrice, cartCompany } = cart;
 
-	const [needChange, setNeedChange] = useState(false);
+	const [needChange, setNeedChange] = useState(true);
 	const [change, setChange] = useState(Math.ceil(cartPrice / 10) * 10);
 	const [error, setError] = useState('');
 	
@@ -39,7 +39,7 @@ export const Finish = ({ onFinish, cart }) => {
 	const onSubmit = () => {
 		if (needChange && !change) return setError('Insira o valor para que você precisa de troco');
 		
-		if (change) {
+		if (needChange && change) {
 			cartMessage = `${cartMessage}\r\n\r\n----------------\r\nVou precisar de troco para ${change}`;
 		}
 		

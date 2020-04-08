@@ -117,7 +117,7 @@ export default function Cart({ navigation }) {
 					<Typography variant='title'>Observações</Typography>
 					<TextField
 						style={{
-							inputContainer: { backgroundColor: palette.background.main, height: 180 }
+							inputContainer: { backgroundColor: palette.background.main, height: 180 },
 						}}
 						onChangeText={(text)=>setMessage(text)}
 						textAlignVertical='top'

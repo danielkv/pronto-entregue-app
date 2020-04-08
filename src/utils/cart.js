@@ -28,6 +28,7 @@ export function sanitizeOrderData ({ userId, user, address, cartCompany, cartIte
 
 		paymentFee: cartPayment?.price || 0,
 		deliveryPrice: cartDelivery.price || 0,
+		deliveryTime: cartCompany.deliveryTime || 0,
 		discount: cartDiscount || 0,
 		price: cartPrice,
 		message: cartMessage,
