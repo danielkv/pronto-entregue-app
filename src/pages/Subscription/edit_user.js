@@ -80,7 +80,7 @@ export default function EditUser({ userId }) {
 	const initialValues = {
 		firstName: user.firstName,
 		lastName: user.lastName,
-		phone: user.metas[0].value,
+		phone: user?.metas?.[0]?.value || '',
 		email: user.email,
 		password: '',
 		repeatPassword: '',
