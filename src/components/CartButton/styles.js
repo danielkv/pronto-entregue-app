@@ -17,7 +17,7 @@ export const ButtonTextContainer = styled.View`
 	flex-direction:row;
 	align-items:center;
 	flex:1;
-	padding:10px 15px;
+	padding-left: 15px;
 `;
 
 export const ButtonTitle = styled(Typography)`
