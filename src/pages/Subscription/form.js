@@ -1,4 +1,5 @@
 import React from 'react';
+import { Linking } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text'
 
 import * as Device from 'expo-device';
@@ -6,7 +7,9 @@ import * as Device from 'expo-device';
 import { TextField, Button } from '../../react-native-ui';
 import { FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
-export default function UserForm({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
+const privacyUrl = 'https://prontoentregue.com.br/politica-privacidade';
+
+export default function UserForm({ privacyPolicy=false, values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
 	const refs = {};
 	const handleNextInput = (fieldName) => () => {
 		refs[fieldName].focus();
@@ -121,6 +124,13 @@ export default function UserForm({ values, errors, handleSubmit, handleChange, h
 				/>
 			</InputsContainer>
 			<ButtonsContainer>
+				{privacyPolicy && <Button
+					color='primary'
+					style={{ root: { marginBottom: 10 }, button: { height: 30 }, text: { fontSize: 13, textTransform: 'none' } }}
+					onPress={()=>{ Linking.canOpenURL(privacyUrl).then(()=>Linking.openURL(privacyUrl)) }}
+					disabled={isSubmitting}
+					label='Leia nossa Política de Privacidade'
+				/>}
 				<Button
 					color='primary'
 					variant='filled'

@@ -77,7 +77,7 @@ export default function NewUser() {
 				validationSchema={validationSchema}
 				validateOnBlur={false}
 				onSubmit={onSubmit}
-				component={PageForm}
+				component={(props)=><PageForm privacyPolicy={true} {...props} />}
 			/>
 			<Button
 				variant='outlined'
