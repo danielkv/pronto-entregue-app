@@ -65,7 +65,7 @@ export default function Login() {
 	});
 
 	return (
-		<ContainerScroll keyboardShouldPersistTaps='always'>
+		<ContainerScroll keyboardShouldPersistTaps='handled'>
 			<Container>
 				<LogoImage source={logoResource} />
 				<FormContainer>

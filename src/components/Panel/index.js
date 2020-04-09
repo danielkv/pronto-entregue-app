@@ -42,7 +42,7 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 					</ModalConfirm>
 				</HeaderRightContainer>
 			</ModalHeader>
-			<ModalContent keyboardShouldPersistTaps='always'>
+			<ModalContent keyboardShouldPersistTaps='handled'>
 				{children}
 			</ModalContent>
 		</ModalContainer>

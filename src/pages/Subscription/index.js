@@ -11,7 +11,7 @@ export default function Subscription() {
 	const { params: { userId = null } = {} } = useRoute();
 
 	return (
-		<ContainerScroll keyboardShouldPersistTaps='always'>
+		<ContainerScroll keyboardShouldPersistTaps='handled'>
 			<Container>
 				<LogoImage source={logoResource} />
 

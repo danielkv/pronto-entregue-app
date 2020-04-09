@@ -9,7 +9,7 @@ import Sections from './Sections';
 
 export default function Home() {
 	return (
-		<ScrollView keyboardShouldPersistTaps='always'>
+		<ScrollView keyboardShouldPersistTaps='handled'>
 			<Paper>
 				<UserLocation />
 

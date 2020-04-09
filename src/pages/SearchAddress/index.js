@@ -87,7 +87,7 @@ export default function SearchAddress() {
 	// rua joao quartieiro, 43, sombrio sc
 
 	return (
-		<ScrollView keyboardShouldPersistTaps='always'>
+		<ScrollView keyboardShouldPersistTaps='handled'>
 			<Modal
 				isVisible={askFormOpen}
 				onModalHide={handleCloseModal}
