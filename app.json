@@ -27,7 +27,8 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.flaker.prontoentregue",
-      "buildNumber": "1.0.0",
+	  "buildNumber": "1.0.0",
+	  "icon": "./src/assets/ios-icon.png",
       "config": {
         "googleMapsApiKey": "AIzaSyCnyK3H_XKu_MiSnq9CKRU28BBoPUkTIoY"
       }
