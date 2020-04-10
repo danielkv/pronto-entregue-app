@@ -33,7 +33,7 @@
       }
     },
     "android": {
-      "package": "com.flaker.prontoentregue",
+	"package": "com.flaker.prontoentregue",
       "versionCode": 3,
       "permissions": [],
       "config": {

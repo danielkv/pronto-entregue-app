@@ -1,18 +1,17 @@
 import React from 'react';
 import { Alert, ActivityIndicator } from 'react-native';
 
-import { useApolloClient } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
 import { TextField, Button, Typography } from '../../react-native-ui';
-import { logUserIn } from '../../services/init';
 import { getErrorMessage } from '../../utils/errors';
 import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
 
-import { LOGIN } from '../../graphql/authentication';
+import { RECOVER_PASSWORD } from '../../graphql/authentication';
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
@@ -27,23 +26,23 @@ export default function ForgotPassword() {
 		email: '',
 	}
 
-	const client = useApolloClient();
+	const [recoverPassword] = useMutation(RECOVER_PASSWORD);
 
 	const refs = {}
 	const handleNextInput = (fieldName) => () => {
 		refs[fieldName].focus();
 	}
 
-	const onSubmit = async ({ email, password }, { resetForm }) => {
-		await client.mutate({ mutation: LOGIN, variables: { email, password } })
-			.then(({ data })=>{
-				resetForm();
-				if (data.login.token) {
-					logUserIn(data.login.user, data.login.token);
-				}
+	const onSubmit = async ({ email  }) => {
+		return recoverPassword({ variables: { email } })
+			.then(()=>{
+				Alert.alert(
+					'Verifique sua caixa de entrada',
+					'Enviamos um email com instruções para você recuperar sua senha',
+					[{ text: 'OK', onPress: ()=>navigation.navigate('LoginScreen') }]);
 			})
 			.catch(err => {
-				Alert.alert(getErrorMessage(err));
+				Alert.alert('Ops! Algo deu errado', getErrorMessage(err));
 			})
 	}
 

@@ -13,6 +13,12 @@ export const AUTHENTICATE = gql`
 	}
 `;
 
+export const RECOVER_PASSWORD = gql`
+	mutation ($email: String!) {
+		recoverPassword (email: $email)
+	}
+`;
+
 /**
  * Recupera o Token do usuário salvo em cache 
  */
