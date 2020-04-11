@@ -31,6 +31,7 @@ export const SEARCH_LOCATION = gql`
 export const GET_SELECTED_ADDRESS = gql`
 	query selectedAddress {
 		selectedAddress @client {
+			id
 			name
 			street
 			number

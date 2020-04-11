@@ -201,8 +201,7 @@ export default function SearchAddress() {
 							<>
 								<View style={{ alignItems: "center", marginHorizontal: 35 }}>
 									<Icon name='chevron-up' color={palette.background.dark} size={30} />
-									<Typography variant='h5' style={{ textAlign: 'center', color: palette.background.dark }}>Busque seu endereço acima ou selecione um endereço cadastrado</Typography>
-									<Icon name='chevron-down' color={palette.background.dark} size={30} />
+									<Typography variant='h5' style={{ textAlign: 'center', color: palette.background.dark }}>Busque seu endereço acima</Typography>
 								</View>
 								<UserAddresses />
 							</>

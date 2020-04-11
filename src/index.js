@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -17,7 +18,7 @@ export default function App() {
 			<ApolloProvider client={apolloClient}>
 				<ThemeProvider theme={theme}>
 					<StyledThemeProvider theme={theme}>
-						
+						<StatusBar translucent backgroundColor='transparent' barStyle='dark-content' />
 						<Container>
 							<Routes />
 						</Container>

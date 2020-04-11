@@ -2,6 +2,7 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import AuthenticationRoutes from '../routes/authentication';
 import { useSelectedAddress } from '../utils/hooks';
 import CartRoutes from './cart';
 import HomeRoutes from './home';
@@ -27,6 +28,7 @@ export default function AppRoutes() {
 						<Stack.Screen name='ProfileRoutes' component={ProfileRoutes} />
 						<Stack.Screen name='CartRoutes' component={CartRoutes} />
 						<Stack.Screen name='OrderRoutes' component={OrderRoutes} />
+						<Stack.Screen name='AuthenticationRoutes' component={AuthenticationRoutes} />
 					</>
 				)}
 

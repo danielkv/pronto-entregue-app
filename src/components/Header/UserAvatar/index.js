@@ -20,6 +20,8 @@ export default function UserAvatar() {
 	const loggedUserId = useLoggedUserId();
 	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId }, fetchPolicy: 'cache-first' })
 
+	if (!loggedUserId) return false;
+
 	return (
 		loadingUser
 			? <ActivityIndicator color={palette.primary.main} />

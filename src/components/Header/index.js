@@ -20,8 +20,6 @@ export default function  AppHeader({ variant='solid', showBackButton=true, rigth
 		<Container transparent={headerTransparent}>
 			<StatusBar backgroundColor='transparent' translucent={true} barStyle={finalVariant === 'transparent' ? 'light-content' : 'dark-content'} />
 			{showBackButton && <BackButton color={iconsColor} />}
-					
-			{/* Boolean(title) && <Typography variant='h3' style={{ color: iconsColor }}>{title}</Typography> */}
 
 			{rigthContent && <RigthContent>
 				{searchProductsIcon && <IconButton style={{ root: { marginRight: 10 } }} onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />}

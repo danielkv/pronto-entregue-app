@@ -8,7 +8,7 @@ import Address from '../../../components/Address'
 import ErrorBlock from "../../../components/ErrorBlock";
 import LoadingBlock from "../../../components/LoadingBlock";
 
-import { Paper, Typography } from '../../../react-native-ui';
+import { Paper, Typography, Icon, useTheme } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
 import { useLoggedUserId } from '../../../utils/hooks'
 
@@ -16,6 +16,8 @@ import { SET_SELECTED_ADDRESS } from '../../../graphql/addresses';
 import { GET_USER_ADDRESSES } from "../../../graphql/users";
 
 export default function UserAddresses() {
+	const { palette } = useTheme();
+	
 	// get user addresses
 	const userId = useLoggedUserId();
 	const navigation = useNavigation();
@@ -37,17 +39,24 @@ export default function UserAddresses() {
 	}
 		
 
+	if (!userId) return false;
 	if (loadingAddresses) return <LoadingBlock />;
 	if (addressesError) return <ErrorBlock error={getErrorMessage(addressesError)} />;
 
 	if (!addresses.length) return false;
 
 	return (
-		<Paper>
-			<Typography variant='title' style={{ marginBottom: 20 }}>Endereços cadastrados</Typography>
-			<View>
-				{addresses.map((addr, index) => <Address onPress={handleAddressPress} divider={index < addresses.length-1} key={index} item={addr} />)}
+		<>
+			<View style={{ alignItems: "center", marginHorizontal: 35 }}>
+				<Typography variant='h5' style={{ textAlign: 'center', color: palette.background.dark }}>Busque seu endereço acima ou selecione um endereço cadastrado</Typography>
+				<Icon name='chevron-down' color={palette.background.dark} size={30} />
 			</View>
-		</Paper>
+			<Paper>
+				<Typography variant='title' style={{ marginBottom: 20 }}>Endereços cadastrados</Typography>
+				<View>
+					{addresses.map((addr, index) => <Address onPress={handleAddressPress} divider={index < addresses.length-1} key={index} item={addr} />)}
+				</View>
+			</Paper>
+		</>
 	);
 }

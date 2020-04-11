@@ -20,6 +20,7 @@ export function useInitialize() {
 	const [error, setError] = useState(null);
 
 	const { data: { loggedUserId = null } = {} } = useQuery(LOGGED_USER_ID);
+	const { data: { selectedAddress = null } = {} } = useQuery(GET_SELECTED_ADDRESS);
 
 	useEffect(()=>{
 		if (loading) setCalled(false);
@@ -27,7 +28,7 @@ export function useInitialize() {
 	
 	if (!called) {
 		setCalled(true);
-		init()
+		initialize()
 			.catch((err) => {
 				setError(err);
 				logUserOut();
@@ -41,22 +42,28 @@ export function useInitialize() {
 	return {
 		error,
 		loading,
-		loggedUserId
+		loggedUserId,
+		selectedAddress
 	}
 }
 
-async function init() {
+export async function initialize() {
+	let user = null;
 	const selectedAddress = await AsyncStorage.getItem('@prontoEntregue/address');
 	const userToken = await AsyncStorage.getItem('@prontoEntregue/userToken');
 
 	if (userToken) {
-		const { data } = await client.mutate({ mutation: AUTHENTICATE, variables: { token: userToken } });
+		const { data } = await client.mutate({ mutation: AUTHENTICATE, variables: { token: userToken } })
 		await logUserIn(data.authenticate, userToken);
+		user = data.authenticate;
 	}
 
 	if (selectedAddress) client.writeQuery({ query: GET_SELECTED_ADDRESS, data: { selectedAddress: JSON.parse(selectedAddress) } });
 	
-	return true;
+	return {
+		user,
+		address: selectedAddress || null,
+	};
 }
 
 export async function logUserIn(user, token) {

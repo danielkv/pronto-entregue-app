@@ -42,7 +42,12 @@
           "apiKey": "AIzaSyDz8WuCOZQucFn-HkQewugwgRQqvjofxz8"
         }
       }
-    },
+	},
+	"androidStatusBar": {
+		"barStyle": "dark-content",
+		"translucent": true,
+		"backgroundColor": "#00000000"
+	},
     "description": "",
     "githubUrl": "https://github.com/danielkv/pronto-entregue-app"
   }
