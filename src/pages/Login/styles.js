@@ -8,7 +8,6 @@ export const ContainerScroll = styled.ScrollView`
 export const Container = styled.View`
 	flex:1;
 	justify-content: center;
-	margin-top: ${({ theme }) => theme.margin.top}px;
 	margin-bottom: ${({ theme }) => theme.margin.bottom+vh(2)}px;
 	margin-left: ${({ theme }) => theme.margin.left}px;
 	margin-right: ${({ theme }) => theme.margin.right}px;
@@ -16,7 +15,7 @@ export const Container = styled.View`
 
 export const LogoImage = styled.Image`
 	align-self:center;
-	margin-top: ${vh(5)}px;
+	margin-top: 10px;
 `;
 
 export const FormContainer = styled.View`

@@ -62,7 +62,7 @@ export default function SearchBlock() {
 				? (
 					<View style={{ marginTop: 20, marginHorizontal: -35 }}>
 						<Tab.Navigator
-							initialRouteName='SearchProducts'
+							initialRouteName='SearchCompanies'
 							sceneContainerStyle={{
 								backgroundColor: 'transparent',
 								overflow: 'visible',
@@ -78,6 +78,11 @@ export default function SearchBlock() {
 								indicatorStyle: { backgroundColor: palette.primary.main, height: 3 }
 							}}
 						>
+							{Boolean(companies.length) && <Tab.Screen name='SearchCompanies' options={{ title: 'Estabelecimentos' }}>
+								{()=>(
+									companies.map(company => <CompanyItem key={company.id} item={company} />)
+								)}
+							</Tab.Screen>}
 							{Boolean(products.length) && <Tab.Screen name='SearchProducts'  options={{ title: 'Produtos' }}>
 								{()=>(
 									products.map((product, index) => (
@@ -86,11 +91,6 @@ export default function SearchBlock() {
 											{Boolean(index+1 < products.length) && <Divider />}
 										</Fragment>
 									))
-								)}
-							</Tab.Screen>}
-							{Boolean(companies.length) && <Tab.Screen name='SearchCompanies' options={{ title: 'Estabelecimentos' }}>
-								{()=>(
-									companies.map(company => <CompanyItem key={company.id} item={company} />)
 								)}
 							</Tab.Screen>}
 						</Tab.Navigator>

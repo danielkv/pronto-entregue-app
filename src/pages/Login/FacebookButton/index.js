@@ -13,7 +13,7 @@ import { getErrorMessage } from '../../../utils/errors';
 
 import { SOCIAL_LOGIN } from '../../../graphql/authentication';
 
-export default function FacebookButton({ disabled }) {
+export default function FacebookButton({ disabled, afterLogin }) {
 	const [loading, setLoading] = useState(false);
 
 	const [socialLogin] = useMutation(SOCIAL_LOGIN);
@@ -38,8 +38,9 @@ export default function FacebookButton({ disabled }) {
 					image: user.picture.data.url
 				}
 				await socialLogin({ variables: { type: 'facebook', data: userData } })
-					.then(({ data: { socialLogin: { token, user } } })=>{
-						logUserIn(user, token);
+					.then(async ({ data: { socialLogin: { token, user } } })=>{
+						await logUserIn(user, token);
+						afterLogin();
 					})
 			}
 		} catch (err) {

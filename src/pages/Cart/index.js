@@ -13,7 +13,7 @@ import { Button, Paper, Typography, Chip, Divider, TextField, useTheme } from '.
 import { checkCondition } from '../../utils';
 import { calculateOrderPrice, validadeCart } from '../../utils/cart';
 import { getErrorMessage } from '../../utils/errors';
-import { useKeyboardStatus } from '../../utils/hooks';
+import { useKeyboardStatus, useLoggedUserId } from '../../utils/hooks';
 import DeliveryBlock from './DeliveryBlock';
 import PaymentBlock from './PaymentBlock';
 import {
@@ -31,7 +31,8 @@ import {
 export default function Cart({ navigation }) {
 	const { palette } = useTheme();
 	const [message, setMessage] = useState('');
-
+	const loggedUserId = useLoggedUserId();
+	
 	const keyboardOpen = useKeyboardStatus();
 	
 	const client = useApolloClient();
@@ -59,14 +60,18 @@ export default function Cart({ navigation }) {
 		);
 	}
 
-	const handleFinishCart = () => {
+	async function handleFinishCart() {
 		try {
-			validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany });
-			client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
+			if (loggedUserId) {
+				validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany });
+				client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
-			navigation.navigate('PaymentScreen');
+				navigation.navigate('PaymentScreen');
+			} else {
+				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'CartScreen' } });
+			}
 		} catch (err) {
-			Alert.alert(err.message);
+			Alert.alert(getErrorMessage(err.message));
 		}
 	}
 

@@ -34,24 +34,30 @@ export default function ConfirmAddress() {
 	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] });
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	
-	function onSubmit(result) {
+	async function onSubmit(result) {
 		const dataSave = sanitizeAddress(result);
-		
-		return createAddress({ variables: { data: dataSave } })
-			.then(() => {
-				setSelectedAddress({ variables: { address: dataSave } })
-					.then(()=>{
-						navigation.dangerouslyGetParent().reset({
-							index: 0,
-							routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
-						})
-					})
+		let createdResult;
+		try {
+			// if user is logged in, save the address in user account
+			if (loggedUserId) createdResult = await createAddress({ variables: { data: dataSave } })
 
-				Toast.show('Endereço selecionado');
-			})
-			.catch(err => {
-				Alert.alert(getErrorMessage(err));
-			});
+			// set selectedAddress
+			const selectedAddress = createdResult?.data?.createUserAddress || dataSave;
+			// save selected address
+			await setSelectedAddress({ variables: { address: selectedAddress } })
+				.then(() => {
+					Toast.show('Endereço selecionado');
+
+					navigation.dangerouslyGetParent().reset({
+						index: 0,
+						routes: loggedUserId
+							? [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+							: [{ name: 'WelcomeRoutes', params: { screen: 'AskLoginScreen' } }]
+					})
+				})
+		} catch (err) {
+			Alert.alert(getErrorMessage(err));
+		}
 	}
 
 	// ------- END OF FUNCIONS -------

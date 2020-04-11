@@ -44,8 +44,8 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 						helperText={errors.street}
 						label='Rua'
 						autoCompleteType='street-address'
-						onChangeText={handleChange('name')}
-						onBlur={handleBlur('name')}
+						onChangeText={handleChange('street')}
+						onBlur={handleBlur('street')}
 						disabled={isSubmitting}
 						value={values.street}
 

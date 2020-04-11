@@ -62,6 +62,14 @@ export default function Profile({ navigation }) {
 				Alert.alert('Hmm! Houve um pequeno problema', err.message)
 			})
 	}
+
+	async function handleLogOutUser() {
+		await logUserOut()
+		navigation.dangerouslyGetParent().reset({
+			index: 0,
+			routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+		})
+	}
 	
 	if (loadingUser) return <LoadingBlock />
 	if (!user) return false;
@@ -84,7 +92,7 @@ export default function Profile({ navigation }) {
 					<Button variant='filled' icon='user' label='Editar perfil' onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId } })} />
 					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
 					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('FavoriteProductsScreen')} />
-					<Button variant='outlined' icon='log-out' label='Sair' onPress={()=>logUserOut()} />
+					<Button variant='outlined' icon='log-out' label='Sair' onPress={handleLogOutUser} />
 				</Paper>
 			</View>
 		</ContainerScroll>

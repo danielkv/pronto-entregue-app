@@ -27,9 +27,8 @@ export default {
 					}
 				}
 
-				
+				if (!newAddress.id) newAddress.id = 'temp';
 				newAddress.__typename = 'Address';
-				delete newAddress.id;
 				await AsyncStorage.setItem('@prontoEntregue/address', JSON.stringify(newAddress));
 				cache.writeQuery({ query: GET_SELECTED_ADDRESS, data: { selectedAddress: newAddress } });
 			} catch(err) {

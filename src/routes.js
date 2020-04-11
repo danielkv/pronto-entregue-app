@@ -15,7 +15,7 @@ import CartRoutes from './routes/cart';
 import HomeRoutes from './routes/home';
 import OrderRoutes from './routes/order';
 import ProfileRoutes from './routes/profile';
-import SelectAddressScreen from './routes/selectAddress';
+import SelectAddressRoutes from './routes/selectAddress';
 import WelcomeRoutes from './routes/welcome';
 import NavigatorTheme from './theme/navigator';
 
@@ -41,7 +41,7 @@ export default function SplashScreen() {
 							<Stack.Screen name='CartRoutes' component={CartRoutes} />
 							<Stack.Screen name='OrderRoutes' component={OrderRoutes} />
 							<Stack.Screen name='AuthenticationRoutes' component={AuthenticationRoutes} />
-							<Stack.Screen name='SelectAddressScreen' component={SelectAddressScreen} />
+							<Stack.Screen name='SelectAddressRoutes' component={SelectAddressRoutes} />
 						</Stack.Navigator>
 								
 					</NavigationContainer>

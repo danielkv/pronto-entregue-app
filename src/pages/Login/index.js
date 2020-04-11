@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, ActivityIndicator } from 'react-native';
 
 import { useMutation } from '@apollo/react-hooks';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as Device from 'expo-device';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -31,8 +31,9 @@ const initialValues = {
 }
 
 export default function Login() {
+	const { params: { redirect = null, redirectParams = null } = {} } = useRoute();
 	const navigation = useNavigation();
-
+	
 	// Setup GQL Mutation
 	const [login] = useMutation(LOGIN);
 
@@ -45,15 +46,21 @@ export default function Login() {
 
 	function onSubmit({ email, password }, { resetForm }) {
 		return login({ variables: { email, password } })
-			.then(({ data })=>{
+			.then(async ({ data })=>{
 				resetForm();
-				if (data.login.token) {
-					logUserIn(data.login.user, data.login.token);
-				}
+				await logUserIn(data.login.user, data.login.token);
+				afterLogin();
 			})
 			.catch(err => {
 				Alert.alert(getErrorMessage(err));
 			})
+	}
+
+	function afterLogin() {
+		if (redirect)
+			navigation.navigate(redirect, { ...redirectParams });
+		else
+			navigation.navigate('FeedScreen');
 	}
 
 	// eslint-disable-next-line no-shadow
@@ -130,8 +137,8 @@ export default function Login() {
 							onPress={() => navigation.navigate('ForgotPasswordScreen')}
 							label='Esqueci minha senha'
 						/>
-						<GoogleButtton disabled={isSubmitting} />
-						<FacebookButton disabled={isSubmitting} />
+						<GoogleButtton afterLogin={afterLogin} disabled={isSubmitting} />
+						<FacebookButton afterLogin={afterLogin} disabled={isSubmitting} />
 					</ButtonsContainer>
 				</FormContainer>
 			</Container>

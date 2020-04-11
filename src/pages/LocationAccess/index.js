@@ -8,12 +8,10 @@ import BgWelcome from '../../assets/images/bg_welcome.png';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { useTheme, Paper, Typography, Button } from '../../react-native-ui';
 import { initialize } from '../../services/init';
-import { useLoggedUserId } from '../../utils/hooks';
 
 export default function LocationAccess() {
 	const { palette } = useTheme();
 	const [loading, setLoading] = useState(true);
-	const loggedUserId = useLoggedUserId();
 	const navigation = useNavigation()
 
 	useEffect(()=>{
@@ -21,10 +19,11 @@ export default function LocationAccess() {
 	}, [])
 
 	function init() {
+		//resetAddress();
 		initialize()
-			.then(async ({ address, user })=>{
-				if (address || user) {
-					nextPage();
+			.then(async ({ address, user }) => {
+				if (address) {
+					nextPage(user);
 				} else {
 					setLoading(false);
 				}
@@ -43,7 +42,7 @@ export default function LocationAccess() {
 	async function handlePermit() {
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
 		if (status === 'granted') {
-			navigation.navigate('PickAddressScreen')
+			navigation.dangerouslyGetParent().replace('SelectAddressRoutes', { screen: 'PickLocationScreen', params: { pickUserLocation: true } })
 		} else {
 			Alert.alert(
 				'Hmm... Parece que a permissão não foi concedida',
@@ -55,13 +54,11 @@ export default function LocationAccess() {
 		}
 	}
 
-	
-	function nextPage() {
-		if (loggedUserId) {
-			navigation.navigate('HomeRoutes');
-		} else {
-			navigation.navigate('AskLoginScreen');
-		}
+	function nextPage(user) {
+		if (user)
+			navigation.dangerouslyGetParent().replace('HomeRoutes')
+		else
+			navigation.replace('AskLoginScreen');
 	}
 
 	return (

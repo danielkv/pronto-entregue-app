@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 export default function AppRoutes() {
 	return (
 		<Stack.Navigator
-			initialRouteName='AskLoginScreen'
+			initialRouteName='LocationAccessScreen'
 			screenOptions={{ header: Header, headerTransparent: true, searchProductsIcon: false }}
 			mode='card'
 		>
