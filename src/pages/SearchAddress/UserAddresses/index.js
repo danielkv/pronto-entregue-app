@@ -48,7 +48,7 @@ export default function UserAddresses() {
 	return (
 		<>
 			<View style={{ alignItems: "center", marginHorizontal: 35 }}>
-				<Typography variant='h5' style={{ textAlign: 'center', color: palette.background.dark }}>Busque seu endereço acima ou selecione um endereço cadastrado</Typography>
+				<Typography variant='h5' style={{ textAlign: 'center', color: palette.background.dark }}>ou selecione um endereço cadastrado</Typography>
 				<Icon name='chevron-down' color={palette.background.dark} size={30} />
 			</View>
 			<Paper>

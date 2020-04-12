@@ -27,14 +27,14 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.flaker.prontoentregue",
-	  "buildNumber": "1.0.0",
-	  "icon": "./src/assets/ios-icon.png",
+      "buildNumber": "1.0.0",
+      "icon": "./src/assets/ios-icon.png",
       "config": {
         "googleMapsApiKey": "AIzaSyCnyK3H_XKu_MiSnq9CKRU28BBoPUkTIoY"
       }
     },
     "android": {
-	"package": "com.flaker.prontoentregue",
+      "package": "com.flaker.prontoentregue",
       "versionCode": 3,
       "permissions": [],
       "config": {
@@ -42,12 +42,12 @@
           "apiKey": "AIzaSyDz8WuCOZQucFn-HkQewugwgRQqvjofxz8"
         }
       }
-	},
-	"androidStatusBar": {
-		"barStyle": "dark-content",
-		"translucent": true,
-		"backgroundColor": "#00000000"
-	},
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "translucent": true,
+      "backgroundColor": "#00000000"
+    },
     "description": "",
     "githubUrl": "https://github.com/danielkv/pronto-entregue-app"
   }

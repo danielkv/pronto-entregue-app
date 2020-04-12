@@ -7,7 +7,7 @@ import * as Permissions from 'expo-permissions';
 import BgWelcome from '../../assets/images/bg_welcome.png';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { useTheme, Paper, Typography, Button } from '../../react-native-ui';
-import { initialize } from '../../services/init';
+import { initialize, resetAddress } from '../../services/init';
 
 export default function LocationAccess() {
 	const { palette } = useTheme();
@@ -19,7 +19,7 @@ export default function LocationAccess() {
 	}, [])
 
 	function init() {
-		//resetAddress();
+		resetAddress();
 		initialize()
 			.then(async ({ address, user }) => {
 				if (address) {
@@ -72,7 +72,23 @@ export default function LocationAccess() {
 						</View>
 					)
 					: (
-						<Paper style={{ position: 'absolute', bottom: 10, left: 10, right: 10 }}>
+						<Paper
+							style={{
+								position: 'absolute',
+								bottom: 10,
+								left: 10,
+								right: 10,
+								marginHorizontal: 10,
+								shadowColor: "#000",
+								shadowOffset: {
+									width: 0,
+									height: 2,
+								},
+								shadowOpacity: 0.25,
+								shadowRadius: 3.84,
+
+								elevation: 5,
+							}}>
 							<Typography style={{ textAlign: 'center', fontSize: 18, fontWeight: "bold", color: '#333', marginBottom: 10 }}>Seja bem vindo</Typography>
 							<Typography style={{ textAlign: 'center', fontSize: 13, color: '#333', marginBottom: 10 }}>
 								Para buscar os melhores estabelecimentos para você precisamos ter acesso a sua localização

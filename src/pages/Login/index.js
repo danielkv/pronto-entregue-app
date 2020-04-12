@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator, Platform } from 'react-native';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -137,8 +137,12 @@ export default function Login() {
 							onPress={() => navigation.navigate('ForgotPasswordScreen')}
 							label='Esqueci minha senha'
 						/>
-						<GoogleButtton afterLogin={afterLogin} disabled={isSubmitting} />
-						<FacebookButton afterLogin={afterLogin} disabled={isSubmitting} />
+						{Platform.OS !== 'ios' && (
+							<>
+								<GoogleButtton afterLogin={afterLogin} disabled={isSubmitting} />
+								<FacebookButton afterLogin={afterLogin} disabled={isSubmitting} />
+							</>
+						)}
 					</ButtonsContainer>
 				</FormContainer>
 			</Container>
