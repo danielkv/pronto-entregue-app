@@ -6,7 +6,7 @@ import * as Facebook from 'expo-facebook';
 
 import LoadingBlock from '../../../components/LoadingBlock';
 
-import imageFB from '../../../assets/images/logo-fb.png';
+import imageFB from '../../../assets/images/facebook_icon.png';
 import { Button, Typography } from '../../../react-native-ui';
 import { logUserIn } from '../../../services/init';
 import { getErrorMessage } from '../../../utils/errors';

@@ -30,6 +30,7 @@ export default {
 				if (!newAddress.id) newAddress.id = 'temp';
 				newAddress.__typename = 'Address';
 				await AsyncStorage.setItem('@prontoEntregue/address', JSON.stringify(newAddress));
+				
 				cache.writeQuery({ query: GET_SELECTED_ADDRESS, data: { selectedAddress: newAddress } });
 			} catch(err) {
 				const error = extractFirstError(err);

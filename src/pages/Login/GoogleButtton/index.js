@@ -6,7 +6,7 @@ import * as Google from 'expo-google-app-auth';
 
 import LoadingBlock from '../../../components/LoadingBlock';
 
-import imageGoogle from '../../../assets/images/logo-google.png';
+import imageGoogle from '../../../assets/images/google_icon.png';
 import { Button, Typography } from '../../../react-native-ui';
 import { logUserIn } from '../../../services/init';
 import { getErrorMessage } from '../../../utils/errors';
@@ -60,7 +60,7 @@ export default function GoogleButtton({ disabled, afterLogin }) {
 				? <LoadingBlock />
 				: (
 					<>
-						<Image source={imageGoogle} />
+						<Image source={imageGoogle} style={{ marginRight: 10 }} />
 						<Typography variant='button' style={{ color: '#fff' }}>Logar com Google</Typography>
 					</>
 				)}

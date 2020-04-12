@@ -7,7 +7,7 @@ import * as Permissions from 'expo-permissions';
 import BgWelcome from '../../assets/images/bg_welcome.png';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { useTheme, Paper, Typography, Button } from '../../react-native-ui';
-import { initialize, resetAddress } from '../../services/init';
+import { initialize } from '../../services/init';
 
 export default function LocationAccess() {
 	const { palette } = useTheme();
@@ -19,7 +19,7 @@ export default function LocationAccess() {
 	}, [])
 
 	function init() {
-		resetAddress();
+		//resetAddress();
 		initialize()
 			.then(async ({ address, user }) => {
 				if (address) {

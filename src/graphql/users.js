@@ -77,6 +77,7 @@ export const CREATE_USER_ADDRESS = gql`
 	mutation CreateUserAddress ($data: AddressInput!) {
 		createUserAddress(data: $data) {
 			id
+			name
 			street
 			number
 			district

@@ -36,6 +36,7 @@ export default function ConfirmAddress() {
 	
 	async function onSubmit(result) {
 		const dataSave = sanitizeAddress(result);
+		
 		let createdResult;
 		try {
 			// if user is logged in, save the address in user account
