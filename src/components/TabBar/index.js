@@ -26,7 +26,7 @@ export default function TabBar(props) {
 				'Para ver seu pedidos, você tem que estar logado.',
 				'Quer fazer isso agora?',
 				[
-					{ text: 'Sim', onPress: ()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: { redirect: 'OrderRoutes' } }) },
+					{ text: 'Sim', onPress: ()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: { redirect: 'OrderRoutes', redirectParams: { screen: 'OrderListScreen' } } }) },
 					{ text: 'Não' }
 				]
 			);

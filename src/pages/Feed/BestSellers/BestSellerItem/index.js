@@ -26,10 +26,9 @@ export default function BestSellerItem({ item: product }) {
 						colors={['#0000', '#000f']}
 						style={{ paddingHorizontal: 15, paddingVertical: 10 }}
 					>
-						<Typography variant='title' style={{ color: '#fff', fontSize: 16 }}>{product.name}</Typography>
 						
 						<View>
-							{Boolean(product.fromPrice) && <Typography variant='subtitle' style={{ color: '#fff', fontSize: 13, textDecorationLine: product?.sale?.progress ? 'line-through' : 'none' }}>{BRL(product.fromPrice).format()}</Typography>}
+							{Boolean(product.fromPrice) && <Typography variant='subtitle' style={{ color: '#fff', fontSize: 14, textDecorationLine: product?.sale?.progress ? 'line-through' : 'none' }}>{BRL(product.fromPrice).format()}</Typography>}
 							{Boolean(product?.sale?.progress) && (
 								<Chip
 									label={BRL(product.sale.price).format()}
@@ -38,6 +37,7 @@ export default function BestSellerItem({ item: product }) {
 								/>)}
 
 						</View>
+						<Typography variant='title' style={{ color: '#fff', fontSize: 14 }}>{product.name}</Typography>
 					</LinearGradient>
 				</View>
 			</BgImage>

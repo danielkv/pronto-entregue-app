@@ -58,7 +58,7 @@ export default function Login() {
 
 	function afterLogin() {
 		if (redirect)
-			navigation.navigate(redirect, { ...redirectParams });
+			navigation.dangerouslyGetParent().replace(redirect, { ...redirectParams });
 		else
 			navigation.navigate('FeedScreen');
 	}

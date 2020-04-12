@@ -48,7 +48,7 @@ export default function FavoriteButton({ product }) {
 					'Para favoritar um produto, você tem que estar logado.',
 					'Quer fazer isso agora?',
 					[
-						{ text: 'Sim', onPress: ()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: { redirect: 'ProductScreen', redirectParams: params } }) },
+						{ text: 'Sim', onPress: ()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: { redirect: 'HomeRoutes', redirectParams: { screen: 'ProductScreen', params } } }) },
 						{ text: 'Não' }
 					]
 				);

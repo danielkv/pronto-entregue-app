@@ -37,7 +37,6 @@ export default function Payment({ navigation }) {
 						{ name: 'OrderRoutes', params: { screen: 'OrderScreen', params: { orderId: createOrder.id } } }
 					]
 				})
-				//navigation.navigate('OrderRoutes', { screen: 'OrderScreen', params: { orderId: createOrder.id } })
 				cancelCart();
 			})
 			.catch((err) => {

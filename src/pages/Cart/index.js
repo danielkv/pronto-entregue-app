@@ -68,7 +68,7 @@ export default function Cart({ navigation }) {
 
 				navigation.navigate('PaymentScreen');
 			} else {
-				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'CartScreen' } });
+				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'HomeRoutes', redirectParams: { screen: 'CartScreen' } } });
 			}
 		} catch (err) {
 			Alert.alert(getErrorMessage(err.message));

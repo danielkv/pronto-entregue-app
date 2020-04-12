@@ -20,8 +20,8 @@ export default function OrderRoutes() {
 				headerMode='screen'
 				screenOptions= {{ header: Header }}
 			>
-				<Stack.Screen name='OrderScreen' component={OrderScreen} />
 				<Stack.Screen name='OrderListScreen' component={OrderListScreen} />
+				<Stack.Screen name='OrderScreen' component={OrderScreen} />
 			</Stack.Navigator>
 			{selectedAddress && <TabBar />}
 		</>

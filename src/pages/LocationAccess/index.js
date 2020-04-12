@@ -7,7 +7,7 @@ import * as Permissions from 'expo-permissions';
 import BgWelcome from '../../assets/images/bg_welcome.png';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { useTheme, Paper, Typography, Button } from '../../react-native-ui';
-import { initialize } from '../../services/init';
+import { initialize, logUserOut, resetAddress } from '../../services/init';
 
 export default function LocationAccess() {
 	const { palette } = useTheme();
@@ -34,6 +34,7 @@ export default function LocationAccess() {
 					err.message,
 					[
 						{ text: 'Tentar novamente', onPress: init },
+						{ text: 'Cancelar', onPress: ()=>{ logUserOut(); resetAddress(); setLoading(false); } }
 					]
 				);
 			})
