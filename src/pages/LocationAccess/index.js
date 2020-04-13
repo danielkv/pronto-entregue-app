@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Image, ActivityIndicator, Alert } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
-import * as Permissions from 'expo-permissions';
 
 import BgWelcome from '../../assets/images/bg_welcome.png';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { useTheme, Paper, Typography, Button } from '../../react-native-ui';
 import { initialize, logUserOut, resetAddress } from '../../services/init';
+import { getErrorMessage } from '../../utils/errors';
 
 export default function LocationAccess() {
 	const { palette } = useTheme();
 	const [loading, setLoading] = useState(true);
-	const navigation = useNavigation()
+	const navigation = useNavigation();
 
 	useEffect(()=>{
 		init()
@@ -31,7 +31,7 @@ export default function LocationAccess() {
 			.catch((err)=>{
 				Alert.alert(
 					'Ops, Ocorreu um erro!',
-					err.message,
+					getErrorMessage(err.message),
 					[
 						{ text: 'Tentar novamente', onPress: init },
 						{ text: 'Cancelar', onPress: ()=>{ logUserOut(); resetAddress(); setLoading(false); } }
@@ -40,22 +40,11 @@ export default function LocationAccess() {
 			})
 	}
 
-	async function handlePermit() {
-		const { status } = await Permissions.askAsync(Permissions.LOCATION);
-		if (status === 'granted') {
-			navigation.dangerouslyGetParent().replace('SelectAddressRoutes', { screen: 'PickLocationScreen', params: { pickUserLocation: true } })
-		} else {
-			Alert.alert(
-				'Hmm... Parece que a permissão não foi concedida',
-				'Precisamos ter a permissão de utilizar sua localização para poder te mostrar os estabelecimentos próximos de você.',
-				[
-					{ text: 'Tentar novamente', onPress: handlePermit },
-				]
-			);
-		}
+	function pickLocation() {
+		navigation.dangerouslyGetParent().replace('SelectAddressRoutes', { screen: 'PickLocationScreen', params: { pickUserLocation: true } })
 	}
 
-	function nextPage(user) {
+	function nextPage(user=null) {
 		if (user)
 			navigation.dangerouslyGetParent().replace('HomeRoutes')
 		else
@@ -92,9 +81,9 @@ export default function LocationAccess() {
 							}}>
 							<Typography style={{ textAlign: 'center', fontSize: 18, fontWeight: "bold", color: '#333', marginBottom: 10 }}>Seja bem vindo</Typography>
 							<Typography style={{ textAlign: 'center', fontSize: 13, color: '#333', marginBottom: 10 }}>
-								Para buscar os melhores estabelecimentos para você precisamos ter acesso a sua localização
+								Para encontrar os melhores estabelecimentos para você precisamos que você nos mostre onde você deseja receber seu pedido
 							</Typography>
-							<Button variant='filled' color='primary' onPress={handlePermit}>Permitir</Button>
+							<Button variant='filled' color='primary' onPress={pickLocation}>Ok, vamos lá!</Button>
 						</Paper>
 					)}
 			</ImageBackground>

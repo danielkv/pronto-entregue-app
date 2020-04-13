@@ -28,6 +28,13 @@ const clearCamera = {
 	zoom: 18
 }
 
+const locationNotGranted = {
+	latitude: -27.26640280619224,
+	latitudeDelta: 6.885547252090703,
+	longitude: -50.19059563055634,
+	longitudeDelta: 5.61006847769022
+}
+
 const dimensionWidth = Math.round(Dimensions.get('window').width);
 const paddingOffset = 20;
 
@@ -61,38 +68,40 @@ export default function PickLocation() {
 		if (pickUserLocation) getLocationAsync();
 	}
 
+	function moveCameraTo(location, zoom=18) {
+		const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
+		newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+		newCamera.zoom = zoom;
+		setCamera(newCamera)
+		MapRef.current.animateCamera(newCamera);
+	}
+
 	function getLocationAsync() {
 		setLoadingLocation(true)
 
 		Location.getProviderStatusAsync()
 			.then(({ locationServicesEnabled }) => {
-				if (!locationServicesEnabled) {
-					Alert.alert(
-						'Ops, Ocorreu um erro!',
-						'O serviço de localização está desabilitado. Ative primeiro para localizar seu local.',
-						[
-							{ text: 'Tentar novamente', onPress: ()=>getLocationAsync() },
-						]
-					);
-				}
+				if (!locationServicesEnabled) throw new Error('Sua localização não está ativa')
 			})
 			.then(async ()=>{
 				let { status } = await Permissions.askAsync(Permissions.LOCATION);
-				if (status !== 'granted') {
-					setLocationError('A permissão para acesssar a localização foi negada');
-				}
+				if (status !== 'granted') throw new Error('A permissão para acessar a localização foi negada')
 			
 				let location = await Location.getCurrentPositionAsync({});
 
 				await geoLocate(location.coords);
 
-				const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
-				newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
-				setCamera(newCamera)
-				MapRef.current.animateCamera(newCamera);
+				moveCameraTo(location);
 			})
 			.catch((err) => {
-				Alert.alert('Ops, Ocorreu um erro!', getErrorMessage(err));
+				Alert.alert(
+					'Ops, Ocorreu um erro!',
+					getErrorMessage(err),
+					[
+						{ text: 'Tentar novamente', onPress: ()=>getLocationAsync() },
+						{ text: 'Encontrar local no mapa', onPress: ()=>moveCameraTo({ coords: locationNotGranted }, 7) },
+					]
+				);
 			})
 			.finally(()=>{
 				setLoadingLocation(false)
