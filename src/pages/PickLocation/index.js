@@ -84,8 +84,7 @@ export default function PickLocation() {
 				if (!locationServicesEnabled) throw new Error('Sua localização não está ativa')
 			})
 			.then(async ()=>{
-				let { status } = await Permissions.askAsync(Permissions.LOCATION);
-				if (status !== 'granted') throw new Error('A permissão para acessar a localização foi negada')
+				await getPermission();
 			
 				let location = await Location.getCurrentPositionAsync({});
 
@@ -107,6 +106,16 @@ export default function PickLocation() {
 				setLoadingLocation(false)
 			})
 	}
+
+	async function getPermission() {
+		const { status: statusGet } = await Permissions.getAsync(Permissions.LOCATION);
+
+		if (statusGet !== 'granted') {
+			const { status: statusASk } = await Permissions.askAsync(Permissions.LOCATION);
+			if (statusASk !== 'granted') throw new Error('A permissão para acessar a localização foi negada')
+		}
+	}
+
 	async function geoLocate(location) {
 		setLocationError('')
 		const { data: { searchLocation: address } } = await searchLocation({ variables: { location: [location.latitude, location.longitude] } });
