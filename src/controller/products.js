@@ -78,7 +78,7 @@ export function checkGroupRules(group, selectionOffset = 0) {
 	}
 	
 	// Check the min selection rule
-	if (minSelect !== 0 && selectionLength < minSelect) {
+	if (selectionOffset === 0 && minSelect !== 0 && selectionLength < minSelect) {
 		throw new Error(`Você deve selecionar no mínimo ${minSelect} ${minSelect > 1 ? 'opções' : 'opção'} em ${group.name}`)
 	}
 
