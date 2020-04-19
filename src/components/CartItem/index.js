@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { calculateProductPrice } from '../../controller/products';
 import { useTheme, IconButton, Chip, Typography, Avatar } from '../../react-native-ui';
 import { BRL } from '../../utils/currency';
-import { calculateProductPrice } from '../../utils/products';
 import {
 	Container,
 	ItemContent,

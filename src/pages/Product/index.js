@@ -12,9 +12,9 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import Toast from '../../components/Toast';
 
+import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../controller/products';
 import { Paper, Typography, Icon, TextField, useTheme, Chip } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../utils/products';
 import FavoriteButton from './FavoriteButton';
 import Inline from './Inline';
 import Panel from './Panel';

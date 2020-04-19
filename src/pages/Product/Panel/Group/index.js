@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 
+import { calculateOptionsGroupPrice } from '../../../../controller/products';
 import { Icon, Chip, Typography } from '../../../../react-native-ui';
 import theme from '../../../../theme';
 import { BRL } from '../../../../utils/currency';
-import { calculateOptionsGroupPrice } from '../../../../utils/products';
 import {
 	Container,
 	CenterElementContainer,

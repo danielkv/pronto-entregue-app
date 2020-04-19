@@ -5,9 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 
+import { useSelectedAddress } from '../controller/hooks';
 import CartScreen from '../pages/Cart';
 import PaymentScreen from '../pages/Payment';
-import { useSelectedAddress } from '../utils/hooks';
 
 const Stack = createStackNavigator();
 

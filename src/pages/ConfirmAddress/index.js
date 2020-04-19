@@ -9,8 +9,8 @@ import { isNumber } from 'lodash'
 import * as Yup from 'yup';
 
 import { sanitizeAddress } from '../../controller/address';
+import { useLoggedUserId } from '../../controller/hooks';
 import { getErrorMessage } from '../../utils/errors';
-import { useLoggedUserId } from '../../utils/hooks';
 import PageForm from './form';
 import { Container, ContainerScroll } from './styles';
 

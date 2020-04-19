@@ -9,11 +9,11 @@ import CartItem from '../../components/CartItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
+import { calculateOrderPrice, validadeCart } from '../../controller/cart';
+import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
 import { Button, Paper, Typography, Chip, Divider, TextField, useTheme } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
-import { calculateOrderPrice, validadeCart } from '../../utils/cart';
 import { getErrorMessage } from '../../utils/errors';
-import { useKeyboardStatus, useLoggedUserId } from '../../utils/hooks';
 import DeliveryBlock from './DeliveryBlock';
 import PaymentBlock from './PaymentBlock';
 import {

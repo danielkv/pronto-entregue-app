@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/core';
 
 import LoadingBlock from '../../../components/LoadingBlock';
 
+import { useSelectedAddress, useLoggedUserId } from '../../../controller/hooks';
 import { Typography, useTheme, Button } from '../../../react-native-ui';
-import { useSelectedAddress, useLoggedUserId } from '../../../utils/hooks';
 import { Container, UserNameContainer, UserName, UserLocationContainer } from './styles';
 
 import { GET_USER } from '../../../graphql/users';

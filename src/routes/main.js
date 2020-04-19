@@ -2,8 +2,8 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { useSelectedAddress } from '../controller/hooks';
 import AuthenticationRoutes from '../routes/authentication';
-import { useSelectedAddress } from '../utils/hooks';
 import CartRoutes from './cart';
 import HomeRoutes from './home';
 import OrderRoutes from './order';

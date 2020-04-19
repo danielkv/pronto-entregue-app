@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
+import { useSelectedAddress } from '../../controller/hooks';
 import { Button } from '../../react-native-ui';
-import { useSelectedAddress } from '../../utils/hooks';
 
 export default function UserLocation() {
 	const navigation = useNavigation();

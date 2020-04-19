@@ -6,10 +6,10 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
+import { sanitizeOrderData } from '../../controller/cart';
+import { useLoggedUserId, useSelectedAddress } from '../../controller/hooks';
 import Gateway from '../../gateway';
-import { sanitizeOrderData } from '../../utils/cart';
 import { getErrorMessage } from '../../utils/errors';
-import { useLoggedUserId, useSelectedAddress } from '../../utils/hooks';
 import { Container } from './styles';
 
 import { GET_CART, CANCEL_CART } from '../../graphql/cart';

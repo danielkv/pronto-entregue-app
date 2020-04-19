@@ -9,8 +9,8 @@ import ErrorBlock from '../../../../components/ErrorBlock';
 import LoadingBlock from '../../../../components/LoadingBlock';
 import Panel from '../../../../components/Panel';
 
+import { useLoggedUserId } from '../../../../controller/hooks';
 import { IconButton, Button, Typography } from '../../../../react-native-ui';
-import { useLoggedUserId } from '../../../../utils/hooks';
 
 import { GET_USER_ADDRESSES } from '../../../../graphql/users';
 

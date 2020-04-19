@@ -4,8 +4,8 @@ import { Alert } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/core';
 
+import { useLoggedUserId } from '../../controller/hooks';
 import { Badge } from '../../react-native-ui';
-import { useLoggedUserId } from '../../utils/hooks';
 import MenuItem from './MenuItem';
 import { Container } from './styles';
 

@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { View, Alert } from 'react-native';
 
+import { getGroupNewState } from '../../../controller/products';
 import { Typography } from '../../../react-native-ui';
-import { getGroupNewState } from '../../../utils/products';
 import Option from '../Option';
 
 function Inline({ optionsGroups, onItemSelect }) {

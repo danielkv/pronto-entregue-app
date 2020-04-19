@@ -7,9 +7,9 @@ import { useNavigation } from '@react-navigation/core';
 import ErrorBlock from '../../../components/ErrorBlock';
 import Section from '../../../components/Section';
 
+import { useSelectedAddress } from '../../../controller/hooks';
 import { Typography, useTheme } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
-import { useSelectedAddress } from '../../../utils/hooks';
 import { ItemsContainer } from './styles';
 
 import { GET_SECTIONS } from '../../../graphql/sections';

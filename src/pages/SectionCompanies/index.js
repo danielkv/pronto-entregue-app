@@ -10,9 +10,9 @@ import CompanyItem from '../../components/CompanyItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import NoResultBlock from '../../components/NoResultBlock';
 
+import { useSelectedAddress } from '../../controller/hooks';
 import { Paper, Typography, useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { useSelectedAddress } from '../../utils/hooks';
 
 import { LOAD_SECTION } from '../../graphql/sections';
 

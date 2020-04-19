@@ -12,10 +12,10 @@ import { useNavigation } from '@react-navigation/core';
 import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
+import { useSelectedAddress } from '../../../controller/hooks';
 import { Paper, Icon, Typography } from '../../../react-native-ui';
 import { BRL } from '../../../utils/currency';
 import { getErrorMessage, extractFirstError } from '../../../utils/errors';
-import { useSelectedAddress } from '../../../utils/hooks';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import DeliveryModal from './DeliveryModal';
 

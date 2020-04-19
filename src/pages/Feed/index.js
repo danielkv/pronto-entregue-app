@@ -7,9 +7,9 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import logoResource from '../../assets/images/logo-simbolo.png';
+import { useSelectedAddress } from '../../controller/hooks';
 import { useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { useSelectedAddress } from '../../utils/hooks';
 import BestSellers from './BestSellers'
 import FeaturedProducts from './FeaturedProducts';
 import { Footer } from './styles';

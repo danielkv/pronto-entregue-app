@@ -7,9 +7,9 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import ProductItem from '../../components/ProductItem';
 
+import { useLoggedUserId } from '../../controller/hooks';
 import { Paper, Typography, Divider } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { useLoggedUserId } from '../../utils/hooks';
 
 import { GET_USER_FAVORITE_PRODUCTS } from '../../graphql/users';
 

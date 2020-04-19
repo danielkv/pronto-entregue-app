@@ -1,4 +1,4 @@
-import { sanitizeAddress } from "../controller/address";
+import { sanitizeAddress } from "./address";
 import { calculateProductPrice } from "./products";
 
 export function calculateOrderPrice(products, initialValue = 0) {

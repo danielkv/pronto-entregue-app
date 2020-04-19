@@ -6,9 +6,9 @@ import { cloneDeep } from 'lodash';
 
 import Panel from '../../../../components/Panel';
 
+import { calculateOptionsGroupPrice, getGroupNewState } from '../../../../controller/products';
 import { TextField, useTheme } from '../../../../react-native-ui';
 import { BRL } from '../../../../utils/currency';
-import { calculateOptionsGroupPrice, getGroupNewState } from '../../../../utils/products';
 import Option from '../../Option';
 import {
 	SearchContainer,

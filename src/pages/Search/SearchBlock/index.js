@@ -9,9 +9,9 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import NoResultBlock from '../../../components/NoResultBlock';
 import ProductItem from '../../../components/ProductItem'
 
+import { useSelectedAddress } from '../../../controller/hooks';
 import { TextField, useTheme, Divider } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
-import { useSelectedAddress } from '../../../utils/hooks';
 
 import { SEARCH_PRODUCTS_COMPANIES } from '../../../graphql/search';
 

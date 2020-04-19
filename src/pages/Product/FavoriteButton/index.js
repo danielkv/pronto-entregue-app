@@ -4,9 +4,9 @@ import { Alert } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
 
+import { useLoggedUserId } from '../../../controller/hooks';
 import { IconButton, useTheme } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
-import { useLoggedUserId } from '../../../utils/hooks';
 
 import { ADD_FAVORITE_PRODUCT, REMOVE_FAVORITE_PRODUCT } from '../../../graphql/products';
 

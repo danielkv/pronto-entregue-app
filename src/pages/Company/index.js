@@ -9,9 +9,9 @@ import ClosedCompanyChip from '../../components/ClosedCompanyChip';
 import ErrorBlock from '../../components/ErrorBlock';
 import RatingStars from '../../components/RatingStars';
 
+import { useSelectedAddress } from '../../controller/hooks';
 import { Paper, Typography, useTheme, Icon } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { useSelectedAddress } from '../../utils/hooks';
 import ProductsBlock from './ProductsBlock';
 import RatingBlock from './RatingBlock';
 import { FooterContainer, FooterContent } from './styles';

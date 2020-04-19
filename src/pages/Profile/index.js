@@ -10,9 +10,9 @@ import * as Permissions from 'expo-permissions';
 
 import LoadingBlock from '../../components/LoadingBlock';
 
+import { useLoggedUserId } from '../../controller/hooks';
 import { Avatar, Paper, Typography, Button, useTheme, IconButton } from '../../react-native-ui';
 import { logUserOut } from '../../services/init';
-import { useLoggedUserId } from '../../utils/hooks';
 import {
 	ContainerScroll,
 	UserHeader,

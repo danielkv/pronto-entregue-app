@@ -8,9 +8,9 @@ import Address from '../../../components/Address'
 import ErrorBlock from "../../../components/ErrorBlock";
 import LoadingBlock from "../../../components/LoadingBlock";
 
+import { useLoggedUserId } from '../../../controller/hooks'
 import { Paper, Typography, Icon, useTheme } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
-import { useLoggedUserId } from '../../../utils/hooks'
 
 import { SET_SELECTED_ADDRESS } from '../../../graphql/addresses';
 import { GET_USER_ADDRESSES } from "../../../graphql/users";

@@ -7,9 +7,9 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import OrderItem from '../../components/OrderItem';
 
+import { useLoggedUserId } from '../../controller/hooks';
 import { Paper, Typography, Divider, Button, useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
-import { useLoggedUserId } from '../../utils/hooks';
 
 import { GET_USER_ORDERS } from '../../graphql/orders';
 

@@ -4,7 +4,7 @@ import { vw } from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
 import { useSafeArea } from 'react-native-safe-area-context';
 
-import { getGroupRestrainingRules } from '../../../utils/products';
+import { getGroupRestrainingRules } from '../../../controller/products';
 import Group from './Group';
 import GroupModal from './Modal';
 import { Container } from './styles';

@@ -5,10 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Header from '../components/Header';
 import TabBar from '../components/TabBar';
 
+import { useSelectedAddress } from '../controller/hooks';
 import FavoriteProductsScreen from '../pages/FavoriteProducts';
 import ProfileScreen from '../pages/Profile';
 import SubscriptionScreen from '../pages/Subscription';
-import { useSelectedAddress } from '../utils/hooks';
 
 const Stack = createStackNavigator();
 
