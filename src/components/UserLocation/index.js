@@ -15,7 +15,7 @@ export default function UserLocation() {
 		<View>
 			<Button
 				icon={{ name: 'map-pin', size: 16 }}
-				onPress={()=>navigation.navigate('SelectAddressScreen')}
+				onPress={()=>navigation.navigate('SelectAddressRoutes', { screen: 'SelectAddressScreen' })}
 				style={{ text: { fontSize: 15 } }}
 			>
 				{`${selectedAddress.street}, ${selectedAddress.number}`}

@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, KeyboardAvoidingView } from 'react-native'
-import { useSafeArea } from 'react-native-safe-area-context';
+import { KeyboardAvoidingView } from 'react-native'
 
 import 'moment/locale/pt-br';
 
@@ -22,33 +21,28 @@ import NavigatorTheme from './theme/navigator';
 const Stack = createStackNavigator();
 
 export default function SplashScreen() {
-	const insets = useSafeArea();
-
 	return (
-		<View style={{ flex: 1, paddingBottom: insets.bottom }}>
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
-				<FontLoader>
-					<NavigationContainer theme={NavigatorTheme}>
-						<Stack.Navigator
-							initialRouteName='WelcomeRoutes'
-							headerMode='none'
-							mode='card'
-						>
+		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+			<FontLoader>
+				<NavigationContainer theme={NavigatorTheme}>
+					<Stack.Navigator
+						initialRouteName='WelcomeRoutes'
+						headerMode='none'
+						mode='card'
+					>
 						
-							<Stack.Screen name='WelcomeRoutes' component={WelcomeRoutes} />
-							<Stack.Screen name='HomeRoutes' component={HomeRoutes} />
-							<Stack.Screen name='ProfileRoutes' component={ProfileRoutes} />
-							<Stack.Screen name='CartRoutes' component={CartRoutes} />
-							<Stack.Screen name='OrderRoutes' component={OrderRoutes} />
-							<Stack.Screen name='AuthenticationRoutes' component={AuthenticationRoutes} />
-							<Stack.Screen name='SelectAddressRoutes' component={SelectAddressRoutes} />
-						</Stack.Navigator>
+						<Stack.Screen name='WelcomeRoutes' component={WelcomeRoutes} />
+						<Stack.Screen name='HomeRoutes' component={HomeRoutes} />
+						<Stack.Screen name='ProfileRoutes' component={ProfileRoutes} />
+						<Stack.Screen name='CartRoutes' component={CartRoutes} />
+						<Stack.Screen name='OrderRoutes' component={OrderRoutes} />
+						<Stack.Screen name='AuthenticationRoutes' component={AuthenticationRoutes} />
+						<Stack.Screen name='SelectAddressRoutes' component={SelectAddressRoutes} />
+					</Stack.Navigator>
 								
-					</NavigationContainer>
-					<ConnectionInfoPanel />
-				</FontLoader>
-			</KeyboardAvoidingView>
-
-		</View>
+				</NavigationContainer>
+				<ConnectionInfoPanel />
+			</FontLoader>
+		</KeyboardAvoidingView>
 	);
 }

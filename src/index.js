@@ -1,6 +1,5 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ApolloProvider } from '@apollo/react-hooks';
 
@@ -14,18 +13,16 @@ import theme from './theme';
 
 export default function App() {
 	return (
-		<SafeAreaProvider>
-			<ApolloProvider client={apolloClient}>
-				<ThemeProvider theme={theme}>
-					<StyledThemeProvider theme={theme}>
-						<StatusBar translucent backgroundColor='transparent' barStyle='dark-content' />
-						<Container>
-							<Routes />
-						</Container>
+		<ApolloProvider client={apolloClient}>
+			<ThemeProvider theme={theme}>
+				<StyledThemeProvider theme={theme}>
+					<StatusBar translucent backgroundColor='transparent' barStyle='dark-content' />
+					<Container>
+						<Routes />
+					</Container>
 						
-					</StyledThemeProvider>
-				</ThemeProvider>
-			</ApolloProvider>
-		</SafeAreaProvider>
+				</StyledThemeProvider>
+			</ThemeProvider>
+		</ApolloProvider>
 	);
 }
