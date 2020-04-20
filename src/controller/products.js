@@ -9,6 +9,7 @@ export function calculateOptionsGroupPrice (optionsGroup, initialValue = 0, filt
 	if (!optionsGroup) return 0;
 	let optionsGroupValue = 0;
 	const options = filterSelected ? optionsGroup.options.filter(o => o.selected) : optionsGroup.options;
+
 	if (optionsGroup.priceType === 'sum') {
 		// case group should SUM all selected options' prices
 

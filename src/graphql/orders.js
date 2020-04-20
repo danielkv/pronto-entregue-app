@@ -58,6 +58,7 @@ export const ORDER_FRAGMENT = gql`
 			optionsGroups {
 				id
 				name
+				priceType
 				options {
 					id
 					name

@@ -31,7 +31,7 @@ const initialValues = {
 }
 
 export default function Login() {
-	const { params: { redirect = null, redirectParams = null } = {} } = useRoute();
+	const { params: { redirect = null, redirectParams = {} } = {} } = useRoute();
 	const navigation = useNavigation();
 	
 	// Setup GQL Mutation
@@ -58,9 +58,12 @@ export default function Login() {
 
 	function afterLogin() {
 		if (redirect)
-			navigation.dangerouslyGetParent().replace(redirect, { ...redirectParams });
+			navigation.dangerouslyGetParent().replace(redirect, redirectParams);
 		else
-			navigation.navigate('FeedScreen');
+			navigation.dangerouslyGetParent().reset({
+				index: 0,
+				routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+			});
 	}
 
 	// eslint-disable-next-line no-shadow

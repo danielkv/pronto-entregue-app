@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Image, ActivityIndicator, Alert } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
+import * as Updates from 'expo-updates';
 
 import BgWelcome from '../../assets/images/bg_welcome.png';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
@@ -19,7 +20,10 @@ export default function LocationAccess() {
 	}, [])
 
 	function init() {
-		//resetAddress();
+		// Setup listener for updates
+		setupUpdates()
+
+		// load saved user and address
 		initialize()
 			.then(async ({ address, user }) => {
 				if (address) {
@@ -38,6 +42,21 @@ export default function LocationAccess() {
 					]
 				);
 			})
+	}
+
+	function setupUpdates() {
+		Updates.addListener(({ type })=>{
+			if (type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
+				Alert.alert(
+					'Há uma nova versão do app disponível',
+					'Deseja reiniciar agora?',
+					[
+						{ text: 'Sim (Isso irá limpar sua cesta)', onPress: ()=>Updates.reloadAsync() },
+						{ text: 'Não' }
+					]
+				)
+			}
+		})
 	}
 
 	function pickLocation() {
