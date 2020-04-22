@@ -18,8 +18,8 @@ export const LOAD_COMPANY = gql`
 `;
 
 export const GET_CATEGORIES = gql`
-	query GetCompanyCategories ($filter: Filter) {
-		categories (filter: $filter) {
+	query GetCompanyCategories ($filter: JSON) {
+		categories: loadCompanyCategories (filter: $filter) {
 			id
 			name
 			products {
