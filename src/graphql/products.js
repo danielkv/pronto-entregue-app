@@ -100,7 +100,7 @@ export const REMOVE_FAVORITE_PRODUCT = gql`
 
 export const LOAD_PRODUCT = gql`
 	query loadProducts ($id: ID!, $filter:Filter) {
-		product: loadProduct (id: $id) {
+		product (id: $id) {
 			id
 			name
 			type
