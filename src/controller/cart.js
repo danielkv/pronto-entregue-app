@@ -13,7 +13,11 @@ export function validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany
 
 	if (!cartDelivery || !cartDelivery.type) throw new Error('Selecione um tipo de entrega');
 	
-	if (!cartPayment || !cartPayment.id) throw new Error('Selecione uma método de pagamento');
+	if (!cartPayment || !cartPayment.id) {
+		const error = new Error('Selecione uma método de pagamento');
+		error.type = 'NO_PAYMENT_METHOD'
+		throw error;
+	}
 
 	return true;
 }

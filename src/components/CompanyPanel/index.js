@@ -23,7 +23,7 @@ export default function CompanyPanel({ company }) {
 			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('HomeRoutes', { screen: 'CompanyScreen', params: routeState })}>
 				<Avatar size={50} image={company.image} alt={company.displayName} />
 				<View style={{ marginLeft: 10 }}>
-					{!company?.isOpen && <View style={{ marginBottom: 5 }}><ClosedCompanyChip /></View>}
+					{company?.isOpen === false && <View style={{ marginBottom: 5 }}><ClosedCompanyChip /></View>}
 					<Typography style={{ fontSize: 16, fontWeight: 'bold' }}>{company.displayName}</Typography>
 					<RatingStars rate={company.rate} size={12} />
 				</View>

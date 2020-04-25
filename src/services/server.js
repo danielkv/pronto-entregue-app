@@ -57,7 +57,7 @@ const client = new ApolloClient({
 	typeDefs,
 	defaultOptions: {
 		watchQuery: {
-			fetchPolicy: 'cache-and-network'
+			fetchPolicy: 'cache-first'
 		}
 	}
 });

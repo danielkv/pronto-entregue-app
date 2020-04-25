@@ -18,7 +18,7 @@ import UserInfo from './UserInfo';
 import { LOAD_FEED } from '../../graphql/products';
 
 export default function Feed() {
-	const { location } = useSelectedAddress();
+	const { location=null } = useSelectedAddress();
 	const { palette } = useTheme();
 	const { data: { productsOnSale = [], bestSellers = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location }, fetchPolicy: 'no-cache' });
 
