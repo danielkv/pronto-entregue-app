@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -22,21 +22,23 @@ export default function FavoriteProducts() {
 	if (favoriteProductsError) return <ErrorBlock error={getErrorMessage(favoriteProductsError)} />;
 
 	return (
-		<Paper>
-			<Typography variant='title' stye>Produtos favoritos</Typography>
-			<View style={{ marginTop: 25 }}>
-				{loadingFavoriteProducts
-					? <LoadingBlock />
-					: !favoriteProducts.length
-						? <Typography variant='subtitle'>Você não tem nenhum produto favorito ainda</Typography>
-						: favoriteProducts.map((product, index) => (
-							<Fragment key={product.id}>
-								{index > 0 && <Divider />}
-								<ProductItem item={product} />
-							</Fragment>
-						))
-				}
-			</View>
-		</Paper>
+		<ScrollView>
+			<Paper>
+				<Typography variant='title' stye>Produtos favoritos</Typography>
+				<View style={{ marginTop: 25 }}>
+					{loadingFavoriteProducts
+						? <LoadingBlock />
+						: !favoriteProducts.length
+							? <Typography variant='subtitle'>Você não tem nenhum produto favorito ainda</Typography>
+							: favoriteProducts.map((product, index) => (
+								<Fragment key={product.id}>
+									{index > 0 && <Divider />}
+									<ProductItem item={product} />
+								</Fragment>
+							))
+					}
+				</View>
+			</Paper>
+		</ScrollView>
 	);
 }
