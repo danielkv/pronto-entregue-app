@@ -99,7 +99,7 @@ export const REMOVE_FAVORITE_PRODUCT = gql`
 `;
 
 export const LOAD_PRODUCT = gql`
-	query loadProducts ($id: ID!, $filter:Filter) {
+	query loadProducts ($id: ID!, $filter:Filter, $location: GeoPoint!) {
 		product (id: $id) {
 			id
 			name
@@ -116,6 +116,8 @@ export const LOAD_PRODUCT = gql`
 				image
 				backgroundColor
 				rate
+				distance(location: $location)
+				countRatings
 			}
 			category {
 				id

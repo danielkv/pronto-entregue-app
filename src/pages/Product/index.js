@@ -12,6 +12,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 import Toast from '../../components/Toast';
 
+import { useSelectedAddress } from '../../controller/hooks';
 import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../controller/products';
 import { Paper, Typography, Icon, TextField, useTheme, Chip } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
@@ -33,6 +34,7 @@ import { LOAD_PRODUCT } from '../../graphql/products';
 export default function Product() {
 	const { params: { productId, productName, productImage, productDescription } } = useRoute();
 	const { palette } = useTheme();
+	const { location = null } = useSelectedAddress();
 	const [refreshing, setRefreshing] = useState(false);
 
 	const [message, setMessage] = useState('');
@@ -46,7 +48,7 @@ export default function Product() {
 		return 0;
 	}, [product, calculateProductPrice, quantity]);
 
-	const { data: productData, loading: loadingProduct, error: productError, refetch } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
+	const { data: productData, loading: loadingProduct, error: productError, refetch } = useQuery(LOAD_PRODUCT, { variables: { id: productId, location } });
 
 	useEffect(()=>{
 		if (productError) setProduct(null);
