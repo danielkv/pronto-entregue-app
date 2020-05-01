@@ -9,7 +9,7 @@ import { schema as typeDefs } from '../schema/cart';
 import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { GET_USER_TOKEN } from '../graphql/authentication';
 
-const host = process.env.NODE_ENV === 'production' ? 'https://pronto-entregue-backend.herokuapp.com/graphql' : 'http://10.1.1.170:4000/graphql';
+const host = process.env.NODE_ENV === 'production' ? 'http://ec2-18-228-44-149.sa-east-1.compute.amazonaws.com:4000/graphql' : 'http://localhost:4000/graphql';
 
 const uploadLink = createUploadLink({ uri: host });
 
