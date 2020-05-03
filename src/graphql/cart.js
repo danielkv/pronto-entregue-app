@@ -143,7 +143,7 @@ export const CHECK_DELIVERY_LOCATION = gql`
 	mutation CheckDeliveryLocation ($companyId: ID!, $address: AddressInput!) {
 		checkDeliveryLocation(companyId: $companyId, address: $address) {
 			id
-			distance
+			name
 			price
 		}
 	}
