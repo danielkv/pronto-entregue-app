@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, ScrollView, RefreshControl, View } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/core';
 
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
@@ -21,6 +22,7 @@ import UserInfo from './UserInfo';
 import { LOAD_FEED } from '../../graphql/products';
 
 export default function Feed() {
+	const navigation = useNavigation();
 	const { location=null } = useSelectedAddress();
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
@@ -63,7 +65,7 @@ export default function Feed() {
 			
 			<Footer>
 				<View style={{ marginBottom: 25 }}>
-					<Button icon='message-circle' variant='outlined' color='primary'>Indique um estabelecimento</Button>
+					<Button icon='message-circle' variant='outlined' onPress={()=>navigation.navigate('SuggestCompany')} color='primary'>Indique um estabelecimento</Button>
 				</View>
 				<Image source={logoResource} resizeMode='contain' style={{ height: 130, width: 150 }} />
 			</Footer>

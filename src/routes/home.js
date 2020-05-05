@@ -11,6 +11,7 @@ import FeedScreen from '../pages/Feed';
 import ProductScreen from '../pages/Product';
 import SearchScreen from '../pages/Search';
 import SectionCompaniesScreen from '../pages/SectionCompanies';
+import SuggestCompany from '../pages/SuggestCompany';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ export default function HomeRoutes() {
 				<Stack.Screen name='SectionCompaniesScreen' component={SectionCompaniesScreen} />
 				<Stack.Screen name='CompanyScreen' component={CompanyScreen} options={{ headerTransparent: true }} />
 				<Stack.Screen name='ProductScreen' component={ProductScreen} options={{ headerTransparent: true }} />
+				<Stack.Screen name='SuggestCompany' component={SuggestCompany} />
 			</Stack.Navigator>
 		
 			{selectedAddress && <TabBar />}

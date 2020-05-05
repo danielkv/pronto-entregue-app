@@ -52,6 +52,12 @@ export const GET_RATINGS = gql`
 	}
  `;
 
+export const SUGGEST_COMPANY = gql`
+	mutation ($data: JSON) {
+		suggestCompany(data: $data)
+	}
+`;
+
 export const GET_COMPANY_PAYMENT_METHODS = gql`
 	query GetPaymentPaymentMethods ($id: ID!) {
 		company (id: $id) {
