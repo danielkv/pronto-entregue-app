@@ -21,7 +21,7 @@ export const LIST_PRODUCT_FRAGMENT = gql`
 `;
 
 export const LOAD_FEED = gql`
-	query LOAD_FEED ($onSaleLimit: Int!, $bestSellersLimit: Int!, $location: GeoPoint!) {
+	query LOAD_FEED ($onSaleLimit: Int!, $bestSellersLimit: Int!, $location: GeoPoint!, $pagination: Pagination) {
 		productsOnSale(limit: $onSaleLimit, location: $location) {
 			id
 			name
@@ -50,6 +50,17 @@ export const LOAD_FEED = gql`
 				price
 				progress
 			}
+		}
+
+		companies(location: $location, pagination: $pagination) {
+			id
+			displayName
+			isOpen
+			image
+			backgroundColor
+			rate
+			deliveryTime
+			distance(location: $location)
 		}
 	}
 `;

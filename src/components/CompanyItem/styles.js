@@ -3,9 +3,9 @@ import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
-	border-radius: 15px;
+	border-radius: 30px;
 	background-color: #fff;
-	margin: 15px 0;
+	margin: 5px 0;
 	overflow: hidden;
 	flex-direction: row;
 	elevation: 5;
@@ -22,7 +22,7 @@ export const ContentContainer = styled.View`
 
 export const FooterContainer = styled.View`
 	flex-direction: row;
-	margin-top: 12px;
+	margin-top: 5px;
 	margin-left: -3px;
 	align-items: center;
 `;

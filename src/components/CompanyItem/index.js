@@ -19,7 +19,7 @@ export default function CompanyItem({ item: company }) {
 				source={{ uri: company.image }}
 				style={{
 					width: 110,
-					height: 140,
+					height: 120,
 					opacity
 				}}
 				resizeMode='contain'

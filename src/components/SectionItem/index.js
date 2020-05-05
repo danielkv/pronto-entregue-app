@@ -6,9 +6,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Typography } from '../../react-native-ui'
 import { Container, BgImage } from './styles';
 
-export default function Section({ section, onPress }) {
+export default function SectionItem({ section, onPress, dense=false }) {
 	return (
-		<Container onPress={onPress}>
+		<Container dense={dense} onPress={onPress}>
 			<BgImage source={{ uri: section.image }}>
 				<View>
 					<LinearGradient

@@ -49,7 +49,7 @@ export default function SearchBlock() {
 		<View>
 			<TextField
 				autoFocus
-				label='Pesquisar'
+				label='Busque estabelecimentos e itens'
 				style={{ inputContainer: { backgroundColor: palette.background.main } }}
 				onChangeText={handleChangeSearch}
 			/>

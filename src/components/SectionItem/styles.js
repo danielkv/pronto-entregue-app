@@ -6,9 +6,9 @@ import styled from 'styled-components/native';
 const size = (vw(100)-105)/2;
 
 export const Container = styled.TouchableOpacity`
-	width: ${size}px;
-	height: 180px;
-	margin: 17.5px;
+	width: ${({ dense })=>dense ? vw(35) : size}px;
+	height: ${({ dense })=>dense ? 100 : 150}px;
+	margin: ${({ dense })=>dense ? 8 : 17.5}px;
 `;
 
 export const BgImage = styled(ImageBackground).attrs({ borderRadius: 15 })`

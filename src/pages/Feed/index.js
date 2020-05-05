@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, RefreshControl } from 'react-native';
+import { Image, ScrollView, RefreshControl, View } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -8,10 +8,13 @@ import LoadingBlock from '../../components/LoadingBlock';
 
 import logoResource from '../../assets/images/logo-simbolo.png';
 import { useSelectedAddress } from '../../controller/hooks';
-import { useTheme } from '../../react-native-ui';
+import { useTheme, Button } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import BestSellers from './BestSellers'
+import Companies from './Companies';
 import FeaturedProducts from './FeaturedProducts';
+import SearchBox from './SearchBox';
+import Sections from './Sections';
 import { Footer } from './styles';
 import UserInfo from './UserInfo';
 
@@ -22,7 +25,7 @@ export default function Feed() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { productsOnSale = [], bestSellers = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location }, fetchPolicy: 'no-cache' });
+	const { data: { productsOnSale = [], bestSellers = [], companies = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location, pagination: { page: 0, rowsPerPage: 6 } }, fetchPolicy: 'no-cache' });
 
 	const feedIsEmpty = !productsOnSale.length && !bestSellers.length;
 
@@ -49,13 +52,19 @@ export default function Feed() {
 				? feedError ? <ErrorBlock error={getErrorMessage(feedError)} /> : <LoadingBlock />
 				: (
 					<>
+						<Sections />
 						<FeaturedProducts products={productsOnSale} />
+						<Companies companies={companies} />
+						<SearchBox />
 						<BestSellers products={bestSellers} />
 					</>
 				)
 			}
 			
 			<Footer>
+				<View style={{ marginBottom: 25 }}>
+					<Button icon='message-circle' variant='outlined' color='primary'>Indique um estabelecimento</Button>
+				</View>
 				<Image source={logoResource} resizeMode='contain' style={{ height: 130, width: 150 }} />
 			</Footer>
 		</ScrollView>

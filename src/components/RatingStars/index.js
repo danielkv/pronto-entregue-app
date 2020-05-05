@@ -12,7 +12,8 @@ function renderStars(rate, size) {
 }
 
 export default function RatingStars({ rate, size=15 }) {
+	if (!rate) return false;
 	return (
-		<View style={{ flexDirection: 'row', marginTop: 4 }}>{renderStars(rate, size)}</View>
+		<View style={{ flexDirection: 'row', marginTop: 3, marginBottom: 5 }}>{renderStars(rate, size)}</View>
 	);
 }

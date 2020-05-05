@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
 
 import ErrorBlock from '../../../components/ErrorBlock';
-import Section from '../../../components/Section';
+import SectionItem from '../../../components/SectionItem';
 
 import { useSelectedAddress } from '../../../controller/hooks';
 import { Typography, useTheme } from '../../../react-native-ui';
@@ -31,7 +31,7 @@ export default function Sections() {
 				: sections.length
 					? (
 						<ItemsContainer>
-							{sections.map((item) => <Section key={item.id} onPress={()=>navigation.navigate('SectionCompaniesScreen', { sectionId: item.id, sectionName: item.name, sectionImage: item.image })} section={item} />)}
+							{sections.map((item) => <SectionItem key={item.id} onPress={()=>navigation.navigate('SectionCompaniesScreen', { sectionId: item.id, sectionName: item.name, sectionImage: item.image })} section={item} />)}
 						</ItemsContainer>
 					)
 					: <Typography variant='subtitle'>Nenhuma seção encontrada para entrega nesse local</Typography>
