@@ -22,7 +22,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "./src/assets/*"
     ],
     "notification": {
       "icon": "./src/assets/notification-icon.png"

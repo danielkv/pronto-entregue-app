@@ -9,7 +9,7 @@ import { Container, BgImage } from './styles';
 export default function SectionItem({ section, onPress, dense=false }) {
 	return (
 		<Container dense={dense} onPress={onPress}>
-			<BgImage source={{ uri: section.image }}>
+			<BgImage source={{ uri: section.image }} resizeMode='cover'>
 				<View>
 					<LinearGradient
 						colors={['#0000', '#000f']}

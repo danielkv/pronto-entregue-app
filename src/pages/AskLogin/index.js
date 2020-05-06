@@ -4,7 +4,7 @@ import { View, ImageBackground, Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
-import BgAskLogin from '../../assets/images/bg_login_ask.png';
+import BgAskLogin from '../../assets/images/bg_login_ask.jpg';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { Paper, Typography, Button } from '../../react-native-ui';
 

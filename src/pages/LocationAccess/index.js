@@ -4,7 +4,7 @@ import { View, ImageBackground, Image, ActivityIndicator, Alert } from 'react-na
 import { useNavigation } from '@react-navigation/core';
 import * as Updates from 'expo-updates';
 
-import BgWelcome from '../../assets/images/bg_welcome.png';
+import BgWelcome from '../../assets/images/bg_welcome.jpg';
 import LogoSymbol from '../../assets/images/logo-vertical-v3.png';
 import { useTheme, Paper, Typography, Button } from '../../react-native-ui';
 import { initialize, logUserOut, resetAddress } from '../../services/init';

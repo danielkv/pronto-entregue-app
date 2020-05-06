@@ -21,6 +21,7 @@ export default function Sections() {
 	return (
 		<View>
 			<FlatList
+				showsHorizontalScrollIndicator={false}
 				data={sections}
 				renderItem={({ item }) => {
 					const params = {
