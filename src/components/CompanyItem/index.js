@@ -22,7 +22,7 @@ export default function CompanyItem({ item: company }) {
 					height: 120,
 					opacity
 				}}
-				resizeMode='contain'
+				resizeMode='cover'
 			/>
 			<ContentContainer style={{ opacity }}>
 				{!company.isOpen && <ClosedCompanyChip />}
