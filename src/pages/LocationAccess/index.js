@@ -48,11 +48,10 @@ export default function LocationAccess() {
 		Updates.addListener(({ type })=>{
 			if (type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
 				Alert.alert(
-					'Há uma nova versão do app disponível',
-					'Deseja reiniciar agora?',
+					'Há uma nova versão disponível',
+					'Para ter uma melhor experiência, você precisa reiniciar o app',
 					[
-						{ text: 'Sim (Isso irá limpar sua cesta)', onPress: ()=>Updates.reloadAsync() },
-						{ text: 'Não' }
+						{ text: 'Sim (Isso irá limpar sua cesta)', onPress: ()=>Updates.reloadAsync() }
 					]
 				)
 			}
