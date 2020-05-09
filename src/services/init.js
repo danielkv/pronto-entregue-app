@@ -4,6 +4,7 @@ import { AsyncStorage } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
 
+import { registerForPushNotifications, removeForPushNotifications } from '../controller/notification';
 import client from './server';
 
 import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
@@ -53,7 +54,7 @@ export async function initialize() {
 	const userToken = await AsyncStorage.getItem('@prontoEntregue/userToken');
 
 	if (userToken) {
-		const { data } = await client.mutate({ mutation: AUTHENTICATE, variables: { token: userToken } })
+		const { data } = await client.mutate({ mutation: AUTHENTICATE, variables: { token: userToken } });
 		await logUserIn(data.authenticate, userToken);
 		user = data.authenticate;
 	}
@@ -68,10 +69,12 @@ export async function initialize() {
 
 export async function logUserIn(user, token) {
 	await AsyncStorage.setItem('@prontoEntregue/userToken', token);
+	await registerForPushNotifications(user.id);
 	client.writeData({ data: { userToken: token, loggedUserId: user.id } });
 }
 
 export async function logUserOut() {
+	await removeForPushNotifications();
 	await AsyncStorage.removeItem('@prontoEntregue/userToken');
 	client.writeData({ data: { userToken: '', loggedUserId: null } });
 }

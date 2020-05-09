@@ -53,6 +53,18 @@ export const GET_USER = gql`
 	}
 `;
 
+export const PUSH_NOTIFICATION_TOKEN = gql`
+	mutation PushNotificationToken($userId: ID!, $token: String!) {
+		pushNotificationToken(userId: $userId, token: $token)
+	}
+`;
+
+export const REMOVE_NOTIFICATION_TOKEN = gql`
+	mutation PushNotificationToken($token: String!) {
+		removeNotificationToken(token: $token)
+	}
+`;
+
 export const GET_USER_ADDRESS = gql`
 	query loadUserAddress ($id: ID!) {
 		user (id: $id)  {
