@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "643888213114",
+    "firebase_url": "https://pronto-entregue.firebaseio.com",
+    "project_id": "pronto-entregue",
+    "storage_bucket": "pronto-entregue.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643888213114:android:8411ff86fd91c7f7685fc3",
+        "android_client_info": {
+          "package_name": "com.flaker.prontoentregue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643888213114-kuekf4v8a7td22dusn94rdeomuvbanf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD-TY8lwQu0Jm-fnjovkGF3GdF0obFiiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643888213114-kuekf4v8a7td22dusn94rdeomuvbanf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
