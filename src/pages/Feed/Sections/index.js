@@ -12,7 +12,7 @@ import { GET_SECTIONS } from '../../../graphql/sections';
 
 
 export default function Sections() {
-	const { location } = useSelectedAddress();
+	const { location = null } = useSelectedAddress();
 	const navigation = useNavigation();
 	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
 	

@@ -23,7 +23,7 @@ import { LOAD_FEED } from '../../graphql/products';
 
 export default function Feed() {
 	const navigation = useNavigation();
-	const { location=null } = useSelectedAddress();
+	const { location = null } = useSelectedAddress();
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 

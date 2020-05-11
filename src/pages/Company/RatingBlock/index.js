@@ -15,13 +15,13 @@ export default function RatingBlock({ companyId }) {
 	const rowsPerPage = 8;
 	const { data: { ratings = [], countRatings = 0, pageInfo: { page = 0 } = {} } = {}, loading: loadingRatings, error: ratingsError, fetchMore = null } = useQuery(GET_RATINGS, { notifyOnNetworkStatusChange: true,  variables: { filter: { companyId }, pagination: { page: 0, rowsPerPage } } });
 
-	function loadMore (nexPage) {
+	function loadMore (nextPage) {
 		if (!fetchMore) return;
 
 		return fetchMore({
 			variables: {
 				pagination: {
-					page: nexPage,
+					page: nextPage,
 					rowsPerPage
 				}
 			},

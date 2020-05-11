@@ -23,7 +23,7 @@ const timeOutLimit = 600;
 export default function SearchBlock() {
 	const { palette } = useTheme();
 	const [actualSearch, setActualSearch]= useState('');
-	const { location } = useSelectedAddress();
+	const { location = null } = useSelectedAddress();
 	let timeOut = null;
 	const locationStr = location.join(',');
 

@@ -17,7 +17,7 @@ import { GET_SECTIONS } from '../../../graphql/sections';
 export default function Sections() {
 	const navigation = useNavigation();
 	const { palette } = useTheme();
-	const { location } = useSelectedAddress();
+	const { location = null } = useSelectedAddress();
 	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
 	
 	if (error) return <ErrorBlock error={getErrorMessage(error)} />

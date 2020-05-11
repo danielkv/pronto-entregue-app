@@ -1,6 +1,6 @@
 import { uniqueId, cloneDeep } from 'lodash';
 
-import client from '../services/server';
+import client from '../services/apolloClient';
 import { CartValidationError } from '../utils/errors';
 
 import { GET_CART } from '../graphql/cart';

@@ -18,6 +18,7 @@ const cache = new InMemoryCache({});
 const initialData = {
 	loggedUserId: null,
 	userToken: null,
+	selectedCompany: null,
 	selectedAddress: null,
 
 	// CART

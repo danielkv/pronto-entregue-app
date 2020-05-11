@@ -7,7 +7,7 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import { ThemeProvider } from './react-native-ui';
 import Routes from './routes';
-import apolloClient from './services/server';
+import apolloClient from './services/apolloClient';
 import { Container } from './styles';
 import theme from './theme';
 

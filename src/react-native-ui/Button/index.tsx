@@ -60,11 +60,11 @@ export default function Button(props: ButtonProps) {
 			<TouchableOpacity {...props} style={styles.button}>
 				{Boolean(IconComponent) && IconComponent}
 				{
-					props.label
-						? <Typography variant='button' style={styles.text}>{props.label}</Typography>
-						: typeof props.children === 'string'
+					props.children
+						? typeof props.children === 'string'
 							? <Typography variant='button' style={styles.text}>{props.children}</Typography>
 							: props.children
+						: <Typography variant='button' style={styles.text}>{props.label}</Typography>
 				}
 			</TouchableOpacity>
 			{Boolean(props.helperText)&& <FormHelperText>{props.helperText}</FormHelperText>}

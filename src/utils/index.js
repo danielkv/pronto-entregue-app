@@ -62,11 +62,28 @@ export const getStatusText = (status) => {
 	}
 }
 
+export const getOrderStatusIcon = (status) => {
+	// isIn: [['waiting', 'preparing', 'delivery', 'delivered', 'canceled']],
+	switch(status) {
+		case 'waiting':
+			return { type: 'material-community', name: 'clock', color: '#363E5E' }
+		case 'preparing':
+			return { type: 'material-community', name: 'silverware-spoon', color: '#363E5E' }
+		case 'delivering':
+			return { name: 'truck', color: '#363E5E' }
+		case 'delivered':
+			return { type: 'material-community', name: 'check-circle', color: '#058F0A' }
+		case 'canceled':
+			return { type: 'material-community', name: 'close-circle-outline', color: '#E63A3A' }
+		default: return '';
+	}
+}
+
 export const getStatusColors = (status) => {
 	switch (status) {
 		case 'delivered':
 			return {
-				background: '#fff',
+				background: '#A4D82B',
 				text: '#000'
 			};
 		case 'delivering':

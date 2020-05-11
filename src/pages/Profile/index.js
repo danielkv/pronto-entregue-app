@@ -18,12 +18,13 @@ import {
 	UserHeader,
 } from './styles';
 
-import { GET_USER, UPDATE_USER_IMAGE } from '../../graphql/users';
+import { GET_USER, UPDATE_USER_IMAGE, GET_USER_COMPANIES } from '../../graphql/users';
 
 export default function Profile({ navigation }) {
 	const { palette } = useTheme();
 	const loggedUserId = useLoggedUserId()
 	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } });
+	const { data: { user: { companies = [] } = {} } = {} } = useQuery(GET_USER_COMPANIES, { variables: { id: loggedUserId } });
 	const [updateUserImage, { loading: loadingUpdateUserImage }] = useMutation(UPDATE_USER_IMAGE, { variables: { userId: loggedUserId } });
 	
 	async function getCameraRollPermission() {
@@ -92,6 +93,15 @@ export default function Profile({ navigation }) {
 					<Button variant='filled' icon='user' label='Editar perfil' onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId } })} />
 					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
 					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('FavoriteProductsScreen')} />
+					{Boolean(companies.length)
+						&& <Button
+							variant='filled'
+							icon='inbox'
+							label='Pedidos da empresa'
+							color='secondary'
+							onPress={()=>navigation.navigate('OrdersRollScreen')}
+						/>
+					}
 					<Button variant='outlined' icon='log-out' label='Sair' onPress={handleLogOutUser} />
 				</Paper>
 			</View>

@@ -21,7 +21,7 @@ import { LOAD_SECTION } from '../../graphql/sections';
 export default function Section() {
 	const { palette } = useTheme();
 	const { params: { sectionId, sectionName, sectionImage } } = useRoute();
-	const { location } = useSelectedAddress();
+	const { location = null } = useSelectedAddress();
 	
 	// QUERY
 	const { data: { section = null } = {}, loading: loadingSection, error: sectionError } = useQuery(LOAD_SECTION, { variables: { id: sectionId, location } });

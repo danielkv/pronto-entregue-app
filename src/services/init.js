@@ -5,7 +5,7 @@ import { AsyncStorage } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 
 import { registerForPushNotifications, removeForPushNotifications } from '../controller/notification';
-import client from './server';
+import client from './apolloClient';
 
 import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { AUTHENTICATE, LOGGED_USER_ID } from '../graphql/authentication';

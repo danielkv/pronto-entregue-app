@@ -20,7 +20,7 @@ import { LOAD_COMPANY } from '../../graphql/companies';
 
 export default function Company() {
 	const { params: { companyId, companyName, companyImage, companyBackground } } = useRoute();
-	const { location } = useSelectedAddress();
+	const { location = null } = useSelectedAddress();
 	const { palette } = useTheme();
 
 	const { data: { company = null } = {}, loading: loadingCompany, error: companyError } = useQuery(LOAD_COMPANY, { variables: { id: companyId, location } });

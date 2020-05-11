@@ -53,6 +53,18 @@ export const GET_USER = gql`
 	}
 `;
 
+export const GET_USER_COMPANIES = gql`
+	query getUserCompanies ($id: ID!) {
+		user (id: $id)  {
+			id
+			companies {
+				id
+				displayName
+			}
+		}
+	}
+`;
+
 export const PUSH_NOTIFICATION_TOKEN = gql`
 	mutation PushNotificationToken($userId: ID!, $token: String!) {
 		pushNotificationToken(userId: $userId, token: $token)
@@ -60,7 +72,7 @@ export const PUSH_NOTIFICATION_TOKEN = gql`
 `;
 
 export const REMOVE_NOTIFICATION_TOKEN = gql`
-	mutation PushNotificationToken($token: String!) {
+	mutation RemoveNotificationToken($token: String!) {
 		removeNotificationToken(token: $token)
 	}
 `;
@@ -133,5 +145,16 @@ export const UPDATE_USER_IMAGE = gql`
 			id
 			image
 		}
+	}
+`;
+
+export const GET_SELECTED_COMPANY = gql`
+	query {
+		selectedCompany @client
+	}
+`;
+export const SET_SELECTED_COMPANY = gql`
+	mutation ($companyId: ID!) {
+		setSelectedCompany (companyId: $companyId) @client
 	}
 `;

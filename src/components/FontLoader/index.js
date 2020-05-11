@@ -11,7 +11,8 @@ export default function FontLoader({ children }) {
 
 	useEffect(()=>{
 		Font.loadAsync({
-			'Roboto': require('../../assets/fonts/Roboto-Regular.ttf')
+			'Roboto': require('../../assets/fonts/Roboto-Regular.ttf'),
+			'Roboto-Bold': require('../../assets/fonts/Roboto-Bold.ttf')
 		})
 			.then(()=> {
 				setLoading(false)
