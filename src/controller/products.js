@@ -29,8 +29,13 @@ export function calculateOptionsGroupPrice (optionsGroup, initialValue = 0, filt
 	return optionsGroupValue + initialValue;
 }
 
+export function getProductFinalPrice(product) {
+	if (!product) return 0;
+	return product?.sale?.progress ? product.sale.price : product.price;
+}
+
 export function calculateProductPrice(product, filterSelected=true) {
-	const productPrice = product?.sale?.progress ? product.sale.price : product.price;
+	const productPrice = getProductFinalPrice(product);
 	
 	return product.optionsGroups.reduce((totalGroup, group) => {
 	
@@ -131,7 +136,7 @@ export function sanitizeCartData(data) {
 		productId: data.id,
 		image: data.image,
 		name: data.name,
-		price: data.price,
+		price: getProductFinalPrice(data),
 		quantity: data.quantity,
 		message: data.message || '',
 		company: {
