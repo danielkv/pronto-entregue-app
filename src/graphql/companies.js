@@ -52,6 +52,23 @@ export const GET_RATINGS = gql`
 	}
  `;
 
+export const GET_COMPANIES = gql`
+	query GetCompanies($pagination: Pagination, $location: GeoPoint!, $filter: JSON) {
+		companies(location: $location, pagination: $pagination, filter: $filter) {
+			id
+			displayName
+			isOpen
+			backgroundColor
+			image
+			rate
+			deliveryTime
+			distance(location: $location)
+			typeDelivery
+			typePickUp
+		}
+	}
+`;
+
 export const SUGGEST_COMPANY = gql`
 	mutation ($data: JSON) {
 		suggestCompany(data: $data)

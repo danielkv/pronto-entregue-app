@@ -18,16 +18,6 @@ export const LOAD_SECTION = gql`
 			image
 			description
 			active
-			companies(location: $location) {
-				id
-				displayName
-				isOpen
-				backgroundColor
-				image
-				rate
-				deliveryTime
-				distance(location: $location)
-			}
 		}
 	}
 `;

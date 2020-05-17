@@ -14,7 +14,7 @@ import { useSelectedAddress } from '../../controller/hooks';
 import { Paper, Typography, useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 
-import { LOAD_SECTION } from '../../graphql/sections';
+import { GET_COMPANIES } from '../../graphql/companies';
 
 // import { Container } from './styles';
 
@@ -24,7 +24,7 @@ export default function Section() {
 	const { location = null } = useSelectedAddress();
 	
 	// QUERY
-	const { data: { section = null } = {}, loading: loadingSection, error: sectionError } = useQuery(LOAD_SECTION, { variables: { id: sectionId, location } });
+	const { data: { companies = [] } = {}, loading: loadingSection, error: sectionError } = useQuery(GET_COMPANIES, { variables: { filter: { companyTypeId: sectionId }, location } });
 
 	if (sectionError) return <ErrorBlock error={getErrorMessage(sectionError)} />
 
@@ -51,9 +51,9 @@ export default function Section() {
 				</View>
 				{loadingSection
 					? <ActivityIndicator color={palette.primary.main} />
-					: section?.companies
+					: companies.length > 0
 						? (
-							section.companies.map(company => <CompanyItem key={company.id} item={company} />)
+							companies.map(company => <CompanyItem key={company.id} item={company} />)
 						)
 						: <NoResultBlock />
 				}
