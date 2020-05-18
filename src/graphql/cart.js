@@ -39,6 +39,8 @@ export const GET_CART = gql`
 			deliveryTime
 			acceptTakeout
 			image
+			typeDelivery
+			typePickUp
 		}
 
 		cartPrice @client
@@ -97,6 +99,8 @@ export const GET_CART_COMPANY = gql`
 			deliveryTime
 			acceptTakeout
 			image
+			typeDelivery
+			typePickUp
 		}
 	}
 `;

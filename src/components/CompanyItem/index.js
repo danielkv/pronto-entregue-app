@@ -1,10 +1,11 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { View, Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
 import { Typography, Icon } from '../../react-native-ui';
 import ClosedCompanyChip from '../ClosedCompanyChip';
+import OnlyPickUp from '../OnlyPickUp';
 import RatingStars from '../RatingStars';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
 
@@ -12,6 +13,8 @@ export default function CompanyItem({ item: company }) {
 	const navigation = useNavigation();
 
 	const opacity = company.isOpen ? 1 : .5;
+
+	console.log(company);
 
 	return (
 		<Container onPress={()=> navigation.navigate('CompanyScreen', { companyId: company.id, companyName: company.displayName, companyImage: company.image, companyBackground: company.backgroundColor })}>
@@ -25,7 +28,10 @@ export default function CompanyItem({ item: company }) {
 				resizeMode='cover'
 			/>
 			<ContentContainer style={{ opacity }}>
-				{!company.isOpen && <ClosedCompanyChip />}
+				<View style={{ flexDirection: 'row' }}>
+					{!company.isOpen && <ClosedCompanyChip />}
+					{!company.typeDelivery && company.typePickUp && <OnlyPickUp />}
+				</View>
 				<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{company.displayName}</Typography>
 				<RatingStars rate={company.rate} size={14} />
 				<FooterContainer>

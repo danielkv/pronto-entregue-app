@@ -19,7 +19,7 @@ import { getErrorMessage, extractFirstError } from '../../../utils/errors';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import DeliveryModal from './DeliveryModal';
 
-import { GET_CART, SET_CART_DELIVERY } from '../../../graphql/cart';
+import { GET_CART, SET_CART_DELIVERY, CANCEL_CART } from '../../../graphql/cart';
 
 export default function DeliveryBlock() {
 	const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
@@ -33,6 +33,7 @@ export default function DeliveryBlock() {
 
 	const { data: { cartDelivery, cartCompany }, error: cartError } = useQuery(GET_CART);
 	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
+	const [cancelCart] = useMutation(CANCEL_CART);
 
 	const handleOpenDeliveryModal = useCallback(()=>{
 		setDeliveryModalOpen(true);
@@ -41,7 +42,12 @@ export default function DeliveryBlock() {
 		setDeliveryModalOpen(false);
 	});
 
+	
+
 	function handleConfirmDeliveryModal({ type, address, force=false }) {
+		//console.log(type, force, cartCompany);
+		if (force && (cartCompany.typePickUp && !cartCompany.typeDelivery)) return cancelCart();
+
 		return setDelivery({ variables: { type, address, force } })
 			.then(()=>{
 				setDeliveryModalOpen(false)
@@ -49,10 +55,17 @@ export default function DeliveryBlock() {
 			.catch((err) => {
 				const error = extractFirstError(err);
 				if (error.code === 'DELIVERY_LOCATION') {
-					Alert.alert(error.message, 'Realmente deseja alterar o endereço e limpar a cesta?', [
-						{ text: 'Sim', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
-						{ text: 'Não' }
-					])
+					if (cartCompany.typePickUp){
+						Alert.alert(error.message, 'Deseja retirar o pedido no balcão ou limpar sua cesta?', [
+							{ text: 'Retirar no balcão', onPress: ()=>handleConfirmDeliveryModal({ type: 'tekeout' }) },
+							{ text: 'Limpar cesta', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
+						])
+					} else {
+						Alert.alert(error.message, 'Realmente deseja alterar o endereço e limpar a cesta?', [
+							{ text: 'Sim', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
+							{ text: 'Não' }
+						])
+					}
 				} else {
 					Alert.alert(error.message);
 				}
@@ -60,7 +73,12 @@ export default function DeliveryBlock() {
 	}
 
 	useEffect(()=>{
-		if (cartCompany?.id && !loadingDelivery) handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
+		if (!cartCompany?.id || loadingDelivery) return;
+
+		console.log(cartCompany);
+
+		if (cartCompany.typePickUp && !cartCompany.typeDelivery) handleConfirmDeliveryModal({ type: 'tekeout' })
+		else handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
 	}, [])
 
 	if (cartError) return <ErrorBlock error={getErrorMessage(cartError)} />
@@ -102,7 +120,7 @@ export default function DeliveryBlock() {
 				swipeDirection='right'
 				propagateSwipe={false}
 			>
-				<DeliveryModal acceptTakeout={cartCompany?.acceptTakeout} loading={loadingDelivery} confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
+				<DeliveryModal acceptTakeout={cartCompany?.typePickUp} loading={loadingDelivery} confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
 			</Modal>
 		</View>
 	);

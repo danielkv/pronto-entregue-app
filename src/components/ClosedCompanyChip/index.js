@@ -7,7 +7,7 @@ export default function ClosedCompanyChip() {
 		<Chip
 			variant='outlined'
 			label='Fechado'
-			style={{ root: { height: 20, paddingVertical: 0, paddingHorizontal: 10, borderColor: '#b00' }, text: { fontSize: 13, color: '#b00' } }}
+			style={{ root: { marginRight: 3, height: 20, paddingVertical: 0, paddingHorizontal: 10, borderColor: '#b00' }, text: { fontSize: 13, color: '#b00' } }}
 		/>
 	);
 }

@@ -61,6 +61,8 @@ export const LOAD_FEED = gql`
 			rate
 			deliveryTime
 			distance(location: $location)
+			typeDelivery
+			typePickUp
 		}
 	}
 `;
@@ -128,6 +130,8 @@ export const LOAD_PRODUCT = gql`
 				backgroundColor
 				rate
 				distance(location: $location)
+				typeDelivery(location: $location)
+				typePickUp(location: $location)
 				countRatings
 			}
 			category {

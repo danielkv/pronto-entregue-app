@@ -14,7 +14,7 @@ import { GET_SECTIONS } from '../../../graphql/sections';
 export default function Sections() {
 	const { location = null } = useSelectedAddress();
 	const navigation = useNavigation();
-	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location } });
+	const { data: { sections = [] } = {}, loading: loadingSections, error } = useQuery(GET_SECTIONS, { variables: { limit: 8, location }, fetchPolicy: 'cache-and-network' });
 	
 	if (loadingSections || error) return false;
 

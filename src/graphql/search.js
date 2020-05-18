@@ -16,6 +16,8 @@ export const SEARCH_PRODUCTS_COMPANIES = gql`
 			rate
 			deliveryTime
 			distance(location: $location)
+			typeDelivery
+			typePickUp
 		}
 	}
 

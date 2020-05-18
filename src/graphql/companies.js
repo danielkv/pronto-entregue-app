@@ -10,9 +10,10 @@ export const LOAD_COMPANY = gql`
 			deliveryTime
 			rate
 			isOpen
-			deliveryTime
 			countRatings
 			distance(location: $location)
+			typeDelivery(location: $location)
+			typePickUp(location: $location)
 		}
 	}
 `;

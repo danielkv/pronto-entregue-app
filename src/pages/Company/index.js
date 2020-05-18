@@ -7,6 +7,7 @@ import { useRoute } from '@react-navigation/core';
 
 import ClosedCompanyChip from '../../components/ClosedCompanyChip';
 import ErrorBlock from '../../components/ErrorBlock';
+import OnlyPickUp from '../../components/OnlyPickUp';
 import RatingStars from '../../components/RatingStars';
 
 import { useSelectedAddress } from '../../controller/hooks';
@@ -41,8 +42,11 @@ export default function Company() {
 				<Image source={{ uri: companyImage }} style={{ width: 160, height: 160 }} resizeMode='contain' />
 			</View>
 			<Paper>
-				{!company?.isOpen && <View style={{ marginBottom: 5 }}><ClosedCompanyChip /></View>}
 				<Typography style={{ fontSize: 28, color: palette.background.dark, fontWeight: 'bold' }}>{companyName}</Typography>
+				<View style={{ flexDirection: 'row', marginBottom: 5 }}>
+					{!company.isOpen && <ClosedCompanyChip />}
+					{!company.typeDelivery && company.typePickUp && <OnlyPickUp text='Apenas Retirada no local' />}
+				</View>
 				{loadingCompany
 					? <ActivityIndicator color={palette.primary.main} />
 					: (

@@ -33,8 +33,8 @@ export default function Chip(props: ChipProps) {
 	const componentStandardStyle = Chip.style.default;
 	const componentVariantStyle = Chip.style[variant];
 
-	const rootStyle = [componentStandardStyle.root, addStyle[variant]?.root, componentVariantStyle.root, props?.style?.root];
-	const textStyle = [componentStandardStyle.text, addStyle[variant]?.text, componentVariantStyle.text, componentVariantStyle.text, props?.style?.text];
+	const rootStyle = [componentStandardStyle?.root, addStyle[variant]?.root, componentVariantStyle?.root, props?.style?.root];
+	const textStyle = [componentStandardStyle?.text, addStyle[variant]?.text, componentVariantStyle?.text, props?.style?.text];
 
 	return (
 		<View style={rootStyle}>
