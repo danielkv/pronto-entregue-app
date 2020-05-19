@@ -45,7 +45,7 @@ function toRad(Value)
 	return Value * Math.PI / 180;
 }
 
-export const getStatusText = (status) => {
+export function getStatusText (status) {
 	switch (status) {
 		case 'waiting':
 			return 'Aguardando';

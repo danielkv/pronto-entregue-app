@@ -46,6 +46,14 @@ export const ORDER_FRAGMENT = gql`
 			backgroundColor
 			image
 			rate
+			address {
+				street
+				number
+				city
+				state
+				zipcode
+				location
+			}
 		}
 		
 		products {

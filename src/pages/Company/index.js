@@ -43,14 +43,14 @@ export default function Company() {
 			</View>
 			<Paper>
 				<Typography style={{ fontSize: 28, color: palette.background.dark, fontWeight: 'bold' }}>{companyName}</Typography>
-				<View style={{ flexDirection: 'row', marginBottom: 5 }}>
-					{!company.isOpen && <ClosedCompanyChip />}
-					{!company.typeDelivery && company.typePickUp && <OnlyPickUp text='Apenas Retirada no local' />}
-				</View>
 				{loadingCompany
 					? <ActivityIndicator color={palette.primary.main} />
 					: (
 						<>
+							<View style={{ flexDirection: 'row', marginBottom: 5 }}>
+								{!company.isOpen && <ClosedCompanyChip />}
+								{!company.typeDelivery && company.typePickUp && <OnlyPickUp text='Apenas Retirada no local' />}
+							</View>
 							<RatingStars rate={company.rate} />
 							<FooterContainer>
 								{Boolean(company.deliveryTime) && <FooterContent>
