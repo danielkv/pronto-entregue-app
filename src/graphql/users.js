@@ -34,6 +34,21 @@ export const GET_USER_FAVORITE_PRODUCTS = gql`
 	${LIST_PRODUCT_FRAGMENT}
 `;
 
+export const GET_USER_CREDITS = gql`
+	query GetCredits ($id: ID!) {
+		user (id: $id)  {
+			id
+			creditBalance
+			creditHistory {
+				id
+				value
+				createdAt
+				history
+			}
+		}
+	}
+`;
+
 export const GET_USER = gql`
 	query getUser ($id: ID!) {
 		user (id: $id)  {

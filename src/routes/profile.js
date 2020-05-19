@@ -7,8 +7,8 @@ import TabBar from '../components/TabBar';
 
 import { useSelectedAddress } from '../controller/hooks';
 import OrdersRollScreen from '../pages/CompanyOrdersRoll';
-import FavoriteProductsScreen from '../pages/FavoriteProducts';
 import ProfileScreen from '../pages/Profile';
+import ProfileTabsScreen from '../pages/ProfileTabs';
 import SubscriptionScreen from '../pages/Subscription';
 
 const Stack = createStackNavigator();
@@ -23,7 +23,7 @@ export default function ProfileRoutes() {
 				screenOptions={{ header: Header }}
 			>
 				<Stack.Screen name='ProfileScreen' component={ProfileScreen} />
-				<Stack.Screen name='FavoriteProductsScreen' component={FavoriteProductsScreen} />
+				<Stack.Screen name='ProfileTabsScreen' component={ProfileTabsScreen} />
 				<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} />
 				<Stack.Screen name='OrdersRollScreen' component={OrdersRollScreen} />
 			</Stack.Navigator>
