@@ -67,7 +67,7 @@ export default function Order() {
 	const now = moment();
 	const deliver = moment(order.createdAt).add(order.deliveryTime, 'm');
 	const forecast = order.deliveryTime ? now.to(deliver) : null;
-	const anyMinute = deliver.diff(now, 'm') < 0 ? true : false;
+	const anyMinute = deliver.diff(now, 'm') <= 5 ? true : false;
 
 	return (
 		<ScrollView
@@ -81,15 +81,15 @@ export default function Order() {
 					label={getOrderStatusLabel(order)}
 					style={{
 						root: { backgroundColor: statusColor.background, alignSelf: 'stretch', marginHorizontal: 35 },
-						text: { color: statusColor.text  }
+						text: { color: statusColor.text }
 					}}
 				/>
-				{order.status === 'waiting' && forecast && <Chip
+				{['waiting', 'preparing'].includes(order.status) && forecast && <Chip
 					style={{
 						root: { backgroundColor: '#fff', alignSelf: 'stretch', marginHorizontal: 35 },
 						text: { color: '#333', fontSize: 14 }
 					}}
-					label={anyMinute ? 'Em qualquer momento' : `Aproximadamente ${forecast}`} />}
+					label={anyMinute ? 'A qualquer momento' : `Aproximadamente ${forecast}`} />}
 				
 				<BlocksContainer>
 					<Blocks order={order} />
