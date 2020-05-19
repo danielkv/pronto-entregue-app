@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/core';
 import moment from 'moment';
 
 import { useTheme, Icon, Typography, Chip } from '../../react-native-ui';
-import { getStatusText, getStatusColors } from '../../utils';
+import { getOrderStatusLabel, getStatusColors } from '../../utils';
 import { BRL } from '../../utils/currency';
 import {
 	Container,
@@ -21,7 +21,7 @@ export default function OrderItem({ item: order }) {
 	const displayDate = moment().diff(createdAt, 'day') >= 1 ? createdAt.format('DD/MM/YY HH:mm') : createdAt.fromNow();
 
 	const statusColor = getStatusColors(order.status);
-	const statusText = getStatusText(order.status);
+	const statusText = getOrderStatusLabel(order);
 
 	const now = moment();
 	const deliver = createdAt.clone().add(order.deliveryTime, 'm');

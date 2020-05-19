@@ -9,7 +9,7 @@ import LoadingBlock from '../../components/LoadingBlock';
 
 import { useLoggedUserId, useSelectedCompany } from '../../controller/hooks';
 import { Paper, Typography, Button, Chip, Divider, useTheme } from '../../react-native-ui';
-import { getOrderStatusIcon, getStatusText } from '../../utils';
+import { availableStatus } from '../../utils';
 import OrderRollItem from './OrderRollItem';
 import { CompanyMenuItem } from './styles';
 
@@ -27,7 +27,7 @@ export default function OrdersRoll() {
 	const [modalStatusVisible, setModalStatusVisible] = useState(false);
 	const [loadingUpdateStatus, setLoadingUpdateStatus] = useState(null);
 	const [selectedOrder, setSelectedOrder] = useState(null);
-	const [refreshing, setRefreshing] = useState(null);
+	const [refreshing, setRefreshing] = useState(false);
 	const selectedCompany = useSelectedCompany();
 
 	const [setSelectedCompany] = useMutation(SET_SELECTED_COMPANY);
@@ -93,8 +93,6 @@ export default function OrdersRoll() {
 
 	// change order status ---------
 
-	const orderStatus = ['waiting', 'preparing', 'delivering', 'delivered', 'canceled'];
-
 	function handleSetStatus(newStatus) {
 		const order = orders[selectedOrder];
 		setLoadingUpdateStatus(newStatus);
@@ -140,16 +138,16 @@ export default function OrdersRoll() {
 						<>
 							<Chip style={{ root: { height: 30, position: 'absolute', top: -10 } }} label={`#${orders[selectedOrder].id}`} color='secondary' />
 							<Typography variant='subtitle'>Alterar status</Typography>
-							{orderStatus.map(status => (
+							{availableStatus(orders[selectedOrder]).map(status => (
 								<Button
-									key={status}
-									onPress={()=>handleSetStatus(status)}
-									variant={status===orders[selectedOrder].status ? 'filled' : 'outlined'}
-									color={status===orders[selectedOrder].status ? 'secondary' : 'default'}
-									icon={loadingUpdateStatus !== status && getOrderStatusIcon(status)}
-									label={getStatusText(status)}
+									key={status.slug}
+									onPress={()=>handleSetStatus(status.slug)}
+									variant={status.slug===orders[selectedOrder].status ? 'filled' : 'outlined'}
+									color={status.slug===orders[selectedOrder].status ? 'secondary' : 'default'}
+									icon={loadingUpdateStatus !== status.slug && status.Icon}
+									label={status.label}
 								>
-									{loadingUpdateStatus === status && <LoadingBlock />}
+									{loadingUpdateStatus === status.slug && <LoadingBlock />}
 								</Button>
 							))}
 							<Divider />

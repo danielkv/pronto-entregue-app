@@ -11,7 +11,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { Chip, Paper, Divider, Typography, Button, useTheme, Icon } from '../../react-native-ui';
-import { getStatusText, getStatusColors } from '../../utils';
+import { getOrderStatusLabel, getStatusColors } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import Blocks from './Blocks';
 import {
@@ -78,7 +78,7 @@ export default function Order() {
 					<Typography style={{ fontSize: 12, color: palette.background.dark }}>Arraste para atualizar</Typography>
 				</View>
 				<Chip
-					label={getStatusText(order.status)}
+					label={getOrderStatusLabel(order)}
 					style={{
 						root: { backgroundColor: statusColor.background, alignSelf: 'stretch', marginHorizontal: 35 },
 						text: { color: statusColor.text  }

@@ -122,6 +122,7 @@ export default function Blocks({ order }) {
 					</View>
 					<Address item={order.company.address} />
 					<Button onPress={handleOpenCompanyAddress} variant='filled' color='secondary' icon='map' label='Abrir mapa' />
+					<Button onPress={handleCloseAddressModal} variant='outlined' label='Fechar' />
 				</Paper>
 			</Modal>
 		</Container>

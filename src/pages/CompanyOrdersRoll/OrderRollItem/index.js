@@ -4,26 +4,27 @@ import { View, Image } from 'react-native'
 import moment from 'moment'
 
 import { Chip, Typography, Paper, Divider, IconButton } from '../../../react-native-ui'
-import { getStatusText, getStatusColors } from '../../../utils'
+import { getOrderStatusLabel, getStatusColors } from '../../../utils'
 import OrderRollProduct from './OrderRollProduct'
 
 export default function OrderRollItem({ item: order, handleOpenModalStatus, orderIndex }) {
 	const colors = getStatusColors(order.status);
+	const canEdit = !['delivered', 'canceled'].includes(order.status);
 
 	return (
 		<Paper style={{ marginTop: 10, marginBottom: 10, padding: 15, position: 'relative' }} elevation={0}>
 			
-			<IconButton
+			{canEdit && <IconButton
 				onPress={()=>handleOpenModalStatus(orderIndex)}
 				icon={{ type: 'material-community', name: 'dots-vertical' }}
 				variant='filled'
 				color='primary'
 				style={{ root: { position: 'absolute', right: 5, top: -10 } }}
-			/>
+			/>}
 
 			<View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
 				<Chip style={{ root: { height: 30 } }} label={`#${order.id}`} color='secondary' />
-				<Chip style={{ root: { height: 30, marginLeft: 6, paddingVertical: 0, borderColor: colors.background }, text: { color: colors.background } }} label={getStatusText(order.status)} variant='outlined' />
+				<Chip style={{ root: { height: 30, marginLeft: 6, paddingVertical: 0, borderColor: colors.background }, text: { color: colors.background } }} label={getOrderStatusLabel(order)} variant='outlined' />
 				<Typography style={{ marginLeft: 6 }} variant='subtitle'>{moment(order.createdAt).format('DD/MM HH:mm')}</Typography>
 			</View>
 			

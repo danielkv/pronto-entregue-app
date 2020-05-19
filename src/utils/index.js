@@ -45,31 +45,40 @@ function toRad(Value)
 	return Value * Math.PI / 180;
 }
 
-export function getStatusText (status) {
-	switch (status) {
+export function getOrderStatusLabel(order, status) {
+	// isIn: [['waiting', 'preparing', 'delivering', 'delivered', 'canceled']],
+		
+	switch(status || order.status) {
 		case 'waiting':
 			return 'Aguardando';
 		case 'preparing':
 			return 'Preparando';
 		case 'delivering':
-			return 'Na Entrega'
+			return order.type === 'takeout' ? 'Aguardando retirada' : 'A caminho';
 		case 'delivered':
 			return 'Entregue';
 		case 'canceled':
 			return 'Cancelado';
-		default:
-			return '';
+		default: return '';
 	}
+	
 }
 
-export const getOrderStatusIcon = (status) => {
+export function availableStatus(order) {
+	const status = ['waiting', 'preparing', 'delivering', 'delivered', 'canceled'];
+
+	return status.map(stat => ({ slug: stat, label: getOrderStatusLabel(order, stat), Icon: getOrderStatusIcon({ ...order, status: stat }) }))
+}
+
+export function getOrderStatusIcon(order) {
 	// isIn: [['waiting', 'preparing', 'delivery', 'delivered', 'canceled']],
-	switch(status) {
+	switch(order.status) {
 		case 'waiting':
 			return { type: 'material-community', name: 'clock', color: '#363E5E' }
 		case 'preparing':
 			return { type: 'material-community', name: 'silverware-spoon', color: '#363E5E' }
 		case 'delivering':
+			if (order.type === 'takeout') return { name: 'truck', color: '#363E5E' }
 			return { name: 'truck', color: '#363E5E' }
 		case 'delivered':
 			return { type: 'material-community', name: 'check-circle', color: '#058F0A' }

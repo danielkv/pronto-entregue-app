@@ -31,7 +31,7 @@ export default function SearchBlock() {
 	const [handleSearch, { called, loading, error: searchError, data: { products = [], companies = [] } = {} }] = useMutation(SEARCH_PRODUCTS_COMPANIES, { variables: { location }, fetchPolicy: 'no-cache' })
 
 	useEffect(() => {
-		if (actualSearch) handleSearch({ variables: { search: actualSearch } })
+		if (actualSearch) handleSearch({ variables: { search: actualSearch.trim() } })
 	}, [locationStr, actualSearch])
 
 	function handleChangeSearch(searchText) {

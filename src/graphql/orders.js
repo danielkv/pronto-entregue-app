@@ -127,6 +127,7 @@ export const GET_USER_ORDERS = gql`
 				countProducts
 				deliveryTime
 				status
+				type
 				createdAt
 				company {
 					id

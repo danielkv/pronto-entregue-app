@@ -14,8 +14,6 @@ export default function CompanyItem({ item: company }) {
 
 	const opacity = company.isOpen ? 1 : .5;
 
-	console.log(company);
-
 	return (
 		<Container onPress={()=> navigation.navigate('CompanyScreen', { companyId: company.id, companyName: company.displayName, companyImage: company.image, companyBackground: company.backgroundColor })}>
 			<Image
@@ -28,11 +26,11 @@ export default function CompanyItem({ item: company }) {
 				resizeMode='cover'
 			/>
 			<ContentContainer style={{ opacity }}>
+				<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{company.displayName}</Typography>
 				<View style={{ flexDirection: 'row' }}>
 					{!company.isOpen && <ClosedCompanyChip />}
 					{!company.typeDelivery && company.typePickUp && <OnlyPickUp />}
 				</View>
-				<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{company.displayName}</Typography>
 				<RatingStars rate={company.rate} size={14} />
 				<FooterContainer>
 					{Boolean(company.deliveryTime) && <FooterContent>

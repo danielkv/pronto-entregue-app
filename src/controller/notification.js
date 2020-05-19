@@ -1,6 +1,7 @@
 import { Alert, Platform } from 'react-native';
 
 import { Notifications } from 'expo';
+import * as Device from 'expo-device';
 import * as Permissions from 'expo-permissions';
 
 import client from '../services/apolloClient';
@@ -37,6 +38,9 @@ export function handleNotificationListener(notification, navigation) {
 }
 	
 export async function registerForPushNotifications(userId) {
+	/// if is running on simulator
+	if (!Device.isDevice) return;
+
 	const { status: existingStatus } = await Permissions.getAsync(
 		Permissions.NOTIFICATIONS
 	);
@@ -75,8 +79,6 @@ export async function registerForPushNotifications(userId) {
 export async function removeForPushNotifications() {
 	// Get the token that uniquely identifies this device
 	const token = await Notifications.getExpoPushTokenAsync();
-
-	console.log(token);
 			
 	// POST the token to your backend server from where you can retrieve it to send push notifications.
 	await client.mutate({ mutation: REMOVE_NOTIFICATION_TOKEN, variables: { token } });

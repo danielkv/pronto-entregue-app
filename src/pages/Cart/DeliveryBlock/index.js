@@ -45,7 +45,6 @@ export default function DeliveryBlock() {
 	
 
 	function handleConfirmDeliveryModal({ type, address, force=false }) {
-		//console.log(type, force, cartCompany);
 		if (force && (cartCompany.typePickUp && !cartCompany.typeDelivery)) return cancelCart();
 
 		return setDelivery({ variables: { type, address, force } })
@@ -57,7 +56,7 @@ export default function DeliveryBlock() {
 				if (error.code === 'DELIVERY_LOCATION') {
 					if (cartCompany.typePickUp){
 						Alert.alert(error.message, 'Deseja retirar o pedido no balcão ou limpar sua cesta?', [
-							{ text: 'Retirar no balcão', onPress: ()=>handleConfirmDeliveryModal({ type: 'tekeout' }) },
+							{ text: 'Retirar no balcão', onPress: ()=>handleConfirmDeliveryModal({ type: 'takeout' }) },
 							{ text: 'Limpar cesta', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
 						])
 					} else {
@@ -75,9 +74,7 @@ export default function DeliveryBlock() {
 	useEffect(()=>{
 		if (!cartCompany?.id || loadingDelivery) return;
 
-		console.log(cartCompany);
-
-		if (cartCompany.typePickUp && !cartCompany.typeDelivery) handleConfirmDeliveryModal({ type: 'tekeout' })
+		if (cartCompany.typePickUp && !cartCompany.typeDelivery) handleConfirmDeliveryModal({ type: 'takeout' })
 		else handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
 	}, [])
 
