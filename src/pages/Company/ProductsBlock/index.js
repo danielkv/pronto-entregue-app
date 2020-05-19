@@ -44,7 +44,7 @@ export default function ProductsBlock({ companyId }) {
 						scrollEnabled: true,
 						labelStyle: { fontWeight: 'bold', textTransform: 'capitalize', fontSize: 18, },
 						style: { elevation: 0 },
-						tabStyle: { padding: 0 },
+						tabStyle: { width: 'auto' },
 						indicatorStyle: { backgroundColor: palette.primary.main, height: 3 }
 					}}
 				>
