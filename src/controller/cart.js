@@ -1,5 +1,8 @@
+import client from "../services/apolloClient";
 import { sanitizeAddress } from "./address";
 import { calculateProductPrice } from "./products";
+
+import { GET_CART } from "../graphql/cart";
 
 export function calculateOrderPrice(products, initialValue = 0) {
 	if (!products || !products.length) return initialValue;
@@ -8,26 +11,34 @@ export function calculateOrderPrice(products, initialValue = 0) {
 	}, initialValue));
 }
 
-export function validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany }) {
-	if (!cartCompany || cartItems.length === 0) throw new Error('Não há nenhum item no carrinho');
-
-	if (!cartDelivery || !cartDelivery.type) throw new Error('Selecione um tipo de entrega');
+export async function validateCart() {
+	const { cartItems, cartDelivery, cartPayment, cartCompany, cartUseCredits, cartPrice } = client.readQuery({ query: GET_CART })
 	
-	if (!cartPayment || !cartPayment.id) {
-		const error = new Error('Selecione uma método de pagamento');
-		error.type = 'NO_PAYMENT_METHOD'
+	if (!cartCompany || cartItems.length === 0) throw new Error('Não há nenhum item no carrinho');
+	
+	if (!cartDelivery || !cartDelivery.type) throw new Error('Selecione um tipo de entrega');
+
+	if (cartPrice > 0 && (!cartPayment || !cartPayment?.id)) {
+		let errorMessage;
+		if (cartUseCredits) errorMessage = 'Selecione uma forma de pagamento para completar o valor';
+		else errorMessage = 'Selecione uma método de pagamento';
+
+		const error = new Error(errorMessage);
+
+		error.type = 'CART_PAYMENT'
 		throw error;
 	}
 
 	return true;
 }
 
-export function sanitizeOrderData ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment }) {
+export function sanitizeOrderData ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment, cartUseCredits }) {
 	return {
 		userId: userId || user.id,
 		type: cartDelivery.type,
 		status: cartStatus || 'waiting',
-		paymentMethodId: cartPayment.id,
+		paymentMethodId: cartPayment?.id || null,
+		useCredits: cartUseCredits || false,
 		companyId: cartCompany.id,
 
 		paymentFee: cartPayment?.price || 0,

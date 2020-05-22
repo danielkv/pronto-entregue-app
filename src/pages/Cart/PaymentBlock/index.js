@@ -1,36 +1,75 @@
-import React, { useCallback, useState } from 'react';
-import { Platform, Alert, Image } from 'react-native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Platform, Alert, Image, View } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import { useSafeArea } from 'react-native-safe-area-context';
 
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core'
 
 
 import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
+import { useLoggedUserId } from '../../../controller/hooks';
 import { sanitizePaymentMethod } from '../../../controller/paymentMethods';
-import { Paper, Icon, Typography } from '../../../react-native-ui';
+import { Paper, Icon, Typography, Chip } from '../../../react-native-ui';
+import { BRL } from '../../../utils/currency';
 import { getErrorMessage } from '../../../utils/errors';
 import { CardHeader, CardContent, CardInfo } from '../styles';
 import PaymentModal from './PaymentModal';
 
-import { GET_CART, SET_CART_PAYMENT } from '../../../graphql/cart';
+import { GET_CART, SET_CART_PAYMENT, GET_CART_USER_CREDITS } from '../../../graphql/cart';
+import { GET_USER_CREDITS } from '../../../graphql/users';
 
 export default function DeliveryBlock() {
 	const navigation = useNavigation();
 	const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+	const client = useApolloClient()
+	const loggedUserId = useLoggedUserId();
 
 	// modal margins
 	const insets = useSafeArea();
 	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
 	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 	
-	const { data: { cartPayment, cartCompany }, error: cartError } = useQuery(GET_CART);
+	const { data: { cartUseCredits } = {} } = useQuery(GET_CART_USER_CREDITS);
+	const { data: { cartPayment, cartCompany, cartPrice, cartSubtotal }, error: cartError } = useQuery(GET_CART);
+	const { data: { user: { creditBalance = null } = {} } = {}, loading: loadingCredit } = useQuery(GET_USER_CREDITS, { variables: { id: loggedUserId }, fetchPolicy: 'cache-first' });
 	const [setPayment, { loading: loadingPayment }] = useMutation(SET_CART_PAYMENT);
+	const [creditsUse, setCreditUse] = useState(0);
+
+	useEffect(()=>{
+		if (loadingCredit) return;
+		let discount = 0;
+
+		if (cartUseCredits) {
+			if (creditBalance <= 0) {
+				client.writeData({ data: { cartUseCredits: false } })
+			} else {
+				if (creditBalance >= cartSubtotal) {
+					discount = cartSubtotal;
+					if (cartPayment?.id) client.writeData({ data: { cartPayment: null } })
+				} else {
+					discount = creditBalance;
+				}
+			}
+		}
+		
+		setCreditUse(discount);
+		client.writeData({ data: { cartDiscount: discount } })
+
+	}, [cartUseCredits, creditBalance, cartPayment, cartSubtotal]);
+
+	function setUseCredits(newValue) {
+		client.writeData({ data: { cartUseCredits: newValue } })
+		if (creditBalance < cartPrice && !cartPayment?.id) {
+			Alert.alert('O valor do seu pedido é maior que seus créditos', 'Selecione também uma outra forma de pagamento para completar o valor')
+		} else {
+			if (newValue) setPaymentModalOpen(false);
+		}
+	}
 
 	const handleOpenPaymentModal = useCallback(()=>{
 		if (cartCompany) {
@@ -53,6 +92,7 @@ export default function DeliveryBlock() {
 			});
 	});
 
+	if (loadingCredit) return <LoadingBlock />
 	if (cartError) return <ErrorBlock error={getErrorMessage(cartError)} />
 		
 	return (
@@ -66,16 +106,17 @@ export default function DeliveryBlock() {
 					</CardHeader>
 					
 					<CardContent>
-						<CardInfo>
-							{cartPayment
-								? (
-									<>
-										<Image source={{ uri: cartPayment.image }} style={{ width: 40, height: 35, resizeMode: 'center' }} />
-										<Typography>{cartPayment.displayName}</Typography>
-									</>
-								)
-								: <Typography>Nenhum pagamento selecionado</Typography>
-							}
+						<CardInfo style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+							{cartUseCredits && <Chip label={`Créditos: ${BRL(creditsUse).format()}`} style={{ root: { height: 30 }, text: { fontSize: 13 } }} />}
+							{Boolean(cartPrice) &&
+								(cartPayment
+									? (
+										<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+											<Image source={{ uri: cartPayment.image }} style={{ width: 40, height: 35, resizeMode: 'center' }} />
+											<Typography>{cartPayment.displayName}</Typography>
+										</View>
+									)
+									: <Typography>Nenhum pagamento selecionado</Typography>)}
 						</CardInfo>
 						<Icon name='edit' size={24} color='#333' />
 					</CardContent>
@@ -93,7 +134,14 @@ export default function DeliveryBlock() {
 				swipeDirection='right'
 				propagateSwipe
 			>
-				<PaymentModal company={cartCompany} confirmModal={handleConfirmPaymentModal} closeModal={handleClosePaymentModal} />
+				<PaymentModal
+					company={cartCompany}
+					creditBalance={creditBalance}
+					cartUseCredits={cartUseCredits}
+					setUseCredits={setUseCredits}
+					confirmModal={handleConfirmPaymentModal}
+					closeModal={handleClosePaymentModal}
+				/>
 			</Modal>
 		</>
 	);

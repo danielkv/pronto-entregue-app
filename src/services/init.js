@@ -1,54 +1,15 @@
 /* eslint-disable global-require */
-import { useState, useEffect } from 'react';
 import { AsyncStorage } from 'react-native';
-
-import { useQuery } from '@apollo/react-hooks';
 
 import { registerForPushNotifications, removeForPushNotifications } from '../controller/notification';
 import client from './apolloClient';
 
 import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
-import { AUTHENTICATE, LOGGED_USER_ID } from '../graphql/authentication';
-
-export function useInitialize() {
-	// logUserOut();
-	// resetAddress()
-
-	//if (__DEV__) client.writeData({ data: require('../../cart.json') });
-
-	const [called, setCalled] = useState(false);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-
-	const { data: { loggedUserId = null } = {} } = useQuery(LOGGED_USER_ID);
-	const { data: { selectedAddress = null } = {} } = useQuery(GET_SELECTED_ADDRESS);
-
-	useEffect(()=>{
-		if (loading) setCalled(false);
-	}, [loading, loggedUserId])
-	
-	if (!called) {
-		setCalled(true);
-		initialize()
-			.catch((err) => {
-				setError(err);
-				logUserOut();
-				resetAddress();
-			})
-			.finally(()=>{
-				setLoading(false);
-			})
-	}
-	
-	return {
-		error,
-		loading,
-		loggedUserId,
-		selectedAddress
-	}
-}
+import { AUTHENTICATE } from '../graphql/authentication';
 
 export async function initialize() {
+	if (__DEV__) client.writeData({ data: require('../../cart.json') });
+
 	let user = null;
 	const selectedAddress = await AsyncStorage.getItem('@prontoEntregue/address');
 	const userToken = await AsyncStorage.getItem('@prontoEntregue/userToken');

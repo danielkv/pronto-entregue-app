@@ -21,6 +21,7 @@ export default {
 					cartDelivery: null,
 					cartPayment: null,
 					cartItems: [],
+					cartSubtotal: 0,
 					cartPrice: 0
 				}
 			});

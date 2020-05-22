@@ -73,10 +73,12 @@ export default function Product() {
 	}, [product, setProduct]);
 
 	const handleCartButtonPress = (force=false) => () => {
+		// sanitize product data 
+		const sanitizedProduct = sanitizeCartData({ ...product, message, quantity });
+		
 		try {
 			if (checkProductRules(product, force)) {
 				// Add cart Item
-				const sanitizedProduct = sanitizeCartData({ ...product, message, quantity });
 				addCartItem({ variables: { data: sanitizedProduct } })
 					.then(()=>{
 						resetProduct();

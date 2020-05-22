@@ -5,11 +5,14 @@ import moment from 'moment'
 
 import { Chip, Typography, Paper, Divider, IconButton } from '../../../react-native-ui'
 import { getOrderStatusLabel, getStatusColors } from '../../../utils'
+import { BRL } from '../../../utils/currency'
 import OrderRollProduct from './OrderRollProduct'
 
 export default function OrderRollItem({ item: order, handleOpenModalStatus, orderIndex }) {
 	const colors = getStatusColors(order.status);
 	const canEdit = !['delivered', 'canceled'].includes(order.status);
+
+	const orderTotal = order.price + order.discount;
 
 	return (
 		<Paper style={{ marginTop: 10, marginBottom: 10, padding: 15, position: 'relative' }} elevation={0}>
@@ -54,13 +57,20 @@ export default function OrderRollItem({ item: order, handleOpenModalStatus, orde
 									<Typography variant='subtitle'>{`${order.address.city} - ${order.address.state}`}</Typography>
 									<Typography variant='subtitle'>{order.address.zipcode}</Typography>
 									<View style={{ marginTop: 10 }}>
-										<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>
-											Valor: <Typography>{`R$ ${order.price.toFixed(2).replace('.', ",")}`}</Typography>
-										</Typography>
-											
-										<View style={{ alignItems: 'center', flexDirection: 'row' }}>
-											<Image style={{ marginRight: 5, width: 20, height: 30, resizeMode: 'contain' }} source={{ uri: order.paymentMethod.image }} />
-											<Typography variant='subtitle'>{`${order.paymentMethod.displayName}`}</Typography>
+										<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>Pagamento:</Typography>
+										<View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+											<View style={{ alignItems: 'center', flexDirection: 'row' }}>
+												<Image style={{ marginRight: 5, width: 20, height: 30, resizeMode: 'contain' }} source={{ uri: order.paymentMethod.image }} />
+												<Typography variant='subtitle'>{`${order.paymentMethod.displayName}`}</Typography>
+											</View>
+											<View style={{ alignItems: 'flex-end' }}>
+												{!!order.discount &&(
+													<>
+														<Typography variant='subtitle' style={{ fontSize: 13 }}>{BRL(orderTotal).format()}</Typography>
+														<Typography variant='subtitle' style={{ fontSize: 13 }}>{`${order.creditHistory ? 'Créditos: ' : 'Descontos: '}${BRL(order.discount).format()}`}</Typography>
+													</>)}
+												<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>{BRL(order.price).format()}</Typography>
+											</View>
 										</View>
 									</View>
 									{Boolean(order.message) && (

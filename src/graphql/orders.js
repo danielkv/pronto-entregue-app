@@ -33,6 +33,12 @@ export const ORDER_FRAGMENT = gql`
 			type
 		}
 
+		creditHistory {
+			id
+			value
+			history
+		}
+
 		address {
 			street
 			number

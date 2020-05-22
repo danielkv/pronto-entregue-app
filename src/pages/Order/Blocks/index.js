@@ -42,7 +42,8 @@ export default function Blocks({ order }) {
 
 		Linking.openURL(url);
 	}
-
+	
+	const totalOrder = order.price + order.discount;
 	const displayDate = moment(order.createdAt).format('DD/MM/YY HH:mm');
 
 	return (
@@ -63,6 +64,12 @@ export default function Blocks({ order }) {
 						<BlockTitle>Valor total</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
+						{Boolean(order.discount) && (
+							<>
+								<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>{`${BRL(totalOrder).format()}`}</Typography>
+								<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>{`-${BRL(order.discount).format()}`}</Typography>
+							</>
+						)}
 						<BlockInfo h1>{BRL(order.price).format()}</BlockInfo>
 					</BlockFooter>
 				</Block>
@@ -74,8 +81,20 @@ export default function Blocks({ order }) {
 						<BlockTitle>Pagamento</BlockTitle>
 					</BlockHeader>
 					<BlockFooter>
-						{order.paymentMethod.type !== 'app' && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Na entrega</Typography>}
-						<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
+						{order.paymentMethod
+							? (
+								<>
+									{Boolean(order.creditHistory) && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>Créditos +</Typography>}
+									{order.paymentMethod.type !== 'app' && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Na entrega</Typography>}
+									<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
+								</>
+							)
+							: Boolean(order.creditHistory) &&
+								<>
+									<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Créditos</Typography>
+									<BlockInfo>{BRL(Math.abs(order.creditHistory.value)).format()}</BlockInfo>
+								</>
+						}
 					</BlockFooter>
 				</Block>
 				{order.type === 'takeout'

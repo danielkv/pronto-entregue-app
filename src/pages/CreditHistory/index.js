@@ -2,10 +2,10 @@ import React, { Fragment, useState } from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
+import moment from 'moment';
 
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
-import ProductItem from '../../components/ProductItem';
 
 import { useLoggedUserId } from '../../controller/hooks';
 import { Paper, Typography, Divider, useTheme } from '../../react-native-ui';
@@ -14,7 +14,6 @@ import { BRL } from '../../utils/currency';
 import { getErrorMessage } from '../../utils/errors';
 
 import { GET_USER_CREDITS } from '../../graphql/users';
-import moment from 'moment';
 
 // import { Container } from './styles';
 
@@ -55,8 +54,8 @@ export default function CreditHistory() {
 														<Typography style={{ fontSize: 13, color: '#999' }}>{date}</Typography>
 														<Typography style={{ fontSize: 13, color: '#999' }}>{`#${row.id}`}</Typography>
 													</View>
-													<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-														<Typography style={{ fontSize: 16, color: '#333' }}>{row.history}</Typography>
+													<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+														<Typography style={{ fontSize: 16, color: '#333', flex: 1 }}>{row.history}</Typography>
 														<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: valueColor }}>{BRL(row.value).format()}</Typography>
 													</View>
 												</View>

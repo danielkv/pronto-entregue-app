@@ -43,9 +43,9 @@ export const GET_CART = gql`
 			typePickUp
 		}
 
-		cartPrice @client
-
+		cartSubtotal @client
 		cartDiscount @client
+		cartPrice @client
 
 		cartMessage @client
 
@@ -55,6 +55,8 @@ export const GET_CART = gql`
 			type
 			displayName
 		}
+
+		cartUseCredits @client
 
 		cartItems @client {
 			id
@@ -78,6 +80,12 @@ export const GET_CART = gql`
 				}
 			}
 		}
+	}
+`;
+
+export const GET_CART_USER_CREDITS = gql`
+	query GetCartUseCredits {
+		cartUseCredits @client
 	}
 `;
 

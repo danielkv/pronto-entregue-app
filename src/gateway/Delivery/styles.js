@@ -5,9 +5,6 @@ import styled from 'styled-components/native';
 import { Typography } from '../../react-native-ui';
 import theme from '../../theme';
 
-export const FinishContainer = styled.View`
-	flex:1;
-`;
 export const FormContainer = styled.View`
 	flex:1;
 	justify-content:center;

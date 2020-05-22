@@ -1,31 +1,47 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
+import CartButton from '../../components/CartButton'
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { sanitizeOrderData } from '../../controller/cart';
 import { useLoggedUserId, useSelectedAddress } from '../../controller/hooks';
-import Gateway from '../../gateway';
+import { createGateway } from '../../gateway';
 import { getErrorMessage } from '../../utils/errors';
+import { CartButtonContainer } from '../Cart/styles';
+import Credits from './Credits';
 import { Container } from './styles';
 
-import { GET_CART, CANCEL_CART } from '../../graphql/cart';
+import { GET_CART, CANCEL_CART, GET_CART_USER_CREDITS } from '../../graphql/cart';
 import { CREATE_ORDER, GET_USER_ORDERS } from '../../graphql/orders';
+import { GET_USER_CREDITS } from '../../graphql/users';
 
 export default function Payment({ navigation }) {
 	const loggedUserId = useLoggedUserId();
 	const selectedAddress = useSelectedAddress();
 	const { data: cartData, loading: loadingCart, error } = useQuery(GET_CART);
+	const { data: { cartUseCredits } } = useQuery(GET_CART_USER_CREDITS);
 	
 	const [cancelCart, { loading: loadingCancelCart }] = useMutation(CANCEL_CART);
 	const [createOrder, { loading: loadingCreateOrder }] = useMutation(CREATE_ORDER, {
-		refetchQueries: [{ query: GET_USER_ORDERS, variables: { id: loggedUserId } }]
+		refetchQueries: [
+			{ query: GET_USER_ORDERS, variables: { id: loggedUserId } },
+			{ query: GET_USER_CREDITS, variables: { id: loggedUserId }, skip: !cartUseCredits }
+		]
 	});
+
+	const Gateway = cartData.cartPayment && createGateway({ cart: cartData, method: cartData.cartPayment })
 	
-	const handleFinishOrder = (cartResult) => {
+	async function handleFinishOrder () {
+		let cartResult = cartData
+
+		if (Gateway && Gateway.onSubmit && typeof Gateway.onSubmit === 'function') {
+			cartResult = await Promise.resolve(Gateway.onSubmit())
+		}
+
 		const sanitizedCart = sanitizeOrderData({ ...cartResult, userId: loggedUserId, address: selectedAddress })
 		
 		createOrder({ variables: { data: sanitizedCart } })
@@ -47,11 +63,23 @@ export default function Payment({ navigation }) {
 	if (loadingCart) return <LoadingBlock />;
 	if (loadingCreateOrder || loadingCancelCart)return <LoadingBlock size='large' message='Enviando seu pedido' />;
 	if (error) return <ErrorBlock error={getErrorMessage(error)} />
-			
+
 	return (
 		<Container>
-			{(!!cartData.cartPayment && !!cartData.cartPayment.displayName)
-				&& <Gateway step='finish' method={cartData.cartPayment} cart={cartData} onFinish={handleFinishOrder} />}
+			<ScrollView style={{ flex: 1 }}>
+				<Credits cart={cartData} />
+				{(!!cartData.cartPayment && !!cartData.cartPayment.displayName) && <Gateway.Page />}
+			</ScrollView>
+
+			<CartButtonContainer>
+				<CartButton
+					title='Finalizar pedido'
+					icon='check'
+					forceShowPrice
+					price={cartData.cartPrice}
+					onPress={handleFinishOrder}
+				/>
+			</CartButtonContainer>
 		</Container>
 	);
 }

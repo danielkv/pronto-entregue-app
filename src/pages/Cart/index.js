@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, Fragment } from 'react';
+import React, { useState, useCallback, Fragment, useEffect } from 'react';
 import { Alert, View, Image } from 'react-native';
 
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -9,7 +9,7 @@ import CartItem from '../../components/CartItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { calculateOrderPrice, validadeCart } from '../../controller/cart';
+import { calculateOrderPrice, validateCart } from '../../controller/cart';
 import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
 import { Button, Paper, Typography, Chip, Divider, TextField, useTheme } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
@@ -40,13 +40,16 @@ export default function Cart({ navigation }) {
 	const [removeOrderItem] = useMutation(REMOVE_CART_ITEM);
 	const [cancelCart] = useMutation(CANCEL_CART);
 	
-	const { data: { cartItems, cartDelivery, cartCompany, cartPayment, cartDiscount }, loading: loadingCart, error } = useQuery(GET_CART);
+	const { data: { cartItems, cartDelivery, cartCompany, cartPayment, cartDiscount, cartPrice }, loading: loadingCart, error } = useQuery(GET_CART);
 	
-	const cartPrice = useMemo(()=>{
+	useEffect(()=>{
 		const paymentPrice = cartPayment?.price || 0;
 		const deliveryPrice = cartDelivery?.price || 0;
 
-		return calculateOrderPrice(cartItems, paymentPrice + deliveryPrice - cartDiscount);
+		const subtotal = calculateOrderPrice(cartItems, paymentPrice + deliveryPrice )
+		const value =  subtotal - cartDiscount;
+
+		client.writeData({ data: { cartPrice: value, cartSubtotal: subtotal } });
 	}, [cartItems, cartDelivery, cartPayment, cartDiscount]);
 
 	const handleRemoveOrderItem = (item) => () => {
@@ -63,7 +66,7 @@ export default function Cart({ navigation }) {
 	async function handleFinishCart() {
 		try {
 			if (loggedUserId) {
-				validadeCart({ cartItems, cartDelivery, cartPayment, cartCompany });
+				await validateCart();
 				client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
 				navigation.navigate('PaymentScreen');

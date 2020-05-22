@@ -1,4 +1,4 @@
-import { uniqueId, cloneDeep } from 'lodash';
+import { uniqueId, cloneDeep, isEqual } from 'lodash';
 
 import client from '../services/apolloClient';
 import { CartValidationError } from '../utils/errors';
@@ -121,7 +121,8 @@ export function checkProductRules(product, force) {
 	if (!force && (cartCompany !== null && cartCompany?.id !== product.company.id)) throw new CartValidationError('Já existem itens de outro estabelecimento na sua cesta.', 'Quer mesmo limpar sua cesta e adicionar esse item?');
 
 	// check if there is same items in cart
-	if (!force && cartItems.find(item => item.productId === product.id)) throw new CartValidationError('Esse item já foi adicionado à cesta', 'Deseja adicionar mais um?');
+
+	if (!force && cartItems.find(item => item.productId === product.id && isEqual(item, product))) throw new CartValidationError('Esse item já foi adicionado à cesta', 'Deseja adicionar mais um?');
 		
 	product.optionsGroups.forEach((group)=>{
 		const groupWithRules = getGroupRestrainingRules(product.optionsGroups, group);

@@ -53,6 +53,11 @@ export const ORDER_CRATED_FRAGMENT = gql`
 			image
 			displayName
 		}
+		creditHistory {
+			id
+			history
+			value
+		}
 		deliveryPrice
 		deliveryTime
 		price
