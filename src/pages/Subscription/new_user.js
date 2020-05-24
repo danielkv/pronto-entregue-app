@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-native';
+import { MaskService } from 'react-native-masked-text';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
@@ -15,7 +16,8 @@ import { CREATE_USER } from '../../graphql/users';
 const validationSchema = Yup.object().shape({
 	firstName: Yup.string().required('Obrigatório'),
 	lastName: Yup.string().required('Obrigatório'),
-	phone: Yup.string().required('Obrigatório'),
+	phone: Yup.string().notRequired(),
+	cpf: Yup.string().notRequired().test('test_cpf', 'CPF inválido', (value)=>value ? MaskService.isValid('cpf', value) : true),
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),
@@ -33,6 +35,7 @@ export default function NewUser() {
 	const initialValues = {
 		firstName: '',
 		lastName: '',
+		cpf: '',
 		phone: '',
 		email: '',
 		password: '',
@@ -47,11 +50,18 @@ export default function NewUser() {
 			lastName: result.lastName,
 			password: result.password,
 			email: result.email,
-			metas: [{
-				action: 'create',
-				key: 'phone',
-				value: result.phone,
-			}]
+			metas: [
+				{
+					action: 'create',
+					key: 'phone',
+					value: result.phone,
+				},
+				{
+					action: 'create',
+					key: 'document',
+					value: result.cpf,
+				}
+			]
 		};
 		
 		await createUser({ variables: { data: saveData } })

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
+import { MaskService } from 'react-native-masked-text'
 import Toast from 'react-native-tiny-toast';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -21,6 +22,7 @@ const validationSchema = Yup.object().shape({
 	firstName: Yup.string().required('Obrigatório'),
 	lastName: Yup.string().required('Obrigatório'),
 	phone: Yup.string().required('Obrigatório'),
+	cpf: Yup.string().required('Obrigatório').test('test_cpf', 'CPF inválido', (value)=>MaskService.isValid('cpf', value)),
 	email: Yup.string()
 		.email('Email inválido')
 		.required('Obrigatório'),
@@ -33,6 +35,7 @@ const validationSchema = Yup.object().shape({
 
 export default function EditUser({ userId }) {
 	const navigation = useNavigation();
+	const { params: { redirect = null } = {} } = useRoute();
 
 	useEffect(()=>{
 		navigation.setParams({
@@ -50,10 +53,15 @@ export default function EditUser({ userId }) {
 			lastName: result.lastName,
 			email: result.email,
 			metas: [{
-				id: user.metas[0].id,
-				action: 'update',
+				id: user?.phones?.[0]?.id || null,
+				action: user?.phones?.[0]?.id ? 'update' : 'create',
 				key: 'phone',
 				value: result.phone,
+			}, {
+				id: user?.cpf?.[0]?.id || null,
+				action: user?.cpf?.[0]?.id ? 'update' : 'create',
+				key: 'document',
+				value: result.cpf,
 			}]
 		};
 
@@ -65,7 +73,10 @@ export default function EditUser({ userId }) {
 				resetForm();
 
 				Toast.show('Seus dados foram salvos');
-				navigation.navigate('ProfileScreen');
+				if (redirect)
+					navigation.navigate(redirect);
+				else
+					navigation.navigate('ProfileScreen');
 			})
 			.catch(err => {
 				Alert.alert(getErrorMessage(err));
@@ -80,7 +91,8 @@ export default function EditUser({ userId }) {
 	const initialValues = {
 		firstName: user.firstName,
 		lastName: user.lastName,
-		phone: user?.metas?.[0]?.value || '',
+		phone: user?.phones?.[0]?.value || '',
+		cpf: user?.cpf?.[0]?.value || '',
 		email: user.email,
 		password: '',
 		repeatPassword: '',

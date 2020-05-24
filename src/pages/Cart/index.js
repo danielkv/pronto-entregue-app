@@ -32,6 +32,7 @@ export default function Cart({ navigation }) {
 	const { palette } = useTheme();
 	const [message, setMessage] = useState('');
 	const loggedUserId = useLoggedUserId();
+	const [cartLoading, setCartLoading] = useState(false);
 	
 	const keyboardOpen = useKeyboardStatus();
 	
@@ -65,6 +66,7 @@ export default function Cart({ navigation }) {
 
 	async function handleFinishCart() {
 		try {
+			setCartLoading(true);
 			if (loggedUserId) {
 				await validateCart();
 				client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
@@ -74,7 +76,16 @@ export default function Cart({ navigation }) {
 				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'HomeRoutes', redirectParams: { screen: 'CartScreen' } } });
 			}
 		} catch (err) {
-			Alert.alert(getErrorMessage(err.message));
+			if (err.type === 'USER_NO_PHONE_NUMBER')
+				Alert.alert(
+					'Complete seu cadastro',
+					getErrorMessage(err.message),
+					[{ text: 'Arrumar isso agora', onPress: ()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId, redirect: { name: 'CartRoutes', params: { screen: 'CartScreen' } } } }) }]
+				);
+			else
+				Alert.alert('Ops, faltou alguma coisa', getErrorMessage(err.message));
+		} finally {
+			setCartLoading(false);
 		}
 	}
 
@@ -141,12 +152,14 @@ export default function Cart({ navigation }) {
 			{!keyboardOpen &&
 				(<CartButtonContainer>
 					{Boolean(cartCompany?.deliveryTime) && <Typography style={{ marginBottom: 8, textAlign: 'center', color: '#fff', fontSize: 12 }}>{`Previsão de entrega: ${cartCompany.deliveryTime} minutos`}</Typography>}
-					<CartButton
-						title='Confirmar pedido'
-						forceShowPrice
-						price={cartPrice}
-						onPress={handleFinishCart}
-					/>
+					{cartLoading
+						? <LoadingBlock />
+						: <CartButton
+							title='Confirmar pedido'
+							forceShowPrice
+							price={cartPrice}
+							onPress={handleFinishCart}
+						/>}
 					
 				</CartButtonContainer>)
 			}

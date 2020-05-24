@@ -59,7 +59,12 @@ export const GET_USER = gql`
 			image
 			email
 			role
-			metas (type: "phone") {
+			phones: metas (type: "phone") {
+				id
+				key
+				value
+			}
+			cpf: metas (type: "document") {
 				id
 				key
 				value
@@ -145,7 +150,12 @@ export const UPDATE_USER = gql`
 			firstName
 			lastName
 			email
-			metas (type: "phone") {
+			phones: metas (type: "phone") {
+				id
+				key
+				value
+			}
+			cpf: metas (type: "document") {
 				id
 				key
 				value

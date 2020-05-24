@@ -48,7 +48,26 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 					helperText={errors.lastName || ''}
 					error={Boolean(errors.lastName)}
 					returnKeyType='next'
+					onSubmitEditing={handleNextInput('cpf')}
+				/>
+
+				<TextInputMask
+					label='CPF'
+					onChangeText={handleChange('cpf')}
+					onBlur={handleBlur('cpf')}
+					disabled={isSubmitting}
+					value={values.cpf}
+					
+					inputRef={ref => { refs.cpf = ref }}
+					helperText={errors.cpf || ''}
+					error={Boolean(errors.cpf)}
+					blurOnSubmit={false}
+					returnKeyType='next'
 					onSubmitEditing={handleNextInput('phone')}
+
+					type='cpf'
+					customTextInput={TextField}
+					
 				/>
 
 				<TextInputMask
@@ -75,6 +94,7 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 					customTextInput={TextField}
 					
 				/>
+				
 				<TextField
 					caretHidden={caretHidden}
 					label='Email'
