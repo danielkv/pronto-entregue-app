@@ -22,7 +22,7 @@ export default function RatingItem({ item: rating }) {
 			<Avatar size={30} alt={rating.user.fullName} image={rating.user.image} />
 			<CommentContainer>
 				<CommentInfo>
-					<Typography style={{ fontWeight: 'bold', fontSize: 16, color: '#655A51' }}>{rating.user.fullName}</Typography>
+					<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: '#655A51' }}>{rating.user.fullName}</Typography>
 					<Typography style={{ marginLeft: 8, fontWeight: 'normal', fontSize: 12, color: '#655A51' }}>{displayDate}</Typography>
 				</CommentInfo>
 				<Stars>{renderStars(rating.rate)}</Stars>

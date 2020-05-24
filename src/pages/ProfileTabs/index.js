@@ -26,7 +26,7 @@ export default function ProfileTabs() {
 				inactiveTintColor: '#D1C6B1',
 				scrollEnabled: true,
 				iconStyle: { width: 35, alignItems: 'center', marginTop: -5 },
-				labelStyle: { fontWeight: 'bold', textTransform: 'capitalize', fontSize: 18, },
+				labelStyle: { fontFamily: 'Roboto-Bold', textTransform: 'capitalize', fontSize: 18, },
 				style: { elevation: 0, backgroundColor: 'transparent' },
 				tabStyle: { width: 'auto', flexDirection: 'row', alignItems: 'center' },
 				indicatorStyle: { backgroundColor: palette.primary.main, height: 3 }

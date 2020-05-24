@@ -31,11 +31,11 @@ export default function OrderItem({ item: order }) {
 				</IconBlock>
 				<TextBlock>
 					<Typography variant='subtitle'>{displayDate}</Typography>
-					<Typography variant='h4' style={{ fontWeight: "bold" }}>{order.company.displayName}</Typography>
+					<Typography variant='h4' style={{ fontFamily: 'Roboto-Bold' }}>{order.company.displayName}</Typography>
 					
 					<Typography variant='subtitle'>{`${order.countProducts} ${order.countProducts > 1 ? 'itens' : 'item'}`}</Typography>
 
-					<Typography variant='h5' style={{ fontWeight: 'bold', marginTop: 15 }}>{BRL(order.price).format()}</Typography>
+					<Typography variant='h5' style={{ fontFamily: 'Roboto-Bold', marginTop: 15 }}>{BRL(order.price).format()}</Typography>
 					<Chip
 						style={{
 							root: { paddingHorizontal: 10, height: 30, position: 'absolute', right: 0, bottom: 0, backgroundColor: statusColor.background },

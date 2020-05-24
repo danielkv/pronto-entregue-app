@@ -42,7 +42,7 @@ export default function ProductsBlock({ companyId }) {
 						activeTintColor: palette.primary.main,
 						inactiveTintColor: '#D1C6B1',
 						scrollEnabled: true,
-						labelStyle: { fontWeight: 'bold', textTransform: 'capitalize', fontSize: 18, },
+						labelStyle: { fontFamily: 'Roboto-Bold', textTransform: 'capitalize', fontSize: 18, },
 						style: { elevation: 0 },
 						tabStyle: { width: 'auto' },
 						indicatorStyle: { backgroundColor: palette.primary.main, height: 3 }

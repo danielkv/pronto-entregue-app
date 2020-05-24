@@ -35,7 +35,7 @@ export default function LocationAccess() {
 
 						elevation: 5,
 					}}>
-					<Typography style={{ textAlign: 'center', fontSize: 18, fontWeight: "bold", color: '#333', marginBottom: 10 }}>Só mais um pouquinho...</Typography>
+					<Typography style={{ textAlign: 'center', fontSize: 18, fontFamily: 'Roboto-Bold', color: '#333', marginBottom: 10 }}>Só mais um pouquinho...</Typography>
 					<Button variant='filled' color='primary' onPress={handleContinueLogin}>Fazer Login</Button>
 					<Button variant='outlined' onPress={handleContinueLook}>Procurar itens primeiro</Button>
 				</Paper>

@@ -114,7 +114,7 @@ export default function Cart({ navigation }) {
 			<CartContainerScroll>
 				{cartCompany && <Paper style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<Image source={{ uri: cartCompany.image }} style={{ width: 60, height: 60, borderRadius: 15, marginRight: 15 }} />
-					<Typography style={{ flex: 1, fontSize: 18, color: '#333', fontWeight: 'bold', marginRight: 15 }}>{cartCompany.displayName}</Typography>
+					<Typography style={{ flex: 1, fontSize: 18, color: '#333', fontFamily: 'Roboto-Bold', marginRight: 15 }}>{cartCompany.displayName}</Typography>
 					<View style={{ marginLeft: 'auto' }}>
 						<Chip color='secondary' label={`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`} style={{ root: { height: 30 } }} />
 					</View>

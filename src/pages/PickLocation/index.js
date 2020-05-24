@@ -204,7 +204,7 @@ export default function PickLocation() {
 				{loadingLocation || loadingGeoLocation
 					? <ActivityIndicator color={palette.primary.main} style={{ marginBottom: 20 }} />
 					: !!selectedAddress && (<View style={{ marginBottom: 20 }}>
-						<Typography variant='h4' style={{ fontWeight: "bold", textAlign: 'center' }}>{`${selectedAddress?.street || ''}${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
+						<Typography variant='h4' style={{ fontFamily: 'Roboto-Bold', textAlign: 'center' }}>{`${selectedAddress?.street || ''}${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
 						<Typography variant='h5' style={{ textAlign: 'center' }}>{`${selectedAddress.city} - ${selectedAddress.state}`}</Typography>
 					</View>)}
 

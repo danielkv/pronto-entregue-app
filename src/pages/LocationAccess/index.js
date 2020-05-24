@@ -97,7 +97,7 @@ export default function LocationAccess() {
 
 								elevation: 5,
 							}}>
-							<Typography style={{ textAlign: 'center', fontSize: 18, fontWeight: "bold", color: '#333', marginBottom: 10 }}>Seja bem vindo</Typography>
+							<Typography style={{ textAlign: 'center', fontSize: 18, fontFamily: 'Roboto-Bold', color: '#333', marginBottom: 10 }}>Seja bem vindo</Typography>
 							<Typography style={{ textAlign: 'center', fontSize: 13, color: '#333', marginBottom: 10 }}>
 								Para encontrar os melhores estabelecimentos para você precisamos que você nos mostre onde você deseja receber seu pedido
 							</Typography>

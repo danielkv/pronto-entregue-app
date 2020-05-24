@@ -17,7 +17,7 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 	return (
 		<>
 			<Paper style={{ alignItems: "center" }}>
-				{hasStreet && <Typography variant='h4' style={{ fontWeight: 'bold' }}>{`${values.street}${values.number ? `, ${values.number}` : ''}`}</Typography>}
+				{hasStreet && <Typography variant='h4' style={{ fontFamily: 'Roboto-Bold' }}>{`${values.street}${values.number ? `, ${values.number}` : ''}`}</Typography>}
 				<Typography variant='h5'>{`${values.city}  - ${values.state}`}</Typography>
 				<FormHelperText variant='outlined' color='primary' style={{  root: { marginTop: 10 } }}>Confirme o endereço</FormHelperText>
 				<Icon name='chevron-down' />

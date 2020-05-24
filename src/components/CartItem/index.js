@@ -30,7 +30,7 @@ export default function CartItem({ item, onPressDelete }) {
 				<ItemOptionsContainer>
 					{item.optionsGroups.map((group, index) => {
 						return (
-							<Typography style={{ fontWeight: "bold", }} key={index}>
+							<Typography style={{ fontFamily: 'Roboto-Bold' }} key={index}>
 								{`${group.name}: `}
 								<Typography>
 									{group.options.map(option=>option.name).join(', ')}
@@ -43,7 +43,7 @@ export default function CartItem({ item, onPressDelete }) {
 				<ItemFooter>
 					<Chip
 						color='secondary'
-						style={{ root: { height: 30, paddingHorizontal: 10 }, text: { fontSize: 14, color: palette.background.dark, fontWeight: "bold" } }}
+						style={{ root: { height: 30, paddingHorizontal: 10 }, text: { fontSize: 14, color: palette.background.dark, fontFamily: 'Roboto-Bold' } }}
 						label={BRL(calculateProductPrice(item, false)*item.quantity).format()} />
 					<Typography style={{ marginLeft: 10, color: palette.background.dark }}>{`Qtde: ${item.quantity}`}</Typography>
 				</ItemFooter>

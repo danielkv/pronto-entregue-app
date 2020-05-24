@@ -121,7 +121,7 @@ export default function Product() {
 							
 						{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 30, marginTop: 8 }, text: { fontSize: 14 } }} color='secondary' />}
 
-						<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontWeight: 'bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
+						<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontFamily: 'Roboto-Bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
 
 						<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 					</LinearGradient>

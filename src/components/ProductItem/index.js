@@ -29,7 +29,7 @@ export default function ProductItem({ item: product, showClosedTag=true }) {
 				style={{ root: { opacity } }}
 			/>
 			<ContentContainer style={{ opacity }}>
-				<Typography style={{ fontSize: 20, fontWeight: 'bold', color: '#655A51' }}>{product.name}</Typography>
+				<Typography style={{ fontSize: 20, fontFamily: 'Roboto-Bold', color: '#655A51' }}>{product.name}</Typography>
 				<Typography style={{ fontSize: 14, color: '#655A51' }}>{product.company.displayName}</Typography>
 				{!product.company.isOpen && showClosedTag && <ClosedCompanyChip />}
 				<FooterContainer>

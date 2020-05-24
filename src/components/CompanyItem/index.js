@@ -26,7 +26,7 @@ export default function CompanyItem({ item: company }) {
 				resizeMode='cover'
 			/>
 			<ContentContainer style={{ opacity }}>
-				<Typography style={{ fontSize: 18, fontWeight: 'bold' }}>{company.displayName}</Typography>
+				<Typography style={{ fontSize: 18, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>
 				<View style={{ flexDirection: 'row' }}>
 					{!company.isOpen && <ClosedCompanyChip />}
 					{!company.typeDelivery && company.typePickUp && <OnlyPickUp />}

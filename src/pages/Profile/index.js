@@ -86,7 +86,7 @@ export default function Profile({ navigation }) {
 							{loadingUpdateUserImage && <ActivityIndicator size='large' style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -18, marginTop: -18 }} color={palette.primary.main} />}
 						</View>
 					</TouchableOpacity>
-					<Typography style={{ fontSize: 26, fontWeight: 'bold' }}>{user.fullName}</Typography>
+					<Typography style={{ fontSize: 26, fontFamily: 'Roboto-Bold' }}>{user.fullName}</Typography>
 					<Typography variant='subtitle'>{user.email}</Typography>
 				</UserHeader>
 				<Paper>

@@ -42,7 +42,7 @@ export default function Company() {
 				<Image source={{ uri: companyImage }} style={{ width: 160, height: 160 }} resizeMode='contain' />
 			</View>
 			<Paper>
-				<Typography style={{ fontSize: 28, color: palette.background.dark, fontWeight: 'bold' }}>{companyName}</Typography>
+				<Typography style={{ fontSize: 28, color: palette.background.dark, fontFamily: 'Roboto-Bold' }}>{companyName}</Typography>
 				{loadingCompany
 					? <ActivityIndicator color={palette.primary.main} />
 					: (

@@ -25,7 +25,7 @@ export default function CompanyPanel({ company }) {
 				<Avatar size={50} image={company.image} alt={company.displayName} />
 				<View style={{ marginLeft: 10 }}>
 					{company?.isOpen === false && <View style={{ marginBottom: 5 }}><ClosedCompanyChip /></View>}
-					<Typography style={{ fontSize: 16, fontWeight: 'bold' }}>{company.displayName}</Typography>
+					<Typography style={{ fontSize: 16, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>
 					{Boolean(company.rate) && <RatingStars rate={company.rate} size={12} />}
 
 					<>

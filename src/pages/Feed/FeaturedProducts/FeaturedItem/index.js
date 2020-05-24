@@ -47,7 +47,7 @@ export default function FeaturedItem({ item: product, config }) {
 							right: 0
 						},
 						text: {
-							fontWeight: 'bold',
+							fontFamily: 'Roboto-Bold',
 							fontSize: 18
 						}
 					}}

@@ -100,7 +100,7 @@ export default function SearchAddress() {
 				swipeDirection='down'
 			>
 				<Paper>
-					<Typography variant='h3' style={{ fontWeight: "bold", marginBottom: 8 }}>Faltaram alguns dados</Typography>
+					<Typography variant='h3' style={{ fontFamily: 'Roboto-Bold', marginBottom: 8 }}>Faltaram alguns dados</Typography>
 					<Typography variant='h5' style={{ marginBottom: 10 }}>Digite essas informações abaixo para localizarmos melhor seu endereço</Typography>
 					{!!askFormOpen && !selectedAddress.street && <TextField
 						label='Rua, avenida, etc'
