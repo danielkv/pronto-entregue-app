@@ -55,7 +55,7 @@ export default function OrderList() {
 	function onRefresh() {
 		setRefreshing(true);
 		refetch()
-			.then(()=>setRefreshing(false));
+			.finally(()=>setRefreshing(false));
 	}
 
 	if (loadingOrders && !orders.length && !called) return <LoadingBlock />;

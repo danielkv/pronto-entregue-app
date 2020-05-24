@@ -99,7 +99,7 @@ export default function Product() {
 	function onRefresh() {
 		setRefreshing(true);
 		refetch()
-			.then(()=>setRefreshing(false));
+			.finally(()=>setRefreshing(false));
 	}
 
 	if (productError) return <ErrorBlock error={getErrorMessage(productError)} />

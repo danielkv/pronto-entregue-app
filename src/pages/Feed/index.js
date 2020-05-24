@@ -34,7 +34,7 @@ export default function Feed() {
 	function handleRefresh() {
 		setRefreshing(true);
 		refetch()
-			.then(()=>setRefreshing(false));
+			.finally(()=>setRefreshing(false));
 	}
 
 	return (

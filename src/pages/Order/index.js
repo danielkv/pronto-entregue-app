@@ -55,7 +55,7 @@ export default function Order() {
 	function onRefresh() {
 		setRefreshing(true);
 		refetch()
-			.then(()=>setRefreshing(false));
+			.finally(()=>setRefreshing(false));
 	}
 
 	if (loadingOrder && (!called || !order)) return <LoadingBlock />
