@@ -9,14 +9,13 @@ import ErrorBlock from "../../../components/ErrorBlock";
 import LoadingBlock from "../../../components/LoadingBlock";
 
 import { useLoggedUserId } from '../../../controller/hooks'
-import { Paper, Typography, Icon, useTheme } from '../../../react-native-ui';
+import { Paper, Typography } from '../../../react-native-ui';
 import { getErrorMessage } from '../../../utils/errors';
 
 import { SET_SELECTED_ADDRESS } from '../../../graphql/addresses';
 import { GET_USER_ADDRESSES } from "../../../graphql/users";
 
 export default function UserAddresses() {
-	const { palette } = useTheme();
 	
 	// get user addresses
 	const userId = useLoggedUserId();
@@ -47,10 +46,6 @@ export default function UserAddresses() {
 
 	return (
 		<>
-			<View style={{ alignItems: "center", marginHorizontal: 35 }}>
-				<Typography variant='h5' style={{ textAlign: 'center', color: palette.background.dark }}>ou selecione um endereço cadastrado</Typography>
-				<Icon name='chevron-down' color={palette.background.dark} size={30} />
-			</View>
 			<Paper>
 				<Typography variant='title' style={{ marginBottom: 20 }}>Endereços cadastrados</Typography>
 				<View>

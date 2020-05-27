@@ -1,21 +1,17 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import Toast from 'react-native-tiny-toast';
 
 import { useMutation } from '@apollo/react-hooks';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
-import { isNumber } from 'lodash'
 import * as Yup from 'yup';
 
 import { sanitizeAddress } from '../../controller/address';
-import { useLoggedUserId } from '../../controller/hooks';
 import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 import { Container, ContainerScroll } from './styles';
 
-import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
-import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
+import { SEARCH_ADDRESS } from '../../graphql/addresses';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
@@ -27,53 +23,53 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ConfirmAddress() {
-	const { params: { address = null } } = useRoute();
 	const navigation = useNavigation();
 
-	const loggedUserId = useLoggedUserId();
-	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] });
-	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
-	
-	async function onSubmit(result) {
+	// setup search mutation
+	const [searchAddress]= useMutation(SEARCH_ADDRESS, { fetchPolicy: 'no-cache' })
+
+	function onSubmit (result) {
 		const dataSave = sanitizeAddress(result);
-		
-		let createdResult;
-		try {
-			// if user is logged in, save the address in user account
-			if (loggedUserId) createdResult = await createAddress({ variables: { data: dataSave } })
+		const search = `${dataSave.street}, ${dataSave.number}, ${dataSave.city}, ${dataSave.state}`;
 
-			// set selectedAddress
-			const selectedAddress = createdResult?.data?.createUserAddress || dataSave;
-			// save selected address
-			await setSelectedAddress({ variables: { address: selectedAddress } })
-				.then(() => {
-					Toast.show('Endereço selecionado');
-
-					navigation.dangerouslyGetParent().reset({
-						index: 0,
-						routes: loggedUserId
-							? [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
-							: [{ name: 'WelcomeRoutes', params: { screen: 'AskLoginScreen' } }]
-					})
-				})
-		} catch (err) {
-			Alert.alert(getErrorMessage(err));
-		}
+		return searchAddress({ variables: { search } })
+			.then(({ data: { searchAddress } })=>{
+				const address = dataSave;
+				if (searchAddress?.[0]?.location) address.location = searchAddress?.[0]?.location;
+					
+				navigation.navigate('PickLocationScreen', { address })
+			})
+			.catch((err)=>{
+				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
+			})
 	}
 
 	// ------- END OF FUNCIONS -------
 
-	const initialValues = {
-		street: address.street || '',
-		number: isNumber(address.number) ? address.number.toString() : address.number,
-		district: address.district || '',
-		zipcode: isNumber(address.zipcode) ? address.zipcode.toString() : address.zipcode,
+	const initialValues = __DEV__ ? {
+		street: 'Rua João Quartieiro',
+		number: '43',
+		district: 'Centro',
+		zipcode: '88960000',
+		reference: 'Próximo a Ritmi',
 		
-		name: address.name || '',
+		name: 'Casa',
 		complement: '',
-		city: address.city,
-		state: address.state,
-		location: address.location
+		city: 'Sombrio',
+		state: 'SC',
+		location: ''
+	} : {
+		street: '',
+		number: '',
+		district: '',
+		zipcode: '',
+		reference: '',
+		
+		name: '',
+		complement: '',
+		city: '',
+		state: '',
+		location: ''
 	}
 
 	return (

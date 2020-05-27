@@ -1,10 +1,11 @@
 /* eslint-disable global-require */
 import { AsyncStorage } from 'react-native';
 
+import { sanitizeAddress } from '../controller/address';
 import { registerForPushNotifications, removeForPushNotifications } from '../controller/notification';
 import client from './apolloClient';
 
-import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
+import { SET_SELECTED_ADDRESS, GET_SELECTED_ADDRESS, SET_USER_ADDRESS } from '../graphql/addresses';
 import { AUTHENTICATE } from '../graphql/authentication';
 
 export async function initialize() {
@@ -20,7 +21,7 @@ export async function initialize() {
 		user = data.authenticate;
 	}
 
-	if (selectedAddress) client.writeQuery({ query: GET_SELECTED_ADDRESS, data: { selectedAddress: JSON.parse(selectedAddress) } });
+	if (selectedAddress) await client.mutate({ mutation: SET_SELECTED_ADDRESS, variables: { address: JSON.parse(selectedAddress) } })
 	
 	return {
 		user,
@@ -29,9 +30,15 @@ export async function initialize() {
 }
 
 export async function logUserIn(user, token) {
+	const { data: { selectedAddress } } = await client.query({ query: GET_SELECTED_ADDRESS });
+
 	await AsyncStorage.setItem('@prontoEntregue/userToken', token);
 	await registerForPushNotifications(user.id);
 	client.writeData({ data: { userToken: token, loggedUserId: user.id } });
+
+	console.log(selectedAddress, user.id)
+
+	if (selectedAddress) await client.mutate({ mutation: SET_USER_ADDRESS, variables: { addressData: sanitizeAddress(selectedAddress), userId: user.id } });
 }
 
 export async function logUserOut() {

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Alert, View, ActivityIndicator, Dimensions } from 'react-native';
+import { StyleSheet, Alert, View, Dimensions } from 'react-native';
 import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { useMutation } from '@apollo/react-hooks';
@@ -8,17 +8,20 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { cloneDeep } from 'lodash';
 
-import { extractAddress } from '../../controller/address';
-import { Icon, useTheme, Button, Paper, FormHelperText, Typography, IconButton } from '../../react-native-ui';
+import LoadingBlock from '../../components/LoadingBlock';
+
+import { sanitizeAddress } from '../../controller/address';
+import { useLoggedUserId } from '../../controller/hooks';
+import { Icon, useTheme, Button, Paper, Typography, IconButton } from '../../react-native-ui';
 // import mapStyle from '../../services/mapStyle.json';
 import { calculateDistance } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import { Container, PointerContainer, PinShadow } from './styles';
 
-import { SEARCH_LOCATION } from '../../graphql/addresses';
+import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
+import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
 
-
-const maxDistance = 200; // meters
+const maxDistance = 500; // meters
 
 const clearCamera = {
 	center: {},
@@ -39,40 +42,39 @@ const dimensionWidth = Math.round(Dimensions.get('window').width);
 const paddingOffset = 20;
 
 export default function PickLocation() {
-	const { params: { address = null, pickUserLocation = null } } = useRoute();
+	const { params: { address = null } } = useRoute();
 	
 	const navigation = useNavigation();
 	const { palette } = useTheme();
 	const MapRef = useRef();
 	const [loadingLocation, setLoadingLocation] = useState(false);
-	const [locationError, setLocationError] = useState('');
-	const [selectedAddress, setSelectedAddress] = useState(()=>address || null);
 
 	const [screenWidth, setScreenWidth] = useState(()=>dimensionWidth-1);
 	const [mapPadding, setMapPadding] = useState(215);
+	const [loadingSelect, setLoadingSelect] = useState(false);
 
-	const [searchLocation, { loading: loadingGeoLocation }] = useMutation(SEARCH_LOCATION)
+	const loggedUserId = useLoggedUserId();
+	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] });
+	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	
-	const initialCamera = !pickUserLocation ? {
+	const initialCamera = {
 		...clearCamera,
 		center: {
 			latitude: address.location[0],
 			longitude: address.location[1],
 		},
-	} : null
+	}
 	const [camera, setCamera] = useState(()=>initialCamera);
 	
 	function handleMapReady() {
 		setScreenWidth(dimensionWidth)
-		
-		if (pickUserLocation) getLocationAsync();
 	}
 
 	function moveCameraTo(location, zoom=18) {
 		const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
 		newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
 		newCamera.zoom = zoom;
-		setCamera(newCamera)
+		//setCamera(newCamera)
 		MapRef.current.animateCamera(newCamera);
 	}
 
@@ -87,8 +89,6 @@ export default function PickLocation() {
 				await getPermission();
 			
 				let location = await Location.getCurrentPositionAsync({});
-
-				await geoLocate(location.coords);
 
 				moveCameraTo(location);
 			})
@@ -116,26 +116,14 @@ export default function PickLocation() {
 		}
 	}
 
-	async function geoLocate(location) {
-		setLocationError('')
-		const { data: { searchLocation: address } } = await searchLocation({ variables: { location: [location.latitude, location.longitude] } });
-
-		if (address.state && address.city)
-			setSelectedAddress(address);
-		else {
-			setSelectedAddress(null);
-			setLocationError('O endereço não foi encontrado')
-		}
-	}
-
 	// REGION
 
 	function changeAddressPoint(newRegion) {
 		const actualDistance = address ? calculateDistance(newRegion, initialCamera.center) : 0;
 		if (actualDistance > maxDistance) {
 			Alert.alert(
-				'A localização definida é muito longe do endereço selecionado',
-				'Deseja buscar outro endereço?',
+				'Essa localização é muito distante do endereço digitado na página anterior',
+				'Deseja começar de novo?',
 				[
 					{ text: 'Não', onPress: ()=>MapRef.current.animateCamera(camera, 4000) },
 					{ text: 'Sim', onPress: ()=>navigation.navigate('SearchAddressScreen') }
@@ -147,10 +135,32 @@ export default function PickLocation() {
 	}
 	
 	function handleRegionChange(newRegion) {
-		if (pickUserLocation) {
-			geoLocate(newRegion);
-		} else
-			changeAddressPoint(newRegion);
+		changeAddressPoint(newRegion);
+	}
+
+	async function handleSaveAddress() {
+		try {
+			setLoadingSelect(true);
+
+			const dataSave = { ...address, location: [camera.center.latitude, camera.center.longitude] };
+
+			await setSelectedAddress({ variables: { address: dataSave } })
+				.then(() => {
+					//Toast.show('Endereço selecionado');
+
+					navigation.dangerouslyGetParent().reset({
+						index: 0,
+						routes: loggedUserId
+							? [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+							: [{ name: 'WelcomeRoutes', params: { screen: 'AskLoginScreen' } }]
+					})
+				})
+
+		} catch (err) {
+			Alert.alert(getErrorMessage(err));
+		} finally {
+			setLoadingSelect(false);
+		}
 	}
 
 		
@@ -175,6 +185,7 @@ export default function PickLocation() {
 					bottom: mapPadding
 				}}
 			>
+				{/* <Marker coordinate={camera.center} /> */}
 				{!!address && <Circle
 					center={initialCamera.center}
 					radius={maxDistance}
@@ -183,7 +194,7 @@ export default function PickLocation() {
 					fillColor='rgba(164,216,43,.1)'
 				/>}
 			</MapView>
-			<PointerContainer style={{ marginTop: 58 - 215 }}>
+			<PointerContainer style={{ marginTop: 10 -mapPadding }}>
 				<PinShadow />
 				<Icon name='map-pin' size={60} color={palette.primary.main} />
 			</PointerContainer>
@@ -201,25 +212,20 @@ export default function PickLocation() {
 					alignItems: 'center'
 				}}
 			>
-				{loadingLocation || loadingGeoLocation
-					? <ActivityIndicator color={palette.primary.main} style={{ marginBottom: 20 }} />
-					: !!selectedAddress && (<View style={{ marginBottom: 20 }}>
-						<Typography variant='h4' style={{ fontFamily: 'Roboto-Bold', textAlign: 'center' }}>{`${selectedAddress?.street || ''}${selectedAddress.number ? `, ${selectedAddress.number}` : ''}`}</Typography>
-						<Typography variant='h5' style={{ textAlign: 'center' }}>{`${selectedAddress.city} - ${selectedAddress.state}`}</Typography>
-					</View>)}
-
-				{!!locationError && <FormHelperText style={{ textAlign: 'center', }} error>{locationError}</FormHelperText>}
 				<Button
-					disabled={!selectedAddress}
-					label='Confirmar Localização'
+					disabled={loadingSelect}
 					color='primary'
 					variant='filled'
-					onPress={()=>navigation.navigate('ConfirmAddressScreen', { address: extractAddress(selectedAddress) })}
-				/>
+					onPress={handleSaveAddress}
+				>
+					{loadingSelect
+						? <LoadingBlock />
+						: <Typography variant='button'>Salvar e selecionar</Typography>}
+				</Button>
 			</Paper>}
 
 			<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>
-				{!loadingLocation && !loadingGeoLocation &&
+				{!loadingLocation &&
 					<IconButton
 						icon={{ name: 'crosshairs-gps', type: 'material-community' }}
 						onPress={()=>{getLocationAsync()}}

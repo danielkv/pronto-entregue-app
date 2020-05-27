@@ -10,6 +10,7 @@ export function createEmptyAddress () {
 		district: '',
 		city: '',
 		state: '',
+		reference: '',
 		location: ['', ''],
 	}
 }
@@ -24,6 +25,7 @@ export function extractAddress(address) {
 		district: address.district,
 		city: address.city,
 		state: address.state,
+		reference: address.reference,
 		location: address.location,
 	};
 }
@@ -38,6 +40,7 @@ export function sanitizeAddress(result) {
 		district: result.district,
 		city: result.city,
 		state: result.state,
+		reference: result.reference || '',
 		location: result.location,
 	}
 

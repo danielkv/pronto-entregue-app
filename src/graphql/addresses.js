@@ -38,6 +38,7 @@ export const GET_SELECTED_ADDRESS = gql`
 			district
 			city
 			state
+			reference
 			zipcode
 			location
 		}
@@ -47,5 +48,22 @@ export const GET_SELECTED_ADDRESS = gql`
 export const SET_SELECTED_ADDRESS = gql`
 	mutation setSelectedAddress ($address: AddressInput!, $force: Boolean) {
 		setSelectedAddress (address: $address, force: $force) @client
+	}
+`;
+
+export const SET_USER_ADDRESS = gql`
+	mutation SetUserAddress ($addressData: AddressInput!, $userId: ID) {
+		setUserAddress (addressData: $addressData, userId: $userId) {
+			id
+			name
+			street
+			number
+			district
+			city
+			state
+			reference
+			zipcode
+			location
+		}
 	}
 `;

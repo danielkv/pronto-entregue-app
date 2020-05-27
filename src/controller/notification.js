@@ -77,6 +77,7 @@ export async function registerForPushNotifications(userId) {
 }
 		
 export async function removeForPushNotifications() {
+	if (!Device.isDevice) return;
 	// Get the token that uniquely identifies this device
 	const token = await Notifications.getExpoPushTokenAsync();
 			
