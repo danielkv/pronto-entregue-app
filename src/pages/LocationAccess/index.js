@@ -20,6 +20,7 @@ export default function LocationAccess() {
 	}, [])
 
 	function init() {
+		//resetAddress();
 		// Setup listener for updates
 		setupUpdates()
 
@@ -59,7 +60,7 @@ export default function LocationAccess() {
 	}
 
 	function pickLocation() {
-		navigation.dangerouslyGetParent().replace('SelectAddressRoutes', { screen: 'PickLocationScreen', params: { pickUserLocation: true } })
+		navigation.dangerouslyGetParent().replace('SelectAddressRoutes', { screen: 'ConfirmAddressScreen' })
 	}
 
 	function nextPage(user=null) {
