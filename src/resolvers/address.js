@@ -29,6 +29,9 @@ export default {
 					}
 				}
 
+				// fix address id for legacy versions
+				if (newAddress.id === 'temp') delete newAddress.id;
+
 				// if addres has no ID or ID is 'temp', create new addres on DB
 				const { data: { setUserAddress } } = await client.mutate({ mutation: SET_USER_ADDRESS, variables: { addressData: newAddress, userId: loggedUserId } });
 
