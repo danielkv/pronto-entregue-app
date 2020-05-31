@@ -36,8 +36,6 @@ export async function logUserIn(user, token) {
 	await registerForPushNotifications(user.id);
 	client.writeData({ data: { userToken: token, loggedUserId: user.id } });
 
-	console.log(selectedAddress, user.id)
-
 	if (selectedAddress) await client.mutate({ mutation: SET_USER_ADDRESS, variables: { addressData: sanitizeAddress(selectedAddress), userId: user.id } });
 }
 
