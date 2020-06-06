@@ -8,7 +8,7 @@ export default function LoadingBlock({ message, size='small' }) {
 	return (
 		<BlockContainer>
 			<ActivityIndicator color='#F11761' size={size} />
-			{!!message && <Typography variant='h4' style={{ marginTop: 20 }}>{message}</Typography>}
+			{!!message && <Typography variant='h5' style={{ marginTop: 20, color: '#666' }}>{message}</Typography>}
 		</BlockContainer>
 	)
 }

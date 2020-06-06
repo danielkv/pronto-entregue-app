@@ -1,10 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text'
 
-import { TextField, Typography, useTheme, Button, Paper, Icon } from '../../react-native-ui';
+import { TextField, Typography, useTheme, Button, FormHelperText } from '../../react-native-ui';
 import { InputsContainer, ButtonsContainer, FormContainer } from './styles';
 
-export default function AddressForm({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
+export default function AddressForm({ initialValues, values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
 	const { palette } = useTheme();
 	const refs = {};
 
@@ -15,8 +16,19 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 	return (
 		<>
 			<View style={{ marginHorizontal: 35 }}>
-				<Typography variant='title' style={{ textAlign: 'left' }}>Digite seu endereço abaixo</Typography>
-				<Typography style={{ color: '#666', fontSize: 13 }}>Vamos tentar encontrar sua localização, caso não estiver correta, você pode corrigir na próxima etapa.</Typography>
+				{initialValues.addressFound
+					? (
+						<>
+							<Typography variant='title' style={{ textAlign: 'left' }}>Encontramos um endereço</Typography>
+							<Typography style={{ color: '#666', fontSize: 13 }}>Baseados em sua localização, encontrarmos o endereço abaixo, caso não esteja correto, basta ajusta-lo.</Typography>
+						</>
+					)
+					:(
+						<>
+							<Typography variant='title' style={{ textAlign: 'left' }}>Digite seu endereço abaixo</Typography>
+							<Typography style={{ color: '#666', fontSize: 13 }}>Vamos tentar encontrar sua localização, caso não estiver correta, você pode corrigir na próxima etapa.</Typography>
+						</>
+					)}
 			</View>
 			<FormContainer>
 				<InputsContainer>
@@ -67,6 +79,21 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 						onSubmitEditing={handleNextInput('complement')}
 					/>
 					<TextField
+						error={Boolean(errors.district)}
+						helperText={errors.district}
+						label='Bairro'
+						onChangeText={handleChange('district')}
+						onBlur={handleBlur('district')}
+						disabled={isSubmitting}
+						value={values.district}
+
+						inputRef={ref => { refs.district = ref }}
+						blurOnSubmit={false}
+						returnKeyType='next'
+						onSubmitEditing={handleNextInput('complement')}
+					/>
+					<FormHelperText style={{ root: { marginRight: 8, marginTop: 8 }, text: { textAlign: 'right', color: '#666' } }} color='default'>Ajude-nos a te encontrar</FormHelperText>
+					<TextField
 						error={Boolean(errors.complement)}
 						helperText={errors.complement}
 						label='Complemento'
@@ -92,35 +119,63 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 						inputRef={ref => { refs.reference = ref }}
 						blurOnSubmit={false}
 						returnKeyType='next'
-						onSubmitEditing={handleNextInput('district')}
+						onSubmitEditing={handleNextInput('city')}
+					/>
+					
+
+					<FormHelperText style={{ root: { marginRight: 8, marginTop: 8 }, text: { textAlign: 'right', color: '#666' } }} color='default'>Região</FormHelperText>
+					<TextField
+						error={Boolean(errors.city)}
+						helperText={errors.city}
+						label='Cidade'
+						onChangeText={handleChange('city')}
+						onBlur={handleBlur('city')}
+						disabled={isSubmitting}
+						value={values.city}
+
+						inputRef={ref => { refs.city = ref }}
+						blurOnSubmit={false}
+						returnKeyType='next'
+						onSubmitEditing={handleNextInput('state')}
 					/>
 					<TextField
-						error={Boolean(errors.district)}
-						helperText={errors.district}
-						label='Bairro'
-						onChangeText={handleChange('district')}
-						onBlur={handleBlur('district')}
+						error={Boolean(errors.state)}
+						helperText={errors.state}
+						label='Estado'
+						onChangeText={handleChange('state')}
+						onBlur={handleBlur('state')}
 						disabled={isSubmitting}
-						value={values.district}
+						value={values.state}
 
-						inputRef={ref => { refs.district = ref }}
+						inputRef={ref => { refs.state = ref }}
 						blurOnSubmit={false}
 						returnKeyType='next'
 						onSubmitEditing={handleNextInput('zipcode')}
 					/>
-					<TextField
-						error={Boolean(errors.zipcode)}
-						helperText={errors.zipcode}
-						keyboardType='number-pad'
+
+					<TextInputMask
 						label='CEP'
-						autoCompleteType='postal-code'
 						onChangeText={handleChange('zipcode')}
 						onBlur={handleBlur('zipcode')}
 						disabled={isSubmitting}
 						value={values.zipcode}
+						autoCompleteType='postal-code'
 
+					
 						inputRef={ref => { refs.zipcode = ref }}
+						
+						blurOnSubmit={false}
+						returnKeyType='next'
 						onSubmitEditing={handleSubmit}
+
+						customTextInputProps={{
+							helperText: errors.zipcode || '',
+							error: Boolean(errors.zipcode),
+						}}
+
+						type='zip-code'
+						customTextInput={TextField}
+					
 					/>
 				</InputsContainer>
 				<ButtonsContainer>

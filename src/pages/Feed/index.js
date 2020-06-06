@@ -27,7 +27,7 @@ export default function Feed() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { productsOnSale = [], bestSellers = [], companies = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location, pagination: { page: 0, rowsPerPage: 6 } }, fetchPolicy: 'no-cache' });
+	const { data: { productsOnSale = [], bestSellers = [], companies = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location, pagination: { page: 0, rowsPerPage: 15 } }, fetchPolicy: 'no-cache' });
 
 	const feedIsEmpty = !productsOnSale.length && !bestSellers.length;
 

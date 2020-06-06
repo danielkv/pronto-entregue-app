@@ -21,7 +21,7 @@ import { Container, PointerContainer, PinShadow } from './styles';
 import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
 import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
 
-const maxDistance = 500; // meters
+const maxDistance = 800; // meters
 
 const clearCamera = {
 	center: {},
@@ -143,6 +143,8 @@ export default function PickLocation() {
 			setLoadingSelect(true);
 
 			const dataSave = { ...address, location: [camera.center.latitude, camera.center.longitude] };
+
+			if (loggedUserId) await createAddress({ variables: { data: sanitizeAddress(dataSave) } })
 
 			await setSelectedAddress({ variables: { address: dataSave } })
 				.then(() => {
