@@ -20,6 +20,12 @@ export const SET_CART_DELIVERY = gql`
 		setDelivery(type: $type, address: $address, force: $force) @client
 	}
 `;
+
+export const SET_CART_COUPON = gql`
+	mutation SetCartCoupon ($data: CouponInput!) {
+		setCoupon(data: $data) @client
+	}
+`;
 export const SET_CART_PAYMENT = gql`
 	mutation SetCartPayment ($data: PaymentInput!) {
 		setPayment (data: $data) @client
@@ -58,6 +64,15 @@ export const GET_CART = gql`
 
 		cartUseCredits @client
 
+		cartCoupon @client {
+			id
+			name
+			image
+			valueType
+			value
+			freeDelivery
+		}
+
 		cartItems @client {
 			id
 			productId
@@ -79,6 +94,19 @@ export const GET_CART = gql`
 					price
 				}
 			}
+		}
+	}
+`;
+
+export const GET_CART_COUPON = gql`
+	query GetCartCoupon {
+		cartCoupon @client {
+			id
+			name
+			image
+			valueType
+			value
+			freeDelivery
 		}
 	}
 `;

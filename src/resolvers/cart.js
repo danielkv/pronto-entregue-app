@@ -3,7 +3,7 @@ import { uniqueId } from 'lodash';
 import { extractFirstError } from '../utils/errors';
 
 import { SET_SELECTED_ADDRESS } from '../graphql/addresses';
-import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY, CHECK_DELIVERY_LOCATION } from '../graphql/cart';
+import { GET_CART_ITEMS, GET_CART_DELIVERY, GET_CART_PAYMENT, GET_CART, GET_CART_COMPANY, CHECK_DELIVERY_LOCATION, GET_CART_COUPON } from '../graphql/cart';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -22,7 +22,8 @@ export default {
 					cartPayment: null,
 					cartItems: [],
 					cartSubtotal: 0,
-					cartPrice: 0
+					cartPrice: 0,
+					cartCoupon: null
 				}
 			});
 		},
@@ -93,6 +94,12 @@ export default {
 		setPayment: (_, { data }, { cache }) => {
 			data.__typename = 'Payment';
 			cache.writeQuery({ query: GET_CART_PAYMENT, data: { cartPayment: data } });
+
+			return null;
+		},
+		setCoupon: (_, { data }, { cache }) => {
+			data.__typename = 'Coupon';
+			cache.writeQuery({ query: GET_CART_COUPON, data: { cartCoupon: data } });
 
 			return null;
 		},

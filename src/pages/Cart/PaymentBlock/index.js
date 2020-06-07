@@ -35,32 +35,38 @@ export default function DeliveryBlock() {
 	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 	
 	const { data: { cartUseCredits } = {} } = useQuery(GET_CART_USER_CREDITS);
-	const { data: { cartPayment, cartCompany, cartPrice, cartSubtotal }, error: cartError } = useQuery(GET_CART);
+	const { data: { cartPayment, cartCompany, cartPrice, cartSubtotal, cartCoupon, cartDelivery }, error: cartError } = useQuery(GET_CART);
 	const { data: { user: { creditBalance = null } = {} } = {}, loading: loadingCredit } = useQuery(GET_USER_CREDITS, { variables: { id: loggedUserId }, fetchPolicy: 'cache-first' });
 	const [setPayment, { loading: loadingPayment }] = useMutation(SET_CART_PAYMENT);
 	const [creditsUse, setCreditUse] = useState(0);
 
 	useEffect(()=>{
 		if (loadingCredit) return;
-		let discount = 0;
-
-		if (cartUseCredits) {
-			if (creditBalance <= 0) {
-				client.writeData({ data: { cartUseCredits: false } })
-			} else {
-				if (creditBalance >= cartSubtotal) {
-					discount = cartSubtotal;
-					if (cartPayment?.id) client.writeData({ data: { cartPayment: null } })
+		let discount = 0, creditUse = 0;
+		if (cartCoupon) {
+			discount = cartCoupon.valueType === 'value' ? cartCoupon.value : cartCoupon.value / 100 * (cartSubtotal - cartDelivery.price);
+			if (cartCoupon.freeDelivery) discount += cartDelivery.price;
+			creditUse = 0;
+			client.writeData({ data: { cartUseCredits: false } })
+		} else {
+			if (cartUseCredits) {
+				if (creditBalance <= 0 ) {
+					client.writeData({ data: { cartUseCredits: false } })
 				} else {
-					discount = creditBalance;
+					if (creditBalance >= cartSubtotal) {
+						discount = creditUse = cartSubtotal;
+						if (cartPayment?.id) client.writeData({ data: { cartPayment: null } })
+					} else {
+						discount = creditUse = creditBalance;
+					}
 				}
 			}
 		}
 		
-		setCreditUse(discount);
+		setCreditUse(creditUse);
 		client.writeData({ data: { cartDiscount: discount } })
 
-	}, [cartUseCredits, creditBalance, cartPayment, cartSubtotal]);
+	}, [cartCoupon, cartUseCredits, creditBalance, cartPayment, cartSubtotal, cartDelivery]);
 
 	function setUseCredits(newValue) {
 		client.writeData({ data: { cartUseCredits: newValue } })

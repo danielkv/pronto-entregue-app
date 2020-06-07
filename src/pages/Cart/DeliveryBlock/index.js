@@ -13,7 +13,7 @@ import ErrorBlock from '../../../components/ErrorBlock';
 import LoadingBlock from '../../../components/LoadingBlock';
 
 import { useSelectedAddress } from '../../../controller/hooks';
-import { Paper, Icon, Typography } from '../../../react-native-ui';
+import { Paper, Icon, Typography, Chip } from '../../../react-native-ui';
 import { BRL } from '../../../utils/currency';
 import { getErrorMessage, extractFirstError } from '../../../utils/errors';
 import { CardHeader, CardContent, CardInfo } from '../styles';
@@ -31,7 +31,7 @@ export default function DeliveryBlock() {
 	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
 	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 
-	const { data: { cartDelivery, cartCompany }, error: cartError } = useQuery(GET_CART);
+	const { data: { cartDelivery, cartCompany, cartCoupon }, error: cartError } = useQuery(GET_CART);
 	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
 	const [cancelCart] = useMutation(CANCEL_CART);
 
@@ -100,8 +100,10 @@ export default function DeliveryBlock() {
 							</Typography>
 						</CardInfo>
 						<Icon name='edit' size={24} color='#333' />
-						{!!(cartDelivery && cartDelivery.price)
-							&& <Typography>{BRL(cartDelivery.price).format()}</Typography>}
+						{cartCoupon?.freeDelivery
+							? <Chip style={{ root: { height: 30 } }} color='secondary' label='Cupom: entrega grátis' />
+							: !!(cartDelivery && cartDelivery.price)
+								&& <Typography>{BRL(cartDelivery.price).format()}</Typography>}
 					</CardContent>
 				</Paper>
 			</TouchableOpacity>

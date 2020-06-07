@@ -14,6 +14,7 @@ import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
 import { Button, Paper, Typography, Chip, Divider, TextField, useTheme } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
+import CouponBlock from './Coupon';
 import DeliveryBlock from './DeliveryBlock';
 import PaymentBlock from './PaymentBlock';
 import {
@@ -119,7 +120,9 @@ export default function Cart({ navigation }) {
 						<Chip color='secondary' label={`${cartItems.length} ${cartItems.length > 1 ? 'itens' : 'item'}`} style={{ root: { height: 30 } }} />
 					</View>
 				</Paper>}
+
 				<DeliveryBlock />
+
 				<Paper>
 					<Typography variant='title'>Itens</Typography>
 					<View style={{ marginTop: 35 }}>
@@ -131,7 +134,10 @@ export default function Cart({ navigation }) {
 						))}
 					</View>
 				</Paper>
+
+				<CouponBlock />
 				<PaymentBlock />
+
 				<Paper>
 					<Typography variant='title'>Observações</Typography>
 					<TextField

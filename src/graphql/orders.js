@@ -38,6 +38,15 @@ export const ORDER_FRAGMENT = gql`
 			value
 			history
 		}
+		
+		coupon {
+			id
+			name
+			image
+			valueType
+			value
+			freeDelivery
+		}
 
 		address {
 			street

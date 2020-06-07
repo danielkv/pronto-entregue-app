@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -26,6 +26,14 @@ export default function PaymentModal({ confirmModal, closeModal, company, setUse
 		confirmModal(method);
 	}
 
+	function handlePressCredits() {
+		if (cart.cartCoupon) {
+			Alert.alert('Oooh 😟', 'Você não pode pagar com créditos se tiver um cupom na cesta');
+			return;
+		}
+		setUseCredits(!cartUseCredits)
+	}
+
 	if (error) return <ErrorBlock error={error} />
 
 	return (
@@ -48,7 +56,7 @@ export default function PaymentModal({ confirmModal, closeModal, company, setUse
 										icon={cartUseCredits ? 'check-square' : 'square'}
 										variant='filled'
 										label={`Usar créditos: ${BRL(creditBalance).format()}`}
-										onPress={()=>setUseCredits(!cartUseCredits)}
+										onPress={handlePressCredits}
 									/>
 								</View>
 							</>

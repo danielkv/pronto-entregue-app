@@ -55,13 +55,14 @@ export async function validateCart() {
 	return true;
 }
 
-export function sanitizeOrderData ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment, cartUseCredits }) {
+export function sanitizeOrderData ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment, cartUseCredits, cartCoupon }) {
 	return {
 		userId: userId || user.id,
 		type: cartDelivery.type,
 		status: cartStatus || 'waiting',
 		paymentMethodId: cartPayment?.id || null,
 		useCredits: cartUseCredits || false,
+		couponId: cartCoupon?.id || null,
 		companyId: cartCompany.id,
 
 		paymentFee: cartPayment?.price || 0,

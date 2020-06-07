@@ -21,7 +21,7 @@ export default function DeliveryModal({ confirmModal, closeModal, loading, accep
 		data: { user: { addresses = [] } = {} } = {},
 		loading: loadingUserAddresses,
 		error
-	} = useQuery(GET_USER_ADDRESSES, { variables: { id: loggedUserId }, skip: ()=>!loggedUserId });
+	} = useQuery(GET_USER_ADDRESSES, { variables: { id: loggedUserId }, skip: !loggedUserId });
 	
 	const navigation = useNavigation();
 
@@ -35,6 +35,7 @@ export default function DeliveryModal({ confirmModal, closeModal, loading, accep
 	const opacity = (loading || loadingUserAddresses) ? .2 : 1;
 
 	if (!addresses.length) addresses.push(selectedAddress)
+
 
 	return (
 		<Panel

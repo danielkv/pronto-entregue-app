@@ -17,7 +17,8 @@ export const initialData = {
 	cartSubtotal: 0,
 	cartMessage: '',
 	cartDiscount: 0,
-	cartUseCredits: true,
+	cartUseCredits: false,
+	cartCoupon: null,
 }
 
 cache.writeData({ data: initialData });

@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import Address from '../../../components/Address';
 
-import { useTheme, Icon, Typography, Paper, Button } from '../../../react-native-ui';
+import { useTheme, Icon, Typography, Paper, Button, Chip } from '../../../react-native-ui';
 import { BRL } from '../../../utils/currency';
 import {
 	Container,
@@ -118,7 +118,10 @@ export default function Blocks({ order }) {
 						</BlockHeader>
 						<BlockFooter>
 							<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>{order.type === 'takeout' ? 'Retirada no local' : `${order.address.street}, ${order.address.number}`}</Typography>
-							{!!order.deliveryPrice && <BlockInfo h1>{BRL(order.deliveryPrice).format()}</BlockInfo>}
+							{!!order.deliveryPrice
+								&& order?.coupon?.freeDelivery
+								? <Chip style={{ root: { height: 22, paddingHorizontal: 10, marginTop: 3, alignSelf: 'flex-end' }, text: { textTransform: 'uppercase', fontSize: 12 } }} label='grátis' />
+								: <BlockInfo h1>{BRL(order.deliveryPrice).format()}</BlockInfo>}
 						</BlockFooter>
 					</Block>)
 				}
