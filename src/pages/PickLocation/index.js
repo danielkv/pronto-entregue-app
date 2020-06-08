@@ -119,7 +119,7 @@ export default function PickLocation() {
 	// REGION
 
 	function changeAddressPoint(newRegion) {
-		const actualDistance = address ? calculateDistance(newRegion, initialCamera.center) : 0;
+		/* const actualDistance = address ? calculateDistance(newRegion, initialCamera.center) : 0;
 		if (actualDistance > maxDistance) {
 			Alert.alert(
 				'Essa localização é muito distante do endereço digitado na página anterior',
@@ -130,7 +130,7 @@ export default function PickLocation() {
 				]
 			);
 				
-		} else
+		} else */
 			setCamera({ ...camera, center: newRegion })
 	}
 	
@@ -188,13 +188,13 @@ export default function PickLocation() {
 				}}
 			>
 				{/* <Marker coordinate={camera.center} /> */}
-				{!!address && <Circle
+				{/* {!!address && <Circle
 					center={initialCamera.center}
 					radius={maxDistance}
 					strokeWidth={4}
 					strokeColor='rgba(65,84,20,.5)'
 					fillColor='rgba(164,216,43,.1)'
-				/>}
+				/>} */}
 			</MapView>
 			<PointerContainer style={{ marginTop: 10 -mapPadding }}>
 				<PinShadow />

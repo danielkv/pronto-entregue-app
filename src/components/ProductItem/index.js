@@ -1,8 +1,9 @@
 import React from 'react';
+import { Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
-import { Typography, Chip, Avatar } from '../../react-native-ui';
+import { Typography, Chip } from '../../react-native-ui';
 import { BRL } from '../../utils/currency';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
@@ -22,15 +23,19 @@ export default function ProductItem({ item: product, showClosedTag=true }) {
 
 	return (
 		<Container onPress={()=> navigation.navigate('ProductScreen', params)}>
-			<Avatar
-				image={product.image}
-				alt={product.image}
-				size={110}
-				style={{ root: { opacity } }}
+			<Image
+				source={{ uri: product.image }}
+				style={{
+					opacity,
+					width: 85,
+					height: 85,
+					borderRadius: 40,
+					resizeMode: 'cover'
+				}}
 			/>
 			<ContentContainer style={{ opacity }}>
-				<Typography style={{ fontSize: 20, fontFamily: 'Roboto-Bold', color: '#655A51' }}>{product.name}</Typography>
-				<Typography style={{ fontSize: 14, color: '#655A51' }}>{product.company.displayName}</Typography>
+				<Typography style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#655A51' }}>{product.name}</Typography>
+				<Typography style={{ fontSize: 13, color: '#655A51' }}>{product.company.displayName}</Typography>
 				{!product.company.isOpen && showClosedTag && <ClosedCompanyChip />}
 				<FooterContainer>
 					<FooterContent>
@@ -38,7 +43,7 @@ export default function ProductItem({ item: product, showClosedTag=true }) {
 						<Chip
 							variant={product?.sale?.progress ? 'default' : 'outlined'}
 							color={product?.sale?.progress ? 'secondary' : 'default'}
-							style={{ root: { height: 33, paddingHorizontal: 10 } }}
+							style={{ root: { height: 26, paddingHorizontal: 10 }, text: { fontSize: 13 } }}
 							label={BRL(featuredPrice).format()}
 						/>
 					</FooterContent>

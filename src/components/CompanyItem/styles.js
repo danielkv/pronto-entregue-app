@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
-	border-radius: 30px;
+	border-radius: 25px;
 	background-color: #fff;
 	margin: 5px 0;
 	overflow: hidden;

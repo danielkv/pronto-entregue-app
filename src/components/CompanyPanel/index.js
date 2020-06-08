@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
-import { Paper, Avatar, Typography, Icon } from '../../react-native-ui';
+import { Paper, Typography, Icon } from '../../react-native-ui';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import RatingStars from '../RatingStars';
 import { FooterContainer, FooterContent } from './style';
@@ -22,7 +22,16 @@ export default function CompanyPanel({ company }) {
 	return (
 		<Paper style={{ paddingVertical: 20 }}>
 			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('HomeRoutes', { screen: 'CompanyScreen', params: routeState })}>
-				<Avatar size={50} image={company.image} alt={company.displayName} />
+				<Image
+					source={{ uri: company.image }}
+					style={{
+						width: 55,
+						height: 55,
+						borderRadius: 30,
+						resizeMode: 'cover'
+					}}
+				/>
+				
 				<View style={{ marginLeft: 10 }}>
 					{company?.isOpen === false && <View style={{ marginBottom: 5 }}><ClosedCompanyChip /></View>}
 					<Typography style={{ fontSize: 16, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>

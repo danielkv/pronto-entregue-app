@@ -11,7 +11,7 @@ export default function Companies({ companies }) {
 	const { palette } = useTheme();
 
 	return (
-		<View style={{ marginVertical: 20 }}>
+		<View style={{ marginVertical: 20, marginHorizontal: 10 }}>
 			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginHorizontal: 10 }}>
 				<Typography variant='subtitle' style={{ color: palette.background.dark, fontSize: 16 }}>Estabelecimentos perto de você</Typography>
 				<Icon name='info' size={18} color={palette.background.dark} />

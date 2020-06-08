@@ -1,7 +1,8 @@
 import React from 'react';
+import { Image } from 'react-native';
 
 import { calculateProductPrice } from '../../controller/products';
-import { useTheme, IconButton, Chip, Typography, Avatar } from '../../react-native-ui';
+import { useTheme, IconButton, Chip, Typography } from '../../react-native-ui';
 import { BRL } from '../../utils/currency';
 import {
 	Container,
@@ -17,7 +18,15 @@ export default function CartItem({ item, onPressDelete }) {
 
 	return (
 		<Container>
-			<Avatar image={item.image} alt={item.name} size={55} />
+			<Image
+				source={{ uri: item.image }}
+				style={{
+					width: 55,
+					height: 55,
+					borderRadius: 30,
+					resizeMode: 'cover'
+				}}
+			/>
 			<ItemContent>
 				<HeaderContainer>
 					<Typography variant='title' style={{ flex: 1, fontSize: 20, color: '#333', marginBottom: 6 }}>{item.name}</Typography>
