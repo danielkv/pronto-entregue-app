@@ -43,7 +43,7 @@ export default function Avatar(props: AvatarProps) {
 	
 	return (
 		<View style={rootStyle}>
-			{props.image
+			{props.image && !alternative
 				? <Image resizeMode='cover' style={imageStyle} source={{ uri: props.image }} onError={()=>{setAlternative(true)}} />
 				: <Typography variant='title' style={textStyle}>{props.children || shortAlt}</Typography>}
 		</View>

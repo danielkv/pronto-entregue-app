@@ -13,6 +13,7 @@ import { Paper, Icon, Typography, Chip, TextField, useTheme, Button, IconButton 
 import { BRL } from '../../../utils/currency';
 import { getErrorMessage } from '../../../utils/errors';
 import { CardHeader, CardContent, CardInfo } from '../styles';
+import BarCodeButton from './scanButton';
 
 import { GET_CART, SET_CART_COUPON } from '../../../graphql/cart';
 import { CHECK_COUPON } from '../../../graphql/coupons';
@@ -29,6 +30,7 @@ export default function CouponBlock() {
 	const selectedAddress = useSelectedAddress();
 	const [couponName, setCouponName] = useState('');
 	const [loadingCoupon, setLoadingCoupon] = useState(false);
+	const [scanningCode, setScanningCode] = useState(false);
 
 	const [checkCoupon] = useMutation(CHECK_COUPON);
 	const [setCartCoupon] = useMutation(SET_CART_COUPON);
@@ -57,12 +59,12 @@ export default function CouponBlock() {
 			})
 	}
 
-	async function handlePressApplyCoupon() {
+	async function handlePressApplyCoupon(name) {
 		try {
-			if (!couponName) return;
+			if (!name) return;
 			setLoadingCoupon(true)
 			const sanitizedOrder = sanitizeOrderData({ ...cart, userId: loggedUserId, address: selectedAddress });
-			const coupon = await handleCheckCoupon(couponName, sanitizedOrder);
+			const coupon = await handleCheckCoupon(name, sanitizedOrder);
 			if (!coupon) return client.writeData({ data: { cartCoupon: null } });
 
 			await setCartCoupon({ variables: { data: coupon } });
@@ -111,32 +113,36 @@ export default function CouponBlock() {
 			>
 				<Paper>
 					<Typography variant='title'style={{ marginBottom: 20 }}>Cupom</Typography>
-					<TextField
-						label='Digite o cupom'
-						value={couponName}
-						onChangeText={(text)=>setCouponName(text)}
-						style={{ inputContainer: { backgroundColor: palette.background.main }, text: { textTransform: 'uppercase' } }}
-					/>
-					<Button
-						variant='filled'
-						color='secondary'
-						onPress={handlePressApplyCoupon}
-					>
-						{loadingCoupon
-							? <LoadingBlock />
-							: 'Aplicar'}
-					</Button>
-					<Button
-						variant='outlined'
-						onPress={handleCloseModal}
-					>
-						Fechar
-					</Button>
-					<Button
-						icon={{ name: 'qrcode', type: 'material-community' }}
-					>
-						Ler QR Code
-					</Button>
+					{!scanningCode &&
+					(
+						<>
+							<TextField
+								label='Digite o cupom'
+								value={couponName}
+								onChangeText={(text)=>setCouponName(text)}
+								autoCorrect={false}
+								autoCompleteType='off'
+								autoCapitalize='none'
+								style={{ inputContainer: { backgroundColor: palette.background.main } }}
+							/>
+							<Button
+								variant='filled'
+								color='secondary'
+								onPress={()=>handlePressApplyCoupon(couponName)}
+							>
+								{loadingCoupon
+									? <LoadingBlock />
+									: 'Aplicar'}
+							</Button>
+							<Button
+								variant='outlined'
+								onPress={handleCloseModal}
+							>
+								Fechar
+							</Button>
+						</>
+					)}
+					<BarCodeButton setScanningCode={setScanningCode} scanningCode={scanningCode} handlePressApplyCoupon={handlePressApplyCoupon} />
 				</Paper>
 			</Modal>
 		</>

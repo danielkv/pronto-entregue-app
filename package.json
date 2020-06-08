@@ -27,6 +27,7 @@
     "apollo-upload-client": "^12.1.0",
     "currency.js": "^1.2.2",
     "expo": "^36.0.0",
+    "expo-barcode-scanner": "~8.0.0",
     "expo-blur": "~8.0.0",
     "expo-constants": "~8.0.0",
     "expo-device": "~2.0.0",
