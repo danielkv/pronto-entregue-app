@@ -43,7 +43,7 @@ export default function ProductItem({ item: product, showClosedTag=true }) {
 						<Chip
 							variant={product?.sale?.progress ? 'default' : 'outlined'}
 							color={product?.sale?.progress ? 'secondary' : 'default'}
-							style={{ root: { height: 26, paddingHorizontal: 10 }, text: { fontSize: 13 } }}
+							style={{ root: { height: 26, paddingHorizontal: 10, paddingVertical: 0 }, text: { fontSize: 13 } }}
 							label={BRL(featuredPrice).format()}
 						/>
 					</FooterContent>
