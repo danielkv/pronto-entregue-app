@@ -7,6 +7,7 @@ import TabBar from '../components/TabBar';
 
 import { useSelectedAddress } from '../controller/hooks';
 import OrdersRollScreen from '../pages/CompanyOrdersRoll';
+import DeliveriesScreen from '../pages/Deliveries';
 import ProfileScreen from '../pages/Profile';
 import ProfileTabsScreen from '../pages/ProfileTabs';
 import SubscriptionScreen from '../pages/Subscription';
@@ -26,6 +27,7 @@ export default function ProfileRoutes() {
 				<Stack.Screen name='ProfileTabsScreen' component={ProfileTabsScreen} />
 				<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} />
 				<Stack.Screen name='OrdersRollScreen' component={OrdersRollScreen} />
+				<Stack.Screen name='DeliveriesScreen' component={DeliveriesScreen} />
 			</Stack.Navigator>
 
 			{selectedAddress && <TabBar />}

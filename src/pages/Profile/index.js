@@ -94,6 +94,15 @@ export default function Profile({ navigation }) {
 					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
 					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'FavoriteProductsScreen' })} />
 					<Button variant='filled' icon='dollar-sign' label='Meus Créditos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'CreditHistoryScreen' })} />
+					{user.role === 'deliveryMan'
+						&& <Button
+							variant='filled'
+							icon={{ name: 'racing-helmet', type: 'material-community' }}
+							label='Entregas'
+							color='secondary'
+							onPress={()=>navigation.navigate('DeliveriesScreen')}
+						/>
+					}
 					{Boolean(companies.length)
 						&& <Button
 							variant='filled'

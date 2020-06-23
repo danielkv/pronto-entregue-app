@@ -1,5 +1,19 @@
 import gql from 'graphql-tag';
 
+export const ADDRESS_FRAGMENT = gql`
+	fragment AddressFields on Address {
+		id
+		name
+		street
+		number
+		district
+		city
+		state
+		zipcode
+		location
+	}
+`;
+
 export const SEARCH_ADDRESS = gql`
 	mutation searchAddress ($search: String!) {
 		searchAddress(search: $search) {

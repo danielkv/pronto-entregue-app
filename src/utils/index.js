@@ -53,6 +53,10 @@ export function getOrderStatusLabel(order, status) {
 			return 'Aguardando';
 		case 'preparing':
 			return 'Preparando';
+		case 'waitingDelivery':
+			return 'Aguardando entregador';
+		case 'waitingPickUp':
+			return 'Aguardando retirada';
 		case 'delivering':
 			return order.type === 'takeout' ? 'Aguardando retirada' : 'A caminho';
 		case 'delivered':
@@ -77,6 +81,10 @@ export function getOrderStatusIcon(order) {
 			return { type: 'material-community', name: 'clock', color: '#363E5E' }
 		case 'preparing':
 			return { type: 'material-community', name: 'silverware-spoon', color: '#363E5E' }
+		case 'waitingDelivery':
+			return { name: 'account-clock', type: 'material-community', color: '#363E5E' }
+		case 'waitingPickUp':
+			return { name: 'bag-checked', type: 'material-community', color: '#363E5E' }
 		case 'delivering':
 			if (order.type === 'takeout') return { name: 'truck', color: '#363E5E' }
 			return { name: 'truck', color: '#363E5E' }

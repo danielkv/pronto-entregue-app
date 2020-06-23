@@ -38,6 +38,16 @@ export default withTheme({
 			}
 		}
 	},
+	Chip: {
+		style: {
+			default: {
+				root: {
+					height: 30,
+					paddingHorizontal: 13
+				}
+			}
+		}
+	},
 	TextField: {
 		text: {
 			backgroundColor: '#333'
