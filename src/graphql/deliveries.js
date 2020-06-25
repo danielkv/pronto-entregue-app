@@ -28,6 +28,15 @@ export const FRAGMENT_DELIVERY = gql`
 	${ADDRESS_FRAGMENT}
 `
 
+export const UPDATE_DELIVERY_SUBSCRIPTION = gql`
+	subscription {
+		delivery {
+			...DeliveryFields
+		}
+	}
+	${FRAGMENT_DELIVERY}
+`;
+
 export const GET_DELIVERIES = gql`
 	query GetDeliveries ($filter: JSON) {
 		deliveries(filter: $filter) {

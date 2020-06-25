@@ -1,7 +1,8 @@
 class DeliveryControl {
 	availableStatus(delivery) {
-		let status = ['delivering'];
+		let status = [];
 
+		if (delivery.status === 'delivering') status.push('delivering')
 		if (delivery.status === 'waitingDelivery') status.push('canceled')
 		if (delivery.status === 'delivering') status.push('delivered')
 	

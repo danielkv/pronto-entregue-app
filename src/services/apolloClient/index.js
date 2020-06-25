@@ -1,14 +1,14 @@
 import { ApolloClient } from "apollo-client";
-import { from } from 'apollo-link'
-//import { getMainDefinition } from 'apollo-utilities';
+import { from, split } from 'apollo-link'
+import { getMainDefinition } from 'apollo-utilities';
 
 import resolvers from '../../resolvers';
 import cache, { initialData } from './apolloCache'
 import authLink from "./authLink";
 import uploadLink from "./uploadLink";
-//import webSocketLink from "./webSocketLink";
+import webSocketLink from "./webSocketLink";
 
-/* const splitLink = split(
+const splitLink = split(
 	({ query }) => {
 		const definition = getMainDefinition(query);
 		return (
@@ -18,11 +18,11 @@ import uploadLink from "./uploadLink";
 	},
 	webSocketLink,
 	from([authLink, uploadLink])
-); */
+);
 
 const client = new ApolloClient({
 	cache,
-	link: from([authLink, uploadLink]), //splitLink,
+	link: splitLink,
 	resolvers,
 });
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, Alert } from 'react-native'
 
 import { useMutation } from '@apollo/react-hooks';
 
@@ -9,6 +9,7 @@ import { useLoggedUserId } from '../../../controller/hooks';
 import { Chip, Typography, Paper, Button } from '../../../react-native-ui'
 import { getOrderStatusLabel, getStatusColors } from '../../../utils'
 import { BRL } from '../../../utils/currency'
+import { getErrorMessage } from '../../../utils/errors';
 import ActionItems from './ActionItems';
 
 import { SET_DELIVERY_MAN } from '../../../graphql/deliveries';
@@ -19,6 +20,13 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 	const loggedUserId = useLoggedUserId();
 
 	const [setDeliveryMan, { loading: loadingSetDeliveryMen }] =useMutation(SET_DELIVERY_MAN, { variables: { deliveryId: delivery.id, userId: loggedUserId } });
+
+	function handleSetDeliveryMan() {
+		return setDeliveryMan()
+			.catch((err)=>{
+				Alert.alert('Ops! Algo deu errado', getErrorMessage(err));
+			})
+	}
 
 	// if user is the delivery man of this delivery
 	const isDeliveryManOfThis = delivery?.deliveryMan?.user.id === loggedUserId;
@@ -66,7 +74,7 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 					&& <Button
 						color='primary'
 						variant='filled'
-						onPress={()=>setDeliveryMan()}
+						onPress={handleSetDeliveryMan}
 					>
 						{loadingSetDeliveryMen
 							? <ActivityIndicator color='#fff' />
