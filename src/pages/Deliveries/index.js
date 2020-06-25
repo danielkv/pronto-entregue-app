@@ -101,16 +101,16 @@ export default function Deliveries() {
 						</View>
 					)
 					: (
-						<View style={{ marginHorizontal: 35, marginVertical: 15 }}>
-							
-							<Typography variant='subtitle' style={{ textAlign: 'center' }}>Habilite no botão acima para ver os entregas em aberto e receber as notificações</Typography>
+						<View style={{ marginHorizontal: 35, marginVertical: 15, alignItems: 'center' }}>
+							<Icon name='bell' size={40} />
+							<Typography variant='subtitle' style={{ textAlign: 'center' }}>Mantenha suas notificações ligadas para receber novas entregas</Typography>
 						</View>
+						
 					)
 				
 				: (
 					<View style={{ marginHorizontal: 35, marginVertical: 15 }}>
-						<Icon name='bell' size={40} />
-						<Typography variant='subtitle' style={{ textAlign: 'center' }}>Habilite no botão acima para ver os entregas em aberto e receber as notificações</Typography>
+						<Typography variant='subtitle' style={{ textAlign: 'center' }}>Pressione o botão acima para ver as entregas e receber as notificações</Typography>
 					</View>
 				)}
 		</ScrollView>
