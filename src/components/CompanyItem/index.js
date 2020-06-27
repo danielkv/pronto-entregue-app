@@ -39,7 +39,7 @@ export default function CompanyItem({ item: company }) {
 					</FooterContent>}
 					<FooterContent>
 						<Icon name='map-pin' size={15} color='#818181' />
-						<Typography style={{ fontSize: 12, color: '#818181' }}>{`${company.distance} km`}</Typography>
+						<Typography style={{ fontSize: 12, color: '#818181' }}>{`${(company.distance/1000).toFixed(2)} km`}</Typography>
 					</FooterContent>
 				</FooterContainer>
 			</ContentContainer>
