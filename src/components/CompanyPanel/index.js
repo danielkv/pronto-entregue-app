@@ -4,6 +4,7 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { Paper, Typography, Icon } from '../../react-native-ui';
+import { formatDistance } from '../../utils';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import RatingStars from '../RatingStars';
 import { FooterContainer, FooterContent } from './style';
@@ -45,7 +46,7 @@ export default function CompanyPanel({ company }) {
 							</FooterContent>}
 							{Boolean(company.distance) && <FooterContent>
 								<Icon name='map-pin' size={15} color='#818181' />
-								<Typography style={{ fontSize: 12, color: '#818181' }}>{`${company.distance} km`}</Typography>
+								<Typography style={{ fontSize: 12, color: '#818181' }}>{formatDistance(company.distance)}</Typography>
 							</FooterContent>}
 							{Boolean(company.countRatings) && <FooterContent>
 								<Icon name='message-square' size={15} color='#818181' />

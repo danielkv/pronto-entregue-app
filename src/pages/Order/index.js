@@ -26,7 +26,7 @@ export default function Order() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch, called } = useQuery(LOAD_ORDER, { variables: { id: orderId }, notifyOnNetworkStatusChange: true });
+	const { data: { order = null } = {}, loading: loadingOrder, error: orderError, refetch } = useQuery(LOAD_ORDER, { variables: { id: orderId }, notifyOnNetworkStatusChange: true });
 
 	const [cancelOrder, { loading: loadingCancelOrder }] = useMutation(CANCEL_ORDER, { variables: { id: orderId } });
 
@@ -58,7 +58,7 @@ export default function Order() {
 			.finally(()=>setRefreshing(false));
 	}
 
-	if (loadingOrder && (!called || !order)) return <LoadingBlock />
+	if (loadingOrder) return <LoadingBlock />
 	if (orderError) return <ErrorBlock error={getErrorMessage(orderError)} />
 	if (!order) return <ErrorBlock error={'Nenhum pedido encontrado'} />
 

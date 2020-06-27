@@ -8,6 +8,7 @@ import ClosedCompanyChip from '../ClosedCompanyChip';
 import OnlyPickUp from '../OnlyPickUp';
 import RatingStars from '../RatingStars';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
+import { formatDistance } from '../../utils';
 
 export default function CompanyItem({ item: company }) {
 	const navigation = useNavigation();
@@ -39,7 +40,7 @@ export default function CompanyItem({ item: company }) {
 					</FooterContent>}
 					<FooterContent>
 						<Icon name='map-pin' size={15} color='#818181' />
-						<Typography style={{ fontSize: 12, color: '#818181' }}>{`${company.distance} km`}</Typography>
+						<Typography style={{ fontSize: 12, color: '#818181' }}>{formatDistance(company.distance)}</Typography>
 					</FooterContent>
 				</FooterContainer>
 			</ContentContainer>

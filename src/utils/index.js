@@ -2,6 +2,18 @@ import { Alert } from 'react-native';
 
 import { getErrorMessage } from './errors';
 
+/**
+ * Format distance in meters wich breaks in thousands (meters/km)
+ * @param {Int} distance in meters
+ */
+export function formatDistance(distance) {
+	if (distance > 999) {
+		return `${(Math.round(distance/100)/10)} km`
+	} else {
+		return `${Math.round(distance/10)*10} m`
+	}
+}
+
 export function regionFromCoordinates(coordinates, distance) {
 	const finalDistance = distance/2
 	const [lat, lon] = coordinates;

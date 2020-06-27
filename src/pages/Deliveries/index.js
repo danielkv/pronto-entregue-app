@@ -30,20 +30,20 @@ export default function Deliveries() {
 		const unsubscribeUpdate = subscribeToMore({
 			document: UPDATE_DELIVERY_SUBSCRIPTION,
 			//variables: { userId: loggedUserId },
-			updateQuery(prev, { subscriptionData: { data: { delivery = null } } }) {
-				if (!delivery) return prev;
+			updateQuery({ deliveries = [] }, { subscriptionData: { data: { delivery = null } } }) {
+				if (!delivery) return { deliveries };
 
-				const deliveryFoundIndex = prev.deliveries.findIndex(d => d.id === delivery.id)
+				const deliveryFoundIndex = deliveries.findIndex(d => d.id === delivery.id)
 
 				if (deliveryFoundIndex < 0) {
 					if (!delivery.deliveryMan || delivery.deliveryMan.user.id == loggedUserId)
 						return {
-							deliveries: [delivery, ...prev.deliveries]
+							deliveries: [delivery, ...deliveries]
 						}
 					else
-						return prev;
-				} else if (prev.deliveries[deliveryFoundIndex]?.deliveryMan?.user.id !== loggedUserId) {
-					const deliveriesReturn = prev.deliveries;
+						return { deliveries };
+				} else if (deliveries[deliveryFoundIndex]?.deliveryMan?.user.id !== loggedUserId) {
+					const deliveriesReturn = deliveries;
 					deliveriesReturn.splice(deliveryFoundIndex, 1);
 					return {
 						deliveries: deliveriesReturn
