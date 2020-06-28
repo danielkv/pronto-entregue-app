@@ -1,12 +1,13 @@
 import React from 'react'
-import { View, ActivityIndicator, Alert } from 'react-native'
+import { View, ActivityIndicator, Alert, Platform, Linking } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useMutation } from '@apollo/react-hooks';
 
 import DeliveryAddress from '../../../components/DeliveryAddress';
 
 import { useLoggedUserId } from '../../../controller/hooks';
-import { Chip, Typography, Paper, Button } from '../../../react-native-ui'
+import { Chip, Typography, Paper, Button, Icon } from '../../../react-native-ui'
 import { getOrderStatusLabel, getStatusColors } from '../../../utils'
 import { BRL } from '../../../utils/currency'
 import { getErrorMessage } from '../../../utils/errors';
@@ -26,6 +27,19 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 			.catch((err)=>{
 				Alert.alert('Ops! Algo deu errado', getErrorMessage(err));
 			})
+	}
+
+	function handleOpenAddress(displayName, location) {
+		const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+		const latLng = `${location[0]},${location[1]}`;
+		const label = displayName;
+		const url = Platform.select({
+			ios: `${scheme}${label}@${latLng}`,
+			android: `${scheme}${latLng}(${label})`
+		});
+
+
+		Linking.openURL(url);
 	}
 
 	// if user is the delivery man of this delivery
@@ -65,11 +79,19 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 			</View>
 			
 			<View>
-				<DeliveryAddress address={delivery.from} title='Retirada' />
-				<DeliveryAddress address={delivery.to} title='Entrega' />
+				<TouchableOpacity onPress={()=>handleOpenAddress('Retirada', delivery.from.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15, marginBottom: 10 }}>
+					<DeliveryAddress address={delivery.from} title='Retirada' />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={()=>handleOpenAddress('Entrega', delivery.to.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15 }}>
+					<DeliveryAddress address={delivery.to} title='Entrega' />
+				</TouchableOpacity>
+				<View style={{ flexDirection: 'row', marginTop: 6, alignItems: 'center', justifyContent: 'flex-end' }}>
+					<Typography style={{ color: '#999' }}>Clique nos endereços para abrir o mapa</Typography>
+					<Icon name='info' color='#999' size={18} />
+				</View>
 			</View>
 
-			<View>
+			<View style={{ marginTop: 10 }}>
 				{deliveryMan.canAcceptDelivery && !delivery.deliveryMan && delivery.status === 'waitingDelivery'
 					&& <Button
 						color='primary'

@@ -32,6 +32,7 @@ function ActionItems ({ delivery }) {
 			{statuses.map((stat) => {
 				const colors = DeliveryController.statusColors(stat.slug);
 				const icon = DeliveryController.statusIcon(stat.slug);
+				const label = stat.slug === 'canceled' ? 'Cancelar' : stat.label;
 			
 				return <Button
 					disabled={Boolean(updatingLoading)}
@@ -44,7 +45,7 @@ function ActionItems ({ delivery }) {
 						text: { fontSize: 13, color: delivery.status === stat.slug ? colors.text : '#333' }
 					}}
 				>
-					{updatingLoading === stat.slug ? <ActivityIndicator color={colors.text} /> : stat.label}
+					{updatingLoading === stat.slug ? <ActivityIndicator color={colors.text} /> : label}
 				</Button>
 			})}
 		</View>

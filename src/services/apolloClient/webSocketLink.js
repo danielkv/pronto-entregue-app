@@ -1,9 +1,9 @@
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
-const GRAPHQL_ENDPOINT = process.env.NODE_ENV === 'production' ? 'wss://api.prontoentregue.com.br/graphql' : `ws://10.1.1.170:4000/graphql`;
+import serverConfig from '../../config/server';
 
-const client = new SubscriptionClient(GRAPHQL_ENDPOINT, {
+const client = new SubscriptionClient(serverConfig.webSocket, {
 	reconnect: true,
 	//reconnectionAttempts: 5,
 	timeout: 20000,
