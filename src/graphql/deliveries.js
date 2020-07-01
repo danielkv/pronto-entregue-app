@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-import { ADDRESS_FRAGMENT } from './addresses';
+import { ADDRESS_FRAGMENT } from './fragments';
+
 
 export const FRAGMENT_DELIVERY = gql`
 	fragment DeliveryFields on Delivery {

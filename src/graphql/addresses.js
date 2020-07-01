@@ -1,45 +1,24 @@
 import gql from 'graphql-tag';
 
-export const ADDRESS_FRAGMENT = gql`
-	fragment AddressFields on Address {
-		id
-		name
-		street
-		number
-		district
-		city
-		state
-		zipcode
-		location
-	}
-`;
+import { ADDRESS_FRAGMENT } from './fragments';
 
 export const SEARCH_ADDRESS = gql`
 	mutation searchAddress ($search: String!) {
 		searchAddress(search: $search) {
-			street
-			number
-			district
-			city
-			state
-			zipcode
-			location
+			...AddressFields
 		}
 	}
+
+	${ADDRESS_FRAGMENT}
 `;
 
 export const SEARCH_LOCATION = gql`
 	mutation searchLocation ($location: GeoPoint!) {
 		searchLocation(location: $location) {
-			street
-			number
-			district
-			city
-			state
-			zipcode
-			location
+			...AddressFields
 		}
 	}
+	${ADDRESS_FRAGMENT}
 `;
 
 export const GET_SELECTED_ADDRESS = gql`
@@ -68,16 +47,9 @@ export const SET_SELECTED_ADDRESS = gql`
 export const SET_USER_ADDRESS = gql`
 	mutation SetUserAddress ($addressData: AddressInput!, $userId: ID) {
 		setUserAddress (addressData: $addressData, userId: $userId) {
-			id
-			name
-			street
-			number
-			district
-			city
-			state
-			reference
-			zipcode
-			location
+			...AddressFields
 		}
 	}
+
+	${ADDRESS_FRAGMENT}
 `;

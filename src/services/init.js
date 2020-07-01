@@ -9,7 +9,7 @@ import { SET_SELECTED_ADDRESS, GET_SELECTED_ADDRESS, SET_USER_ADDRESS } from '..
 import { AUTHENTICATE } from '../graphql/authentication';
 
 export async function initialize() {
-	if (__DEV__) client.writeData({ data: require('../../cart.json') });
+	//if (__DEV__) client.writeData({ data: require('../../cart.json') });
 
 	let user = null;
 	const selectedAddress = await AsyncStorage.getItem('@prontoEntregue/address');

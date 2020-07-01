@@ -22,7 +22,7 @@ export default {
 				if (cart?.cartItems?.length && (cart?.cartDelivery && cart?.cartDelivery?.type === 'delivery') && cart.cartCompany) {
 					if (!force) {
 						// Check if delivery location is OK
-						await client.mutate({ mutation: CHECK_DELIVERY_LOCATION, variables: { companyId: cart.cartCompany.id, address: newAddress } })
+						await client.mutate({ mutation: CHECK_DELIVERY_LOCATION, variables: { companyId: cart.cartCompany.id, location: newAddress.location } })
 					} else {
 						// check cart
 						await client.mutate({ mutation: CANCEL_CART });

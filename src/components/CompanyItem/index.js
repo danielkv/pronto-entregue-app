@@ -4,11 +4,11 @@ import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { Typography, Icon } from '../../react-native-ui';
+import { formatDistance } from '../../utils';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import OnlyPickUp from '../OnlyPickUp';
 import RatingStars from '../RatingStars';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
-import { formatDistance } from '../../utils';
 
 export default function CompanyItem({ item: company }) {
 	const navigation = useNavigation();
@@ -30,7 +30,7 @@ export default function CompanyItem({ item: company }) {
 				<Typography style={{ fontSize: 18, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>
 				<View style={{ flexDirection: 'row' }}>
 					{!company.isOpen && <ClosedCompanyChip />}
-					{!company.typeDelivery && company.typePickUp && <OnlyPickUp />}
+					{!company.delivery && company.pickup && <OnlyPickUp />}
 				</View>
 				<RatingStars rate={company.rate} size={14} />
 				<FooterContainer>

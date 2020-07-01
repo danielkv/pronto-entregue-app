@@ -1,21 +1,27 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT } from './products';
+import { LIST_PRODUCT_FRAGMENT, COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT } from './fragments';
 
 export const LOAD_COMPANY = gql`
 	query LoadCompany ($id: ID!, $location: GeoPoint!) {
-		company (id: $id) {
+		company (id: $id, location: $location) {
 			id
 			displayName
 			deliveryTime
 			rate
 			isOpen
 			countRatings
-			distance(location: $location)
-			typeDelivery(location: $location)
-			typePickUp(location: $location)
+			distance
+			delivery {
+				...CompanyDeliveryFields
+			}
+			pickup {
+				...CompanyPickupFields
+			}
 		}
 	}
+	${COMPANY_DELIVERY_FRAGMENT}
+	${COMPANY_PICKUP_FRAGMENT}
 `;
 
 export const GET_CATEGORIES = gql`
@@ -63,9 +69,14 @@ export const GET_COMPANIES = gql`
 			image
 			rate
 			deliveryTime
-			distance(location: $location)
-			typeDelivery
-			typePickUp
+			distance
+			delivery {
+				id
+				price
+			}
+			pickup {
+				id
+			}
 		}
 	}
 `;

@@ -50,7 +50,7 @@ export default function Company() {
 						<>
 							<View style={{ flexDirection: 'row', marginBottom: 5 }}>
 								{!company.isOpen && <ClosedCompanyChip />}
-								{!company.typeDelivery && company.typePickUp && <OnlyPickUp text='Apenas Retirada no local' />}
+								{!company.delivery && company.pickup && <OnlyPickUp text='Apenas Retirada no local' />}
 							</View>
 							<RatingStars rate={company.rate} />
 							<FooterContainer>
