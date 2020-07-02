@@ -17,7 +17,7 @@ export default function Deliveries() {
 	const [enableDeliveryMan, { loading: loadingEnable }] = useMutation(ENABLE_DELIVERY_MAN, { variables: { userId: loggedUserId } });
 	const [disableDeliveryMan, { loading: loadingDisable }] = useMutation(DISABLE_DELIVERY_MAN, { variables: { userId: loggedUserId } });
 
-	const { data: { deliveryMan = {} }={}, loading: loadingDeliveryman } = useQuery(GET_DELIVERY_MAN, { variables: { userId: loggedUserId } });
+	const { data: { deliveryMan = {} }={}, loading: loadingDeliveryman } = useQuery(GET_DELIVERY_MAN, { variables: { userId: loggedUserId }, fetchPolicy: 'cache-and-network' });
 	const deliveryManEnabled = deliveryMan?.isEnabled;
 
 	const filter = { status: ['waiting', 'waitingDelivery', 'preparing', 'delivering', 'delivered', 'canceled'], deliveryManId: { '$or': [null, loggedUserId] } };

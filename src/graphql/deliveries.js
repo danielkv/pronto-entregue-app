@@ -14,6 +14,7 @@ export const FRAGMENT_DELIVERY = gql`
 		senderContact
 		deliveryMan {
 			id
+			canAcceptDelivery
 			user {
 				id
 			}
