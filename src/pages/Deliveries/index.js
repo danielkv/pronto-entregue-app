@@ -20,7 +20,7 @@ export default function Deliveries() {
 	const { data: { deliveryMan = {} }={}, loading: loadingDeliveryman } = useQuery(GET_DELIVERY_MAN, { variables: { userId: loggedUserId }, fetchPolicy: 'cache-and-network' });
 	const deliveryManEnabled = deliveryMan?.isEnabled;
 
-	const filter = { status: ['waiting', 'waitingDelivery', 'preparing', 'delivering', 'delivered', 'canceled'], deliveryManId: { '$or': [null, loggedUserId] } };
+	const filter = { deliveryManId: { '$or': [null, loggedUserId] } };
 	const { data: { deliveries = [] } = {}, loading: loadingDeliveries, subscribeToMore = null } = useQuery(GET_DELIVERIES, { skip: !deliveryManEnabled, notifyOnNetworkStatusChange: true, fetchPolicy: 'cache-and-network',  variables: { filter } });
 
 
@@ -30,24 +30,18 @@ export default function Deliveries() {
 		const unsubscribeUpdate = subscribeToMore({
 			document: UPDATE_DELIVERY_SUBSCRIPTION,
 			//variables: { userId: loggedUserId },
-			updateQuery({ deliveries = [] }, { subscriptionData: { data: { delivery = null } } }) {
-				if (!delivery) return { deliveries };
+			updateQuery(prev, { subscriptionData: { data: { delivery = null } } }) {
+				if (!delivery) return prev;
 
-				const deliveryFoundIndex = deliveries.findIndex(d => d.id === delivery.id)
+				const deliveryFoundIndex = prev.deliveries.findIndex(d => d.id === delivery.id)
 
 				if (deliveryFoundIndex < 0) {
 					if (!delivery.deliveryMan || delivery.deliveryMan.user.id == loggedUserId)
 						return {
-							deliveries: [delivery, ...deliveries]
+							deliveries: [delivery, ...prev.deliveries]
 						}
 					else
-						return { deliveries };
-				} else if (deliveries[deliveryFoundIndex]?.deliveryMan?.user.id !== loggedUserId) {
-					const deliveriesReturn = deliveries;
-					deliveriesReturn.splice(deliveryFoundIndex, 1);
-					return {
-						deliveries: deliveriesReturn
-					}
+						return prev;
 				}
 			}
 		})
