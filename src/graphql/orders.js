@@ -96,6 +96,15 @@ export const ORDER_FRAGMENT = gql`
 	
 `;
 
+export const CHANGE_ORDER_STATUS = gql`
+	mutation ChangeOrderStatus ($id:ID!, $newStatus: String!) {
+		changeOrderStatus(id: $id, newStatus: $newStatus) {
+			id
+			status
+		}
+	}
+`;
+
 export const CREATE_ORDER = gql`
 	mutation ($data: OrderInput!) {
 		createOrder(data: $data) {

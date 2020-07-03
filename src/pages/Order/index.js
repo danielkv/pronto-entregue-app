@@ -78,7 +78,7 @@ export default function Order() {
 					<Typography style={{ fontSize: 12, color: palette.background.dark }}>Arraste para atualizar</Typography>
 				</View>
 				<Chip
-					label={getOrderStatusLabel(order)}
+					label={getOrderStatusLabel(order.status)}
 					style={{
 						root: { backgroundColor: statusColor.background, alignSelf: 'stretch', marginHorizontal: 35 },
 						text: { color: statusColor.text }

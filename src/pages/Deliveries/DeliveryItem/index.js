@@ -6,9 +6,9 @@ import { useMutation } from '@apollo/react-hooks';
 
 import DeliveryAddress from '../../../components/DeliveryAddress';
 
+import DeliveryController from '../../../controller/delivery';
 import { useLoggedUserId } from '../../../controller/hooks';
 import { Chip, Typography, Paper, Button, Icon } from '../../../react-native-ui'
-import { getOrderStatusLabel, getStatusColors } from '../../../utils'
 import { BRL } from '../../../utils/currency'
 import { getErrorMessage } from '../../../utils/errors';
 import ActionItems from './ActionItems';
@@ -17,7 +17,7 @@ import { SET_DELIVERY_MAN } from '../../../graphql/deliveries';
 
 
 export default function DeliveryItem({ item: delivery, deliveryMan }) {
-	const colors = getStatusColors(delivery.status);
+	const colors = DeliveryController.statusColors(delivery.status);
 	const loggedUserId = useLoggedUserId();
 
 	const [setDeliveryMan, { loading: loadingSetDeliveryMen }] =useMutation(SET_DELIVERY_MAN, { variables: { deliveryId: delivery.id, userId: loggedUserId } });
@@ -55,7 +55,7 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 						root: { height: 30, marginLeft: 6, paddingVertical: 0, borderColor: colors.background },
 						text: { color: colors.background, fontSize: 13 }
 					}}
-					label={getOrderStatusLabel(delivery)} variant='outlined' />
+					label={DeliveryController.statusLabel(delivery.status)} variant='outlined' />
 			</View>
 
 			<View style={{ marginBottom: 15 }}>
