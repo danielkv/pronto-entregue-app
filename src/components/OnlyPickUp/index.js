@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Chip } from '../../react-native-ui';
 
-export default function OnlyPickUp({text='Apenas Retirada'}) {
+export default function OnlyPickUp({ text='Apenas Retirada' }) {
 	return (
 		<Chip
 			variant='filled'

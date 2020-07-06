@@ -2,6 +2,18 @@ import { Alert } from 'react-native';
 
 import { getErrorMessage } from './errors';
 
+/**
+ * Format distance in meters wich breaks in thousands (meters/km)
+ * @param {Int} distance in meters
+ */
+export function formatDistance(distance) {
+	if (distance > 999) {
+		return `${(Math.round(distance/100)/10)} km`
+	} else {
+		return `${Math.round(distance/10)*10} m`
+	}
+}
+
 export function regionFromCoordinates(coordinates, distance) {
 	const finalDistance = distance/2
 	const [lat, lon] = coordinates;
@@ -45,40 +57,68 @@ function toRad(Value)
 	return Value * Math.PI / 180;
 }
 
-export function getOrderStatusLabel(order, status) {
+export function getOrderStatusLabel(status) {
 	// isIn: [['waiting', 'preparing', 'delivering', 'delivered', 'canceled']],
 		
-	switch(status || order.status) {
+	switch(status) {
+		case 'accepted':
+			return 'Abrir';
 		case 'waiting':
 			return 'Aguardando';
 		case 'preparing':
 			return 'Preparando';
+		case 'waitingDelivery':
+			return 'Aguardando entregador';
+		case 'waitingPickUp':
+			return 'Aguardando retirada';
 		case 'delivering':
-			return order.type === 'takeout' ? 'Aguardando retirada' : 'A caminho';
+			return 'A caminho';
 		case 'delivered':
 			return 'Entregue';
 		case 'canceled':
-			return 'Cancelado';
+			return 'Cancelar';
 		default: return '';
 	}
 	
 }
 
-export function availableStatus(order) {
+/* export function availableStatus(order) {
 	const status = ['waiting', 'preparing', 'delivering', 'delivered', 'canceled'];
 
 	return status.map(stat => ({ slug: stat, label: getOrderStatusLabel(order, stat), Icon: getOrderStatusIcon({ ...order, status: stat }) }))
+} */
+
+export function availableStatus(order, userRole) {
+	
+	let status = ['waiting', 'preparing', 'delivering', 'delivered', 'canceled'];
+
+	if (order.status !== 'waiting' || userRole === 'master') {
+		if (order.type === 'peDelivery') {
+			status = ['waiting', 'preparing', 'waitingDelivery', 'delivering', 'delivered', 'canceled'];
+		} else if (order.type === 'takeout') {
+			status = ['waiting', 'preparing', 'waitingPickUp', 'delivered', 'canceled'];
+		}
+	} else {
+		status = ['accepted', 'canceled'];
+	}
+
+	return status.map(stat => ({ slug: stat === 'accepted' ? 'preparing' : stat, label: getOrderStatusLabel(stat), Icon: getOrderStatusIcon(stat) }))
 }
 
-export function getOrderStatusIcon(order) {
+export function getOrderStatusIcon(status) {
 	// isIn: [['waiting', 'preparing', 'delivery', 'delivered', 'canceled']],
-	switch(order.status) {
+	switch(status) {
+		case 'accepted':
+			return { name: 'check', color: '#9d9' }
 		case 'waiting':
 			return { type: 'material-community', name: 'clock', color: '#363E5E' }
 		case 'preparing':
 			return { type: 'material-community', name: 'silverware-spoon', color: '#363E5E' }
+		case 'waitingDelivery':
+			return { name: 'account-clock', type: 'material-community', color: '#363E5E' }
+		case 'waitingPickUp':
+			return { name: 'bag-checked', type: 'material-community', color: '#363E5E' }
 		case 'delivering':
-			if (order.type === 'takeout') return { name: 'truck', color: '#363E5E' }
 			return { name: 'truck', color: '#363E5E' }
 		case 'delivered':
 			return { type: 'material-community', name: 'check-circle', color: '#058F0A' }

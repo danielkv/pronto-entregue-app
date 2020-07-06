@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT } from './products';
+import { LIST_PRODUCT_FRAGMENT } from './fragments';
+
 
 export const SEARCH_PRODUCTS_COMPANIES = gql`
 	mutation searchOnApp($search: String!, $location: GeoPoint!) {
@@ -15,9 +16,14 @@ export const SEARCH_PRODUCTS_COMPANIES = gql`
 			backgroundColor
 			rate
 			deliveryTime
-			distance(location: $location)
-			typeDelivery
-			typePickUp
+			distance
+			delivery {
+				id
+				price
+			}
+			pickup {
+				id
+			}
 		}
 	}
 

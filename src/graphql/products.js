@@ -1,24 +1,6 @@
 import gql from 'graphql-tag';
 
-export const LIST_PRODUCT_FRAGMENT = gql`
-	fragment ListProductFragment on Product {
-		id
-		name
-		description
-		image
-		fromPrice
-		company {
-			id
-			displayName
-			deliveryTime
-			isOpen
-		}
-		sale {
-			price
-			progress
-		}
-	}
-`;
+import { COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT, OPTIONS_GROUP_FRAGMENT } from './fragments';
 
 export const LOAD_FEED = gql`
 	query LOAD_FEED ($onSaleLimit: Int!, $bestSellersLimit: Int!, $location: GeoPoint!, $pagination: Pagination) {
@@ -60,39 +42,22 @@ export const LOAD_FEED = gql`
 			backgroundColor
 			rate
 			deliveryTime
-			distance(location: $location)
-			typeDelivery
-			typePickUp
+			distance
+			delivery {
+				...CompanyDeliveryFields
+			}
+			pickup {
+				...CompanyPickupFields
+			}
 		}
 	}
+
+	${COMPANY_DELIVERY_FRAGMENT}
+	${COMPANY_PICKUP_FRAGMENT}
+	
 `;
 
-export const OPTIONS_GROUP_FRAGMENT = gql`
-	fragment OptionsGroupFields on OptionsGroup {
-		id
-		name
-		active
-		type
-		priceType
-		minSelect
-		maxSelect
-		groupRestrained {
-			id
-			name
-		}
-		restrainedBy {
-			id
-			name
-		}
-		options (filter: $filter) {
-			id
-			name
-			description
-			price
-			maxSelectRestrainOther
-		}
-	}
-`;
+
 
 export const ADD_FAVORITE_PRODUCT = gql`
 	mutation AddFavoriteProduct ($productId: ID!, $userId: ID!) {
@@ -120,7 +85,7 @@ export const LOAD_PRODUCT = gql`
 			price
 			description
 			favorite(id: $id) @client
-			company {
+			company(location: $location) {
 				id
 				displayName
 				acceptTakeout
@@ -129,9 +94,13 @@ export const LOAD_PRODUCT = gql`
 				image
 				backgroundColor
 				rate
-				distance(location: $location)
-				typeDelivery(location: $location)
-				typePickUp(location: $location)
+				distance
+				delivery {
+					...CompanyDeliveryFields
+				}
+				pickup {
+					...CompanyPickupFields
+				}
 				countRatings
 			}
 			category {
@@ -150,4 +119,6 @@ export const LOAD_PRODUCT = gql`
 		}
 	}
 	${OPTIONS_GROUP_FRAGMENT}
+	${COMPANY_DELIVERY_FRAGMENT}
+	${COMPANY_PICKUP_FRAGMENT}
 `;

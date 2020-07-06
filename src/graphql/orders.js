@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-import { OPTIONS_GROUP_FRAGMENT } from './products';
+import { OPTIONS_GROUP_FRAGMENT } from './fragments';
+
 
 export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
 	fragment ProductRelatedFields on Product {
@@ -93,6 +94,15 @@ export const ORDER_FRAGMENT = gql`
 		createdAt
 	}
 	
+`;
+
+export const CHANGE_ORDER_STATUS = gql`
+	mutation ChangeOrderStatus ($id:ID!, $newStatus: String!) {
+		changeOrderStatus(id: $id, newStatus: $newStatus) {
+			id
+			status
+		}
+	}
 `;
 
 export const CREATE_ORDER = gql`

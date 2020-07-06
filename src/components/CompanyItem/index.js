@@ -4,6 +4,7 @@ import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import { Typography, Icon } from '../../react-native-ui';
+import { formatDistance } from '../../utils';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import OnlyPickUp from '../OnlyPickUp';
 import RatingStars from '../RatingStars';
@@ -29,7 +30,7 @@ export default function CompanyItem({ item: company }) {
 				<Typography style={{ fontSize: 18, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>
 				<View style={{ flexDirection: 'row' }}>
 					{!company.isOpen && <ClosedCompanyChip />}
-					{!company.typeDelivery && company.typePickUp && <OnlyPickUp />}
+					{!company.delivery && company.pickup && <OnlyPickUp />}
 				</View>
 				<RatingStars rate={company.rate} size={14} />
 				<FooterContainer>
@@ -39,7 +40,11 @@ export default function CompanyItem({ item: company }) {
 					</FooterContent>}
 					<FooterContent>
 						<Icon name='map-pin' size={15} color='#818181' />
+<<<<<<< HEAD
 						<Typography style={{ fontSize: 12, color: '#818181' }}>{`${(company.distance/1000).toFixed(2)} km`}</Typography>
+=======
+						<Typography style={{ fontSize: 12, color: '#818181' }}>{formatDistance(company.distance)}</Typography>
+>>>>>>> deliveries
 					</FooterContent>
 				</FooterContainer>
 			</ContentContainer>

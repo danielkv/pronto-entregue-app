@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Platform, Share, RefreshControl } from 'react-native';
+import { View, ScrollView, Platform, Share, RefreshControl, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -10,10 +10,11 @@ import LoadingBlock from '../../components/LoadingBlock';
 import { useLoggedUserId, useSelectedCompany } from '../../controller/hooks';
 import { Paper, Typography, Button, Chip, Divider, useTheme } from '../../react-native-ui';
 import { availableStatus } from '../../utils';
+import { getErrorMessage } from '../../utils/errors';
 import OrderRollItem from './OrderRollItem';
 import { CompanyMenuItem } from './styles';
 
-import { UPDATE_ORDER } from '../../graphql/orders';
+import { CHANGE_ORDER_STATUS } from '../../graphql/orders';
 import { GET_ORDER_ROLL } from '../../graphql/orders_roll';
 import { GET_USER_COMPANIES, SET_SELECTED_COMPANY } from '../../graphql/users';
 
@@ -31,7 +32,7 @@ export default function OrdersRoll() {
 	const selectedCompany = useSelectedCompany();
 
 	const [setSelectedCompany] = useMutation(SET_SELECTED_COMPANY);
-	const [updateOrder] = useMutation(UPDATE_ORDER);
+	const [changeOrderStatus] = useMutation(CHANGE_ORDER_STATUS)
 
 	const { data: { company: { orders = [] } = {} } = {}, loading: loadingRollOrders, refetch = null } = useQuery(GET_ORDER_ROLL, { notifyOnNetworkStatusChange: true, fetchPolicy: 'cache-and-network',  variables: { companyId: selectedCompany, filter: { status: ['waiting', 'preparing', 'delivering'] }, pagination: { page: 0, rowsPerPage } } });
 	const { data: { user: { companies = [] } = {} } = {}, loading: loadingCompanies } = useQuery(GET_USER_COMPANIES, { variables: { id: loggedUserId } });
@@ -96,7 +97,10 @@ export default function OrdersRoll() {
 	function handleSetStatus(newStatus) {
 		const order = orders[selectedOrder];
 		setLoadingUpdateStatus(newStatus);
-		updateOrder({ variables: { id: order.id, data: { status: newStatus } } })
+		changeOrderStatus({ variables: { id: order.id, newStatus } })
+			.catch((err)=>{
+				Alert.alert('Ops, ocorreu um erro!', getErrorMessage(err));
+			})
 			.finally(handleCloseModalStatus)
 	}
 

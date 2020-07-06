@@ -23,7 +23,7 @@ import { GET_USER, UPDATE_USER_IMAGE, GET_USER_COMPANIES } from '../../graphql/u
 export default function Profile({ navigation }) {
 	const { palette } = useTheme();
 	const loggedUserId = useLoggedUserId()
-	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId } });
+	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId }, fetchPolicy: 'cache-and-network' });
 	const { data: { user: { companies = [] } = {} } = {} } = useQuery(GET_USER_COMPANIES, { variables: { id: loggedUserId } });
 	const [updateUserImage, { loading: loadingUpdateUserImage }] = useMutation(UPDATE_USER_IMAGE, { variables: { userId: loggedUserId } });
 	
@@ -94,6 +94,15 @@ export default function Profile({ navigation }) {
 					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
 					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'FavoriteProductsScreen' })} />
 					<Button variant='filled' icon='dollar-sign' label='Meus Créditos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'CreditHistoryScreen' })} />
+					{user.role === 'deliveryMan'
+						&& <Button
+							variant='filled'
+							icon={{ name: 'racing-helmet', type: 'material-community' }}
+							label='Entregas'
+							color='secondary'
+							onPress={()=>navigation.navigate('DeliveriesScreen')}
+						/>
+					}
 					{Boolean(companies.length)
 						&& <Button
 							variant='filled'

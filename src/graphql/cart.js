@@ -45,8 +45,14 @@ export const GET_CART = gql`
 			deliveryTime
 			acceptTakeout
 			image
-			typeDelivery
-			typePickUp
+			delivery {
+				id
+				name
+				price
+			}
+			pickup {
+				id
+			}
 		}
 
 		cartSubtotal @client
@@ -135,8 +141,13 @@ export const GET_CART_COMPANY = gql`
 			deliveryTime
 			acceptTakeout
 			image
-			typeDelivery
-			typePickUp
+			delivery {
+				id
+				price
+			}
+			pickup {
+				id
+			}
 		}
 	}
 `;
@@ -180,8 +191,8 @@ export const GET_CART_ITEMS = gql`
 `;
 
 export const CHECK_DELIVERY_LOCATION = gql`
-	mutation CheckDeliveryLocation ($companyId: ID!, $address: AddressInput!) {
-		checkDeliveryLocation(companyId: $companyId, address: $address) {
+	mutation CheckDeliveryLocation ($companyId: ID!, $location: GeoPoint!) {
+		checkDeliveryLocation(companyId: $companyId, location: $location) {
 			id
 			name
 			price

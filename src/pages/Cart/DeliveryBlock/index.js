@@ -31,21 +31,23 @@ export default function DeliveryBlock() {
 	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
 	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 
+	
 	const { data: { cartDelivery, cartCompany, cartCoupon }, error: cartError } = useQuery(GET_CART);
+
+	const pickupOnly = cartCompany?.delivery && !cartCompany?.pickup;
+
 	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
 	const [cancelCart] = useMutation(CANCEL_CART);
 
-	const handleOpenDeliveryModal = useCallback(()=>{
+	const handleOpenDeliveryModal = ()=>{
 		setDeliveryModalOpen(true);
-	})
+	}
 	const handleCloseDeliveryModal = useCallback(()=>{
 		setDeliveryModalOpen(false);
 	});
 
-	
-
 	function handleConfirmDeliveryModal({ type, address, force=false }) {
-		if (force && (cartCompany.typePickUp && !cartCompany.typeDelivery)) return cancelCart();
+		if (force && pickupOnly) return cancelCart();
 
 		return setDelivery({ variables: { type, address, force } })
 			.then(()=>{
@@ -54,7 +56,7 @@ export default function DeliveryBlock() {
 			.catch((err) => {
 				const error = extractFirstError(err);
 				if (error.code === 'DELIVERY_LOCATION') {
-					if (cartCompany.typePickUp){
+					if (cartCompany.pickup){
 						Alert.alert(error.message, 'Deseja retirar o pedido no balcão ou limpar sua cesta?', [
 							{ text: 'Retirar no balcão', onPress: ()=>handleConfirmDeliveryModal({ type: 'takeout' }) },
 							{ text: 'Limpar cesta', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
@@ -74,7 +76,7 @@ export default function DeliveryBlock() {
 	useEffect(()=>{
 		if (!cartCompany?.id || loadingDelivery) return;
 
-		if (cartCompany.typePickUp && !cartCompany.typeDelivery) handleConfirmDeliveryModal({ type: 'takeout' })
+		if (cartCompany.pickup && !cartCompany.delivery) handleConfirmDeliveryModal({ type: 'takeout' })
 		else handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
 	}, [])
 
@@ -119,7 +121,7 @@ export default function DeliveryBlock() {
 				swipeDirection='right'
 				propagateSwipe={false}
 			>
-				<DeliveryModal acceptTakeout={cartCompany?.typePickUp} loading={loadingDelivery} confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
+				<DeliveryModal acceptTakeout={cartCompany?.pickup} loading={loadingDelivery} confirmModal={handleConfirmDeliveryModal} closeModal={handleCloseDeliveryModal} />
 			</Modal>
 		</View>
 	);

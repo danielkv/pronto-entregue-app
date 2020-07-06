@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT } from './products';
+import { LIST_PRODUCT_FRAGMENT } from './fragments';
+
 
 export const GET_USER_ADDRESSES = gql`
 	query getUserAddresses ($id: ID!) {

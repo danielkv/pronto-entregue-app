@@ -24,14 +24,14 @@ export function handleNotificationListener(notification, navigation) {
 				const { name: routeName, params } = data.redirect;
 				buttons.push({ text: 'Abrir', onPress: () => navigation.navigate(routeName, params) })
 			} else {
-				if (!data.redirect.force)
+				if (data.cancelable !== false)
 					buttons.unshift({ text: 'OK', style: 'cancel' })
 			}
 			Alert.alert(
 				data.alertData.title,
 				data.alertData.body,
 				buttons,
-				{ cancelable: data.redirect.force || false }
+				{ cancelable: data.cancelable || true }
 			);
 		}
 	}

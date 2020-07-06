@@ -21,7 +21,7 @@ export default function OrderItem({ item: order }) {
 	const displayDate = moment().diff(createdAt, 'day') >= 1 ? createdAt.format('DD/MM/YY HH:mm') : createdAt.fromNow();
 
 	const statusColor = getStatusColors(order.status);
-	const statusText = getOrderStatusLabel(order);
+	const statusText = getOrderStatusLabel(order.status);
 
 	return (
 		<TouchableOpacity onPress={()=>navigation.navigate('OrderScreen', { orderId: order.id })}>

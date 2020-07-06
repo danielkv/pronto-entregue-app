@@ -12,6 +12,7 @@ import RatingStars from '../../components/RatingStars';
 
 import { useSelectedAddress } from '../../controller/hooks';
 import { Paper, Typography, useTheme, Icon } from '../../react-native-ui';
+import { formatDistance } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import ProductsBlock from './ProductsBlock';
 import RatingBlock from './RatingBlock';
@@ -49,7 +50,7 @@ export default function Company() {
 						<>
 							<View style={{ flexDirection: 'row', marginBottom: 5 }}>
 								{!company.isOpen && <ClosedCompanyChip />}
-								{!company.typeDelivery && company.typePickUp && <OnlyPickUp text='Apenas Retirada no local' />}
+								{!company.delivery && company.pickup && <OnlyPickUp text='Apenas Retirada no local' />}
 							</View>
 							<RatingStars rate={company.rate} />
 							<FooterContainer>
@@ -59,7 +60,7 @@ export default function Company() {
 								</FooterContent>}
 								<FooterContent>
 									<Icon name='map-pin' size={15} color='#818181' />
-									<Typography style={{ fontSize: 12, color: '#818181' }}>{`${company.distance} km`}</Typography>
+									<Typography style={{ fontSize: 12, color: '#818181' }}>{formatDistance(company.distance)}</Typography>
 								</FooterContent>
 								{Boolean(company.countRatings) && <FooterContent>
 									<Icon name='message-square' size={15} color='#818181' />

@@ -73,7 +73,7 @@ export default {
 					delete address.__typename;
 					const { data: { checkDeliveryLocation }, error } = await client.mutate({
 						mutation: CHECK_DELIVERY_LOCATION,
-						variables: { companyId: cartCompany.id, address }
+						variables: { companyId: cartCompany.id, location: address.location }
 					})
 				
 					delivery.price = checkDeliveryLocation.price;
