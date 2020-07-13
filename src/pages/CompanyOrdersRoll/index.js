@@ -177,13 +177,15 @@ export default function OrdersRoll() {
 								style={{ marginHorizontal: 10, height: 200 }}
 								propagateSwipe
 							>
-								<Paper>
-									{companies.map(company =>(
-										<CompanyMenuItem selected={selectedCompany===company.id} key={company.id} onPress={()=>handleSetCompany(company.id)}>
-											<Typography style={{ textAlign: 'center', fontSize: 16 }}>{company.displayName}</Typography>
-										</CompanyMenuItem>
-									))}
-								</Paper>
+								<ScrollView>
+									<Paper>
+										{companies.map(company =>(
+											<CompanyMenuItem selected={selectedCompany===company.id} key={company.id} onPress={()=>handleSetCompany(company.id)}>
+												<Typography style={{ textAlign: 'center', fontSize: 16 }}>{company.displayName}</Typography>
+											</CompanyMenuItem>
+										))}
+									</Paper>
+								</ScrollView>
 							</Modal>
 						</>)
 					: <Button disabled onPress={handleOpenModal} variant='outlined' label={selectedCompanyName} />

@@ -16,25 +16,33 @@ export function handleNotificationListener(notification, navigation) {
 			const { name: routeName, params } = data.redirect;
 			navigation.navigate(routeName, params);
 		}
-	} else {
-		if (data.alertData) {
-			const buttons = [];
-			
-			if (data.redirect) {
-				const { name: routeName, params } = data.redirect;
-				buttons.push({ text: 'Abrir', onPress: () => navigation.navigate(routeName, params) })
-			} else {
-				if (data.cancelable !== false)
-					buttons.unshift({ text: 'OK', style: 'cancel' })
-			}
-			Alert.alert(
-				data.alertData.title,
-				data.alertData.body,
-				buttons,
-				{ cancelable: data.cancelable || true }
-			);
-		}
 	}
+
+	// alert on [received | selected]
+	const alertOn = data.alertOn || ['received'];
+	if (data.alertData && alertOn.includes(notification.origin)) {
+		notificationAlert({ ...data.alertData, redirect: data.redirect }, navigation)
+	}
+}
+
+function notificationAlert(data, navigation) {
+	const { cancelable = true, title, body, redirect, openButtonText='Abrir' } = data;
+	const buttons = [];
+			
+	if (redirect) {
+		const { name: routeName, params } = redirect;
+		buttons.push({ text: openButtonText, onPress: () => navigation.navigate(routeName, params) })
+	} else {
+		if (cancelable !== false)
+			buttons.unshift({ text: 'OK', style: 'cancel' })
+	}
+
+	Alert.alert(
+		title,
+		body,
+		buttons,
+		{ cancelable }
+	);
 }
 	
 export async function registerForPushNotifications(userId) {
