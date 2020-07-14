@@ -61,7 +61,6 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 						label='Buscar'
 						style={{ inputContainer: { backgroundColor: palette.background.main } }}
 						placeholderTextColor='#D1C6B1'
-						value={search}
 						onChangeText={(text)=>{ setSearch(text.toLowerCase()) }}
 					/>
 				</SearchContainer>
