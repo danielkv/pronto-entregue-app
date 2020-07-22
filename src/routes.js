@@ -5,12 +5,12 @@ import 'moment/locale/pt-br';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications';
 
 import ConnectionInfoPanel from './components/ConnectionInfoPanel';
 import FontLoader from './components/FontLoader';
 
-import { handleNotificationListener } from './controller/notification';
+import { receiveNotificationHandler, responseReceiveNotificationHandler } from './controller/notification';
 import AuthenticationRoutes from './routes/authentication';
 import CartRoutes from './routes/cart';
 import HomeRoutes from './routes/home';
@@ -22,12 +22,31 @@ import NavigatorTheme from './theme/navigator';
 
 const Stack = createStackNavigator();
 
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: false,
+		shouldPlaySound: false,
+		shouldSetBadge: false,
+	}),
+});
+
 export default function SplashScreen() {
 	const rootNavigation = useRef(null);
 
+	function handleReceiveListener(notification) {
+		receiveNotificationHandler(notification, rootNavigation.current)
+	}
+	function handleResponseListener(notification) {
+		responseReceiveNotificationHandler(notification, rootNavigation.current)
+	}
+
 	useEffect(()=>{
-		const listener = Notifications.addListener((notification) => handleNotificationListener(notification, rootNavigation.current));
-		return ()=> listener.remove();
+		const receiveNotificationListener = Notifications.addNotificationReceivedListener(handleReceiveListener);
+		const responseNotificationListener = Notifications.addNotificationResponseReceivedListener(handleResponseListener);
+		return ()=> {
+			receiveNotificationListener.remove();
+			responseNotificationListener.remove();
+		}
 	}, [])
 
 	return (
@@ -47,7 +66,6 @@ export default function SplashScreen() {
 						<Stack.Screen name='AuthenticationRoutes' component={AuthenticationRoutes} />
 						<Stack.Screen name='SelectAddressRoutes' component={SelectAddressRoutes} />
 					</Stack.Navigator>
-								
 				</NavigationContainer>
 				<ConnectionInfoPanel />
 			</FontLoader>

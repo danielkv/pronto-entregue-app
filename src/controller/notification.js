@@ -1,26 +1,34 @@
 import { Alert, Platform } from 'react-native';
 
-import { Notifications } from 'expo';
 import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 
 import client from '../services/apolloClient';
 
 import { PUSH_NOTIFICATION_TOKEN, REMOVE_NOTIFICATION_TOKEN } from '../graphql/users';
 
-export function handleNotificationListener(notification, navigation) {
-	const { data } = notification;
-	
-	if (notification.origin === 'selected') {
-		if (data.redirect) {
-			const { name: routeName, params } = data.redirect;
-			navigation.navigate(routeName, params);
-		}
+export function receiveNotificationHandler (notification, navigation) {
+	const { data } = notification.request.content;
+
+	if (data.redirect) {
+		const { name: routeName, params } = data.redirect;
+		navigation.navigate(routeName, params);
 	}
+
+	const alertOn = data.alertOn || ['received'];
+	if (data.alertData && alertOn.includes('received')) {
+		notificationAlert({ ...data.alertData, redirect: data.redirect }, navigation)
+	}
+}
+
+export function responseReceiveNotificationHandler(notificationResponse, navigation) {
+	const { notification } = notificationResponse;
+	const { data } = notification.request.content;
 
 	// alert on [received | selected]
 	const alertOn = data.alertOn || ['received'];
-	if (data.alertData && alertOn.includes(notification.origin)) {
+	if (data.alertData && alertOn.includes('selected')) {
 		notificationAlert({ ...data.alertData, redirect: data.redirect }, navigation)
 	}
 }
@@ -67,17 +75,17 @@ export async function registerForPushNotifications(userId) {
 	if (finalStatus !== 'granted') return;
 			
 	// Get the token that uniquely identifies this device
-	const token = await Notifications.getExpoPushTokenAsync();
+	const token = (await Notifications.getExpoPushTokenAsync()).data;
 			
 	// POST the token to your backend server from where you can retrieve it to send push notifications.
 	await client.mutate({ mutation: PUSH_NOTIFICATION_TOKEN, variables: { userId, token } });
 
 	if (Platform.OS === 'android') {
-		Notifications.createChannelAndroidAsync('Standard', {
+		Notifications.setNotificationChannelAsync('Standard', {
 			name: 'Notificações',
 			sound: true,
-			priority: 'max',
-			vibrate: [0, 250, 250, 250],
+			importance: Notifications.AndroidImportance.MAX,
+			vibrationPattern: [0, 250, 250, 250]
 		});
 	}
 			
@@ -87,7 +95,7 @@ export async function registerForPushNotifications(userId) {
 export async function removeForPushNotifications() {
 	if (!Device.isDevice) return;
 	// Get the token that uniquely identifies this device
-	const token = await Notifications.getExpoPushTokenAsync();
+	const token = (await Notifications.getExpoPushTokenAsync()).data;
 			
 	// POST the token to your backend server from where you can retrieve it to send push notifications.
 	await client.mutate({ mutation: REMOVE_NOTIFICATION_TOKEN, variables: { token } });
