@@ -8,7 +8,7 @@ import { BRL } from '../../utils/currency';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
 
-export default function ProductItem({ item: product, showClosedTag=true }) {
+export default function ProductItem({ item: product, showClosedTag=true, showCompanyName=true }) {
 	const featuredPrice = product?.sale?.progress ? product.sale.price : product.fromPrice;
 	const standardPrice = product?.sale?.progress ? product.fromPrice : false;
 	const navigation = useNavigation();
@@ -29,13 +29,13 @@ export default function ProductItem({ item: product, showClosedTag=true }) {
 					opacity,
 					width: 85,
 					height: 85,
-					borderRadius: 40,
+					borderRadius: 15,
 					resizeMode: 'cover'
 				}}
 			/>
 			<ContentContainer style={{ opacity }}>
 				<Typography style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#655A51' }}>{product.name}</Typography>
-				<Typography style={{ fontSize: 13, color: '#655A51' }}>{product.company.displayName}</Typography>
+				<Typography style={{ fontSize: 12, color: '#655A51' }}>{showCompanyName ? product.company.displayName : product.description}</Typography>
 				{!product.company.isOpen && showClosedTag && <ClosedCompanyChip />}
 				<FooterContainer>
 					<FooterContent>

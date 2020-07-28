@@ -53,7 +53,7 @@ export default function ProductsBlock({ companyId }) {
 							{()=>(
 								category.products.map((product, index) => (
 									<Fragment key={product.id}>
-										<ProductItem key={product.id} item={product} showClosedTag={false} />
+										<ProductItem key={product.id} item={product} showClosedTag={false} showCompanyName={false} />
 										{Boolean(index+1 < 	category.products.length) && <Divider />}
 									</Fragment>
 								))
