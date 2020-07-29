@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import { COMPANY_MIN_FRAGMENT } from './fragments';
+
 export const ADD_CART_ITEM = gql`
 	mutation AddCartItem ($data: CartItemInput!) {
 		addCartItem (data: $data) @client
@@ -43,11 +45,9 @@ export const GET_CART = gql`
 			id
 			displayName
 			deliveryTime
-			acceptTakeout
 			image
 			delivery {
 				id
-				name
 				price
 			}
 			pickup {
@@ -79,6 +79,8 @@ export const GET_CART = gql`
 			freeDelivery
 		}
 
+		cartScheduled @client
+
 		cartItems @client {
 			id
 			productId
@@ -87,6 +89,10 @@ export const GET_CART = gql`
 			image
 			price
 			quantity
+
+			scheduleEnabled
+			minDeliveryTime
+			
 			optionsGroups {
 				id
 				optionsGroupId
@@ -139,7 +145,6 @@ export const GET_CART_COMPANY = gql`
 			id
 			displayName
 			deliveryTime
-			acceptTakeout
 			image
 			delivery {
 				id
@@ -173,6 +178,10 @@ export const GET_CART_ITEMS = gql`
 			image
 			price
 			quantity
+
+			scheduleEnabled
+			minDeliveryTime
+
 			optionsGroups {
 				id
 				optionsGroupId

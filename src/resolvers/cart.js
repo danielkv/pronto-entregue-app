@@ -23,7 +23,8 @@ export default {
 					cartItems: [],
 					cartSubtotal: 0,
 					cartPrice: 0,
-					cartCoupon: null
+					cartCoupon: null,
+					cartScheduled: null
 				}
 			});
 		},

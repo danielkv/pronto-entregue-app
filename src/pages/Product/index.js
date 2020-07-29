@@ -124,10 +124,17 @@ export default function Product() {
 						<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontFamily: 'Roboto-Bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
 
 						<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
+
+						{product?.scheduleEnabled && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
+							<Icon name='info' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }}/>
+							<Typography style={{ fontSize: 12, color: '#EFCA2E' }}>Esse produto é apenas para encomenda, você pode agendar e receber em casa</Typography>
+						</View>}
 					</LinearGradient>
 				</HeaderImageBackgroundContainer>
 			</HeaderContainer>
+
 			{Boolean(!loadingProduct && product?.company) && <CompanyPanel company={product.company} />}
+
 			<Paper>
 				{loadingProduct || !product
 					? <LoadingBlock />

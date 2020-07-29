@@ -1,5 +1,19 @@
 import gql from 'graphql-tag';
 
+export const COMPANY_DELIVERY_FRAGMENT = gql`
+	fragment CompanyDeliveryFields on DeliveryArea {
+		id
+		name
+		price
+	}
+`;
+export const COMPANY_PICKUP_FRAGMENT = gql`
+	fragment CompanyPickupFields on ViewArea {
+		id
+		name
+	}
+`;
+
 export const ADDRESS_FRAGMENT = gql`
 	fragment AddressFields on Address {
 		id
@@ -42,6 +56,37 @@ export const OPTIONS_GROUP_FRAGMENT = gql`
 	}
 `;
 
+export const COMPANY_MIN_FRAGMENT = gql`
+	fragment CompanyMinFields on Company {
+		id
+		image
+		displayName
+		deliveryTime
+		isOpen
+		backgroundColor
+		configs(keys:["allowBuyClosed", "deliveryHoursEnabled", "deliveryHours", "businessHours"])
+	}
+`;
+
+export const COMPANY_LOCATION_FRAGMENT = gql`
+	fragment CompanyLocationFields on Company {
+		...CompanyMinFields
+		rate
+		distance
+		countRatings
+		delivery {
+			...CompanyDeliveryFields
+		}
+		pickup {
+			...CompanyPickupFields
+		}
+	}
+	
+	${COMPANY_DELIVERY_FRAGMENT}
+	${COMPANY_PICKUP_FRAGMENT}
+	${COMPANY_MIN_FRAGMENT}
+`;
+
 export const LIST_PRODUCT_FRAGMENT = gql`
 	fragment ListProductFragment on Product {
 		id
@@ -49,29 +94,12 @@ export const LIST_PRODUCT_FRAGMENT = gql`
 		description
 		image
 		fromPrice
-		company {
-			id
-			displayName
-			deliveryTime
-			isOpen
-		}
+		minDeliveryTime
+		scheduleEnabled
+		
 		sale {
 			price
 			progress
 		}
-	}
-`;
-
-export const COMPANY_DELIVERY_FRAGMENT = gql`
-	fragment CompanyDeliveryFields on DeliveryArea {
-		id
-		name
-		price
-	}
-`;
-export const COMPANY_PICKUP_FRAGMENT = gql`
-	fragment CompanyPickupFields on ViewArea {
-		id
-		name
 	}
 `;

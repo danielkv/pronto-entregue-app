@@ -19,6 +19,7 @@ export const initialData = {
 	cartDiscount: 0,
 	cartUseCredits: false,
 	cartCoupon: null,
+	cartScheduled: null
 }
 
 cache.writeData({ data: initialData });

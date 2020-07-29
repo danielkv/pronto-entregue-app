@@ -1,3 +1,6 @@
+import _ from "lodash";
+import moment from "moment";
+
 import client from "../services/apolloClient";
 import { sanitizeAddress } from "./address";
 import { calculateProductPrice } from "./products";
@@ -5,6 +8,21 @@ import { calculateProductPrice } from "./products";
 import { LOGGED_USER_ID } from "../graphql/authentication";
 import { GET_CART } from "../graphql/cart";
 import { GET_USER } from "../graphql/users";
+
+export function getSchedulableProducts(products) {
+	const schedulableProducts = products.filter(product=>product.scheduleEnabled);
+
+	schedulableProducts.sort((a, b)=>{
+		const timeA = _.toInteger(a.minDeliveryTime);
+		const timeB = _.toInteger(b.minDeliveryTime);
+		if (timeA < timeB) return 1;
+		if (timeA > timeB) return -1;
+
+		return 0
+	})
+
+	return schedulableProducts
+}
 
 export function calculateOrderPrice(products, initialValue = 0) {
 	if (!products || !products.length) return initialValue;
@@ -55,7 +73,7 @@ export async function validateCart() {
 	return true;
 }
 
-export function sanitizeOrderData ({ userId, user, address, cartCompany, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment, cartUseCredits, cartCoupon }) {
+export function sanitizeOrderData ({ userId, user, address, cartCompany, cartScheduled, cartItems, cartStatus, cartPrice, cartMessage, cartDiscount, cartDelivery, cartPayment, cartUseCredits, cartCoupon }) {
 	return {
 		userId: userId || user.id,
 		type: cartDelivery.type,
@@ -71,6 +89,8 @@ export function sanitizeOrderData ({ userId, user, address, cartCompany, cartIte
 		discount: cartDiscount || 0,
 		price: cartPrice,
 		message: cartMessage,
+
+		scheduledTo: moment(cartScheduled).valueOf(),
 		
 		address: sanitizeAddress(address),
 		

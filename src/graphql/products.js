@@ -1,63 +1,37 @@
 import gql from 'graphql-tag';
 
-import { COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT, OPTIONS_GROUP_FRAGMENT } from './fragments';
+import {
+	OPTIONS_GROUP_FRAGMENT,
+	LIST_PRODUCT_FRAGMENT,
+	COMPANY_LOCATION_FRAGMENT,
+	COMPANY_MIN_FRAGMENT
+} from './fragments';
 
 export const LOAD_FEED = gql`
 	query LOAD_FEED ($onSaleLimit: Int!, $bestSellersLimit: Int!, $location: GeoPoint!, $pagination: Pagination) {
 		productsOnSale(limit: $onSaleLimit, location: $location) {
-			id
-			name
-			image
-			description
-			price
-			fromPrice
+			...ListProductFragment
 			company {
-				id
-				displayName
-				isOpen
-			}
-			sale {
-				price
+				...CompanyMinFields
 			}
 		}
 
 		bestSellers (limit: $bestSellersLimit, location: $location) {
-			id
-			name
-			description
-			image
-			price
-			fromPrice
-			sale {
-				price
-				progress
+			...ListProductFragment
+			company {
+				...CompanyMinFields
 			}
 		}
 
 		companies(location: $location, pagination: $pagination) {
-			id
-			displayName
-			isOpen
-			image
-			backgroundColor
-			rate
-			deliveryTime
-			distance
-			delivery {
-				...CompanyDeliveryFields
-			}
-			pickup {
-				...CompanyPickupFields
-			}
+			...CompanyLocationFields
 		}
 	}
 
-	${COMPANY_DELIVERY_FRAGMENT}
-	${COMPANY_PICKUP_FRAGMENT}
-	
+	${COMPANY_MIN_FRAGMENT}
+	${COMPANY_LOCATION_FRAGMENT}
+	${LIST_PRODUCT_FRAGMENT}	
 `;
-
-
 
 export const ADD_FAVORITE_PRODUCT = gql`
 	mutation AddFavoriteProduct ($productId: ID!, $userId: ID!) {
@@ -79,46 +53,24 @@ export const REMOVE_FAVORITE_PRODUCT = gql`
 export const LOAD_PRODUCT = gql`
 	query loadProducts ($id: ID!, $filter:Filter, $location: GeoPoint!) {
 		product (id: $id) {
-			id
-			name
-			type
+			...ListProductFragment
 			price
-			description
 			favorite(id: $id) @client
+
 			company(location: $location) {
-				id
-				displayName
-				acceptTakeout
-				deliveryTime
-				isOpen
-				image
-				backgroundColor
-				rate
-				distance
-				delivery {
-					...CompanyDeliveryFields
-				}
-				pickup {
-					...CompanyPickupFields
-				}
-				countRatings
+				...CompanyLocationFields
 			}
 			category {
 				id
 				name
 			}
-			sale {
-				price
-				progress
-			}
-			image
-			active
 			optionsGroups(filter: $filter) {
 				...OptionsGroupFields
 			}
 		}
 	}
+
+	${COMPANY_LOCATION_FRAGMENT}
 	${OPTIONS_GROUP_FRAGMENT}
-	${COMPANY_DELIVERY_FRAGMENT}
-	${COMPANY_PICKUP_FRAGMENT}
+	${LIST_PRODUCT_FRAGMENT}
 `;

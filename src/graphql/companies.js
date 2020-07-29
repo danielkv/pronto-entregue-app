@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT, COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT } from './fragments';
+import { LIST_PRODUCT_FRAGMENT, COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT, COMPANY_MIN_FRAGMENT } from './fragments';
 
 export const LOAD_COMPANY = gql`
 	query LoadCompany ($id: ID!, $location: GeoPoint!) {
@@ -31,10 +31,14 @@ export const GET_CATEGORIES = gql`
 			name
 			products {
 				...ListProductFragment
+				company {
+					...CompanyMinFields
+				}
 			}
 		}
 	}
 
+	${COMPANY_MIN_FRAGMENT}
 	${LIST_PRODUCT_FRAGMENT}
  `;
 
@@ -85,6 +89,15 @@ export const SUGGEST_COMPANY = gql`
 	mutation ($data: JSON) {
 		suggestCompany(data: $data)
 	}
+`;
+
+export const GET_COMPANY = gql`
+	query GetCompany ($id: ID!) {
+		company (id: $id) {
+			...CompanyMinFields
+		}
+	}
+	${COMPANY_MIN_FRAGMENT}
 `;
 
 export const GET_COMPANY_PAYMENT_METHODS = gql`

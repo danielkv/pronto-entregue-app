@@ -146,6 +146,9 @@ export function sanitizeCartData(data) {
 		},
 		__typename: 'CartItem',
 
+		scheduleEnabled: data.scheduleEnabled,
+		minDeliveryTime: data.minDeliveryTime,
+
 		optionsGroups: data.optionsGroups.filter(group=>group.options.some(option=>option.selected)).map(group =>{
 			return {
 				id: uniqueId(),
