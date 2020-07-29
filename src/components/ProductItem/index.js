@@ -1,9 +1,9 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
-import { Typography, Chip } from '../../react-native-ui';
+import { Typography, Chip, Icon } from '../../react-native-ui';
 import { BRL } from '../../utils/currency';
 import ClosedCompanyChip from '../ClosedCompanyChip';
 import { Container, ContentContainer, FooterContainer, FooterContent } from './styles';
@@ -46,6 +46,7 @@ export default function ProductItem({ item: product, showClosedTag=true, showCom
 							style={{ root: { height: 26, paddingHorizontal: 10, paddingVertical: 0 }, text: { fontSize: 13 } }}
 							label={BRL(featuredPrice).format()}
 						/>
+						{product.scheduleEnabled && <Icon name='calendar' style={{ root: { marginTop: 2 } }} size={17} color='#ccc' />}
 					</FooterContent>
 				</FooterContainer>
 			</ContentContainer>

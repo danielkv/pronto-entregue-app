@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const FooterContainer = styled.View`
 	flex-direction: row;
-	margin-top: 12px;
+	margin-top: 5px;
 	margin-left: -3px;
 	align-items: center;
 `;

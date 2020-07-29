@@ -126,8 +126,8 @@ export default function Product() {
 						<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 
 						{product?.scheduleEnabled && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
-							<Icon name='info' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }}/>
-							<Typography style={{ fontSize: 12, color: '#EFCA2E' }}>Esse produto é apenas para encomenda, você pode agendar e receber em casa</Typography>
+							<Icon name='calendar' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }}/>
+							<Typography style={{ fontSize: 12, color: '#EFCA2E' }}>Esse produto é produzido sob encomenda, você pode agendar o recebimento ou retirada ao finalizar a cesta</Typography>
 						</View>}
 					</LinearGradient>
 				</HeaderImageBackgroundContainer>
