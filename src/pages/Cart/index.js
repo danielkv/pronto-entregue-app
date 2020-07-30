@@ -15,6 +15,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import * as CartController from '../../controller/cart';
+import CompanyController from '../../controller/company';
 import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
 import { Button, Paper, Typography, Chip, Divider, TextField, useTheme, Icon, FormHelperText } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
@@ -170,7 +171,7 @@ export default function Cart({ navigation }) {
 	
 	return (
 		<Container>
-			<Modal
+			{Boolean(schedulableProducts.length) && <Modal
 				isVisible={openScheduler}
 				onModalHide={handleCloseScheduler}
 				onBackButtonPress={handleCloseScheduler}
@@ -254,7 +255,7 @@ export default function Cart({ navigation }) {
 							</>
 					}
 				</Paper>
-			</Modal>
+			</Modal>}
 			<CartContainerScroll>
 				{cartCompany && <Paper>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -308,13 +309,14 @@ export default function Cart({ navigation }) {
 					/>
 				</Paper>
 				{Boolean(cartItems && cartCompany) && <Paper>
-					<Button variant='filled' style={{ button: { height: 40, backgroundColor: palette.error.main } }} onPress={handleCancelCart}>Limpar Cesta</Button>
-					<Typography style={{ color: '#666', textAlign: 'center' }}>Isso irá limpar todos os itens da sua cesta.</Typography>
+					<Button variant='outlined' style={{ button: { height: 40 } }} onPress={handleCancelCart}>Limpar Cesta</Button>
+					<Typography style={{ color: '#666', textAlign: 'center', fontSize: 12 }}>Isso irá limpar todos os itens da sua cesta.</Typography>
 				</Paper>}
 			</CartContainerScroll>
 			{!keyboardOpen && !loadingCompany &&
 				(<CartButtonContainer>
-					{Boolean(cartCompany?.deliveryTime && !schedulableProducts.length) && <Typography style={{ marginBottom: 8, textAlign: 'center', color: '#fff', fontSize: 12 }}>{`Previsão de entrega: ${cartCompany.deliveryTime} minutos`}</Typography>}
+					{Boolean(company?.configs?.deliveryTime && !schedulableProducts.length)
+						&& <Typography style={{ marginBottom: 8, marginTop: -8, textAlign: 'center', color: '#fff', fontSize: 12 }}>{`Previsão de entrega: ${CompanyController.renderDeliveryTime(company.configs.deliveryTime)}`}</Typography>}
 					{cartLoading
 						? <LoadingBlock />
 						: <CartButton
