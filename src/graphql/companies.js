@@ -1,25 +1,14 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT, COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT, COMPANY_MIN_FRAGMENT } from './fragments';
+import { LIST_PRODUCT_FRAGMENT, COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT, COMPANY_MIN_FRAGMENT, COMPANY_LOCATION_FRAGMENT } from './fragments';
 
 export const LOAD_COMPANY = gql`
 	query LoadCompany ($id: ID!, $location: GeoPoint!) {
 		company (id: $id, location: $location) {
-			id
-			displayName
-			deliveryTime
-			rate
-			isOpen
-			countRatings
-			distance
-			delivery {
-				...CompanyDeliveryFields
-			}
-			pickup {
-				...CompanyPickupFields
-			}
+			...CompanyLocationFields
 		}
 	}
+	${COMPANY_LOCATION_FRAGMENT}
 	${COMPANY_DELIVERY_FRAGMENT}
 	${COMPANY_PICKUP_FRAGMENT}
 `;
@@ -66,23 +55,10 @@ export const GET_RATINGS = gql`
 export const GET_COMPANIES = gql`
 	query GetCompanies($pagination: Pagination, $location: GeoPoint!, $filter: JSON) {
 		companies(location: $location, pagination: $pagination, filter: $filter) {
-			id
-			displayName
-			isOpen
-			backgroundColor
-			image
-			rate
-			deliveryTime
-			distance
-			delivery {
-				id
-				price
-			}
-			pickup {
-				id
-			}
+			...CompanyLocationFields
 		}
 	}
+	${COMPANY_LOCATION_FRAGMENT}
 `;
 
 export const SUGGEST_COMPANY = gql`

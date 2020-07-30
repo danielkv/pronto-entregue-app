@@ -44,7 +44,6 @@ export const GET_CART = gql`
 		cartCompany @client {
 			id
 			displayName
-			deliveryTime
 			image
 			delivery {
 				id
@@ -144,7 +143,6 @@ export const GET_CART_COMPANY = gql`
 		cartCompany @client {
 			id
 			displayName
-			deliveryTime
 			image
 			delivery {
 				id

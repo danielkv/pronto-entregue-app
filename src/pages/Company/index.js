@@ -10,6 +10,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import OnlyPickUp from '../../components/OnlyPickUp';
 import RatingStars from '../../components/RatingStars';
 
+import CompanyController from '../../controller/company';
 import { useSelectedAddress } from '../../controller/hooks';
 import { Paper, Typography, useTheme, Icon } from '../../react-native-ui';
 import { formatDistance } from '../../utils';
@@ -54,9 +55,9 @@ export default function Company() {
 							</View>
 							<RatingStars rate={company.rate} />
 							<FooterContainer>
-								{Boolean(company.deliveryTime) && <FooterContent>
+								{Boolean(company?.configs?.deliveryTime) && <FooterContent>
 									<Icon name='clock' size={15} color='#818181' />
-									<Typography style={{ fontSize: 12, color: '#818181' }}>{`~${company.deliveryTime} min`}</Typography>
+									<Typography style={{ fontSize: 12, color: '#818181' }}>{CompanyController.renderDeliveryTime(company.configs.deliveryTime)}</Typography>
 								</FooterContent>}
 								<FooterContent>
 									<Icon name='map-pin' size={15} color='#818181' />
