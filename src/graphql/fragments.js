@@ -61,10 +61,9 @@ export const COMPANY_MIN_FRAGMENT = gql`
 		id
 		image
 		displayName
-		deliveryTime
 		isOpen
 		backgroundColor
-		configs(keys:["allowBuyClosed", "deliveryHoursEnabled", "deliveryHours", "businessHours"])
+		configs(keys:["allowBuyClosed", "deliveryHoursEnabled", "deliveryHours", "businessHours", "deliveryTime"])
 	}
 `;
 

@@ -3,6 +3,7 @@ import { View, Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
 
+import CompanyController from '../../controller/company';
 import { Typography, Icon } from '../../react-native-ui';
 import { formatDistance } from '../../utils';
 import ClosedCompanyChip from '../ClosedCompanyChip';
@@ -34,9 +35,9 @@ export default function CompanyItem({ item: company }) {
 				</View>
 				<RatingStars rate={company.rate} size={14} />
 				<FooterContainer>
-					{Boolean(company.deliveryTime) && <FooterContent>
+					{Boolean(company?.configs?.deliveryTime) && <FooterContent>
 						<Icon name='clock' size={15} color='#818181' />
-						<Typography style={{ fontSize: 12, color: '#818181' }}>{`~${company.deliveryTime} min`}</Typography>
+						<Typography style={{ fontSize: 12, color: '#818181' }}>{CompanyController.renderDeliveryTime(company.configs.deliveryTime)}</Typography>
 					</FooterContent>}
 					<FooterContent>
 						<Icon name='map-pin' size={15} color='#818181' />
