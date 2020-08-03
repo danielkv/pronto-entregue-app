@@ -31,8 +31,8 @@ export function calculateOrderPrice(products, initialValue = 0) {
 	}, initialValue));
 }
 
-export async function validateCart() {
-	const { cartItems, cartDelivery, cartPayment, cartCompany, cartUseCredits, cartPrice } = client.readQuery({ query: GET_CART })
+export async function validateCart(args) {
+	const { cartItems, cartScheduled, cartDelivery, cartPayment, cartCompany, cartUseCredits, cartPrice } = client.readQuery({ query: GET_CART })
 	
 	const { loggedUserId } = client.readQuery({ query: LOGGED_USER_ID })
 	if (!loggedUserId) throw new Error('Seu usuário não está logado corretamente');
@@ -69,6 +69,8 @@ export async function validateCart() {
 		error.type = 'CART_PAYMENT'
 		throw error;
 	}
+	
+	if (args.schedulableProducts.length && !cartScheduled) throw new Error('Selecione uma data para receber seu pedido')
 
 	return true;
 }
@@ -89,7 +91,7 @@ export function sanitizeOrderData ({ userId, user, address, cartCompany, cartSch
 		price: cartPrice,
 		message: cartMessage,
 
-		scheduledTo: moment(cartScheduled).valueOf(),
+		scheduledTo: cartScheduled ? moment(cartScheduled).valueOf() : null,
 		
 		address: sanitizeAddress(address),
 		

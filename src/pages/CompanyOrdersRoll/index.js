@@ -8,8 +8,8 @@ import { useRoute, useNavigation } from '@react-navigation/core';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { useLoggedUserId, useSelectedCompany } from '../../controller/hooks';
+import OrderController from '../../controller/order'
 import { Paper, Typography, Button, Chip, Divider, useTheme } from '../../react-native-ui';
-import { availableStatus } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import OrderRollItem from './OrderRollItem';
 import { CompanyMenuItem } from './styles';
@@ -142,7 +142,7 @@ export default function OrdersRoll() {
 						<>
 							<Chip style={{ root: { height: 30, position: 'absolute', top: -10 } }} label={`#${orders[selectedOrder].id}`} color='secondary' />
 							<Typography variant='subtitle'>Alterar status</Typography>
-							{availableStatus(orders[selectedOrder]).map(status => (
+							{OrderController.availableStatus(orders[selectedOrder]).map(status => (
 								<Button
 									key={status.slug}
 									onPress={()=>handleSetStatus(status.slug)}

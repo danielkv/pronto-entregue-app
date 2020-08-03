@@ -119,19 +119,7 @@ export default function PickLocation() {
 	// REGION
 
 	function changeAddressPoint(newRegion) {
-		/* const actualDistance = address ? calculateDistance(newRegion, initialCamera.center) : 0;
-		if (actualDistance > maxDistance) {
-			Alert.alert(
-				'Essa localização é muito distante do endereço digitado na página anterior',
-				'Deseja começar de novo?',
-				[
-					{ text: 'Não', onPress: ()=>MapRef.current.animateCamera(camera, 4000) },
-					{ text: 'Sim', onPress: ()=>navigation.navigate('SearchAddressScreen') }
-				]
-			);
-				
-		} else */
-			setCamera({ ...camera, center: newRegion })
+		setCamera({ ...camera, center: newRegion })
 	}
 	
 	function handleRegionChange(newRegion) {

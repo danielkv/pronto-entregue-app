@@ -22,6 +22,7 @@ export const ADDRESS_FRAGMENT = gql`
 		number
 		district
 		reference
+		complement
 		city
 		state
 		zipcode

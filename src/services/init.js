@@ -5,7 +5,7 @@ import { sanitizeAddress } from '../controller/address';
 import { registerForPushNotifications, removeForPushNotifications } from '../controller/notification';
 import client from './apolloClient';
 
-import { SET_SELECTED_ADDRESS, GET_SELECTED_ADDRESS, SET_USER_ADDRESS } from '../graphql/addresses';
+import { SET_SELECTED_ADDRESS, GET_SELECTED_ADDRESS, SET_USER_ADDRESS, GET_ADDRESS } from '../graphql/addresses';
 import { AUTHENTICATE } from '../graphql/authentication';
 
 export async function initialize() {
@@ -14,6 +14,7 @@ export async function initialize() {
 	let user = null;
 	const selectedAddress = await AsyncStorage.getItem('@prontoEntregue/address');
 	const userToken = await AsyncStorage.getItem('@prontoEntregue/userToken');
+	let address = null;
 
 	if (userToken) {
 		const { data } = await client.mutate({ mutation: AUTHENTICATE, variables: { token: userToken } });
@@ -21,11 +22,19 @@ export async function initialize() {
 		user = data.authenticate;
 	}
 
-	if (selectedAddress) await client.mutate({ mutation: SET_SELECTED_ADDRESS, variables: { address: JSON.parse(selectedAddress) } })
+	if (selectedAddress) {
+		address = JSON.parse(selectedAddress)
+		if (address.id && typeof address.complement === 'undefined') {
+			const { data } = await client.query({ query: GET_ADDRESS, variables: { id: address.id } });
+			address = data.address;
+		}
+		
+		if (address) await client.mutate({ mutation: SET_SELECTED_ADDRESS, variables: { address } })
+	}
 	
 	return {
 		user,
-		address: selectedAddress || null,
+		address,
 	};
 }
 

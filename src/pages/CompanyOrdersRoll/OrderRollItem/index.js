@@ -1,16 +1,18 @@
-import React, { Fragment } from 'react'
-import { View, Image } from 'react-native'
+import React, { Fragment } from 'react';
+import { View, Image } from 'react-native';
 
 import moment from 'moment'
 
+import DeliveryAddress from '../../../components/DeliveryAddress'
+
+import OrderController from '../../../controller/order'
 import { Chip, Typography, Paper, Divider, IconButton, Icon, useTheme } from '../../../react-native-ui'
-import { getOrderStatusLabel, getStatusColors } from '../../../utils'
 import { BRL } from '../../../utils/currency'
 import OrderRollProduct from './OrderRollProduct'
 
 export default function OrderRollItem({ item: order, handleOpenModalStatus, orderIndex }) {
 	const { palette } = useTheme();
-	const colors = getStatusColors(order.status);
+	const colors = OrderController.statusColors(order.status);
 	const canEdit = !['delivered', 'canceled'].includes(order.status);
 
 	const orderTotal = order.price + order.discount;
@@ -28,9 +30,28 @@ export default function OrderRollItem({ item: order, handleOpenModalStatus, orde
 
 			<View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
 				<Chip style={{ root: { height: 30 } }} label={`#${order.id}`} color='secondary' />
-				<Chip style={{ root: { height: 30, marginLeft: 6, paddingVertical: 0, borderColor: colors.background }, text: { color: colors.background } }} label={getOrderStatusLabel(order.status)} variant='outlined' />
+				<Chip style={{ root: { height: 30, marginLeft: 6, paddingVertical: 0, borderColor: colors.background }, text: { color: colors.background } }} label={OrderController.statusLabel(order.status)} variant='outlined' />
 				<Typography style={{ marginLeft: 6 }} variant='subtitle'>{moment(order.createdAt).format('DD/MM HH:mm')}</Typography>
 			</View>
+			{Boolean(order.scheduledTo) && (
+				<View style={{
+					flexDirection: 'row',
+					alignItems: 'flex-start',
+					backgroundColor: '#e6e6e6',
+					padding: 13,
+					borderRadius: 15,
+					marginBottom: 10
+				}}>
+					<Icon name='calendar' type='material-community' color='#333' style={{ root: { marginTop: 0 } }} />
+					<View style={{
+						marginLeft: 8
+					}}>
+						<Typography style={{ fontFamily: 'Roboto-Bold', color: '#333' }}>Este pedido foi agendado</Typography>
+						<Typography style={{ color: '#555' }}>{`Dia: ${moment(order.scheduledTo).format('DD/MM/YYYY')}`}</Typography>
+						<Typography style={{ color: '#555' }}>{`Horário aprox.: ${moment(order.scheduledTo).format('HH:mm')}`}</Typography>
+					</View>
+				</View>
+			)}
 			{order.status !== 'waiting'
 				? <View>
 					<View style={{ marginRight: 30 }}>
@@ -53,10 +74,7 @@ export default function OrderRollItem({ item: order, handleOpenModalStatus, orde
 								? <Typography>Retirada no Balcão</Typography>
 								: (
 									<View>
-										<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>{`${order.address.street}, n ${order.address.number}`}</Typography>
-										<Typography variant='subtitle'>{order.address.district}</Typography>
-										<Typography variant='subtitle'>{`${order.address.city} - ${order.address.state}`}</Typography>
-										<Typography variant='subtitle'>{order.address.zipcode}</Typography>
+										<DeliveryAddress address={order.address} />
 										<View style={{ marginTop: 10 }}>
 											<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>Pagamento:</Typography>
 											<View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>

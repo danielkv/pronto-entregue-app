@@ -33,6 +33,13 @@ export const ORDER_CRATED_FRAGMENT = gql`
 	fragment OrderCratedFragment on Order {
 		id
 		type
+		deliveryPrice
+		scheduledTo
+		price
+		discount
+		status
+		message
+		createdAt
 		user {
 			id
 			fullName
@@ -58,18 +65,12 @@ export const ORDER_CRATED_FRAGMENT = gql`
 			history
 			value
 		}
-		deliveryPrice
-		deliveryTime
-		price
-		discount
-		status
-		message
-		createdAt
 		address {
 			id
 			name
 			street
 			number
+			reference
 			complement
 			zipcode
 			district

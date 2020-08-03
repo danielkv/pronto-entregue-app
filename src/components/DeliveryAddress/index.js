@@ -8,10 +8,10 @@ import { Typography } from '../../react-native-ui';
 function DeliveryAddress({ address, title }) {
 	return <View style={{ marginVertical: 8 }}>
 		{Boolean(title) && <Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 18, marginBottom: 4 }}>{title}</Typography>}
-		<Typography style={{ fontSize: 16 }}>{`${address.street}, n ${address.number}`}</Typography>
+		<Typography style={{ fontSize: 16, fontFamily: title ? 'Roboto' : 'Roboto-Bold' }}>{`${address.street}, n ${address.number}`}</Typography>
 
-		{Boolean(address.reference) && <Typography variant='subtitle'>{address.reference}</Typography>}
 		{Boolean(address.complement) && <Typography variant='subtitle'>{address.complement}</Typography>}
+		{Boolean(address.reference) && <Typography variant='subtitle'>{address.reference}</Typography>}
 		
 		<Typography variant='subtitle'>{address.district}</Typography>
 		<Typography variant='subtitle'>{`${address.city} - ${address.state}`}</Typography>

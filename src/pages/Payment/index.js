@@ -3,7 +3,7 @@ import { Alert, ScrollView } from 'react-native';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import CartButton from '../../components/CartButton'
+import CartButton from '../../components/CartButton';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
@@ -83,4 +83,3 @@ export default function Payment({ navigation }) {
 		</Container>
 	);
 }
-				

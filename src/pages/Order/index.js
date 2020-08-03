@@ -10,8 +10,8 @@ import CompanyPanel from '../../components/CompanyPanel';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
+import OrderController from '../../controller/order';
 import { Chip, Paper, Divider, Typography, Button, useTheme, Icon } from '../../react-native-ui';
-import { getOrderStatusLabel, getStatusColors } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import Blocks from './Blocks';
 import {
@@ -62,12 +62,7 @@ export default function Order() {
 	if (orderError) return <ErrorBlock error={getErrorMessage(orderError)} />
 	if (!order) return <ErrorBlock error={'Nenhum pedido encontrado'} />
 
-	const statusColor = getStatusColors(order.status);
-
-	const now = moment();
-	const deliver = moment(order.createdAt).add(order.deliveryTime, 'm');
-	const forecast = order.deliveryTime ? now.to(deliver) : null;
-	const anyMinute = deliver.diff(now, 'm') <= 5 ? true : false;
+	const statusColor = OrderController.statusColors(order.status);
 
 	return (
 		<ScrollView
@@ -78,18 +73,34 @@ export default function Order() {
 					<Typography style={{ fontSize: 12, color: palette.background.dark }}>Arraste para atualizar</Typography>
 				</View>
 				<Chip
-					label={getOrderStatusLabel(order.status)}
+					label={OrderController.statusLabel(order.status)}
 					style={{
 						root: { backgroundColor: statusColor.background, alignSelf: 'stretch', marginHorizontal: 35 },
 						text: { color: statusColor.text }
 					}}
 				/>
-				{['waiting', 'preparing'].includes(order.status) && forecast && <Chip
-					style={{
-						root: { backgroundColor: '#fff', alignSelf: 'stretch', marginHorizontal: 35 },
-						text: { color: '#333', fontSize: 14 }
-					}}
-					label={anyMinute ? 'A qualquer momento' : `Aproximadamente ${forecast}`} />}
+
+				{Boolean(order.scheduledTo) && (
+					<View style={{
+						flexDirection: 'row',
+						alignItems: 'flex-start',
+						backgroundColor: '#fff',
+						padding: 13,
+						borderRadius: 15,
+						marginHorizontal: 35,
+						marginTop: 10,
+						marginBottom: -5
+					}}>
+						<Icon name='calendar' type='material-community' color='#333' style={{ root: { marginTop: 0 } }} />
+						<View style={{
+							marginLeft: 8
+						}}>
+							<Typography style={{ fontFamily: 'Roboto-Bold', color: '#333' }}>Este pedido foi agendado</Typography>
+							<Typography style={{ color: '#555' }}>{`Dia: ${moment(order.scheduledTo).format('DD/MM/YYYY')}`}</Typography>
+							<Typography style={{ color: '#555' }}>{`Horário aprox.: ${moment(order.scheduledTo).format('HH:mm')}`}</Typography>
+						</View>
+					</View>
+				)}
 				
 				<BlocksContainer>
 					<Blocks order={order} />

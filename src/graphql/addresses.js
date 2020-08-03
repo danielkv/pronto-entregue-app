@@ -32,10 +32,21 @@ export const GET_SELECTED_ADDRESS = gql`
 			city
 			state
 			reference
+			complement
 			zipcode
 			location
 		}
 	}
+`;
+
+export const GET_ADDRESS = gql`
+	query GetAddress ($id: ID!) {
+		address(id: $id) {
+			...AddressFields
+		}
+	}
+
+	${ADDRESS_FRAGMENT}
 `;
 
 export const SET_SELECTED_ADDRESS = gql`

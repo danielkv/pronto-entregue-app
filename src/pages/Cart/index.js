@@ -1,13 +1,8 @@
 import React, { useState, useCallback, Fragment, useEffect } from 'react';
 import { Alert, View, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Modal from 'react-native-modal'
 
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useFocusEffect } from '@react-navigation/core';
-import _ from 'lodash';
-import moment from 'moment';
 
 import CartButton from '../../components/CartButton';
 import CartItem from '../../components/CartItem';
@@ -23,6 +18,7 @@ import { getErrorMessage } from '../../utils/errors';
 import CouponBlock from './Coupon';
 import DeliveryBlock from './DeliveryBlock';
 import PaymentBlock from './PaymentBlock';
+import Scheduler from './Scheduler';
 import {
 	Container,
 	CartButtonContainer,
@@ -40,48 +36,7 @@ export default function Cart({ navigation }) {
 	const { palette } = useTheme();
 	const [message, setMessage] = useState('');
 	const loggedUserId = useLoggedUserId();
-	const [scheduled, setScheduled] = useState(null)
-	const [availableHours, setAvailableHours] = useState(null)
-	const [schedulerStep, setSchedulerStep] = useState('date')
-	const [openScheduler, setOpenScheduler] = useState(false)
 	const [cartLoading, setCartLoading] = useState(false);
-	
-	function handleOpenScheduler() {
-		setScheduled(moment().add(_.toInteger(schedulableProducts[0].minDeliveryTime), 'minutes').toDate());
-		setSchedulerStep('date');
-		setOpenScheduler(true);
-	}
-	function handleCloseScheduler() {
-		setOpenScheduler(false);
-	}
-	function handleSelectDate() {
-		const day = moment(scheduled)
-		const dayOfWeek = day.format('d');
-		const availableDays = company.configs.deliveryHoursEnabled ? company.configs.deliveryHours : company.configs.businessHours;
-		const availableHoursTemp = availableDays[dayOfWeek]?.hours
-
-		if (availableHoursTemp.length) {
-			setAvailableHours(availableHoursTemp);
-			setSchedulerStep('time');
-		} else {
-			setAvailableHours(null);
-			Alert.alert('Selecione outro dia da semana', `${company.displayName} não disponibiliza horários de entrega para esse dia da semana`);
-		}
-	}
-	function handleSelectTime(hour) {
-		const day = moment(scheduled);
-		const splitedHour = hour.from.split(':');
-
-		day.set({ hour: splitedHour[0], minute: splitedHour[1] })
-
-		setScheduled(day.toDate());
-		setSchedulerStep('finish');
-	}
-
-	function handleFinishSchedule() {
-		handleFinishCart({ force: true });
-		handleCloseScheduler();
-	}
 	
 	const keyboardOpen = useKeyboardStatus();
 	
@@ -118,18 +73,15 @@ export default function Cart({ navigation }) {
 		);
 	}
 
-	async function handleFinishCart({ force=false }) {
+	async function handleFinishCart() {
 		try {
 			setCartLoading(true);
 			if (loggedUserId) {
-				await CartController.validateCart();
-				if (schedulableProducts.length && !force) {
-					handleOpenScheduler();
-				} else {
-					client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice, cartScheduled: moment(scheduled).valueOf() } });
+				await CartController.validateCart({ schedulableProducts });
+				
+				client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
-					navigation.navigate('PaymentScreen');
-				}
+				navigation.navigate('PaymentScreen');
 			} else {
 				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'HomeRoutes', redirectParams: { screen: 'CartScreen' } } });
 			}
@@ -171,91 +123,6 @@ export default function Cart({ navigation }) {
 	
 	return (
 		<Container>
-			{Boolean(schedulableProducts.length) && <Modal
-				isVisible={openScheduler}
-				onModalHide={handleCloseScheduler}
-				onBackButtonPress={handleCloseScheduler}
-				onBackdropPress={handleCloseScheduler}
-				onSwipeComplete={handleCloseScheduler}
-			>
-				<Paper>
-					{schedulerStep === 'date'
-						? 	<>
-							<Typography variant='title'>Selecione uma data</Typography>
-							<DateTimePicker
-								testID='dateTimePicker'
-								value={scheduled}
-								mode='date'
-								is24Hour={true}
-								display='calendar'
-								minimumDate={moment().add(_.toInteger(schedulableProducts[0].minDeliveryTime), 'minutes').toDate()}
-								maximumDate={moment().add(30, 'days').toDate()}
-								onChange={(e, date)=>setScheduled(date)}
-							/>
-							<Button
-								variant='filled'
-								color='secondary'
-								onPress={handleSelectDate}
-							>
-								Escolher horário
-							</Button>
-						</>
-						: schedulerStep === 'time'
-							? <>
-								<Typography variant='title'>Selecione um horário</Typography>
-								<FormHelperText color='default'>Esse é um horário aproximado</FormHelperText>
-								<View style={{ marginVertical: 15 }}>
-									{availableHours.map((hour, index) =>
-										<TouchableOpacity
-											onPress={()=>handleSelectTime(hour)}
-											key={index}
-											style={{ flexDirection: 'row', justifyContent: 'center', padding: 15, backgroundColor: '#f0f0f0', borderRadius: 6 }}
-										>
-											<Typography style={{ fontSize: 16, fontFamily: 'Roboto-Bold' }}>{`${hour.from} - ${hour.to}`}</Typography>
-										</TouchableOpacity>
-									)}
-								</View>
-								<Button
-									variant='filled'
-									onPress={()=>setSchedulerStep('date')}
-								>
-									Voltar
-								</Button>
-								<Button
-									variant='filled'
-									onPress={handleCloseScheduler}
-								>
-									Cancelar
-								</Button>
-							</>
-							: <>
-								<Typography variant='title'>Confira os dados</Typography>
-								<Typography variant='text' style={{ marginVertical: 15 }}>
-									{`Você reberá seu pedido no dia ${moment(scheduled).format('DD/MM/YY')} a partir das ${moment(scheduled).format('HH:mm')}`}
-								</Typography>
-								<Button
-									variant='filled'
-									color='primary'
-									onPress={handleFinishSchedule}
-								>
-									Finaliar agendamento
-								</Button>
-								<Button
-									variant='filled'
-									onPress={()=>setSchedulerStep('time')}
-								>
-									Voltar
-								</Button>
-								<Button
-									variant='filled'
-									onPress={handleCloseScheduler}
-								>
-									Cancelar
-								</Button>
-							</>
-					}
-				</Paper>
-			</Modal>}
 			<CartContainerScroll>
 				{cartCompany && <Paper>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -317,6 +184,9 @@ export default function Cart({ navigation }) {
 				(<CartButtonContainer>
 					{Boolean(company?.configs?.deliveryTime && !schedulableProducts.length)
 						&& <Typography style={{ marginBottom: 8, marginTop: -8, textAlign: 'center', color: '#fff', fontSize: 12 }}>{`Previsão de entrega: ${CompanyController.renderDeliveryTime(company.configs.deliveryTime)}`}</Typography>}
+					
+					{Boolean(schedulableProducts.length) && <Scheduler {...{ schedulableProducts, company }} />}
+
 					{cartLoading
 						? <LoadingBlock />
 						: <CartButton
