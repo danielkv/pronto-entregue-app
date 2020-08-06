@@ -62,15 +62,28 @@ export const COMPANY_MIN_FRAGMENT = gql`
 		id
 		image
 		displayName
-		isOpen
 		backgroundColor
-		configs(keys:["allowBuyClosed", "deliveryHoursEnabled", "deliveryHours", "businessHours", "deliveryTime"])
 	}
+`;
+
+export const COMPANY_LIST_FRAGMENT = gql`
+	fragment CompanyListFields on Company {
+		...CompanyMinFields
+
+		allowBuyClosed
+		nextOpen
+		nextClose
+		isOpen
+
+		configs(keys:["deliveryTime"])
+	}
+
+	${COMPANY_MIN_FRAGMENT}
 `;
 
 export const COMPANY_LOCATION_FRAGMENT = gql`
 	fragment CompanyLocationFields on Company {
-		...CompanyMinFields
+		...CompanyListFields
 		rate
 		distance
 		countRatings
@@ -84,11 +97,11 @@ export const COMPANY_LOCATION_FRAGMENT = gql`
 	
 	${COMPANY_DELIVERY_FRAGMENT}
 	${COMPANY_PICKUP_FRAGMENT}
-	${COMPANY_MIN_FRAGMENT}
+	${COMPANY_LIST_FRAGMENT}
 `;
 
-export const LIST_PRODUCT_FRAGMENT = gql`
-	fragment ListProductFragment on Product {
+export const LIST_PRODUCT_FRAGMENT_NO_COMPANY = gql`
+	fragment ListProductFieldsNoCompany on Product {
 		id
 		name
 		description
@@ -102,4 +115,17 @@ export const LIST_PRODUCT_FRAGMENT = gql`
 			progress
 		}
 	}
+`;
+
+export const LIST_PRODUCT_FRAGMENT = gql`
+	fragment ListProductFragment on Product {
+		...ListProductFieldsNoCompany
+
+		company {
+			...CompanyMinFields
+		}
+	}
+
+	${LIST_PRODUCT_FRAGMENT_NO_COMPANY}
+	${COMPANY_MIN_FRAGMENT}
 `;

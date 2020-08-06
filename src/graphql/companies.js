@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT, COMPANY_DELIVERY_FRAGMENT, COMPANY_PICKUP_FRAGMENT, COMPANY_MIN_FRAGMENT, COMPANY_LOCATION_FRAGMENT } from './fragments';
+import { COMPANY_LOCATION_FRAGMENT, COMPANY_LIST_FRAGMENT, LIST_PRODUCT_FRAGMENT } from './fragments';
 
 export const LOAD_COMPANY = gql`
 	query LoadCompany ($id: ID!, $location: GeoPoint!) {
@@ -9,25 +9,19 @@ export const LOAD_COMPANY = gql`
 		}
 	}
 	${COMPANY_LOCATION_FRAGMENT}
-	${COMPANY_DELIVERY_FRAGMENT}
-	${COMPANY_PICKUP_FRAGMENT}
 `;
 
 export const GET_CATEGORIES = gql`
 	query GetCompanyCategories ($filter: JSON) {
-		categories: loadCompanyCategories (filter: $filter) {
+		categories (filter: $filter) {
 			id
 			name
 			products {
 				...ListProductFragment
-				company {
-					...CompanyMinFields
-				}
 			}
 		}
 	}
 
-	${COMPANY_MIN_FRAGMENT}
 	${LIST_PRODUCT_FRAGMENT}
  `;
 
@@ -70,10 +64,12 @@ export const SUGGEST_COMPANY = gql`
 export const GET_COMPANY = gql`
 	query GetCompany ($id: ID!) {
 		company (id: $id) {
-			...CompanyMinFields
+			...CompanyListFields
+
+			scheduleConfigs: configs(keys: ["businessHours", "deliveryHours", "deliveryHoursEnabled"])
 		}
 	}
-	${COMPANY_MIN_FRAGMENT}
+	${COMPANY_LIST_FRAGMENT}
 `;
 
 export const GET_COMPANY_PAYMENT_METHODS = gql`

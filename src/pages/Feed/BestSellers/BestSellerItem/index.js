@@ -15,7 +15,8 @@ export default function BestSellerItem({ item: product }) {
 		productId: product.id,
 		productName: product.name,
 		productImage: product.image,
-		productDescription: product.description
+		productDescription: product.description,
+		companyId: product.company.id,
 	}
 
 	return (

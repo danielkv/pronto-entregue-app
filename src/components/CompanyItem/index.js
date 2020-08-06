@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/core';
+import moment from 'moment';
 
 import CompanyController from '../../controller/company';
 import { Typography, Icon } from '../../react-native-ui';
@@ -14,7 +15,9 @@ import { Container, ContentContainer, FooterContainer, FooterContent } from './s
 export default function CompanyItem({ item: company }) {
 	const navigation = useNavigation();
 
-	const opacity = company.isOpen ? 1 : .5;
+	const isOpen = company.nextClose ? moment(company.nextClose).isSameOrAfter() : false
+	
+	const opacity = !isOpen && !company.allowBuyClosed ? .5 : 1;
 
 	return (
 		<Container onPress={()=> navigation.navigate('CompanyScreen', { companyId: company.id, companyName: company.displayName, companyImage: company.image, companyBackground: company.backgroundColor })}>
@@ -28,11 +31,15 @@ export default function CompanyItem({ item: company }) {
 				resizeMode='cover'
 			/>
 			<ContentContainer style={{ opacity }}>
-				<Typography style={{ fontSize: 18, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>
-				<View style={{ flexDirection: 'row' }}>
-					{!company.isOpen && <ClosedCompanyChip />}
+				<View style={{ flexDirection: 'row', marginBottom: 5 }}>
+					{!isOpen && <ClosedCompanyChip allowBuyClosed={company?.allowBuyClosed} />}
 					{!company.delivery && company.pickup && <OnlyPickUp />}
 				</View>
+				<Typography style={{ fontSize: 16, fontFamily: 'Roboto-Bold' }}>{company.displayName}</Typography>
+
+				{Boolean(!isOpen && company?.nextOpen) && <Typography style={{ fontSize: 12, color: '#818181' }}>{`Abre ${CompanyController.renderNextHour(company.nextOpen)}`}</Typography>}
+				{Boolean(isOpen && company?.nextClose) && <Typography style={{ fontSize: 12, color: '#818181' }}>{`Até ${CompanyController.renderNextHour(company.nextClose)}`}</Typography>}
+				
 				<RatingStars rate={company.rate} size={14} />
 				<FooterContainer>
 					{Boolean(company?.configs?.deliveryTime) && <FooterContent>

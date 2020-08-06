@@ -1,7 +1,5 @@
 import gql from 'graphql-tag';
 
-import { COMPANY_MIN_FRAGMENT } from './fragments';
-
 export const ADD_CART_ITEM = gql`
 	mutation AddCartItem ($data: CartItemInput!) {
 		addCartItem (data: $data) @client

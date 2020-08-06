@@ -4,23 +4,19 @@ import {
 	OPTIONS_GROUP_FRAGMENT,
 	LIST_PRODUCT_FRAGMENT,
 	COMPANY_LOCATION_FRAGMENT,
-	COMPANY_MIN_FRAGMENT
+	LIST_PRODUCT_FRAGMENT_NO_COMPANY
 } from './fragments';
 
 export const LOAD_FEED = gql`
 	query LOAD_FEED ($onSaleLimit: Int!, $bestSellersLimit: Int!, $location: GeoPoint!, $pagination: Pagination) {
 		productsOnSale(limit: $onSaleLimit, location: $location) {
 			...ListProductFragment
-			company {
-				...CompanyMinFields
-			}
+			
 		}
 
 		bestSellers (limit: $bestSellersLimit, location: $location) {
 			...ListProductFragment
-			company {
-				...CompanyMinFields
-			}
+			
 		}
 
 		companies(location: $location, pagination: $pagination) {
@@ -28,8 +24,8 @@ export const LOAD_FEED = gql`
 		}
 	}
 
-	${COMPANY_MIN_FRAGMENT}
 	${COMPANY_LOCATION_FRAGMENT}
+	${LIST_PRODUCT_FRAGMENT}
 	${LIST_PRODUCT_FRAGMENT}	
 `;
 
@@ -51,26 +47,23 @@ export const REMOVE_FAVORITE_PRODUCT = gql`
 `;
 
 export const LOAD_PRODUCT = gql`
-	query loadProducts ($id: ID!, $filter:Filter, $location: GeoPoint!) {
+	query loadProducts ($id: ID!, $filter:Filter) {
 		product (id: $id) {
-			...ListProductFragment
+			...ListProductFieldsNoCompany
 			price
 			favorite(id: $id) @client
 
-			company(location: $location) {
-				...CompanyLocationFields
-			}
 			category {
 				id
 				name
 			}
+
 			optionsGroups(filter: $filter) {
 				...OptionsGroupFields
 			}
 		}
 	}
 
-	${COMPANY_LOCATION_FRAGMENT}
 	${OPTIONS_GROUP_FRAGMENT}
-	${LIST_PRODUCT_FRAGMENT}
+	${LIST_PRODUCT_FRAGMENT_NO_COMPANY}
 `;

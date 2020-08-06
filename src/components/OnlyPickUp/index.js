@@ -7,7 +7,7 @@ export default function OnlyPickUp({ text='Apenas Retirada' }) {
 		<Chip
 			variant='filled'
 			label={text}
-			style={{ root: { height: 20, paddingVertical: 0, paddingHorizontal: 10, backgroundColor: '#ecb22e' }, text: { fontSize: 13, color: '#fff' } }}
+			style={{ root: { height: 20, paddingVertical: 0, paddingHorizontal: 8, backgroundColor: '#ecb22e' }, text: { fontSize: 11, color: '#fff' } }}
 		/>
 	);
 }

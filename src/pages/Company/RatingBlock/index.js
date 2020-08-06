@@ -35,7 +35,7 @@ export default function RatingBlock({ companyId }) {
 		})
 	}
 
-	if (ratingsError) return <ErrorBlock error={getErrorMessage(ratingsError)} />;
+	if (ratingsError) return false;
 	if (loadingRatings && !ratings.length) return <LoadingBlock />;
 	if (!ratings.length) return false;
 

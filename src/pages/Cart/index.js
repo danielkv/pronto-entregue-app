@@ -3,6 +3,7 @@ import { Alert, View, Image } from 'react-native';
 
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
+import moment from 'moment';
 
 import CartButton from '../../components/CartButton';
 import CartItem from '../../components/CartItem';
@@ -12,7 +13,7 @@ import LoadingBlock from '../../components/LoadingBlock';
 import * as CartController from '../../controller/cart';
 import CompanyController from '../../controller/company';
 import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
-import { Button, Paper, Typography, Chip, Divider, TextField, useTheme, Icon, FormHelperText } from '../../react-native-ui';
+import { Button, Paper, Typography, Chip, Divider, TextField, useTheme, Icon } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
 import CouponBlock from './Coupon';
@@ -143,6 +144,24 @@ export default function Cart({ navigation }) {
 						}}>
 						<Icon name='info' color='#333' style={{ root: { margin: 0, marginRight: 10 } }}/>
 						<Typography style={{ fontSize: 12, color: '#333', flex: 1 }}>Há produtos por encomenda na cesta, você poderá agendar uma data para receber todos esses itens de uma só vez.</Typography>
+					</View>}
+
+					{Boolean(company?.allowBuyClosed && !schedulableProducts.length) && <View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'flex-start',
+							marginTop: 15,
+							backgroundColor: '#f0f0f0',
+							borderRadius: 8,
+							padding: 13,
+						}}>
+						<Icon name='info' color='#333' style={{ root: { margin: 0, marginRight: 10 } }}/>
+						<View style={{ flex: 1 }}>
+							<Typography style={{ fontSize: 12, color: '#333' }}>
+								{`Você está finalizando o pedido com o estabelecimento fechado. Isso quer dizer que  prazo de entrega valerá a partir do horário de abertura.`}
+							</Typography>
+							<Typography style={{ fontSize: 12, fontFamily: 'Roboto-Bold',color: '#333', marginTop: 5 }}>{`O estabelecimento abre ${moment(company.nextOpen).fromNow()}`}</Typography>
+						</View>
 					</View>}
 				</Paper>}
 

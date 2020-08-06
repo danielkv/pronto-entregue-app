@@ -1,4 +1,5 @@
 import { uniqueId, cloneDeep, isEqual } from 'lodash';
+import moment from 'moment';
 
 import client from '../services/apolloClient';
 import { CartValidationError } from '../utils/errors';
@@ -111,11 +112,12 @@ export function getGroupRestrainingRules(optionsGroups, selectedGroup) {
 	return selectedGroup;
 }
 
-export function checkProductRules(product, force) {
+export function checkProductRules({ company, product }, force) {
 	const { cartItems, cartCompany } = client.readQuery({ query: GET_CART });
 
 	// check is Company is is open
-	if (!product.company.isOpen) throw new Error('Esse estabelecimento está fechado no momento');
+	const isOpen = company.nextClose ? moment(company.nextClose).isSameOrAfter() : false
+	if (!isOpen && !company.allowBuyClosed) throw new Error('Esse estabelecimento está fechado no momento');
 
 	// check if there is other company in cart
 	if (!force && (cartCompany !== null && cartCompany?.id !== product.company.id)) throw new CartValidationError('Já existem itens de outro estabelecimento na sua cesta.', 'Quer mesmo limpar sua cesta e adicionar esse item?');

@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { useQuery } from '@apollo/react-hooks';
 import { useRoute } from '@react-navigation/core';
+import moment from 'moment'
 
 import ClosedCompanyChip from '../../components/ClosedCompanyChip';
 import ErrorBlock from '../../components/ErrorBlock';
@@ -28,6 +29,8 @@ export default function Company() {
 
 	const { data: { company = null } = {}, loading: loadingCompany, error: companyError } = useQuery(LOAD_COMPANY, { variables: { id: companyId, location } });
 
+	const isOpen = company?.nextClose ? moment(company.nextClose).isSameOrAfter() : false
+
 	if (companyError) return <ErrorBlock error={getErrorMessage(companyError)} />
 
 	return (
@@ -44,15 +47,17 @@ export default function Company() {
 				<Image source={{ uri: companyImage }} style={{ width: 160, height: 160 }} resizeMode='contain' />
 			</View>
 			<Paper>
-				<Typography style={{ fontSize: 28, color: palette.background.dark, fontFamily: 'Roboto-Bold' }}>{companyName}</Typography>
+				<View style={{ flexDirection: 'row', marginBottom: 5 }}>
+					{Boolean(company && !isOpen) && <ClosedCompanyChip allowBuyClosed={company?.allowBuyClosed} />}
+					{!(company?.delivery) && company?.pickup && <OnlyPickUp text='Apenas Retirada no local' />}
+				</View>
+				<Typography style={{ fontSize: 24, color: palette.background.dark, fontFamily: 'Roboto-Bold' }}>{companyName}</Typography>
+				{Boolean(!isOpen && company?.nextOpen) && <Typography style={{ fontSize: 12, color: '#818181' }}>{`Abre ${CompanyController.renderNextHour(company.nextOpen)}`}</Typography>}
+				{Boolean(isOpen && company?.nextClose) && <Typography style={{ fontSize: 12, color: '#818181' }}>{`Até ${CompanyController.renderNextHour(company.nextClose)}`}</Typography>}
 				{loadingCompany
 					? <ActivityIndicator color={palette.primary.main} />
 					: (
 						<>
-							<View style={{ flexDirection: 'row', marginBottom: 5 }}>
-								{!company.isOpen && <ClosedCompanyChip />}
-								{!company.delivery && company.pickup && <OnlyPickUp text='Apenas Retirada no local' />}
-							</View>
 							<RatingStars rate={company.rate} />
 							<FooterContainer>
 								{Boolean(company?.configs?.deliveryTime) && <FooterContent>
@@ -70,11 +75,29 @@ export default function Company() {
 							</FooterContainer>
 						</>
 					)}
+				
+				{Boolean(company?.allowBuyClosed) && <View
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'flex-start',
+						marginTop: 15,
+						backgroundColor: '#f0f0f0',
+						borderRadius: 8,
+						padding: 13,
+					}}>
+					<Icon name='info' color='#333' style={{ root: { margin: 0, marginRight: 10 } }}/>
+					<View style={{ flex: 1 }}>
+						<Typography style={{ fontSize: 12, color: '#333' }}>
+							{`Este estabelecimento aceita pedidos enquanto está fechado. O prazo de entrega valerá a partir do horário de abertura.`}
+						</Typography>
+						<Typography style={{ fontSize: 12, fontFamily: 'Roboto-Bold',color: '#333', marginTop: 5 }}>{`O estabelecimento abre ${moment(company.nextOpen).fromNow()}`}</Typography>
+					</View>
+				</View>}
 			</Paper>
 
 			{Boolean(!loadingCompany && company) && <ProductsBlock companyId={company.id} />}
 			
-			{Boolean(!loadingCompany && company) && <RatingBlock companyId={company.id} />}
+			{/* Boolean(!loadingCompany && company) && <RatingBlock companyId={company.id} /> */}
 		</ScrollView>
 	);
 }

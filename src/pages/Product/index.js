@@ -29,10 +29,11 @@ import {
 } from './styles';
 
 import { ADD_CART_ITEM } from '../../graphql/cart';
+import { LOAD_COMPANY } from '../../graphql/companies';
 import { LOAD_PRODUCT } from '../../graphql/products';
 
 export default function Product() {
-	const { params: { productId, productName, productImage, productDescription } } = useRoute();
+	const { params: { productId, productName, productImage, productDescription, companyId } } = useRoute();
 	const { palette } = useTheme();
 	const { location = null } = useSelectedAddress();
 	const [refreshing, setRefreshing] = useState(false);
@@ -48,7 +49,8 @@ export default function Product() {
 		return 0;
 	}, [product, calculateProductPrice, quantity]);
 
-	const { data: productData, loading: loadingProduct, error: productError, refetch } = useQuery(LOAD_PRODUCT, { variables: { id: productId, location } });
+	const { data: productData, loading: loadingProduct, error: productError, refetch } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
+	const { data: { company = null } = {}, loading: loadingCompany, error: companyError } = useQuery(LOAD_COMPANY, { variables: { id: companyId, location } });
 
 	useEffect(()=>{
 		if (productError) setProduct(null);
@@ -74,10 +76,10 @@ export default function Product() {
 
 	const handleCartButtonPress = (force=false) => () => {
 		// sanitize product data 
-		const sanitizedProduct = sanitizeCartData({ ...product, message, quantity });
+		const sanitizedProduct = sanitizeCartData({ ...product, company, message, quantity });
 		
 		try {
-			if (checkProductRules(product, force)) {
+			if (checkProductRules({ company, product }, force)) {
 				// Add cart Item
 				addCartItem({ variables: { data: sanitizedProduct } })
 					.then(()=>{
@@ -126,14 +128,14 @@ export default function Product() {
 						<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 
 						{product?.scheduleEnabled && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
-							<Icon name='calendar' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }}/>
+							<Icon name='calendar' type='material-community' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }}/>
 							<Typography style={{ fontSize: 12, color: '#EFCA2E' }}>Esse produto é produzido sob encomenda, você pode agendar o recebimento ou retirada ao finalizar a cesta</Typography>
 						</View>}
 					</LinearGradient>
 				</HeaderImageBackgroundContainer>
 			</HeaderContainer>
 
-			{Boolean(!loadingProduct && product?.company) && <CompanyPanel company={product.company} />}
+			{Boolean(!loadingCompany && !companyError && company) && <CompanyPanel company={company} />}
 
 			<Paper>
 				{loadingProduct || !product

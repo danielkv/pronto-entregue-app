@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT, COMPANY_MIN_FRAGMENT } from './fragments';
+import { LIST_PRODUCT_FRAGMENT } from './fragments';
 
 
 export const GET_USER_ADDRESSES = gql`
@@ -29,13 +29,10 @@ export const GET_USER_FAVORITE_PRODUCTS = gql`
 			id
 			favoriteProducts {
 				...ListProductFragment
-				company {
-					...CompanyMinFields
-				}
+				
 			}
 		}
 	}
-	${COMPANY_MIN_FRAGMENT}
 	${LIST_PRODUCT_FRAGMENT}
 `;
 

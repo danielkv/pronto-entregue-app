@@ -15,7 +15,6 @@ function Scheduler ({ schedulableProducts, company }) {
 	const [scheduled, setScheduled] = useState(()=>getMinumumDate().toDate())
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [showTimePicker, setShowTimePicker] = useState(false);
-	const [latestDateTime, setLatestDateTime] = useState(()=>getMinumumDate().toDate());
 	const client = useApolloClient()
 
 	const { data: { cartScheduled } } = useQuery(GET_CART);
@@ -49,7 +48,7 @@ function Scheduler ({ schedulableProducts, company }) {
 
 	function getAvailableHours(date) {
 		const dayOfWeek = moment(date).format('d');
-		const availableDays = company.configs.deliveryHoursEnabled ? company.configs.deliveryHours : company.configs.businessHours;
+		const availableDays = company.scheduleConfigs.deliveryHoursEnabled ? company.scheduleConfigs.deliveryHours : company.scheduleConfigs.businessHours;
 		return availableDays[dayOfWeek].hours;
 	}
 
@@ -85,7 +84,6 @@ function Scheduler ({ schedulableProducts, company }) {
 
 	function handleSelectTime(time) {
 		const finalDateTime = moment(scheduled).set(breakTimeString(time)).toDate()
-		setLatestDateTime(finalDateTime)
 		setScheduled(finalDateTime);
 		handleConfirmTimePicker(finalDateTime);
 	}
