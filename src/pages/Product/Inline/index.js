@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, Alert } from 'react-native';
 
-import { getGroupNewState } from '../../../controller/products';
+import getGroupNewState from '../../../helpers/getGroupNewState';
 import { Typography } from '../../../react-native-ui';
 import Option from '../Option';
 

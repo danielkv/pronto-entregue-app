@@ -13,7 +13,9 @@ import LoadingBlock from '../../components/LoadingBlock';
 import Toast from '../../components/Toast';
 
 import { useSelectedAddress } from '../../controller/hooks';
-import { calculateProductPrice, checkProductRules, sanitizeCartData } from '../../controller/products';
+import calculateProductPrice from '../../helpers/calculateProductPrice';
+import checkProductRules from '../../helpers/checkProductRules';
+import sanitizeCartData from '../../helpers/sanitizeCartData';
 import { Paper, Typography, Icon, TextField, useTheme, Chip } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import FavoriteButton from './FavoriteButton';

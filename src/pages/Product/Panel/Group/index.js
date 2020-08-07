@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { calculateOptionsGroupPrice } from '../../../../controller/products';
+import calculateOptionsGroupPrice from '../../../../helpers/calculateProductPrice';
 import { Icon, Chip, Typography } from '../../../../react-native-ui';
 import theme from '../../../../theme';
 import { BRL } from '../../../../utils/currency';

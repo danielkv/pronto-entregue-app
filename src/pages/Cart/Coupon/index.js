@@ -7,8 +7,8 @@ import { useNavigation } from '@react-navigation/core';
 
 import LoadingBlock from '../../../components/LoadingBlock';
 
-import { sanitizeOrderData } from '../../../controller/cart';
 import { useLoggedUserId, useSelectedAddress } from '../../../controller/hooks';
+import sanitizeOrderData from '../../../helpers/sanitizeOrderData';
 import { Paper, Icon, Typography, Chip, TextField, useTheme, Button, IconButton } from '../../../react-native-ui';
 import { BRL } from '../../../utils/currency';
 import { getErrorMessage } from '../../../utils/errors';

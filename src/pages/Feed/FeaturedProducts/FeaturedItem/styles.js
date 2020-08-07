@@ -7,7 +7,7 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const TextContainer = styled.View`
-	max-width: 80%;
+	
 `;
 
 export const BgImage = styled(ImageBackground).attrs({ borderRadius: 15 })`

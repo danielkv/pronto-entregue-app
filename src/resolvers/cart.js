@@ -1,6 +1,6 @@
 import { uniqueId } from 'lodash';
 
-import * as CartController from '../controller/cart';
+import getSchedulableProducts from '../helpers/getSchedulableProducts';
 import { extractFirstError } from '../utils/errors';
 
 import { SET_SELECTED_ADDRESS } from '../graphql/addresses';
@@ -34,7 +34,7 @@ export default {
 			const { cartItems, cartCompany } = cache.readQuery({ query: GET_CART });
 			let newCart;
 			
-			const schedulableProducts = CartController.getSchedulableProducts(cartItems);
+			const schedulableProducts = getSchedulableProducts(cartItems);
 
 			// check company
 			const company = data.company;

@@ -7,9 +7,9 @@ import CartButton from '../../components/CartButton';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import { sanitizeOrderData } from '../../controller/cart';
 import { useLoggedUserId, useSelectedAddress } from '../../controller/hooks';
 import { createGateway } from '../../gateway';
+import sanitizeOrderData from '../../helpers/sanitizeOrderData';
 import { getErrorMessage } from '../../utils/errors';
 import { CartButtonContainer } from '../Cart/styles';
 import Credits from './Credits';

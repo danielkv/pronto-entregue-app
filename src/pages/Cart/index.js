@@ -10,9 +10,11 @@ import CartItem from '../../components/CartItem';
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
-import * as CartController from '../../controller/cart';
 import CompanyController from '../../controller/company';
 import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
+import calculateOrderPrice from '../../helpers/calculateOrderPrice';
+import getSchedulableProducts from '../../helpers/getSchedulableProducts';
+import { validateCart } from '../../helpers/validateCart';
 import { Button, Paper, Typography, Chip, Divider, TextField, useTheme, Icon } from '../../react-native-ui';
 import { checkCondition } from '../../utils';
 import { getErrorMessage } from '../../utils/errors';
@@ -57,7 +59,7 @@ export default function Cart({ navigation }) {
 		const paymentPrice = cartPayment?.price || 0;
 		const deliveryPrice = cartDelivery?.price || 0;
 
-		const subtotal = CartController.calculateOrderPrice(cartItems, paymentPrice + deliveryPrice )
+		const subtotal = calculateOrderPrice(cartItems, paymentPrice + deliveryPrice )
 		const value =  subtotal - cartDiscount;
 
 		client.writeData({ data: { cartPrice: value, cartSubtotal: subtotal } });
@@ -78,7 +80,7 @@ export default function Cart({ navigation }) {
 		try {
 			setCartLoading(true);
 			if (loggedUserId) {
-				await CartController.validateCart({ schedulableProducts });
+				await validateCart({ schedulableProducts });
 				
 				client.writeData({ data: { cartMessage: message, cartDiscount, cartPrice } });
 
@@ -120,7 +122,7 @@ export default function Cart({ navigation }) {
 	if (loadingCart) return <LoadingBlock />;
 	if (error) return <ErrorBlock error={getErrorMessage(error)} />
 
-	const schedulableProducts = CartController.getSchedulableProducts(cartItems);
+	const schedulableProducts = getSchedulableProducts(cartItems);
 	
 	return (
 		<Container>

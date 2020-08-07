@@ -106,6 +106,7 @@ export const LIST_PRODUCT_FRAGMENT_NO_COMPANY = gql`
 		name
 		description
 		image
+		price
 		fromPrice
 		minDeliveryTime
 		scheduleEnabled

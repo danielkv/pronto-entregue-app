@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 
-import { calculateProductPrice } from '../../controller/products';
+import calculateProductPrice from '../../helpers/calculateProductPrice';
 import { useTheme, IconButton, Chip, Typography } from '../../react-native-ui';
 import { BRL } from '../../utils/currency';
 import {

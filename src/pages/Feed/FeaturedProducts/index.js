@@ -1,15 +1,16 @@
 import React, { useState, useRef } from 'react';
+import { View } from 'react-native';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { useTheme, Paper, Typography } from '../../../react-native-ui';
+import { useTheme } from '../../../react-native-ui';
 import FeaturedItem from './FeaturedItem';
 
 const carouselConfig = {
 	sliderWidth: vw(100),
 	sliderHeight: vh(30),
-	itemWidth: vw(100)-70,
-	itemHeight: vh(28),
+	itemWidth: vw(100)-80,
+	itemHeight: vh(23)
 }
 
 export default function FeaturedProduct({ products }) {
@@ -20,8 +21,7 @@ export default function FeaturedProduct({ products }) {
 	if (!products.length) return false;
 
 	return (
-		<Paper style={{ paddingHorizontal: 0 }}>
-			<Typography variant='h1' style={{ marginLeft: 35, marginBottom: 20 }}>Destaques</Typography>
+		<View style={{ marginTop: 30 }}>
 			<Carousel
 				data={products}
 				renderItem={({ item }) => <FeaturedItem item={item} config={carouselConfig}/>}
@@ -51,9 +51,9 @@ export default function FeaturedProduct({ products }) {
 					width: 10,
 					height: 10,
 					borderRadius: 5,
-					marginHorizontal: 8
+					marginHorizontal: 4
 				}}
 			/>
-		</Paper>
+		</View>
 	);
 }
