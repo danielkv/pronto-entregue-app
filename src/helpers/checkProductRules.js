@@ -13,9 +13,18 @@ export default function checkProductRules({ company, product }, force) {
 	const { cartItems, cartCompany } = client.readQuery({ query: GET_CART });
 
 	// check is Company is is open
-	const isOpen = company.nextClose ? moment(company.nextClose).isSameOrAfter() : false
-	if (!isOpen && !company.allowBuyClosed) throw new Error('Esse estabelecimento está fechado no momento');
+	const isOpen = company.nextClose ? moment(company.nextClose).isSameOrAfter() : false;
+	const allowBuyClosed = company.allowBuyClosed;
+	const scheduledTo = product.scheduleEnabled;
 
+	if (!isOpen) {
+		if (!allowBuyClosed) throw new Error('Esse estabelecimento está fechado no momento');
+		else {
+			if (!scheduledTo && allowBuyClosed === 'onlyScheduled')
+				throw new Error('Esse estabelecimento aceita pedidos enquanto está fechado apenas para produtos sob encomenda');
+		}
+	}
+	
 	// check if there is other company in cart
 	if (!force && (cartCompany !== null && cartCompany?.id !== company.id)) throw new CartValidationError('Já existem itens de outro estabelecimento na sua cesta.', 'Quer mesmo limpar sua cesta e adicionar esse item?');
 

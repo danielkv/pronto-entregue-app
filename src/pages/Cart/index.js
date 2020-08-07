@@ -49,7 +49,7 @@ export default function Cart({ navigation }) {
 	const [cancelCart] = useMutation(CANCEL_CART);
 	
 	const { data: { cartScheduled, cartItems, cartDelivery, cartCompany, cartPayment, cartDiscount, cartPrice }, loading: loadingCart, error } = useQuery(GET_CART);
-	const { data: { company = null }={}, loading: loadingCompany } = useQuery(GET_COMPANY, { skip: !cartCompany, variables: { id: cartCompany?.id } })
+	const { data: { company = null }={}, loading: loadingCompany } = useQuery(GET_COMPANY, { skip: !cartCompany, variables: { id: cartCompany?.id }, fetchPolicy: 'network-only' })
 
 	useEffect(() => {
 		if (cartScheduled) client.writeData({ data: { cartScheduled: null } });

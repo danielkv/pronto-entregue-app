@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import checkGroupRules from './checkGroupRules';
+import getOptionNewState from './getOptionNewState';
 
 export default function getGroupNewState(optionGroup, optionIndex) {
 	const group = _.cloneDeep(optionGroup);
@@ -15,10 +15,4 @@ export default function getGroupNewState(optionGroup, optionIndex) {
 	group.options.splice(optionIndex, 1, option);
 	
 	return group;
-}
-
-export function getOptionNewState(group, option) {
-	if (option.selected) return false;
-	
-	return checkGroupRules(group, 1);
 }
