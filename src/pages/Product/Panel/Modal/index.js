@@ -6,7 +6,7 @@ import { cloneDeep } from 'lodash';
 
 import Panel from '../../../../components/Panel';
 
-import calculateOptionsGroupPrice from '../../../../helpers/calculateProductPrice';
+import calculateOptionsGroupPrice from '../../../../helpers/calculateOptionsGroupPrice';
 import getGroupNewState from '../../../../helpers/getGroupNewState';
 import { TextField, useTheme } from '../../../../react-native-ui';
 import { BRL } from '../../../../utils/currency';

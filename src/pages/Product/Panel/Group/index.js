@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import calculateOptionsGroupPrice from '../../../../helpers/calculateProductPrice';
+import calculateOptionsGroupPrice from '../../../../helpers/calculateOptionsGroupPrice';
 import { Icon, Chip, Typography } from '../../../../react-native-ui';
 import theme from '../../../../theme';
 import { BRL } from '../../../../utils/currency';
@@ -17,7 +17,7 @@ function Group({ onPress, group }) {
 
 	const price = useMemo(() => {
 		return calculateOptionsGroupPrice(group);
-	}, [selectedOptions, calculateOptionsGroupPrice]);
+	}, [selectedOptions]);
 	
 	const CenterElememt = () => {
 		if (selectedOptions.length >= 1) {
@@ -45,7 +45,7 @@ function Group({ onPress, group }) {
 			<TitleContainer>
 				<Typography
 					variant='title'
-					style={{ color: '#333', fontSize: 18 }}
+					style={{ color: '#333', fontSize: 17 }}
 				>
 					{group.name}
 				</Typography>
@@ -57,7 +57,7 @@ function Group({ onPress, group }) {
 
 			{!!price && (
 				<Chip
-					style={{ root: { height: 42, borderRadius: 25, paddingHorizontal: 12 }, text: { fontSize: 13 } }}
+					style={{ root: { height: 44, borderRadius: 25, paddingHorizontal: 12 }, text: { fontSize: 13 } }}
 					label={BRL(price).format()}
 					color='secondary'
 				/>

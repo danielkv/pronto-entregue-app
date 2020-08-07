@@ -1,6 +1,7 @@
 import React from 'react';
+import { View } from 'react-native';
 
-import { IconButton, Chip, Typography } from '../../react-native-ui';
+import { IconButton, Chip, Typography, Button } from '../../react-native-ui';
 import {
 	ModalContainer,
 	ModalHeader,
@@ -15,7 +16,8 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 	const RenderHeaderRight = () => {
 		if (HeaderRight) return <HeaderRight />;
 
-		return <IconButton icon={{ name: 'check', size: 30 }} onPress={handleConfirm} />;
+		return false;
+		//return <IconButton style={{ button: { backgroundColor: palette.primary.main } }} icon={{ name: 'check', size: 30, color: '#fff' }} onPress={handleConfirm} />;
 	}
 
 	return (
@@ -45,6 +47,19 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 			<ModalContent keyboardShouldPersistTaps='handled'>
 				{children}
 			</ModalContent>
+			<View style={{ paddingHorizontal: 20, marginBottom: 10, marginTop: 10 }}>
+				<Button
+					label='Confirmar'
+					color='primary'
+					variant='filled'
+					icon='check'
+					onPress={handleConfirm}
+					style={{
+						text: { fontSize: 14 },
+						button: { height: 45 }
+					}}
+				/>
+			</View>
 		</ModalContainer>
 	);
 }
