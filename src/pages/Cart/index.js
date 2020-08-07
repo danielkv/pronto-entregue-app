@@ -155,7 +155,7 @@ export default function Cart({ navigation }) {
 							borderRadius: 8,
 							padding: 13,
 						}}>
-						<Icon name='info' color='#333' style={{ root: { margin: 0, marginRight: 10 } }}/>
+						<Icon name='info' color='#333' style={{ root: { margin: 0, marginRight: 10 } }} />
 						<View style={{ flex: 1 }}>
 							<Typography style={{ fontSize: 12, color: '#333' }}>
 								{`Você está finalizando o pedido com o estabelecimento fechado. Isso quer dizer que  prazo de entrega valerá a partir do horário de abertura.`}

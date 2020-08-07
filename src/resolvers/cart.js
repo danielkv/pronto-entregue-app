@@ -1,5 +1,6 @@
 import { uniqueId } from 'lodash';
 
+import * as CartController from '../controller/cart';
 import { extractFirstError } from '../utils/errors';
 
 import { SET_SELECTED_ADDRESS } from '../graphql/addresses';
@@ -33,10 +34,15 @@ export default {
 			const { cartItems, cartCompany } = cache.readQuery({ query: GET_CART });
 			let newCart;
 			
+			const schedulableProducts = CartController.getSchedulableProducts(cartItems);
+
 			// check company
 			const company = data.company;
+
 			// if company is different, forces reset cart
-			if ((cartCompany !== null && cartCompany?.id !== company.id)) {
+			if ((cartCompany !== null && cartCompany?.id !== company.id)
+				|| (!data.scheduleEnabled && schedulableProducts.length
+					|| data.scheduleEnabled && cartItems.length > schedulableProducts.length)) {
 				newCart =  [data];
 			} else {
 				newCart = cartItems.concat(data);

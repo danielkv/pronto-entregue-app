@@ -3,8 +3,10 @@ import moment from 'moment';
 
 import client from '../services/apolloClient';
 import { CartValidationError } from '../utils/errors';
+import * as CartController from './cart';
 
 import { GET_CART } from '../graphql/cart';
+
 
 export function calculateOptionsGroupPrice (optionsGroup, initialValue = 0, filterSelected=true) {
 	if (!optionsGroup) return 0;
@@ -120,7 +122,14 @@ export function checkProductRules({ company, product }, force) {
 	if (!isOpen && !company.allowBuyClosed) throw new Error('Esse estabelecimento está fechado no momento');
 
 	// check if there is other company in cart
-	if (!force && (cartCompany !== null && cartCompany?.id !== product.company.id)) throw new CartValidationError('Já existem itens de outro estabelecimento na sua cesta.', 'Quer mesmo limpar sua cesta e adicionar esse item?');
+	if (!force && (cartCompany !== null && cartCompany?.id !== company.id)) throw new CartValidationError('Já existem itens de outro estabelecimento na sua cesta.', 'Quer mesmo limpar sua cesta e adicionar esse item?');
+
+	// check if there is any schedulable product in cart
+	const schedulableProducts = CartController.getSchedulableProducts(cartItems);
+	if (!force && (!product.scheduleEnabled && schedulableProducts.length
+		|| product.scheduleEnabled && cartItems.length > schedulableProducts.length)) {
+		throw new CartValidationError('Há produtos sob encomenda na cesta', 'Esse item não pode ser adicionado em uma cesta que já tem itens sob encomenda. Deseja limpar a cesta e adicionar esse item?');
+	}
 
 	// check if there is same items in cart
 
