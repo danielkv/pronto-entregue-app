@@ -34,7 +34,7 @@ export default function OrdersRoll() {
 	const [setSelectedCompany] = useMutation(SET_SELECTED_COMPANY);
 	const [changeOrderStatus] = useMutation(CHANGE_ORDER_STATUS)
 
-	const { data: { company: { orders = [] } = {} } = {}, loading: loadingRollOrders, refetch = null } = useQuery(GET_ORDER_ROLL, { notifyOnNetworkStatusChange: true, fetchPolicy: 'cache-and-network',  variables: { companyId: selectedCompany, filter: { status: ['waiting', 'preparing', 'delivering'] }, pagination: { page: 0, rowsPerPage } } });
+	const { data: { company: { orders = [] } = {} } = {}, loading: loadingRollOrders, refetch = null } = useQuery(GET_ORDER_ROLL, { notifyOnNetworkStatusChange: true, fetchPolicy: 'cache-and-network',  variables: { companyId: selectedCompany, filter: { status: { '$not': ['canceled', 'delivered'] } }, pagination: { page: 0, rowsPerPage } } });
 	const { data: { user: { companies = [] } = {} } = {}, loading: loadingCompanies } = useQuery(GET_USER_COMPANIES, { variables: { id: loggedUserId } });
 
 	useEffect(()=>{
