@@ -35,7 +35,7 @@ export default function checkProductRules({ company, product }, force) {
 			throw new CartValidationError('Há produtos sob encomenda na cesta', 'Esse item não pode ser adicionado em uma cesta que já tem itens sob encomenda. Deseja limpar a cesta e adicionar esse item?');
 
 		if (product.scheduleEnabled && cartItems.length > schedulableProducts.length)
-			throw new CartValidationError('Esse produto é feito sob encomenda', 'Não há itens sob encomenda em sua cesta. Deseja limpar a cesta e adicionar esse item?');
+			throw new CartValidationError('Esse produto é feito sob encomenda', 'Já existe itens que não são sob encomenda em sua cesta. Deseja limpar a cesta e adicionar esse item?');
 	}
 
 	// check if there is same items in cart
