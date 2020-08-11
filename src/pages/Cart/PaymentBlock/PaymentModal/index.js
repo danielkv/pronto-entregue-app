@@ -38,6 +38,7 @@ export default function PaymentModal({ confirmModal, closeModal, company, setUse
 
 	return (
 		<Panel
+			confirmButton={false}
 			title='Forma de pagamento'
 			handleCancel={closeModal}
 			HeaderRight={()=>(<View />)}

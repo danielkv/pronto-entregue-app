@@ -12,7 +12,7 @@ import {
 	ModalBadgeContainer,
 } from './styles';
 
-export default function Panel({ children, title, handleCancel, handleConfirm, badgeText, HeaderRight }) {
+export default function Panel({ children, title, handleCancel, handleConfirm, badgeText, HeaderRight, confirmButton=true }) {
 	const RenderHeaderRight = () => {
 		if (HeaderRight) return <HeaderRight />;
 
@@ -47,7 +47,7 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 			<ModalContent keyboardShouldPersistTaps='handled'>
 				{children}
 			</ModalContent>
-			<View style={{ paddingHorizontal: 20, marginBottom: 10, marginTop: 10 }}>
+			{confirmButton && <View style={{ paddingHorizontal: 20, marginBottom: 10, marginTop: 10 }}>
 				<Button
 					label='Confirmar'
 					color='primary'
@@ -59,7 +59,7 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 						button: { height: 45 }
 					}}
 				/>
-			</View>
+			</View>}
 		</ModalContainer>
 	);
 }

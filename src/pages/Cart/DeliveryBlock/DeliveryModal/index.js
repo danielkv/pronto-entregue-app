@@ -39,6 +39,7 @@ export default function DeliveryModal({ confirmModal, closeModal, loading, accep
 
 	return (
 		<Panel
+			confirmButton={false}
 			title='Endereço de entrega'
 			handleCancel={closeModal}
 			HeaderRight={()=><IconButton onPress={()=>{ closeModal(); navigation.navigate('SelectAddressRoutes', { screen: 'SelectAddressScreen' }) }} icon='plus' />}
