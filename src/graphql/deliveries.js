@@ -49,6 +49,15 @@ export const GET_DELIVERIES = gql`
 	${FRAGMENT_DELIVERY}
 `;
 
+export const INDEX_DELIVERIES = gql`
+	query IndexDeliveries ($waitingDelivery: JSON, $active: JSON, $delivered: JSON, $week: JSON, ) {
+		waitingDelivery: countDeliveries (filter: $waitingDelivery)
+		active: countDeliveries (filter: $active)
+		delivered: countDeliveries (filter: $delivered)
+		week: countDeliveries (filter: $week)
+	}
+`;
+
 export const GET_DELIVERY_MAN = gql`
 	query GetDeliveryMan ($userId: ID!) {
 		deliveryMan(userId: $userId) {
