@@ -31,12 +31,12 @@ function Scheduler ({ schedulableProducts, company }) {
 		const minDeliveryTime = schedulableProducts[0].minDeliveryTime;
 		const minDeliveryTimeMoment = moment().add(minDeliveryTime, 'minutes');
 		let availableHours;
-		while (!availableHours) {
+		while (!availableHours || !availableHours.length) {
 			availableHours = getAvailableHours(minDeliveryTimeMoment)
-			if (!availableHours) minDeliveryTimeMoment.add(1, 'day');
+			if (!availableHours.length) minDeliveryTimeMoment.add(1, 'day');
 		}
 
-		minDeliveryTimeMoment.set(breakTimeString(availableHours[0]))
+		minDeliveryTimeMoment.set(breakTimeString(availableHours[0]));
 
 		return minDeliveryTimeMoment;
 	}
@@ -46,9 +46,13 @@ function Scheduler ({ schedulableProducts, company }) {
 		return { hour: splitted[0], minute: splitted[1] }
 	}
 
+	function getAvailableDays() {
+		return company.scheduleConfigs.deliveryHoursEnabled ? company.scheduleConfigs.deliveryHours : company.scheduleConfigs.businessHours;
+	}
+
 	function getAvailableHours(date) {
 		const dayOfWeek = moment(date).format('d');
-		const availableDays = company.scheduleConfigs.deliveryHoursEnabled ? company.scheduleConfigs.deliveryHours : company.scheduleConfigs.businessHours;
+		const availableDays = getAvailableDays();
 		return availableDays[dayOfWeek].hours;
 	}
 
@@ -109,6 +113,14 @@ function Scheduler ({ schedulableProducts, company }) {
 	}
 
 	return <View>
+		
+		<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10, alignItems: 'center' }}>
+			<Typography style={{ color: '#fff', textAlign: 'center' }}>Encomendas para: </Typography>
+			{getAvailableDays().map((day, index)=>{
+				const dayOfWeek = moment().day(index).format('ddd');
+				return <Typography style={{ color: '#fc0', textTransform: 'capitalize', fontSize: 11,  marginHorizontal: 3 }} key={index}>{dayOfWeek}</Typography>
+			})}
+		</View>
 		<View style={{ flexDirection: 'row', marginBottom: 10 }}>
 			<Chip
 				label={moment(cartScheduled).format('ddd DD/MM [~]HH:mm')}
