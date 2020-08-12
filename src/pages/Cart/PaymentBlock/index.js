@@ -14,6 +14,7 @@ import LoadingBlock from '../../../components/LoadingBlock';
 
 import { useLoggedUserId } from '../../../controller/hooks';
 import { sanitizePaymentMethod } from '../../../controller/paymentMethods';
+import calculateCouponValue from '../../../helpers/calculateCouponValue';
 import { Paper, Icon, Typography, Chip } from '../../../react-native-ui';
 import { BRL } from '../../../utils/currency';
 import { getErrorMessage } from '../../../utils/errors';
@@ -44,7 +45,7 @@ export default function DeliveryBlock() {
 		if (loadingCredit) return;
 		let discount = 0, creditUse = 0;
 		if (cartCoupon) {
-			discount = cartCoupon.valueType === 'value' ? cartCoupon.value : cartCoupon.value / 100 * (cartSubtotal - cartDelivery.price);
+			discount = calculateCouponValue(cartCoupon, cartSubtotal, cartDelivery.price);
 			if (cartCoupon.freeDelivery) discount += cartDelivery.price;
 			creditUse = 0;
 			client.writeData({ data: { cartUseCredits: false } })

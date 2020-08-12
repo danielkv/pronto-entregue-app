@@ -29,12 +29,12 @@ class OrderControl {
 	getOrderTypesStatus(type) {
 		switch (type) {
 			case 'peDelivery':
-				return ['waitingDelivery', 'delivering', 'delivered', 'canceled']
+				return ['waitingDelivery', 'delivering', 'delivered']
 			case 'takeout':
-				return ['waitingPickUp', 'delivered', 'canceled']
+				return ['waitingPickUp', 'delivered']
 			case 'delivery':
 			default:
-				return ['delivering', 'delivered', 'canceled']
+				return ['delivering', 'delivered']
 		}
 	}
 

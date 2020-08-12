@@ -12,11 +12,12 @@ import { Chip, Typography, Paper, Button, Icon } from '../../../react-native-ui'
 import { BRL } from '../../../utils/currency'
 import { getErrorMessage } from '../../../utils/errors';
 import ActionItems from './ActionItems';
+import OrderInfo from './OrderInfo';
 
 import { SET_DELIVERY_MAN } from '../../../graphql/deliveries';
 
 
-export default function DeliveryItem({ item: delivery, deliveryMan }) {
+export default function DeliveryItem({ item: delivery }) {
 	const colors = DeliveryController.statusColors(delivery.status);
 	const loggedUserId = useLoggedUserId();
 
@@ -38,7 +39,6 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 			android: `${scheme}${latLng}(${label})`
 		});
 
-
 		Linking.openURL(url);
 	}
 
@@ -48,18 +48,17 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 	return (
 		
 		<Paper style={{ marginTop: 10, marginBottom: 10, padding: 15, position: 'relative', backgroundColor: isDeliveryManOfThis ? 'white': '#d8d0c0' }} elevation={0}>
-			<View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
-				<Chip style={{ root: { height: 30 } }} label={`#${delivery.id}`} color='secondary' />
-				<Chip
-					style={{
-						root: { height: 30, marginLeft: 6, paddingVertical: 0, borderColor: colors.background },
-						text: { color: colors.background, fontSize: 13 }
-					}}
-					label={DeliveryController.statusLabel(delivery.status)} variant='outlined' />
-			</View>
-
-			<View style={{ marginBottom: 15 }}>
-				<Chip label={`Valor: ${BRL(delivery.value).format()}`} />
+			<View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<Chip style={{ root: { height: 30 }, text: { fontSize: 13 } }} label={`#${delivery.id}`} color='secondary' />
+					<Chip
+						style={{
+							root: { height: 30, marginLeft: 3, paddingVertical: 0, borderColor: colors.background },
+							text: { color: colors.background, fontSize: 12 }
+						}}
+						label={DeliveryController.statusLabel(delivery.status)} variant='outlined' />
+				</View>
+				<Chip style={{ text: { fontSize: 12 } }} label={`${BRL(delivery.value).format()}`} />
 			</View>
 
 			<View style={{ marginBottom: 15 }}>
@@ -77,6 +76,8 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 					</>
 				)}
 			</View>
+
+			{Boolean(delivery.order && delivery.deliveryMan) && <OrderInfo order={delivery.order} />}
 			
 			<View>
 				<TouchableOpacity onPress={()=>handleOpenAddress('Retirada', delivery.from.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15, marginBottom: 10 }}>
@@ -91,8 +92,9 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 				</View>
 			</View>
 
+
 			<View style={{ marginTop: 10 }}>
-				{deliveryMan.canAcceptDelivery && !delivery.deliveryMan && delivery.status === 'waitingDelivery'
+				{!delivery.deliveryMan && delivery.status === 'waitingDelivery'
 					&& <Button
 						color='primary'
 						variant='filled'
@@ -104,6 +106,11 @@ export default function DeliveryItem({ item: delivery, deliveryMan }) {
 						}
 					</Button>
 				}
+
+				{delivery.status == 'waiting' && <View style={{ marginBottom: 15 }}>
+					<Typography style={{ fontSize: 12, color: '#333', textAlign: 'center' }}>Você poderá aceitar esse pedido quando o status mudar para "Aguardando entregador"</Typography>
+				</View>}
+
 				{isDeliveryManOfThis && delivery.status !== 'delivered' && <ActionItems delivery={delivery} />}
 			</View>
 		</Paper>
