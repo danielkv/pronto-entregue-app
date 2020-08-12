@@ -14,7 +14,6 @@ export const FRAGMENT_DELIVERY = gql`
 		senderContact
 		deliveryMan {
 			id
-			canAcceptDelivery
 			user {
 				id
 			}
@@ -24,6 +23,17 @@ export const FRAGMENT_DELIVERY = gql`
 		}
 		to {
 			...AddressFields
+		}
+
+		order {
+			id
+			price
+			paymentMethod {
+				id
+				displayName
+				image
+			}
+			message
 		}
 	}
 
@@ -53,8 +63,11 @@ export const INDEX_DELIVERIES = gql`
 	query IndexDeliveries ($waitingDelivery: JSON, $active: JSON, $delivered: JSON, $week: JSON, ) {
 		waitingDelivery: countDeliveries (filter: $waitingDelivery)
 		active: countDeliveries (filter: $active)
+		sumActive: sumDeliveries (filter: $active)
 		delivered: countDeliveries (filter: $delivered)
+		sumDelivered: sumDeliveries (filter: $delivered)
 		week: countDeliveries (filter: $week)
+		sumWeek: sumDeliveries (filter: $week)
 	}
 `;
 
@@ -62,7 +75,6 @@ export const GET_DELIVERY_MAN = gql`
 	query GetDeliveryMan ($userId: ID!) {
 		deliveryMan(userId: $userId) {
 			id
-			canAcceptDelivery
 			isEnabled
 		}
 	}
@@ -72,7 +84,6 @@ export const ENABLE_DELIVERY_MAN = gql`
 	mutation EnableDeliveryMan ($userId: ID!) {
 		enableDeliveryMan(userId: $userId) {
 			id
-			canAcceptDelivery
 			isEnabled
 		}
 	}
@@ -82,7 +93,6 @@ export const DISABLE_DELIVERY_MAN = gql`
 	mutation EnableDeliveryMan ($userId: ID!) {
 		disableDeliveryMan(userId: $userId) {
 			id
-			canAcceptDelivery
 			isEnabled
 		}
 	}
