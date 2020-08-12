@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/core';
 import LoadingBlock from '../../../components/LoadingBlock';
 
 import { useLoggedUserId, useSelectedAddress } from '../../../controller/hooks';
+import calculateCouponValue from '../../../helpers/calculateCouponValue';
 import sanitizeOrderData from '../../../helpers/sanitizeOrderData';
 import { Paper, Icon, Typography, Chip, TextField, useTheme, Button, IconButton } from '../../../react-native-ui';
 import { BRL } from '../../../utils/currency';
@@ -94,10 +95,9 @@ export default function CouponBlock() {
 						</CardInfo>
 						<Icon name='edit' size={24} color='#333' />
 						{cart.cartCoupon && cart.cartCoupon.value > 0 &&
-							(cart.cartCoupon.valueType == 'percentage'
-								? <Typography>{`${BRL(cart.cartCoupon.value/100*cart.cartSubtotal).format()}`}</Typography>
-								: <Typography>{`${BRL(cart.cartCoupon.value).format()}`}</Typography>)}
+							<Typography>{`${BRL(calculateCouponValue(cart.cartCoupon, cart.cartSubtotal, cart.cartDelivery.price)).format()}`}</Typography>}
 						{cart?.cartCoupon?.freeDelivery && <Typography>{` + entrega grátis`}</Typography>}
+						<Typography></Typography>
 					</CardContent>
 				</Paper>
 			</TouchableOpacity>
