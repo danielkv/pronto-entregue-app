@@ -58,16 +58,17 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 					disabled={isSubmitting}
 					value={values.cpf}
 					
-					inputRef={ref => { refs.cpf = ref }}
-					helperText={errors.cpf || ''}
-					error={Boolean(errors.cpf)}
-					blurOnSubmit={false}
-					returnKeyType='next'
-					onSubmitEditing={handleNextInput('phone')}
+					customTextInputProps={{
+						inputRef: ref => { refs.cpf = ref },
+						helperText: errors.cpf || '',
+						error: Boolean(errors.cpf),
+						blurOnSubmit: false,
+						returnKeyType: 'next',
+						onSubmitEditing: handleNextInput('phone'),
+					}}
 
 					type='cpf'
 					customTextInput={TextField}
-					
 				/>
 
 				<TextInputMask
@@ -77,14 +78,16 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 					onBlur={handleBlur('phone')}
 					disabled={isSubmitting}
 					value={values.phone}
-					
-					inputRef={ref => { refs.phone = ref }}
-					helperText={errors.phone || ''}
-					error={Boolean(errors.phone)}
-					blurOnSubmit={false}
-					returnKeyType='next'
-					onSubmitEditing={handleNextInput('email')}
 
+					customTextInputProps={{
+						inputRef: ref => { refs.phone = ref },
+						helperText: errors.phone || '',
+						error: Boolean(errors.phone),
+						blurOnSubmit: false,
+						returnKeyType: 'next',
+						onSubmitEditing: handleNextInput('email'),
+					}}
+					
 					type='cel-phone'
 					options={{
 						maskType: 'BRL',
