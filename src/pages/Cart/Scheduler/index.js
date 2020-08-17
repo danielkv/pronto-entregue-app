@@ -30,11 +30,17 @@ function Scheduler ({ schedulableProducts, company }) {
 	function getMinumumDate() {
 		const minDeliveryTime = schedulableProducts[0].minDeliveryTime;
 		const minDeliveryTimeMoment = moment().add(minDeliveryTime, 'minutes');
-		let availableHours;
-		while (!availableHours || !availableHours.length) {
-			availableHours = getAvailableHours(minDeliveryTimeMoment)
-			if (!availableHours.length) minDeliveryTimeMoment.add(1, 'day');
-		}
+		const maxLength = getAvailableDays().length +1;
+		let availableHours, count = 0;
+
+		do {
+			try {
+				availableHours = getAvailableHours(minDeliveryTimeMoment)
+			} catch {
+				minDeliveryTimeMoment.add(1, 'day');
+			}
+			count++
+		} while (count < maxLength && (!availableHours || !availableHours.length))
 
 		minDeliveryTimeMoment.set(breakTimeString(availableHours[0]));
 
@@ -53,22 +59,39 @@ function Scheduler ({ schedulableProducts, company }) {
 	function getAvailableHours(date) {
 		const dayOfWeek = moment(date).format('d');
 		const availableDays = getAvailableDays();
-		return availableDays[dayOfWeek].hours;
+		const minDeliveryTime = schedulableProducts[0].minDeliveryTime;
+		const minDeliveryTimeMoment = moment().add(minDeliveryTime, 'minutes');
+
+		const hoursTemp = availableDays[dayOfWeek].hours;
+		if (!hoursTemp || !hoursTemp.length) throw new Error(`${company.displayName} não há horários para entrega nesse dia, tente outro dia da semana`)
+
+		const hours = hoursTemp.filter(time => {
+			if (!time || !time.from || !time.to) return false;
+			
+			const splitTo = time.to.split(':');
+			const toDate = moment(date).clone().set({ hour: splitTo[0], minute: splitTo[1] });
+
+			return minDeliveryTimeMoment.isBefore(toDate)
+		});
+
+		if (!hours.length) throw new Error(`${company.displayName} não faz mais entregas hoje, tente o dia de amanhã.`);
+
+		return hours;
 	}
 
 	function handleOpenTimePicker(date) {
-		const hours = getAvailableHours(date)
-		if (!hours || !hours.length) {
+		try {
+			const hours = getAvailableHours(date)
+			setAvailableHours(hours)
+			setShowTimePicker(true);
+		} catch (err) {
 			Alert.alert(
-				'Selecione outro dia da semana',
-				`${company.displayName} não faz entregas nesse dia da semana`,
+				'Ops, tente novamente!',
+				err.message,
 				[
 					{ text: 'OK', onClick: ()=>handleOpenDatePicker() }
 				]
 			)
-		} else {
-			setAvailableHours(hours)
-			setShowTimePicker(true);
 		}
 	}
 
@@ -200,7 +223,15 @@ function Scheduler ({ schedulableProducts, company }) {
 							<TouchableOpacity
 								onPress={()=>handleSelectTime(hour)}
 							
-								style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 15, backgroundColor: '#f0f0f0', borderRadius: 6 }}
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+									padding: 15,
+									backgroundColor: '#f0f0f0',
+									borderRadius: 6,
+									marginTop: 10
+								}}
 							>
 								<Icon name='clock' />
 								<Typography style={{ fontSize: 16, fontFamily: 'Roboto-Bold' }}>{`${hour.from} ~ ${hour.to}`}</Typography>
