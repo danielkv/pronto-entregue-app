@@ -8,8 +8,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import logoResource from '../../assets/images/logo-vertical-v2.png';
+import logUserIn from '../../helpers/auth/logUserIn';
 import { TextField, Button, Typography } from '../../react-native-ui';
-import { logUserIn } from '../../services/init';
 import { getErrorMessage } from '../../utils/errors';
 import FacebookButton from './FacebookButton';
 import GoogleButtton from './GoogleButtton';
