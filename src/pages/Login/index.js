@@ -7,13 +7,15 @@ import * as Device from 'expo-device';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+import { BigHeaderImage, BigHeaderTitle, BigHeader } from '../../components/BigHeader';
+
 import LoginIllustration from '../../assets/images/login-ill.png';
 import logUserIn from '../../helpers/auth/logUserIn';
-import { TextField, Button } from '../../react-native-ui';
+import { TextField, Button, IconButton } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import FacebookButton from './FacebookButton';
 import GoogleButtton from './GoogleButtton';
-import { Container, BigHeader, FormContainer, InputsContainer, ButtonsContainer, BigHeaderImage, BigHeaderTitle } from './styles';
+import { Container, FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
 import { LOGIN } from '../../graphql/authentication';
 
@@ -78,6 +80,7 @@ export default function Login() {
 		<Container keyboardShouldPersistTaps='handled'>
 			<BigHeader>
 				<BigHeaderImage style={{ left: -40, marginTop: -35 }} source={LoginIllustration} />
+				<IconButton onPress={()=>navigation.goBack()} icon={{ name: 'chevron-left', color: '#fff', size: 28 }} />
 				<BigHeaderTitle>Fazer login</BigHeaderTitle>
 			</BigHeader>
 			<FormContainer>
@@ -85,6 +88,7 @@ export default function Login() {
 					<TextField
 						caretHidden={caretHidden}
 						label='Email'
+						autoFocus
 						keyboardType='email-address'
 						autoCapitalize='none'
 						autoCompleteType='email'
