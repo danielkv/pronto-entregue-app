@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Alert } from 'react-native';
-import Animated, { Easing } from 'react-native-reanimated';
+import Animated, { Easing, Transition, Transitioning } from 'react-native-reanimated';
 
 import { useNavigation } from '@react-navigation/core';
 import * as Updates from 'expo-updates';
@@ -20,6 +20,15 @@ export default function LocationAccess() {
 	const { palette } = useTheme();
 	const navigation = useNavigation();
 	const [loading, setLoading] = useState(true);
+
+	const animationRef = useRef();
+
+	const transition = (
+		<Transition.Together>
+			<Transition.In type='slide-bottom' />
+			<Transition.Out type='fade' />
+		</Transition.Together>
+	)
 
 	useEffect(()=>{
 		setupUpdates()
@@ -47,12 +56,17 @@ export default function LocationAccess() {
 		});
 	}
 
+	function showSplashLogin() {
+		animationRef.current.animateNextTransition();
+		setLoading(false);
+	}
+
 	async function init() {
 		try {
 			const userData = await isUserLoggedIn()
 		
 			// if user is not logged, navigate to splashlogin
-			if (!userData?.user) return setLoading(false);
+			if (!userData?.user) return setTimeout(showSplashLogin, 2000);
 			const { user, token } = userData;
 
 			// log user in system
@@ -95,12 +109,20 @@ export default function LocationAccess() {
 		<View style={{
 			flex: 1,
 			backgroundColor: palette.primary.main,
-			alignItems: 'center',
-			justifyContent: 'center'
 		}}>
-			{loading
-				? <Animated.Image source={LogoSymbol} resizeMode='contain' style={[{ width: 110, marginBottom: 25 }, { opacity }]} />
-				: <SplashLogin />}
+			<Transitioning.View
+				ref={animationRef}
+				transition={transition}
+				style={{
+					flex: 1,
+					alignItems: 'center',
+					justifyContent: 'center'
+				}}
+			>
+				{loading
+					? <Animated.Image source={LogoSymbol} resizeMode='contain' style={[{ width: 110, marginBottom: 25 }, { opacity }]} />
+					: <SplashLogin />}
+			</Transitioning.View>
 		</View>
 	);
 }

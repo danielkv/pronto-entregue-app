@@ -14,7 +14,7 @@ export default function Routes() {
 	return (
 		<Stack.Navigator
 			initialRouteName='LoginScreen'
-			screenOptions={{ header: Header, searchProductsIcon: false }}
+			headerMode='none'
 		>
 			<Stack.Screen name='LoginScreen' component={LoginScreen} />
 			<Stack.Screen name='SubscriptionScreen' component={SubscriptionScreen} />

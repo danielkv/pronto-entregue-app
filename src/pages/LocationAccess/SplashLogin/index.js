@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View } from 'react-native';
+import { Transitioning, Transition } from 'react-native-reanimated';
+
+import { useNavigation } from '@react-navigation/core';
 
 import LoginIllustration from '../../../assets/images/login-ill.png';
 import SearchIllustration from '../../../assets/images/search-ill.png';
@@ -12,37 +15,66 @@ import { ButtonTitle, ButtonSubtitle, ButtonImage, ButtonContainer } from './sty
 
 function SplashLogin() {
 	const { palette } = useTheme();
+	const [show, setShow] = useState(false);
+	const transitionRef = useRef();
+	const navigation = useNavigation();
+
+	useEffect(()=>{
+		if (!show) {
+			transitionRef.current.animateNextTransition();
+			setShow(true);
+		}
+	}, [])
+
+	const transition = (
+		<Transition.Together>
+			<Transition.In
+				type='slide-bottom'
+				durationMs={400}
+				interpolation={"easeOut"}
+				propagation='top'
+			/>
+		</Transition.Together>
+	)
 
 	return(
-		<View style={{ flex: 1, paddingTop: 80, width: '100%', paddingHorizontal: 10, backgroundColor: palette.background.main }}>
-			<Paper style={{ paddingVertical: 10 }}>
-				<Typography style={{
-					textAlign: 'center',
-					color: palette.primary.main,
-					textTransform: 'uppercase',
-					fontFamily: 'Roboto-Bold',
-					fontSize: 20
-				}}>Seja Bem Vindo</Typography>
-				<Typography style={{ textAlign: 'center', fontSize: 12 }}>Selecione uma das opções</Typography>
-			</Paper>
+		<Transitioning.View
+			ref={transitionRef}
+			transition={transition}
+			style={{ flex: 1, paddingTop: 30, width: '100%', paddingHorizontal: 10 }}
+		>
 			<View style={{ flex: 1 }}>
-				<ButtonContainer>
-					<ButtonImage style={{ left: -40, marginTop: -35 }} source={LoginIllustration} />
-					<ButtonTitle>Fazer login</ButtonTitle>
-					<ButtonSubtitle>Já tenho uma conta</ButtonSubtitle>
-				</ButtonContainer>
-				<ButtonContainer>
-					<ButtonImage source={SubscribeIllustration} />
-					<ButtonTitle>Cadastrar</ButtonTitle>
-					<ButtonSubtitle>Não tenho uma conta</ButtonSubtitle>
-				</ButtonContainer>
-				<ButtonContainer>
-					<ButtonImage source={SearchIllustration} />
-					<ButtonTitle>Procurar produtos</ButtonTitle>
-					<ButtonSubtitle>Depois eu crio a conta</ButtonSubtitle>
-				</ButtonContainer>
+				<Paper style={{ paddingVertical: 10, marginVertical: 30 }}>
+					<Typography style={{
+						textAlign: 'center',
+						color: palette.primary.main,
+						textTransform: 'uppercase',
+						fontFamily: 'Roboto-Bold',
+						fontSize: 20
+					}}>Seja Bem Vindo</Typography>
+					<Typography style={{ textAlign: 'center', fontSize: 12 }}>Selecione uma das opções</Typography>
+				</Paper>
+				{show &&
+				<View style={{ flex: 1 }}>
+					<ButtonContainer onPress={()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen' })}>
+						<ButtonImage style={{ left: -40, marginTop: -35 }} source={LoginIllustration} />
+						<ButtonTitle>Fazer login</ButtonTitle>
+						<ButtonSubtitle>Já tenho uma conta</ButtonSubtitle>
+					</ButtonContainer>
+					<ButtonContainer>
+						<ButtonImage source={SubscribeIllustration} />
+						<ButtonTitle>Cadastrar</ButtonTitle>
+						<ButtonSubtitle>Não tenho uma conta</ButtonSubtitle>
+					</ButtonContainer>
+					<ButtonContainer>
+						<ButtonImage source={SearchIllustration} />
+						<ButtonTitle>Procurar produtos</ButtonTitle>
+						<ButtonSubtitle>Depois eu crio a conta</ButtonSubtitle>
+					</ButtonContainer>
+				</View>
+				}
 			</View>
-		</View>
+		</Transitioning.View>
 	);
 }
 
