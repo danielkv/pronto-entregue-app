@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, StatusBar, Platform } from 'react-native';
+import { Platform } from 'react-native';
+
 
 import { useNetInfo } from "@react-native-community/netinfo";
 import { BlurView } from 'expo-blur';
+import { StatusBar } from 'expo-status-bar';
 
 import { Icon, useTheme, Typography, Chip } from '../../react-native-ui';
 
@@ -44,7 +46,7 @@ export default function ConnectionInfoPanel() {
 			tint='dark'
 			intensity={Platform.OS === 'ios' ? 100 : 150}
 		>
-			<StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content' />
+			<StatusBar style='light' />
 			<Icon name='wifi-off' color={palette.secondary.main} size={50} />
 			<Chip color='primary' style={{ root: { alignSelf: 'auto', marginTop: 10 } }}>Falha na conexão</Chip>
 			<Typography variant='h5' style={{ color: '#fff', textAlign: "center", marginTop: 10, textShadowRadius: 8, textShadowColor: '#000000', textShadowOffset: { x: 2, y: 2 } }}>O App ficará disponível assim que sua conexão com a internet for estabelecida</Typography>

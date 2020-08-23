@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { StatusBar } from 'react-native';
+
+import { StatusBar } from 'expo-status-bar';
 
 import { IconButton } from "../../react-native-ui";
 import BackButton from './BackButton';
@@ -18,7 +19,7 @@ export default function  AppHeader({ variant='solid', showBackButton=true, rigth
 	
 	return (
 		<Container transparent={headerTransparent}>
-			<StatusBar backgroundColor='transparent' translucent={true} barStyle={finalVariant === 'transparent' ? 'light-content' : 'dark-content'} />
+			<StatusBar style={finalVariant === 'transparent' ? 'light' : 'dark'} />
 			{showBackButton && <BackButton color={iconsColor} />}
 
 			{rigthContent && <RigthContent>

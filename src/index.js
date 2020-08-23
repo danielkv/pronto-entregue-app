@@ -1,7 +1,8 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 
 import { ApolloProvider } from '@apollo/react-hooks';
+import { StatusBar } from 'expo-status-bar';
+
 
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
@@ -16,7 +17,7 @@ export default function App() {
 		<ApolloProvider client={apolloClient}>
 			<ThemeProvider theme={theme}>
 				<StyledThemeProvider theme={theme}>
-					<StatusBar translucent backgroundColor='transparent' barStyle='dark-content' />
+					<StatusBar style='light' animated />
 					<Container>
 						<Routes />
 					</Container>
