@@ -30,4 +30,5 @@ export const BigHeaderTitle = styled(Typography)`
 	font-family: 'Roboto-Bold';
 	font-size: 24px;
 	color: white;
+	text-align: right;
 `;

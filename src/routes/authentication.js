@@ -2,8 +2,6 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from '../components/Header';
-
 import ForgotPasswordScreen from '../pages/ForgotPassword';
 import LoginScreen from '../pages/Login';
 import SubscriptionScreen from '../pages/Subscription';

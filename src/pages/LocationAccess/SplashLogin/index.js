@@ -66,7 +66,7 @@ function SplashLogin() {
 						<ButtonTitle>Cadastrar</ButtonTitle>
 						<ButtonSubtitle>Não tenho uma conta</ButtonSubtitle>
 					</ButtonContainer>
-					<ButtonContainer>
+					<ButtonContainer onPress={()=>navigation.navigate('AddressRoutes', { screen: 'NewAddressScreen' })}>
 						<ButtonImage source={SearchIllustration} />
 						<ButtonTitle>Procurar produtos</ButtonTitle>
 						<ButtonSubtitle>Depois eu crio a conta</ButtonSubtitle>

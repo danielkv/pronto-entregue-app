@@ -39,7 +39,7 @@ export default function UserInfo() {
 						variant='filled'
 						style={{ button: { height: 30 }, text: { textTransform: 'none' } }}
 						icon={{ name: 'map-pin', size: 16 }}
-						onPress={()=>navigation.navigate('SelectAddressRoutes', { screen: 'SearchAddressScreen' })}
+						onPress={()=>navigation.navigate('SelectAddressRoutes', { screen: 'SelectAddressScreen' })}
 					>
 						{`${selectedAddress.city}, ${selectedAddress.state}`}
 					</Button>

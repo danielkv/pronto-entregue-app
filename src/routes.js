@@ -11,12 +11,12 @@ import ConnectionInfoPanel from './components/ConnectionInfoPanel';
 import FontLoader from './components/FontLoader';
 
 import { receiveNotificationHandler, responseReceiveNotificationHandler } from './controller/notification';
+import AddressRoutes from './routes/address';
 import AuthenticationRoutes from './routes/authentication';
 import CartRoutes from './routes/cart';
 import HomeRoutes from './routes/home';
 import OrderRoutes from './routes/order';
 import ProfileRoutes from './routes/profile';
-import SelectAddressRoutes from './routes/selectAddress';
 import WelcomeRoutes from './routes/welcome';
 import NavigatorTheme from './theme/navigator';
 
@@ -64,7 +64,7 @@ export default function SplashScreen() {
 						<Stack.Screen name='CartRoutes' component={CartRoutes} />
 						<Stack.Screen name='OrderRoutes' component={OrderRoutes} />
 						<Stack.Screen name='AuthenticationRoutes' component={AuthenticationRoutes} />
-						<Stack.Screen name='SelectAddressRoutes' component={SelectAddressRoutes} />
+						<Stack.Screen name='AddressRoutes' component={AddressRoutes} />
 					</Stack.Navigator>
 				</NavigationContainer>
 				<ConnectionInfoPanel />

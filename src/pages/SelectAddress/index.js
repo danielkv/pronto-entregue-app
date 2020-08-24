@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/core';
 import { Paper, Button } from '../../react-native-ui';
 import UserAddresses from './UserAddresses';
 
-export default function SearchAddress() {
+export default function SelectAddress() {
 	const navigation = useNavigation();
 
 	return (
