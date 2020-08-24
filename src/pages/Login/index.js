@@ -1,5 +1,6 @@
 import React from 'react';
-import { Alert, ActivityIndicator, Platform } from 'react-native';
+import { Alert, ActivityIndicator, Platform, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7,15 +8,15 @@ import * as Device from 'expo-device';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { BigHeaderImage, BigHeaderTitle, BigHeader } from '../../components/BigHeader';
+import BigHeader from '../../components/BigHeader';
 
 import LoginIllustration from '../../assets/images/login-ill.png';
 import logUserIn from '../../helpers/auth/logUserIn';
-import { TextField, Button, IconButton } from '../../react-native-ui';
+import { TextField, Button } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import FacebookButton from './FacebookButton';
 import GoogleButtton from './GoogleButtton';
-import { Container, FormContainer, InputsContainer, ButtonsContainer } from './styles';
+import { FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
 import { LOGIN } from '../../graphql/authentication';
 
@@ -35,6 +36,7 @@ const initialValues = {
 export default function Login() {
 	const { params: { redirect = null, redirectParams = {} } = {} } = useRoute();
 	const navigation = useNavigation();
+	const scrollY = new Animated.Value(0);
 	
 	// Setup GQL Mutation
 	const [login] = useMutation(LOGIN);
@@ -77,82 +79,87 @@ export default function Login() {
 	});
 
 	return (
-		<Container keyboardShouldPersistTaps='handled'>
-			<BigHeader>
-				<BigHeaderImage style={{ left: -40, marginTop: -35 }} source={LoginIllustration} />
-				<IconButton onPress={()=>navigation.goBack()} icon={{ name: 'chevron-left', color: '#fff', size: 28 }} />
-				<BigHeaderTitle>Fazer login</BigHeaderTitle>
-			</BigHeader>
-			<FormContainer>
-				<InputsContainer>
-					<TextField
-						caretHidden={caretHidden}
-						label='Email'
-						autoFocus
-						keyboardType='email-address'
-						autoCapitalize='none'
-						autoCompleteType='email'
-						onChangeText={handleChange('email')}
-						onBlur={handleBlur('email')}
-						disabled={isSubmitting }
-						value={email}
+		<View style={{ flex: 1 }}>
+			<Animated.ScrollView
+				scrollEventThrottle={16}
+				style={{ flex: 1 }}
+				keyboardShouldPersistTaps='handled'
+				contentContainerStyle={{ paddingBottom: 50, paddingTop: 210 }}
+				onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
+			>
+				<FormContainer>
+					<InputsContainer>
+						<TextField
+							caretHidden={caretHidden}
+							label='Email'
+							autoFocus
+							keyboardType='email-address'
+							autoCapitalize='none'
+							autoCompleteType='email'
+							onChangeText={handleChange('email')}
+							onBlur={handleBlur('email')}
+							disabled={isSubmitting }
+							value={email}
 
-						error={Boolean(errors.email)}
-						helperText={errors.email || ''}
+							error={Boolean(errors.email)}
+							helperText={errors.email || ''}
 
-						blurOnSubmit={false}
-						returnKeyType='next'
-						onSubmitEditing={handleNextInput('password')}
-					/>
-					<TextField
-						secureTextEntry
-						autoCompleteType='password'
-						label='Senha'
-						onChangeText={handleChange('password')}
-						onBlur={handleBlur('password')}
-						disabled={isSubmitting}
-						value={password}
+							blurOnSubmit={false}
+							returnKeyType='next'
+							onSubmitEditing={handleNextInput('password')}
+						/>
+						<TextField
+							secureTextEntry
+							autoCompleteType='password'
+							label='Senha'
+							onChangeText={handleChange('password')}
+							onBlur={handleBlur('password')}
+							disabled={isSubmitting}
+							value={password}
 
-						helperText={errors.password || ''}
-						error={Boolean(errors.password)}
+							helperText={errors.password || ''}
+							error={Boolean(errors.password)}
 								
-						inputRef={ref => { refs.password = ref }}
-						onSubmitEditing={handleSubmit}
-					/>
-				</InputsContainer>
-				<ButtonsContainer>
-					<Button
-						color='primary'
-						variant='filled'
-						type='outline'
-						onPress={handleSubmit}
-						disabled={isSubmitting}
-						loading={isSubmitting}
-						containerStyle={{ borderRadius: 25 }}
-					>
-						{isSubmitting
-							? <ActivityIndicator />
-							: 'Entrar'}
-					</Button>
-					<Button
-						variant='outlined'
-						onPress={() => navigation.navigate('SubscriptionScreen')}
-						disabled={isSubmitting}
-						label='Quero me cadastrar'
-					/>
-					<Button
-						disabled={isSubmitting}
-						onPress={() => navigation.navigate('ForgotPasswordScreen')}
-						label='Esqueci minha senha'
-					/>
-					{Platform.OS !== 'ios' && (
-						<>
-							<GoogleButtton afterLogin={afterLogin} disabled={isSubmitting} />
-							<FacebookButton afterLogin={afterLogin} disabled={isSubmitting} />
-						</>
-					)}
-				</ButtonsContainer>
-			</FormContainer>
-		</Container>
+							inputRef={ref => { refs.password = ref }}
+							onSubmitEditing={handleSubmit}
+						/>
+					</InputsContainer>
+					<ButtonsContainer>
+						<Button
+							color='primary'
+							variant='filled'
+							type='outline'
+							onPress={handleSubmit}
+							disabled={isSubmitting}
+							loading={isSubmitting}
+							containerStyle={{ borderRadius: 25 }}
+						>
+							{isSubmitting
+								? <ActivityIndicator />
+								: 'Entrar'}
+						</Button>
+						<Button
+							variant='outlined'
+							onPress={() => navigation.navigate('SubscriptionScreen')}
+							disabled={isSubmitting}
+							label='Quero me cadastrar'
+						/>
+						<Button
+							disabled={isSubmitting}
+							onPress={() => navigation.navigate('ForgotPasswordScreen')}
+							label='Esqueci minha senha'
+						/>
+						{Platform.OS !== 'ios' && (
+							<>
+								<GoogleButtton afterLogin={afterLogin} disabled={isSubmitting} />
+								<FacebookButton afterLogin={afterLogin} disabled={isSubmitting} />
+							</>
+						)}
+					</ButtonsContainer>
+				</FormContainer>
+
+			</Animated.ScrollView>
+			<BigHeader title='Fazer login' image={LoginIllustration} scrollY={scrollY} />
+		</View>
 	);
 }
