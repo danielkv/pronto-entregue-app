@@ -81,7 +81,6 @@ export default function NewUser() {
 
 	return (
 		<>
-			<Typography variant='h1' style={{ marginTop: 25 }}>Novo cadastro</Typography>
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
@@ -91,6 +90,7 @@ export default function NewUser() {
 			/>
 			<Button
 				variant='outlined'
+				style={{ root: { marginHorizontal: 10 } }}
 				onPress={() => navigation.navigate('LoginScreen')}
 				label='Já possuo uma conta'
 			/>

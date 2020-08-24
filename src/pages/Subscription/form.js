@@ -4,12 +4,13 @@ import { TextInputMask } from 'react-native-masked-text'
 
 import * as Device from 'expo-device';
 
-import { TextField, Button } from '../../react-native-ui';
+import { TextField, Button, Typography, useTheme } from '../../react-native-ui';
 import { FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
 const privacyUrl = 'https://prontoentregue.com.br/politica-privacidade';
 
 export default function UserForm({ privacyPolicy=false, values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
+	const { palette } = useTheme()
 	const refs = {};
 	const handleNextInput = (fieldName) => () => {
 		refs[fieldName].focus();
@@ -20,8 +21,58 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 	return (
 		<FormContainer>
 			<InputsContainer>
+				<Typography style={{ textAlign: 'right', color: palette.background.dark, marginBottom: 10 }}>Dados de acesso</Typography>
 				<TextField
-					autoFocus
+					caretHidden={caretHidden}
+					label='Email'
+					keyboardType='email-address'
+					autoCapitalize='none'
+					autoCompleteType='email'
+					onChangeText={handleChange('email')}
+					onBlur={handleBlur('email')}
+					disabled={isSubmitting}
+					value={values.email}
+					helperText={errors.email || ''}
+					error={Boolean(errors.email)}
+
+					inputRef={ref => { refs.email = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('password')}
+				/>
+				<TextField
+					secureTextEntry
+					label='Senha'
+					autoCompleteType='password'
+					onChangeText={handleChange('password')}
+					onBlur={handleBlur('password')}
+					disabled={isSubmitting}
+					value={values.password}
+					
+					helperText={errors.password || ''}
+					error={Boolean(errors.password)}
+					inputRef={ref => { refs.password = ref }}
+					blurOnSubmit={false}
+					returnKeyType='next'
+					onSubmitEditing={handleNextInput('repeatPassword')}
+				/>
+				<TextField
+					secureTextEntry
+					label='confirmar senha'
+					onChangeText={handleChange('repeatPassword')}
+					onBlur={handleBlur('repeatPassword')}
+					disabled={isSubmitting}
+					value={values.repeatPassword}
+					
+					inputRef={ref => { refs.repeatPassword = ref }}
+					helperText={errors.repeatPassword || ''}
+					error={Boolean(errors.repeatPassword)}
+					onSubmitEditing={handleNextInput('firstName')}
+				/>
+
+				<Typography style={{ textAlign: 'right', color: palette.background.dark, marginTop: 20 }}>Dados pessoais</Typography>
+				<Typography style={{ textAlign: 'right', color: palette.background.dark, marginBottom: 10, fontSize: 12 }}>Esses dados serão usadosg para agilizar a entrega</Typography>
+				<TextField
 					label='Primeiro nome'
 					autoCompleteType='name'
 					onChangeText={handleChange('firstName')}
@@ -85,7 +136,7 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 						error: Boolean(errors.phone),
 						blurOnSubmit: false,
 						returnKeyType: 'next',
-						onSubmitEditing: handleNextInput('email'),
+						onSubmitEditing: handleSubmit,
 					}}
 					
 					type='cel-phone'
@@ -98,53 +149,7 @@ export default function UserForm({ privacyPolicy=false, values, errors, handleSu
 					
 				/>
 				
-				<TextField
-					caretHidden={caretHidden}
-					label='Email'
-					keyboardType='email-address'
-					autoCapitalize='none'
-					autoCompleteType='email'
-					onChangeText={handleChange('email')}
-					onBlur={handleBlur('email')}
-					disabled={isSubmitting}
-					value={values.email}
-					helperText={errors.email || ''}
-					error={Boolean(errors.email)}
-
-					inputRef={ref => { refs.email = ref }}
-					blurOnSubmit={false}
-					returnKeyType='next'
-					onSubmitEditing={handleNextInput('password')}
-				/>
-				<TextField
-					secureTextEntry
-					label='Senha'
-					autoCompleteType='password'
-					onChangeText={handleChange('password')}
-					onBlur={handleBlur('password')}
-					disabled={isSubmitting}
-					value={values.password}
-					
-					helperText={errors.password || ''}
-					error={Boolean(errors.password)}
-					inputRef={ref => { refs.password = ref }}
-					blurOnSubmit={false}
-					returnKeyType='next'
-					onSubmitEditing={handleNextInput('repeatPassword')}
-				/>
-				<TextField
-					secureTextEntry
-					label='confirmar senha'
-					onChangeText={handleChange('repeatPassword')}
-					onBlur={handleBlur('repeatPassword')}
-					disabled={isSubmitting}
-					value={values.repeatPassword}
-					
-					inputRef={ref => { refs.repeatPassword = ref }}
-					helperText={errors.repeatPassword || ''}
-					error={Boolean(errors.repeatPassword)}
-					onSubmitEditing={handleSubmit}
-				/>
+				
 			</InputsContainer>
 			<ButtonsContainer>
 				{privacyPolicy && <Button
