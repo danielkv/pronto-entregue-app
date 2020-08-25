@@ -1,6 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/core';
+
 import BigHeader from '../../components/BigHeader';
 
 import MapIllustration from '../../assets/images/map-ill.png';
@@ -9,6 +11,8 @@ import { Block, BlockText } from './styles';
 
 export default function NewAddress() {
 	const { palette } = useTheme();
+	const navigation = useNavigation()
+
 	return (
 		<View style={{ flex: 1, position: 'relative' }}>
 		
@@ -23,7 +27,7 @@ export default function NewAddress() {
 				</View>
 
 				<View style={{ flexDirection: 'row' }}>
-					<Block>
+					<Block onPress={()=>navigation.navigate('TypeAddressScreen')}>
 						<Icon name='edit-3' size={50} color={palette.primary.main} />
 						<BlockText>Digitar{'\n'}endereço</BlockText>
 					</Block>

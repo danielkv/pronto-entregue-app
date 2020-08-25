@@ -17,7 +17,7 @@ export default function SelectAddress() {
 					variant='filled'
 					color='primary'
 					icon='plus'
-					onPress={()=>navigation.navigate('ConfirmAddressScreen')}
+					onPress={()=>navigation.navigate('TypeAddressScreen')}
 				/>
 			</Paper>
 

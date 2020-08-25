@@ -9,7 +9,7 @@ export const Container = styled.View`
 
 export const FormContainer = styled.View`
 	align-items:center;
-	margin: ${({ theme })=>(`${theme.margin.top}px ${theme.margin.left}px`)};
+	margin: 0 10px;
 `;
 export const InputsContainer = styled.View`
 	flex: 1;

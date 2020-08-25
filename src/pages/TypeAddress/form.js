@@ -1,11 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text'
 
 import { TextField, Typography, useTheme, Button, FormHelperText } from '../../react-native-ui';
 import { InputsContainer, ButtonsContainer, FormContainer } from './styles';
 
-export default function AddressForm({ initialValues, values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
+export default function AddressForm({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) {
 	const { palette } = useTheme();
 	const refs = {};
 
@@ -15,21 +15,6 @@ export default function AddressForm({ initialValues, values, errors, handleSubmi
 
 	return (
 		<>
-			<View style={{ marginHorizontal: 35 }}>
-				{initialValues.addressFound
-					? (
-						<>
-							<Typography variant='title' style={{ textAlign: 'left' }}>Encontramos um endereço</Typography>
-							<Typography style={{ color: '#666', fontSize: 13 }}>Baseados em sua localização, encontrarmos o endereço abaixo, caso não esteja correto, basta ajusta-lo.</Typography>
-						</>
-					)
-					:(
-						<>
-							<Typography variant='title' style={{ textAlign: 'left' }}>Digite seu endereço abaixo</Typography>
-							<Typography style={{ color: '#666', fontSize: 13 }}>Vamos tentar encontrar sua localização, caso não estiver correta, você pode corrigir na próxima etapa.</Typography>
-						</>
-					)}
-			</View>
 			<FormContainer>
 				<InputsContainer>
 					<TextField
@@ -92,7 +77,9 @@ export default function AddressForm({ initialValues, values, errors, handleSubmi
 						returnKeyType='next'
 						onSubmitEditing={handleNextInput('complement')}
 					/>
-					<FormHelperText style={{ root: { marginRight: 8, marginTop: 8 }, text: { textAlign: 'right', color: '#666' } }} color='default'>Ajude-nos a te encontrar</FormHelperText>
+
+					<Typography style={{ textAlign: 'right', color: palette.background.dark, marginTop: 20 }}>Ajude-nos a te encontrar</Typography>
+					<FormHelperText style={{ root: { marginBottom: 10 }, text: { textAlign: 'right', color: '#666', fontSize: 12 } }} color='default'>Descreva um local próximo conhecido</FormHelperText>
 					<TextField
 						error={Boolean(errors.complement)}
 						helperText={errors.complement}
@@ -123,7 +110,7 @@ export default function AddressForm({ initialValues, values, errors, handleSubmi
 					/>
 					
 
-					<FormHelperText style={{ root: { marginRight: 8, marginTop: 8 }, text: { textAlign: 'right', color: '#666' } }} color='default'>Região</FormHelperText>
+					<Typography style={{ textAlign: 'right', color: palette.background.dark, marginTop: 20, marginBottom: 10 }}>Região</Typography>
 					<TextField
 						error={Boolean(errors.city)}
 						helperText={errors.city}
