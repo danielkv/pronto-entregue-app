@@ -74,7 +74,7 @@ export default function TypeAddress() {
 				/* const address = dataSave;
 				if (searchAddress?.[0]?.location) address.location = searchAddress?.[0]?.location; */
 					
-				//navigation.navigate('PickLocationScreen', { address })
+				//navigation.navigate('MapScreen', { address })
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))

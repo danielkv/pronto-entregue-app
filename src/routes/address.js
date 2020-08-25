@@ -4,8 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Header from '../components/Header';
 
+import MapScreen from '../pages/Map';
 import NewAddressScreen from '../pages/NewAddress';
-import PickLocationScreen from '../pages/PickLocation';
 import SelectAddressScreen from '../pages/SelectAddress';
 import TypeAddressScreen from '../pages/TypeAddress';
 
@@ -20,7 +20,7 @@ export default function Routes() {
 		>
 			<Stack.Screen name='SelectAddressScreen' component={SelectAddressScreen} />
 			<Stack.Screen name='NewAddressScreen' component={NewAddressScreen} options={{ headerMode: 'none' }} />
-			<Stack.Screen name='PickLocationScreen' component={PickLocationScreen} options={{ headerTransparent: true }} />
+			<Stack.Screen name='MapScreen' component={MapScreen} options={{ headerTransparent: true }} />
 			<Stack.Screen name='TypeAddressScreen' component={TypeAddressScreen} />
 		</Stack.Navigator>
 		
