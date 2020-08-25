@@ -32,7 +32,7 @@ function BigHeader({ title, image, scrollY, imageStyle={} }) {
 	}
 
 	return <BigHeaderContainer style={{
-		position: scrollY ? 'absolute' : 'static',
+		position: scrollY ? 'absolute' : 'relative',
 		top: 0,
 		left: 0,
 		right: 0,

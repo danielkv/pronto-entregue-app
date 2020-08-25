@@ -14,7 +14,7 @@ export default function NewAddress() {
 	const navigation = useNavigation()
 
 	return (
-		<View style={{ flex: 1, position: 'relative' }}>
+		<View style={{ flex: 1 }}>
 		
 			<BigHeader title={'Novo\nendereço'} image={MapIllustration} imageStyle={{ left: -60, width: '100%', transform: [{ rotate: '-15deg' }] }} />
 			<View style={{ flex: 1, justifyContent: 'center', marginHorizontal: 10, marginTop: '-15%' }}>
@@ -31,7 +31,7 @@ export default function NewAddress() {
 						<Icon name='edit-3' size={50} color={palette.primary.main} />
 						<BlockText>Digitar{'\n'}endereço</BlockText>
 					</Block>
-					<Block>
+					<Block onPress={()=>navigation.navigate('MapScreen')}>
 						<Icon name='map-pin' size={50} color={palette.primary.main} />
 						<BlockText>Buscar{'\n'}localização</BlockText>
 					</Block>
