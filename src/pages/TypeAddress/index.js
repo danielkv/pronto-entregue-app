@@ -63,7 +63,6 @@ export default function TypeAddress() {
 			.then(([addressFound]) => {
 
 				const addressToSend = sanitizeAddress({ ...address, ...addressFound, zipcode: addressFound.postalcode })
-				console.log(addressToSend);
 				
 				navigation.navigate('MapScreen', { address: addressToSend })
 			})

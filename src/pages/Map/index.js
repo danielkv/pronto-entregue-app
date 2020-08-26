@@ -115,7 +115,6 @@ export default function MapScreen() {
 			const { data: { searchLocation: addressFound } } = await apolloClient.mutate({ mutation: SEARCH_LOCATION, variables: { location: [location.latitude, location.longitude] } });
 			const normalizedAddress = sanitizeAddress({ ...addressFound, location: [location.latitude, location.longitude] });
 
-			console.log(normalizedAddress);
 			navigation.navigate('TypeAddressScreen', { address: normalizedAddress });
 
 
