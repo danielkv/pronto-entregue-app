@@ -141,27 +141,23 @@ export default function AddressForm({ values, errors, handleSubmit, handleChange
 					/>
 
 					<TextInputMask
-						label='CEP'
-						onChangeText={handleChange('zipcode')}
-						onBlur={handleBlur('zipcode')}
-						disabled={isSubmitting}
 						value={values.zipcode}
-						autoCompleteType='postal-code'
-
-					
-						inputRef={ref => { refs.zipcode = ref }}
-						
-						blurOnSubmit={false}
-						returnKeyType='next'
-						onSubmitEditing={handleSubmit}
-
-						customTextInputProps={{
-							helperText: errors.zipcode || '',
-							error: Boolean(errors.zipcode),
-						}}
-
 						type='zip-code'
 						customTextInput={TextField}
+						onChangeText={handleChange('zipcode')}
+
+						customTextInputProps={{
+							disabled: isSubmitting,
+							helperText: errors.zipcode || '',
+							error: Boolean(errors.zipcode),
+							label: 'CEP',
+							
+							onBlur: handleBlur('zipcode'),
+							inputRef: ref => { refs.zipcode = ref },
+							blurOnSubmit: false,
+							returnKeyType: 'next',
+							onSubmitEditing: handleSubmit
+						}}
 					
 					/>
 				</InputsContainer>

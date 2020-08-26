@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert, View } from 'react-native';
 import { MaskService } from 'react-native-masked-text'
 import Animated from 'react-native-reanimated';
 
-import { useNavigation } from '@react-navigation/core';
+import { useMutation } from '@apollo/react-hooks';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import * as Location from 'expo-location';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -15,6 +16,8 @@ import { sanitizeAddress } from '../../controller/address';
 import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 import { Container } from './styles';
+
+import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
@@ -31,59 +34,57 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function TypeAddress() {
+	const { params: { address = null } = {} } = useRoute();
 	const navigation = useNavigation();
 	const scrollY = new Animated.Value(0);
 
-	/* useEffect(()=>{
-		setLoadingLocation(true);
-		getLocation()
-			.then(async (foundLocation) => {
-				const coords = foundLocation.coords
-				setLocation(coords)
+	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 
-				//const { data: { searchLocation: addressFound } } = await apolloClient.mutate({ mutation: SEARCH_LOCATION, variables: { location: [coords.latitude, coords.longitude] } });
-				const addressFound = await Location.reverseGeocodeAsync(coords)
-				setAddress(addressFound)
+	useEffect(()=>{
+		if (!address) return;
 
-				return addressFound;
-			})
-			.catch((err) => {
-				Alert.alert(
-					'Tentamos buscar seu endereço, mas ocorreu um erro!',
-					getErrorMessage(err),
-					[
-						{ text: 'Tentar novamente', onPress: ()=>getLocation() },
-						{ text: 'Digitar o endereço' },
-					]
-				);
-			})
-			.finally(()=>{
-				setLoadingLocation(false)
-			})
-	}, []) */
+		Alert.alert(
+			'Verifique o endereço',
+			'A partir da localização informada, encontramos esse endereço. Confira todos os dados para que não haja problemas na entrega.'
+		)
+	}, [])
 
-	
-	function onSubmit (result) {
-		const dataSave = sanitizeAddress(result);
-		const search = `${dataSave.street}, ${dataSave.number}, ${dataSave.district}, ${dataSave.city}, ${dataSave.state}, ${dataSave.zipcode}`;
+	function onSubmit (resultAddress) {
+		if (address)
+			return setAddress(resultAddress);
+		
+		return sendToMap(resultAddress);
+	}
 
-		/* return searchAddress({ variables: { search } }) */
+	function sendToMap(address) {
+		const search = `${address.street}, ${address.number}, ${address.district}, ${address.city}, ${address.state}, ${address.zipcode}`;
+
 		return Location.geocodeAsync(search)
-			.then((res) => {
-				console.log(res);
-				/* const address = dataSave;
-				if (searchAddress?.[0]?.location) address.location = searchAddress?.[0]?.location; */
-					
-				//navigation.navigate('MapScreen', { address })
+			.then(([addressFound]) => {
+
+				const addressToSend = sanitizeAddress({ ...address, ...addressFound, zipcode: addressFound.postalcode })
+				console.log(addressToSend);
+				
+				navigation.navigate('MapScreen', { address: addressToSend })
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
 			})
 	}
 
-	// ------- END OF FUNCIONS -------
+	function setAddress(address) {
+		return setSelectedAddress({ variables: { address } })
+			.then(()=>{
+				navigation.dangerouslyGetParent().reset({
+					index: 0,
+					routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+				})
+			});
+	}
 
-	const initialValues = __DEV__ ? {
+	// ------- END OF FUNCIONS -------
+	//console.log(MaskService.toMask('zip-code', '8860000'));
+	const initialValues = __DEV__ && !address ? {
 		street: 'Rua João Quartieiro',
 		number: '43',
 		district: 'Centro',
@@ -95,15 +96,17 @@ export default function TypeAddress() {
 		city: 'Sombrio',
 		state: 'SC'
 	} : {
-		street: '',
-		number: '',
-		district: '',
-		zipcode: '',
+		street: address.street || '',
+		number: String(address.number) || '',
+		district: address.district || '',
+		zipcode: address.zipcode ? MaskService.toMask('zip-code', String(address.zipcode)) : '',
+
+		complement: '',
 		reference: '',
 		
 		name: '',
-		city: '',
-		state: ''
+		city: address.city || '',
+		state: address.state || ''
 	};
 
 	return (
@@ -115,20 +118,18 @@ export default function TypeAddress() {
 				contentContainerStyle={{ paddingBottom: 50, paddingTop: 220 }}
 				onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
 			>
-				<Container>
-					<Formik
-						validationSchema={validationSchema}
-						initialValues={initialValues}
-						onSubmit={onSubmit}
-						validateOnChange={false}
-						validateOnBlur={false}
-						component={PageForm}
-					/>
-				</Container>
+				<Formik
+					validationSchema={validationSchema}
+					initialValues={initialValues}
+					onSubmit={onSubmit}
+					validateOnChange={false}
+					validateOnBlur={false}
+					component={PageForm}
+				/>
 			</Animated.ScrollView>
 
 			<BigHeader
-				title={'Digite o\nendereço'}
+				title={address ? 'Confirme\no endereço' : 'Digite o\nendereço'}
 				image={MapIllustration}
 				imageStyle={{ left: -60, width: '100%', transform: [{ rotate: '-15deg' }] }}
 				scrollY={scrollY}

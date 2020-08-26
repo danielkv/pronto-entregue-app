@@ -39,7 +39,7 @@ export default function NewAddress() {
 				
 				<View style={{ marginTop: 30, flexDirection: 'row', alignItems: 'flex-start' }}>
 					<Icon style={{ root: { margin: 0, marginLeft: 10, marginRight: 10 } }} name='info' color={palette.background.dark} size={20} />
-					<Typography style={{ flex: 1, textAlign: 'left', color: palette.background.dark, fontSize: 12 }}>Lembre-se de verificar a localização! Ela ajuda a te encontrar. Assim sua entrega chega muito mais rápido e sem problemas. 🙃</Typography>
+					<Typography style={{ flex: 1, textAlign: 'left', color: palette.background.dark, fontSize: 12 }}>Lembre-se de verificar a localização e o endereço! Ela ajuda a te encontrar. Assim sua entrega chega muito mais rápido e sem problemas. 🙃</Typography>
 				</View>
 			</View>
 
