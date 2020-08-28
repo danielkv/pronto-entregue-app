@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import MapScreen from '../pages/Map';
 import NewAddressScreen from '../pages/NewAddress';
 import SelectAddressScreen from '../pages/SelectAddress';
-import TypeAddressScreen from '../pages/TypeAddress';
+import TypeAddressScreen from '../pages/TypeAddressStep';
 
 const Stack = createStackNavigator();
 

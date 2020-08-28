@@ -14,7 +14,6 @@ export const BigHeaderContainer = styled(Animated.View)`
 	align-items: center;
 	justify-content: space-between;
 	padding-right: 35px;
-	margin-bottom: 10px;
 	position: relative;
 	overflow: hidden;
 `;
