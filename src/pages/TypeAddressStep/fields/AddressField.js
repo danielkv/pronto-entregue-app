@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
+import { useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
 
-import { FormHelperText } from '../../../react-native-ui';
+import { FormHelperText, Button } from '../../../react-native-ui';
 import {
 	FieldContainer,
 	FieldPanel,
@@ -10,62 +11,133 @@ import {
 	FieldInput,
 	FieldHelper,
 	FieldDescription,
-	FieldButton,
 	FieldWrapper,
 	HelperWrapper,
-	FieldFooter
+	FieldFooter,
+	Field
 } from './styles'
 
-function AddressField({ label, fieldName, helperText, description }) {
-	const fieldRef = useRef(null);
-	const { values, errors, handleChange } = useFormikContext();
+function AddressField({ labels, fields, helperText, description, navigation, routes, currentRoute }) {
+	const refs = {};
+	const { values, errors, handleChange, validateForm } = useFormikContext();
 
-	const fieldValue = values[fieldName];
-	const fieldError = errors[fieldName];
+	useFocusEffect(()=>{
+		focusFirstField()
+	}, [])
+	
 
 	useEffect(()=>{
-		if (!fieldRef.current) return;
+		const unsubscribe = navigation.addListener('blur', async () => {
+			validate()
+				.then(error =>{
+					if (error) navigation.goBack();
+				})
+		});
 
-		const time = setTimeout(focusField, 300);
+		return unsubscribe;
+	}, [navigation])
 
-		return ()=> clearTimeout(time);
-	}, [])
+	function validate () {
+		return validateForm()
+			.then(validationErros => {
+				return fields.some(f => Boolean(validationErros[f]));
+			})
+	}
 
+	function goToNext() {
+		validate()
+			.then(error =>{
+				if (error) return;
 
-	function focusField() {
-		if (!fieldRef.current.isFocused())
-			fieldRef.current.focus();
-			
+				navigation.navigate(routes[currentRoute+1]);
+			})
+	}
+
+	function goToPrevious() {
+		if (currentRoute <= 0) return;
+
+		const screen = routes[currentRoute-1];
+		navigation.navigate(screen);
+	}
+
+	function focusFirstField() {
+		const firstField = fields.find((field) => {
+			const fieldRef = refs[field];
+
+			if (!fieldRef?.props) return false;
+
+			return !fieldRef.props.value
+		})
+
+		const firstFieldRef = firstField ? refs[firstField] : refs[fields[0]];
+		
+		if (firstFieldRef?.focus)
+			firstFieldRef.focus();
+	}
+
+	function isLastField(fieldIndex) {
+		return fieldIndex >= fields.length -1
+	}
+
+	function isLastScreen(routes, currentIndex) {
+		return currentIndex >= routes.length -1
+	}
+
+	const nextField = (fieldIndex) => () => {
+		if (isLastField(fieldIndex))
+			goToNext()
+		else {
+			const nextField = fields[fieldIndex+1]
+			const nextFieldRef = refs[nextField];
+
+			if (nextFieldRef?.focus)
+				nextFieldRef.focus();
+		}
 	}
 
 	return (
 		<FieldContainer bounces={false} keyboardDismissMode='none' keyboardShouldPersistTaps='never'>
-			<FieldPanel onPress={focusField}>
-				<>
-					<FieldWrapper>
-						<FieldLabel>{label}</FieldLabel>
-						<FieldInput
-							ref={fieldRef}
-							onChangeText={handleChange(fieldName)}
-							value={fieldValue}
-						/>
-						{Boolean(fieldError) && <FormHelperText error>{fieldError}</FormHelperText>}
-					</FieldWrapper>
+			<FieldPanel onPress={focusFirstField}>
+				<FieldWrapper>
+					{fields.map((field, index)=>
+						<Field key={index}>
+							<FieldLabel>{labels[index]}</FieldLabel>
+							<FieldInput
+								ref={ref => { refs[field]= ref; }}
+								onChangeText={handleChange(field)}
+								onSubmitEditing={nextField(index)}
+								blurOnSubmit={isLastScreen(routes, currentRoute) && isLastField(index) ? true : false}
+								value={values[field]}
+							/>
+							{Boolean(errors[field]) && <FormHelperText error>{errors[field]}</FormHelperText>}
+						</Field>
+					)}
+				</FieldWrapper>
 
-					<HelperWrapper>
-						{Boolean(helperText) && <FieldHelper>{helperText}</FieldHelper>}
-						{Boolean(description) && <FieldDescription>{description}</FieldDescription>}
-					</HelperWrapper>
-				</>
+				<HelperWrapper>
+					{Boolean(helperText) && <FieldHelper>{helperText}</FieldHelper>}
+					{Boolean(description) && <FieldDescription>{description}</FieldDescription>}
+				</HelperWrapper>
 			</FieldPanel>
-
 			<FieldFooter>
-				<FieldButton
+				{currentRoute > 0 &&<Button
+					style={{ root: { flex: .35, marginRight: 7 }, text: { fontSize: 14 } }}
+					icon='chevron-left'
+					onPress={goToPrevious}
+					variant='filled'
+					color='default'
+				>
+					Voltar
+				</Button>}
+				<Button
+					style={{ root: { flex: .65 }, text: { fontSize: 14 } }}
+					icon='chevron-right'
+					onPress={goToNext}
 					variant='filled'
 					color='primary'
 				>
 					Próximo
-				</FieldButton>
+				</Button>
 			</FieldFooter>
 		</FieldContainer>);
 }

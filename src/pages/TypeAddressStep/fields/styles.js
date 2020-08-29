@@ -1,3 +1,4 @@
+
 import { TextInput, RectButton } from 'react-native-gesture-handler';
 
 import styled from 'styled-components/native';
@@ -54,4 +55,10 @@ export const FieldButton = styled(Button)`
 `;
 export const FieldFooter = styled.View`
 	margin-top:15px;
+	flex-direction: row;
+	justify-content: space-evenly;
+`;
+export const Line = styled(Typography)`
+	margin-top:3px;
+	font-size: 18px
 `;

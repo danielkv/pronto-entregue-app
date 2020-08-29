@@ -115,7 +115,7 @@ export default function TypeAddressStep() {
 				validationSchema={validationSchema}
 				initialValues={initialValues}
 				onSubmit={onSubmit}
-				validateOnChange={false}
+				//validateOnChange={false}
 				validateOnBlur={false}
 				component={PageForm}
 			/>
