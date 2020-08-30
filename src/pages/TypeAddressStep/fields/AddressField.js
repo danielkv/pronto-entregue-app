@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
 
-import { FormHelperText, Button } from '../../../react-native-ui';
+import { FormHelperText, Button, Icon } from '../../../react-native-ui';
 import {
 	FieldContainer,
 	FieldPanel,
@@ -22,24 +22,15 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 	const { values, errors, handleChange, validateForm } = useFormikContext();
 
 	useFocusEffect(()=>{
-		focusFirstField()
-	}, [])
-	
-
-	useEffect(()=>{
-		const unsubscribe = navigation.addListener('blur', async () => {
-			validate()
-				.then(error =>{
-					if (error) navigation.goBack();
-				})
-		});
-
-		return unsubscribe;
-	}, [navigation])
+		focusFirstField(false)
+	})
 
 	function validate () {
+		const init = new Date();
 		return validateForm()
 			.then(validationErros => {
+				const finishes = new Date();
+				console.log(finishes.getTime() - init.getTime())
 				return fields.some(f => Boolean(validationErros[f]));
 			})
 	}
@@ -53,14 +44,7 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 			})
 	}
 
-	function goToPrevious() {
-		if (currentRoute <= 0) return;
-
-		const screen = routes[currentRoute-1];
-		navigation.navigate(screen);
-	}
-
-	function focusFirstField() {
+	function focusFirstField(force=true) {
 		const firstField = fields.find((field) => {
 			const fieldRef = refs[field];
 
@@ -69,10 +53,12 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 			return !fieldRef.props.value
 		})
 
-		const firstFieldRef = firstField ? refs[firstField] : refs[fields[0]];
+		const firstFieldRef = firstField ? refs[firstField] : force ? refs[fields[0]] : null;
 		
-		if (firstFieldRef?.focus)
-			firstFieldRef.focus();
+		if (firstFieldRef?.focus) {
+			if (!firstFieldRef.isFocused())
+				firstFieldRef.focus();
+		}
 	}
 
 	function isLastField(fieldIndex) {
@@ -97,7 +83,8 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 
 	return (
 		<FieldContainer bounces={false} keyboardDismissMode='none' keyboardShouldPersistTaps='never'>
-			<FieldPanel onPress={focusFirstField}>
+			<FieldPanel onPress={()=>focusFirstField(true)}>
+				<Icon name='edit-2' style={{ root: { position: 'absolute', right: 20, top: 20 } }} />
 				<FieldWrapper>
 					{fields.map((field, index)=>
 						<Field key={index}>
@@ -120,17 +107,8 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 				</HelperWrapper>
 			</FieldPanel>
 			<FieldFooter>
-				{currentRoute > 0 &&<Button
-					style={{ root: { flex: .35, marginRight: 7 }, text: { fontSize: 14 } }}
-					icon='chevron-left'
-					onPress={goToPrevious}
-					variant='filled'
-					color='default'
-				>
-					Voltar
-				</Button>}
 				<Button
-					style={{ root: { flex: .65 }, text: { fontSize: 14 } }}
+					style={{ root: { flex: 1 }, text: { fontSize: 14 } }}
 					icon='chevron-right'
 					onPress={goToNext}
 					variant='filled'

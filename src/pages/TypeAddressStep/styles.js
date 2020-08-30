@@ -26,7 +26,7 @@ export const Dot = styled(Animated.View)`
 	width: 5px;
 	height: 5px;
 	border-radius: 5px;
-	background-color: ${({ theme })=>theme.palette.background.dark};
+	background-color: #fff;
 	overflow: visible;
 	margin: 0 4px;
 `;

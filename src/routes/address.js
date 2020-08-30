@@ -15,12 +15,12 @@ export default function Routes() {
 	return (
 		<Stack.Navigator
 			initialRouteName='InitialAddressScreen'
-			headerMode='none'
-			screenOptions={{ header: Header, searchProductsIcon: false }}
+			headerMode='screen'
+			screenOptions={{ headerShown: false, header: Header, searchProductsIcon: false }}
 		>
-			<Stack.Screen name='SelectAddressScreen' component={SelectAddressScreen} />
-			<Stack.Screen name='NewAddressScreen' component={NewAddressScreen} options={{ headerMode: 'none' }} />
-			<Stack.Screen name='MapScreen' component={MapScreen} options={{ headerTransparent: true }} />
+			<Stack.Screen options={{ headerShown: true }} name='SelectAddressScreen' component={SelectAddressScreen} />
+			<Stack.Screen  name='NewAddressScreen' component={NewAddressScreen}  />
+			<Stack.Screen name='MapScreen' component={MapScreen} />
 			<Stack.Screen name='TypeAddressScreen' component={TypeAddressScreen} />
 		</Stack.Navigator>
 		

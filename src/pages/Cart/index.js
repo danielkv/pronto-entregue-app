@@ -11,7 +11,7 @@ import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import CompanyController from '../../controller/company';
-import { useKeyboardStatus, useLoggedUserId } from '../../controller/hooks';
+import { useKeyboardStatus, useLoggedUserId, useSelectedAddress } from '../../controller/hooks';
 import calculateOrderPrice from '../../helpers/calculateOrderPrice';
 import getSchedulableProducts from '../../helpers/getSchedulableProducts';
 import { validateCart } from '../../helpers/validateCart';
@@ -42,6 +42,8 @@ export default function Cart({ navigation }) {
 	const [cartLoading, setCartLoading] = useState(false);
 	
 	const keyboardOpen = useKeyboardStatus();
+
+	const selectedAddress = useSelectedAddress();
 	
 	const client = useApolloClient();
 	
@@ -89,14 +91,24 @@ export default function Cart({ navigation }) {
 				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'HomeRoutes', redirectParams: { screen: 'CartScreen' } } });
 			}
 		} catch (err) {
-			if (err.type === 'USER_NO_PHONE_NUMBER')
-				Alert.alert(
-					'Complete seu cadastro',
-					getErrorMessage(err.message),
-					[{ text: 'Arrumar isso agora', onPress: ()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId, redirect: { name: 'CartRoutes', params: { screen: 'CartScreen' } } } }) }]
-				);
-			else
-				Alert.alert('Ops, faltou alguma coisa', getErrorMessage(err.message));
+			switch (err.type) {
+				case 'USER_NO_PHONE_NUMBER':
+					Alert.alert(
+						'Complete seu cadastro',
+						getErrorMessage(err.message),
+						[{ text: 'Arrumar isso agora', onPress: ()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId, redirect: { name: 'CartRoutes', params: { screen: 'CartScreen' } } } }) }]
+					);
+					break;
+				case 'ADDRESS_NOT_CREATED':
+					Alert.alert(
+						'Verificar endereço',
+						getErrorMessage(err.message),
+						[{ text: 'Verificar', onPress: ()=>navigation.navigate('AddressRoutes', { screen: 'TypeAddressScreen', params: { address: selectedAddress, redirect: { screen: 'CartRoutes', params: { screen: 'PaymentScreen' } } } }) }],
+					);
+					break;
+				default:
+					Alert.alert('Ops, faltou alguma coisa', getErrorMessage(err.message));
+			}
 		} finally {
 			setCartLoading(false);
 		}

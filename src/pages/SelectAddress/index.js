@@ -17,7 +17,7 @@ export default function SelectAddress() {
 					variant='filled'
 					color='primary'
 					icon='plus'
-					onPress={()=>navigation.navigate('TypeAddressScreen')}
+					onPress={()=>navigation.navigate('AddressRoutes', { screen: 'NewAddressScreen' })}
 				/>
 			</Paper>
 

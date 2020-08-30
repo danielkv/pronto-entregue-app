@@ -1,5 +1,6 @@
 import client from '../services/apolloClient';
 
+import { GET_SELECTED_ADDRESS } from '../graphql/addresses';
 import { LOGGED_USER_ID } from '../graphql/authentication';
 import { GET_CART } from '../graphql/cart';
 import { GET_USER } from '../graphql/users';
@@ -44,6 +45,16 @@ export async function validateCart(args) {
 	}
 	
 	if (args.schedulableProducts.length && !cartScheduled) throw new Error('Selecione uma data para receber seu pedido')
+
+	// checks if address is saved
+	const { selectedAddress: address } = client.readQuery({ query: GET_SELECTED_ADDRESS })
+	console.log(address);
+	if (!address.id || address.id === 'temp') {
+		const addressError = new Error('Como é a primeira vez que você compra para esse endereço, vamos verifica-lo');
+		addressError.type = 'ADDRESS_NOT_CREATED';
+
+		throw addressError;
+	}
 
 	return true;
 }

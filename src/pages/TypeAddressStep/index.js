@@ -4,17 +4,16 @@ import { MaskService } from 'react-native-masked-text'
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/core';
-import * as Location from 'expo-location';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import BigHeader from '../../components/BigHeader';
-
 import { sanitizeAddress } from '../../controller/address';
+import { useLoggedUserId } from '../../controller/hooks';
+import isValidAddress from '../../helpers/address/isValidAddress';
 import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
 
-import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
+import { SET_SELECTED_ADDRESS, SET_USER_ADDRESS, SEARCH_ADDRESS } from '../../graphql/addresses';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Obrigatório'),
@@ -31,10 +30,14 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function TypeAddressStep() {
-	const { params: { address = null } = {} } = useRoute();
+	const { params: { address = null, redirect = { screen: 'HomeRoutes', params: { screen: 'FeedScreen' } } } = {} } = useRoute();
 	const navigation = useNavigation();
+	const [searchAddress] = useMutation(SEARCH_ADDRESS);
+
+	const loggedUserId = useLoggedUserId();
 
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
+	const [createUserAddress] = useMutation(SET_USER_ADDRESS);
 
 	useEffect(()=>{
 		if (!address) return;
@@ -46,35 +49,40 @@ export default function TypeAddressStep() {
 	}, [])
 
 	function onSubmit (resultAddress) {
-		if (address)
-			return setAddress(resultAddress);
-		
+		// ready to save address
+		if (loggedUserId && isValidAddress(resultAddress)) {
+			const addressSave = sanitizeAddress(resultAddress);
+			return createUserAddress({ variables: { userId: loggedUserId, addressData: addressSave } })
+				.then(({ data: { setUserAddress } })=>{
+					return setSelectedAddress({ variables: { address: setUserAddress } })
+				})
+				.then(()=>{
+					navigation.dangerouslyGetParent().reset({
+						index: 0,
+						routes: [{ name: redirect.screen, params: redirect.params }]
+					})
+				});
+		}
+
+		// not ready to sabe address
 		return sendToMap(resultAddress);
 	}
 
 	function sendToMap(address) {
 		const search = `${address.street}, ${address.number}, ${address.district}, ${address.city}, ${address.state}, ${address.zipcode}`;
 
-		return Location.geocodeAsync(search)
-			.then(([addressFound]) => {
-
-				const addressToSend = sanitizeAddress({ ...address, ...addressFound, zipcode: addressFound.postalcode })
+		//return Location.geocodeAsync(search)
+		return searchAddress({ variables: { search } })
+			.then(({ data: { searchAddress = [] } }) => {
 				
+				if (searchAddress.length) address.location = searchAddress[0].location
+
+				const addressToSend = sanitizeAddress(address)
 				navigation.navigate('MapScreen', { address: addressToSend })
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
 			})
-	}
-
-	function setAddress(address) {
-		return setSelectedAddress({ variables: { address } })
-			.then(()=>{
-				navigation.dangerouslyGetParent().reset({
-					index: 0,
-					routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
-				})
-			});
 	}
 
 	// ------- END OF FUNCIONS -------
@@ -89,7 +97,8 @@ export default function TypeAddressStep() {
 		
 		name: 'Casa',
 		city: 'Sombrio',
-		state: 'SC'
+		state: 'SC',
+		location: null,
 	} : {
 		street: address.street || '',
 		number: String(address.number) || '',
@@ -101,16 +110,12 @@ export default function TypeAddressStep() {
 		
 		name: '',
 		city: address.city || '',
-		state: address.state || ''
+		state: address.state || '',
+		location: address.location || null
 	};
 
 	return (
 		<View style={{ flex: 1 }}>
-			<BigHeader
-				title={address ? 'Confirme\no endereço' : 'Digite o\nendereço'}
-				variant='small'
-			/>
-			
 			<Formik
 				validationSchema={validationSchema}
 				initialValues={initialValues}

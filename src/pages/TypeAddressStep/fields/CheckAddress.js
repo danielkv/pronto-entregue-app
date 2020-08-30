@@ -1,9 +1,10 @@
-import React from 'react';
-import { Alert, Keyboard } from 'react-native';
+import React, { useCallback } from 'react';
+import { Alert, Keyboard, ActivityIndicator } from 'react-native';
 
 import { useNavigation, useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
 
+import isValidAddress from '../../../helpers/address/isValidAddress';
 import { Paper, Typography, Button } from '../../../react-native-ui';
 import {
 	FieldContainer,
@@ -16,11 +17,11 @@ import {
 
 function Checkvalues() {
 	const navigation = useNavigation();
-	const { values, validateForm, handleSubmit } = useFormikContext();
+	const { values, validateForm, handleSubmit, isSubmitting } = useFormikContext();
 
-	useFocusEffect(()=>{
+	useFocusEffect(useCallback(()=>{
 		Keyboard.dismiss();
-	})
+	}, []))
 
 	function goToMap () {
 		validateForm()
@@ -35,6 +36,8 @@ function Checkvalues() {
 			});
 	}
 
+	const validAddress = isValidAddress(values);
+
 	return (
 		<FieldContainer bounces={false} keyboardDismissMode='none' keyboardShouldPersistTaps='never'>
 			<Paper style={{ flex: 1, marginVertical: 0, justifyContent: 'space-between' }}>
@@ -48,7 +51,7 @@ function Checkvalues() {
 					{!!values?.city && <Line variant='subtitle'>{`${values.city} ${values.state}`}</Line>}
 					{!!values?.zipcode && <Line variant='subtitle'>{values.zipcode}</Line>}
 
-					{!values?.location
+					{validAddress
 						&& <Button
 							icon={{ name: 'map-pin', size: 20 }}
 							style={{ root: { marginTop: 20 } }}
@@ -63,21 +66,16 @@ function Checkvalues() {
 
 			<FieldFooter>
 				<Button
-					style={{ root: { flex: .35, marginRight: 7 }, text: { fontSize: 14 } }}
-					icon='chevron-left'
-					onPress={()=>navigation.goBack()}
+					style={{ root: { flex: 1 }, text: { fontSize: 14 } }}
+					icon={isSubmitting ? null : { name: validAddress ? 'check' : 'map-pin' }}
 					variant='filled'
-					color='default'
-					label='Voltar'
-				/>
-				<Button
-					style={{ root: { flex: .65 }, text: { fontSize: 14 } }}
-					icon={{ name: 'check' }}
-					variant='filled'
+					disabled={isSubmitting}
 					color='primary'
 					onPress={handleSubmit}
 				>
-					Utilizar esse endereço
+					{isSubmitting
+						? <ActivityIndicator color='#fff' />
+						: validAddress ? 'Utilizar esse endereço' : 'Vericar Localização'}
 				</Button>
 			</FieldFooter>
 		</FieldContainer>);

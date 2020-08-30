@@ -1,8 +1,7 @@
 import _ from 'lodash';
 
 export default function isValidAddress(address) {
-	return _.has(address, 'id')
-		&& _.has(address, 'name')
+	return _.has(address, 'name')
 		&& _.has(address, 'street')
 		&& _.has(address, 'number')
 		&& _.has(address, 'district')

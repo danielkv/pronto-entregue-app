@@ -42,7 +42,7 @@ export default function DeliveryModal({ confirmModal, closeModal, loading, accep
 			confirmButton={false}
 			title='Endereço de entrega'
 			handleCancel={closeModal}
-			HeaderRight={()=><IconButton onPress={()=>{ closeModal(); navigation.navigate('SelectAddressRoutes', { screen: 'SelectAddressScreen' }) }} icon='plus' />}
+			HeaderRight={()=><IconButton onPress={()=>{ closeModal(); navigation.navigate('AddressRoutes', { screen: 'SelectAddressScreen' }) }} icon='plus' />}
 		>
 			<View style={{ marginHorizontal: 35, opacity }}>
 				{acceptTakeout && <Button variant='filled' icon='map' onPress={()=>confirmModal({ type: 'takeout' })}>Retirar no local</Button>}

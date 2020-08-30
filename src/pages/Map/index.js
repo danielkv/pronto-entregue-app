@@ -12,13 +12,13 @@ import Header from '../../components/NewHeader';
 import { sanitizeAddress } from '../../controller/address';
 import { useLoggedUserId } from '../../controller/hooks';
 import getLocation from '../../helpers/address/getGPSLocation';
-import { Icon, useTheme, Button, Paper, Typography, IconButton } from '../../react-native-ui';
+import isValidAddress from '../../helpers/address/isValidAddress';
+import { Icon, useTheme, Button, Paper, IconButton } from '../../react-native-ui';
 // import mapStyle from '../../services/mapStyle.json';
 import { getErrorMessage } from '../../utils/errors';
 import { Container, PointerContainer, PinShadow } from './styles';
 
-import { SET_SELECTED_ADDRESS, SEARCH_LOCATION } from '../../graphql/addresses';
-import { CREATE_USER_ADDRESS, GET_USER_ADDRESSES } from '../../graphql/users';
+import { SET_SELECTED_ADDRESS, SET_USER_ADDRESS, SEARCH_LOCATION } from '../../graphql/addresses';
 
 const clearCamera = {
 	center: {},
@@ -42,7 +42,7 @@ const dimensionWidth = Math.round(Dimensions.get('window').width);
 const paddingOffset = 20;
 
 export default function MapScreen() {
-	const { params: { address = null } = {} } = useRoute();
+	const { params: { address = null, redirect = { screen: 'HomeRoutes', params: { screen: 'FeedScreen' } } } = {} } = useRoute();
 	
 	const navigation = useNavigation();
 	const { palette } = useTheme();
@@ -55,16 +55,21 @@ export default function MapScreen() {
 	const [loadingSelect, setLoadingSelect] = useState(false);
 
 	const loggedUserId = useLoggedUserId();
-	const [createAddress] = useMutation(CREATE_USER_ADDRESS, { refetchQueries: [{ query: GET_USER_ADDRESSES, variables: { id: loggedUserId } }] });
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
-	
+	const [createUserAddress] = useMutation(SET_USER_ADDRESS);
+
 	const [camera, setCamera] = useState(null);
 	
 	function handleMapReady() {
 		setScreenWidth(dimensionWidth)
+
+		if (address) {
+			const coords = addressToCamera(address).center;
+			moveCameraTo({ coords });
+		}
 	}
 
-	function certerUserLocation() {
+	function centerUserLocation() {
 		setLoadingLocation(true)
 		return getLocation()
 			.then(location => {
@@ -75,7 +80,7 @@ export default function MapScreen() {
 			})
 			.catch(err => {
 				Alert.alert('Ocorreu um erro', err.message, [
-					{ text: 'Tentar novamente', onPress: certerUserLocation },
+					{ text: 'Tentar novamente', onPress: centerUserLocation },
 					{ text: 'Digitar outro endereço', onPress: ()=>navigation.navigate('TypeAddressScreen') },
 				])
 			});
@@ -84,8 +89,8 @@ export default function MapScreen() {
 	useEffect(()=>{
 		if (address) return setLoadingLocation(false);
 
-		certerUserLocation()
-	}, [])
+		centerUserLocation()
+	}, [address])
 
 	function moveCameraTo(location, zoom=18) {
 		const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
@@ -93,6 +98,18 @@ export default function MapScreen() {
 		newCamera.zoom = zoom;
 		setCamera(newCamera)
 		MapRef.current.animateCamera(newCamera);
+	}
+
+	function addressToCamera (address, zoom=18) {
+		const { location } = address;
+		const newCamera = cloneDeep(clearCamera)
+		newCamera.center = { latitude: location[0], longitude: location[1] };
+		newCamera.zoom = zoom;
+		return newCamera;
+	}
+
+	function cameraToLocation(camera) {
+		return [camera.center.latitude, camera.center.longitude];
 	}
 
 	// REGION
@@ -107,23 +124,57 @@ export default function MapScreen() {
 
 	async function handleSaveAddress() {
 		try {
+			const validAddress = address && camera ? isValidAddress({ ...address, location: cameraToLocation(camera) }) : false;
+			if (!validAddress) throw new Error('Verifique o endereço, ele não é válido.');
+
 			setLoadingSelect(true);
-			const location = camera.center;
-
-			
-			// load address from location
-			const { data: { searchLocation: addressFound } } = await apolloClient.mutate({ mutation: SEARCH_LOCATION, variables: { location: [location.latitude, location.longitude] } });
-			const normalizedAddress = sanitizeAddress({ ...addressFound, location: [location.latitude, location.longitude] });
-
-			navigation.navigate('TypeAddressScreen', { address: normalizedAddress });
-
-
-			/* navigation.dangerouslyGetParent().reset({
+			const normalizedAddress = sanitizeAddress({ ...address, location: cameraToLocation(camera) });
+						
+			return createUserAddress({ variables: { userId: loggedUserId, addressData: normalizedAddress } })
+				.then(({ data: { setUserAddress } })=>{
+					return setSelectedAddress({ variables: { setUserAddress } })
+				})
+				.then(()=>{
+					navigation.dangerouslyGetParent().reset({
 						index: 0,
-						routes: loggedUserId
-							? [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
-							: [{ name: 'WelcomeRoutes', params: { screen: 'AskLoginScreen' } }]
-					}) */
+						routes: [{ name: redirect.screen, params: redirect.params }]
+					})
+				});
+
+		} catch (err) {
+			Alert.alert(getErrorMessage(err));
+		} finally {
+			setLoadingSelect(false);
+		}
+	}
+
+	async function handleContinueAddress() {
+		try {
+			setLoadingSelect(true);
+
+			const location = cameraToLocation(camera)
+			let normalizedAddress = {};
+
+			if (address) {
+				normalizedAddress = sanitizeAddress({ ...address, location });
+			} else {
+				const { data: { searchLocation: addressFound } } = await apolloClient.mutate({ mutation: SEARCH_LOCATION, variables: { location } });
+				normalizedAddress = sanitizeAddress({ ...addressFound, location });
+			}
+				
+			// if address is not enough to get data
+			if (!normalizedAddress.city || !normalizedAddress.state || !normalizedAddress.location)
+				return navigation.navigate('TypeAddressScreen', { address: normalizedAddress })
+
+			//console.log(normalizedAddress);
+			
+			await setSelectedAddress({ variables: { address: normalizedAddress } })
+				.then(()=>{
+					navigation.dangerouslyGetParent().reset({
+						index: 0,
+						routes: [{ name: redirect.screen, params: redirect.params }]
+					})
+				});
 
 		} catch (err) {
 			Alert.alert(getErrorMessage(err));
@@ -185,31 +236,41 @@ export default function MapScreen() {
 						alignItems: 'center'
 					}}
 				>
-					<Button
-						disabled={loadingSelect}
-						color='primary'
-						variant='filled'
-						onPress={handleSaveAddress}
-					>
-						{loadingSelect
-							? <LoadingBlock />
-							: <Typography variant='button'>
-								{!address
-									? 'Continuar'
-									: 'Salvar e selecionar'}
-							</Typography>}
-					</Button>
+					{loggedUserId
+						? <Button
+							icon='check'
+							disabled={loadingSelect}
+							color='primary'
+							variant='filled'
+							onPress={handleSaveAddress}
+						>
+							{loadingSelect
+								? <LoadingBlock />
+								: 'Salvar e Utilizar'}
+						</Button>
+					
+						: <Button
+							icon='arrow-right-circle'
+							disabled={loadingSelect}
+							color='default'
+							variant='filled'
+							onPress={handleContinueAddress}
+						>
+							{loadingSelect
+								? <LoadingBlock />
+								: 'Continuar'}
+						</Button>}
 				</Paper>}
 
 				<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>
 					{!loadingLocation &&
-					<IconButton
-						icon={{ name: 'crosshairs-gps', type: 'material-community' }}
-						onPress={certerUserLocation}
-						disabled={loadingLocation}
-						variant='filled'
-						color='primary'
-					/>
+						<IconButton
+							icon={{ name: 'crosshairs-gps', type: 'material-community' }}
+							onPress={centerUserLocation}
+							disabled={loadingLocation}
+							variant='filled'
+							color='primary'
+						/>
 					}
 				</View>
 			</Container>
