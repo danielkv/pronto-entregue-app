@@ -1,14 +1,12 @@
-import _ from 'lodash';
+import isMinimumValidAddress from './isMinimumValidAddress';
 
 export default function isValidAddress(address) {
-	return _.has(address, 'name')
-		&& _.has(address, 'street')
-		&& _.has(address, 'number')
-		&& _.has(address, 'district')
-		&& _.has(address, 'city')
-		&& _.has(address, 'state')
-		&& _.has(address, 'reference')
-		&& _.has(address, 'complement')
-		&& _.has(address, 'zipcode')
-		&& _.has(address, 'location');
+	return isMinimumValidAddress(address)
+
+		&& address.name
+		&& address.street
+		&& address.number
+		&& address.district
+		&& address.reference
+		&& address.zipcode
 }

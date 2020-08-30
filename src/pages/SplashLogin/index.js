@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Alert } from 'react-native';
 import Animated, { Easing, Transition, Transitioning } from 'react-native-reanimated';
 
+import { useMutation } from '@apollo/react-hooks';
 import { useNavigation } from '@react-navigation/core';
 import * as Updates from 'expo-updates';
 
 import LogoSymbol from '../../assets/images/logo.png';
+import getLocalSavedAddress from '../../helpers/address/getLocalSavedAddress';
 import getUserLastOrderAddress from '../../helpers/address/getUserClosestAddress';
 import resetAddress from '../../helpers/address/resetAddress';
 import isUserLoggedIn from '../../helpers/auth/isUserLoggedIn';
@@ -15,11 +17,15 @@ import { useTheme } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import SelectLogin from './selectLogin';
 
+import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
+
 export default function LocationAccess() {
 	const opacity = new Animated.Value(1);
 	const { palette } = useTheme();
 	const navigation = useNavigation();
 	const [loading, setLoading] = useState(true);
+
+	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 
 	const animationRef = useRef();
 
@@ -63,29 +69,38 @@ export default function LocationAccess() {
 
 	async function init() {
 		try {
-			const userData = await isUserLoggedIn()
-		
-			// if user is not logged, navigate to splashlogin
-			if (!userData?.user) return setTimeout(showSplashLogin, 2000);
-			const { user, token } = userData;
+			let userAddress;
+			const userData = await isUserLoggedIn();
 
-			// log user in system
-			logUserIn(user, token);
+			// if user is not logged
+			if (userData?.user) {
+				const { user, token } = userData;
 
-			// check user address, if doesn't find any navigate to new address screen
-			const userAddress = await getUserLastOrderAddress(user);
-			if (!userAddress) navigation.replace('HomeRoutes', { screen: 'NewAddressScreen' });
+				// log user in system
+				await logUserIn(user, token);
 
+				// get user's address
+				userAddress = await getUserLastOrderAddress(user);
+				if (!userAddress) return navigation.replace('AddressRoutes', { screen: 'NewAddressScreen' });
+			} else {
+				userAddress = await getLocalSavedAddress()
+
+				// if there is no address shwo splashLogin
+				if (!userAddress) return showSplashLogin();
+			}
+
+			// set user address
+			await setSelectedAddress({ variables: { address: userAddress } });
+			
 			// navigate to feed
 			return navigation.replace('HomeRoutes', { screen: 'FeedScreen' });
-			
 		} catch (err) {
 			Alert.alert(
 				'Ops, Ocorreu um erro!',
-				getErrorMessage(err.message),
+				getErrorMessage(err),
 				[
 					{ text: 'Tentar novamente', onPress: init },
-					{ text: 'Cancelar', onPress: ()=>{ logUserOut(); resetAddress(); } }
+					{ text: 'Cancelar', onPress: ()=>{ logUserOut(); resetAddress(); showSplashLogin(); } }
 				]
 			);
 		}

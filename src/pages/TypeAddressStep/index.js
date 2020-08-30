@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Alert, View } from 'react-native';
 import { MaskService } from 'react-native-masked-text'
 
@@ -38,15 +38,6 @@ export default function TypeAddressStep() {
 
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	const [createUserAddress] = useMutation(SET_USER_ADDRESS);
-
-	useEffect(()=>{
-		if (!address) return;
-
-		Alert.alert(
-			'Verifique o endereço',
-			'A partir da localização informada, encontramos esse endereço. Confira todos os dados para que não haja problemas na entrega.'
-		)
-	}, [])
 
 	function onSubmit (resultAddress) {
 		// ready to save address
@@ -95,7 +86,7 @@ export default function TypeAddressStep() {
 		complement: 'casa',
 		reference: 'Ritmi',
 		
-		name: 'Casa',
+		name: '',
 		city: 'Sombrio',
 		state: 'SC',
 		location: null,
@@ -108,15 +99,27 @@ export default function TypeAddressStep() {
 		complement: '',
 		reference: '',
 		
-		name: '',
+		name: address.name || '',
 		city: address.city || '',
 		state: address.state || '',
 		location: address.location || null
 	};
 
+	const initialErrors = {};
+	
+	Object.keys(validationSchema.fields).map(field => {
+		try {
+			const fieldSchema = validationSchema.fields[field];
+			fieldSchema.validateSync(initialValues[field])
+		} catch (err) {
+			initialErrors[field] = err.message;
+		}
+	});
+
 	return (
 		<View style={{ flex: 1 }}>
 			<Formik
+				initialErrors={initialErrors}
 				validationSchema={validationSchema}
 				initialValues={initialValues}
 				onSubmit={onSubmit}

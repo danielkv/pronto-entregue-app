@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, Keyboard, ActivityIndicator } from 'react-native';
 
 import { useNavigation, useFocusEffect } from '@react-navigation/core';
@@ -18,22 +18,27 @@ import {
 function Checkvalues() {
 	const navigation = useNavigation();
 	const { values, validateForm, handleSubmit, isSubmitting } = useFormikContext();
+	const [loadingMap, setLoadingMap] = useState(false);
 
 	useFocusEffect(useCallback(()=>{
 		Keyboard.dismiss();
 	}, []))
 
 	function goToMap () {
+		setLoadingMap(true);
 		validateForm()
 			.then((errors)=>{
 				const errorsKeys = Object.keys(errors)
-				if (!errorsKeys.length) navigation.navigate('MapScreen', { address: values });
+				if (!errorsKeys.length) return navigation.navigate('MapScreen', { address: values });
 
 				Alert.alert(
 					'Ops, encontrei alguns erros',
 					Object.values(errors).join('\n')
 				)
-			});
+			})
+			.finally(()=>{
+				setLoadingMap(false);
+			})
 	}
 
 	const validAddress = isValidAddress(values);
@@ -55,9 +60,13 @@ function Checkvalues() {
 						&& <Button
 							icon={{ name: 'map-pin', size: 20 }}
 							style={{ root: { marginTop: 20 } }}
-							label='Verificar localização' variant='filled'
+							variant='filled'
 							onPress={goToMap}
-						/>}
+						>
+							{loadingMap
+								? <ActivityIndicator />
+								: <Typography variant='button'>Verificar localização</Typography>}
+						</Button>}
 				</FieldWrapper>
 				<HelperWrapper>
 					<FieldDescription>Verifique todos os dados acima para que não haja problemas na entrega</FieldDescription>

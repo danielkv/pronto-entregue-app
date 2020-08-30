@@ -48,9 +48,9 @@ export async function validateCart(args) {
 
 	// checks if address is saved
 	const { selectedAddress: address } = client.readQuery({ query: GET_SELECTED_ADDRESS })
-	console.log(address);
+	
 	if (!address.id || address.id === 'temp') {
-		const addressError = new Error('Como é a primeira vez que você compra para esse endereço, vamos verifica-lo');
+		const addressError = new Error('Como é a primeira vez que você compra para esse endereço, é necessário verifica-lo');
 		addressError.type = 'ADDRESS_NOT_CREATED';
 
 		throw addressError;

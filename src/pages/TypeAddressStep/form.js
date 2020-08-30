@@ -32,97 +32,95 @@ export default function AddressForm() {
 	}
 
 	return (
-		<View style={{ flex: 1 }}>
-			<Stack.Navigator
-				headerMode='float'
-				tabBar={()=><View />}
-				screenOptions={{
-					headerTintColor: '#fff',
-					headerStyle: { height: 70 + insets.top, backgroundColor: palette.primary.main },
-					headerTitle: handleHeaderTitle,
-					headerTitleAlign: 'center',
-					headerBackTitleVisible: false,
-					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-				}}
+		<Stack.Navigator
+			headerMode='float'
+			tabBar={()=><View />}
+			screenOptions={{
+				headerTintColor: '#fff',
+				headerStyle: { height: 70 + insets.top, backgroundColor: palette.primary.main },
+				headerTitle: handleHeaderTitle,
+				headerTitleAlign: 'center',
+				headerBackTitleVisible: false,
+				cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+			}}
 			//swipeEnabled={false}
-			>
-				<Stack.Screen name='nameField' options={{ title: 'Nome' }}>
-					{(props)=>
-						<AddressField
-							{...props}
-							labels={['Dê um nome para seu endereço']}
-							fields={['name']}
-							helperText='Ex.: Minha Casa, Sítio do avô, etc'
-							description='Esse nome serve apenas para você identificar, ele não será utilizado para auxiliar na entrega'
-							currentRoute={index}
-							routes={routes}
-						/>}
-				</Stack.Screen>
+		>
+			<Stack.Screen name='nameField' options={{ title: 'Nome' }}>
+				{(props)=>
+					<AddressField
+						{...props}
+						labels={['Dê um nome para seu endereço']}
+						fields={['name']}
+						helperText='Ex.: Minha Casa, Sítio do avô, etc'
+						description='Esse nome serve apenas para você identificar, ele não será utilizado para auxiliar na entrega'
+						currentRoute={index}
+						routes={routes}
+					/>}
+			</Stack.Screen>
 
-				<Stack.Screen name='streetNumberField' options={{ title: 'Rua / nº' }}>
-					{(props)=>
-						<AddressField
-							{...props}
-							labels={['Digite o nome da rua/avenida', 'E o número']}
-							fields={['street', 'number']}
-							description='Caso sua casa não tenha número, preencha com "0".'
-							currentRoute={index}
-							routes={routes}
-						/>}
-				</Stack.Screen>
+			<Stack.Screen name='streetNumberField' options={{ title: 'Rua / nº' }}>
+				{(props)=>
+					<AddressField
+						{...props}
+						labels={['Digite o nome da rua/avenida', 'E o número']}
+						fields={['street', 'number']}
+						description='Caso sua casa não tenha número, preencha com "0".'
+						currentRoute={index}
+						routes={routes}
+					/>}
+			</Stack.Screen>
 
-				<Stack.Screen name='districtField' options={{ title: 'Bairro' }}>
-					{(props)=>
-						<AddressField
-							{...props}
-							labels={['Qual o nome do bairro?']}
-							fields={['district']}
-							helperText='Ex.: Centro, Vila Nova, etc.'
-							currentRoute={index}
-							routes={routes}
-						/>}
-				</Stack.Screen>
+			<Stack.Screen name='districtField' options={{ title: 'Bairro' }}>
+				{(props)=>
+					<AddressField
+						{...props}
+						labels={['Qual o nome do bairro?']}
+						fields={['district']}
+						helperText='Ex.: Centro, Vila Nova, etc.'
+						currentRoute={index}
+						routes={routes}
+					/>}
+			</Stack.Screen>
 
-				<Stack.Screen name='complementField' options={{ title: 'Complemento' }}>
-					{(props)=>
-						<AddressField
-							{...props}
-							labels={['Complemento']}
-							fields={['complement']}
-							helperText='Ex.: Apto 302, fundos da casa, casa verde com janelas brancas.'
-							description='Nos diga como podemos encontrar você'
-							currentRoute={index}
-							routes={routes}
-						/>}
-				</Stack.Screen>
+			<Stack.Screen name='complementField' options={{ title: 'Complemento' }}>
+				{(props)=>
+					<AddressField
+						{...props}
+						labels={['Complemento']}
+						fields={['complement']}
+						helperText='Ex.: Apto 302, fundos da casa, casa verde com janelas brancas.'
+						description='Nos diga como podemos encontrar você'
+						currentRoute={index}
+						routes={routes}
+					/>}
+			</Stack.Screen>
 
-				<Stack.Screen name='referenceField' options={{ title: 'Ponto de referência' }}>
-					{(props)=>
-						<AddressField
-							{...props}
-							labels={['Ponto de referência']}
-							fields={['reference']}
-							helperText='Ex.: Igreja São João, vizinho da casa 54, etc.'
-							description='Dê um ponto de referência conhecido. Você pode também informar o número da casa do vizinho'
-							currentRoute={index}
-							routes={routes}
-						/>}
-				</Stack.Screen>
+			<Stack.Screen name='referenceField' options={{ title: 'Ponto de referência' }}>
+				{(props)=>
+					<AddressField
+						{...props}
+						labels={['Ponto de referência']}
+						fields={['reference']}
+						helperText='Ex.: Igreja São João, vizinho da casa 54, etc.'
+						description='Dê um ponto de referência conhecido. Você pode também informar o número da casa do vizinho'
+						currentRoute={index}
+						routes={routes}
+					/>}
+			</Stack.Screen>
 				
-				<Stack.Screen name='cityStateZipcodeField' options={{ title: 'Cidade / Estado' }}>
-					{(props)=>
-						<AddressField
-							{...props}
-							labels={['Digite a cidade', 'Estado', 'CEP']}
-							fields={['city', 'state', 'zipcode']}
-							description='Para finalizar verifique a cidade, estado e CEP de onde quer receber seu pedido.'
-							currentRoute={index}
-							routes={routes}
-						/>}
-				</Stack.Screen>
+			<Stack.Screen name='cityStateZipcodeField' options={{ title: 'Cidade / Estado' }}>
+				{(props)=>
+					<AddressField
+						{...props}
+						labels={['Digite a cidade', 'Estado', 'CEP']}
+						fields={['city', 'state', 'zipcode']}
+						description='Para finalizar verifique a cidade, estado e CEP de onde quer receber seu pedido.'
+						currentRoute={index}
+						routes={routes}
+					/>}
+			</Stack.Screen>
 
-				<Stack.Screen name='checkAddress' component={CheckAddress}  options={{ title: 'Verificar dados' }} />
-			</Stack.Navigator>
-		</View>
+			<Stack.Screen name='checkAddress' component={CheckAddress}  options={{ title: 'Verificar dados' }} />
+		</Stack.Navigator>
 	);
 }

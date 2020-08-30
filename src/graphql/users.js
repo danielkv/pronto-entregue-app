@@ -19,10 +19,7 @@ export const GET_USER_ADDRESSES = gql`
 export const GET_USER_LAST_ORDER_ADDRESS = gql`
 	query GetLastOrderAddress ($userId: ID!) {
 		getLastOrderAddress (userId: $userId)  {
-			id
-			addresses {
-				...AddressFields
-			}
+			...AddressFields
 		}
 	}
 

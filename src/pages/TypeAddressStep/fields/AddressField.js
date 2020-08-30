@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
@@ -19,29 +19,25 @@ import {
 
 function AddressField({ labels, fields, helperText, description, navigation, routes, currentRoute }) {
 	const refs = {};
-	const { values, errors, handleChange, validateForm } = useFormikContext();
+	const { values, errors, handleChange } = useFormikContext();
+	const [block, setBlock] = useState(false);
 
-	useFocusEffect(()=>{
+	useFocusEffect(useCallback(()=>{
 		focusFirstField(false)
-	})
+	}, []))
 
 	function validate () {
-		const init = new Date();
-		return validateForm()
-			.then(validationErros => {
-				const finishes = new Date();
-				console.log(finishes.getTime() - init.getTime())
-				return fields.some(f => Boolean(validationErros[f]));
-			})
+		return fields.some(f => Boolean(errors[f]));
 	}
 
 	function goToNext() {
-		validate()
-			.then(error =>{
-				if (error) return;
+		if (block) return;
+		if (validate())	return;
 
-				navigation.navigate(routes[currentRoute+1]);
-			})
+		setBlock(true);
+		navigation.navigate(routes[currentRoute+1])
+		
+		return setTimeout(()=>setBlock(false), 1000);
 	}
 
 	function focusFirstField(force=true) {
