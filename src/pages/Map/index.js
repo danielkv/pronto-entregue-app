@@ -132,7 +132,7 @@ export default function MapScreen() {
 						
 			return createUserAddress({ variables: { userId: loggedUserId, addressData: normalizedAddress } })
 				.then(({ data: { setUserAddress } })=>{
-					return setSelectedAddress({ variables: { setUserAddress } })
+					return setSelectedAddress({ variables: { address: setUserAddress } })
 				})
 				.then(()=>{
 					navigation.dangerouslyGetParent().reset({

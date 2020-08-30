@@ -3,6 +3,7 @@ import { Alert, Keyboard, ActivityIndicator } from 'react-native';
 
 import { useNavigation, useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
+import _ from 'lodash';
 
 import isValidAddress from '../../../helpers/address/isValidAddress';
 import { Paper, Typography, Button } from '../../../react-native-ui';
@@ -15,7 +16,7 @@ import {
 	FieldFooter
 } from './styles'
 
-function Checkvalues() {
+function CheckAddress({ redirect }) {
 	const navigation = useNavigation();
 	const { values, validateForm, handleSubmit, isSubmitting } = useFormikContext();
 	const [loadingMap, setLoadingMap] = useState(false);
@@ -29,7 +30,7 @@ function Checkvalues() {
 		validateForm()
 			.then((errors)=>{
 				const errorsKeys = Object.keys(errors)
-				if (!errorsKeys.length) return navigation.navigate('MapScreen', { address: values });
+				if (!errorsKeys.length) return navigation.navigate('MapScreen', { address: _.cloneDeep(values), redirect });
 
 				Alert.alert(
 					'Ops, encontrei alguns erros',
@@ -90,4 +91,4 @@ function Checkvalues() {
 		</FieldContainer>);
 }
 
-export default Checkvalues;
+export default CheckAddress;

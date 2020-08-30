@@ -31,6 +31,7 @@ const validationSchema = Yup.object().shape({
 
 export default function TypeAddressStep() {
 	const { params: { address = null, redirect = { screen: 'HomeRoutes', params: { screen: 'FeedScreen' } } } = {} } = useRoute();
+
 	const navigation = useNavigation();
 	const [searchAddress] = useMutation(SEARCH_ADDRESS);
 
@@ -125,8 +126,9 @@ export default function TypeAddressStep() {
 				onSubmit={onSubmit}
 				//validateOnChange={false}
 				validateOnBlur={false}
-				component={PageForm}
-			/>
+			>
+				{props => <PageForm {...props} redirect={redirect} />}
+			</Formik>
 		</View>
 	);
 }

@@ -13,7 +13,7 @@ import Navigator from './Navigator';
 
 const Stack = createStackNavigator();
 
-export default function AddressForm() {
+export default function AddressForm({ redirect }) {
 	const routes = ['nameField', 'streetNumberField', 'districtField', 'complementField', 'referenceField', 'cityStateZipcodeField', 'checkAddress'];
 	const { palette } = useTheme();
 	const insets = useSafeArea();
@@ -120,7 +120,9 @@ export default function AddressForm() {
 					/>}
 			</Stack.Screen>
 
-			<Stack.Screen name='checkAddress' component={CheckAddress}  options={{ title: 'Verificar dados' }} />
+			<Stack.Screen  name='checkAddress' options={{ title: 'Verificar dados' }}>
+				{props => <CheckAddress {...props} redirect={redirect} />}
+			</Stack.Screen>
 		</Stack.Navigator>
 	);
 }

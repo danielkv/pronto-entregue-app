@@ -15,7 +15,6 @@ import MapIllustration from '../../assets/images/map-ill.png';
 import { sanitizeAddress } from '../../controller/address';
 import { getErrorMessage } from '../../utils/errors';
 import PageForm from './form';
-import { Container } from './styles';
 
 import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
 
@@ -34,7 +33,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function TypeAddress() {
-	const { params: { address = null } = {} } = useRoute();
+	const { params: { address = null, redirect = { screen: 'HomeRoutes', params: { screen: 'FeedScreen' } } } = {} } = useRoute();
+
 	const navigation = useNavigation();
 	const scrollY = new Animated.Value(0);
 
@@ -64,7 +64,7 @@ export default function TypeAddress() {
 
 				const addressToSend = sanitizeAddress({ ...address, ...addressFound, zipcode: addressFound.postalcode })
 				
-				navigation.navigate('MapScreen', { address: addressToSend })
+				return navigation.navigate('MapScreen', { address: addressToSend })
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
@@ -123,8 +123,9 @@ export default function TypeAddress() {
 					onSubmit={onSubmit}
 					validateOnChange={false}
 					validateOnBlur={false}
-					component={PageForm}
-				/>
+				>
+					{(props)=><PageForm {...props} redirect={redirect} />}
+				</Formik>
 			</Animated.ScrollView>
 
 			<BigHeader

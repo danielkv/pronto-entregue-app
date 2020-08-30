@@ -3,6 +3,7 @@ import { Alert, View, Image } from 'react-native';
 
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useFocusEffect } from '@react-navigation/core';
+import _ from 'lodash';
 import moment from 'moment';
 
 import CartButton from '../../components/CartButton';
@@ -103,7 +104,7 @@ export default function Cart({ navigation }) {
 					Alert.alert(
 						'Verificar endereço',
 						getErrorMessage(err.message),
-						[{ text: 'Verificar', onPress: ()=>navigation.navigate('AddressRoutes', { screen: 'TypeAddressScreen', params: { address: selectedAddress, redirect: { screen: 'CartRoutes', params: { screen: 'PaymentScreen' } } } }) }],
+						[{ text: 'Verificar', onPress: ()=>navigation.navigate('AddressRoutes', { screen: 'TypeAddressScreen', params: { address: _.cloneDeep(selectedAddress), redirect: { screen: 'CartRoutes', params: { screen: 'PaymentScreen' } } } }) }],
 					);
 					break;
 				default:
