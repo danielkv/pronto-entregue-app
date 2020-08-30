@@ -12,6 +12,7 @@ import Header from '../../components/NewHeader';
 import { sanitizeAddress } from '../../controller/address';
 import { useLoggedUserId } from '../../controller/hooks';
 import getLocation from '../../helpers/address/getGPSLocation';
+import isMinimumValidAddress from '../../helpers/address/isMinimumValidAddress';
 import isValidAddress from '../../helpers/address/isValidAddress';
 import { Icon, useTheme, Button, Paper, IconButton } from '../../react-native-ui';
 // import mapStyle from '../../services/mapStyle.json';
@@ -80,8 +81,7 @@ export default function MapScreen() {
 			})
 			.catch(err => {
 				Alert.alert('Ocorreu um erro', err.message, [
-					{ text: 'Tentar novamente', onPress: centerUserLocation },
-					{ text: 'Digitar outro endereço', onPress: ()=>navigation.navigate('TypeAddressScreen') },
+					{ text: 'Tentar novamente', onPress: centerUserLocation }
 				])
 			});
 	}
@@ -183,6 +183,9 @@ export default function MapScreen() {
 		}
 	}
 
+	const isMinimumValid = isMinimumValidAddress(address);
+	const isValid = isValidAddress(address);
+
 	return (
 		<View style={{ flex: 1 }}>
 			<Header headerTransparent={true} variant='transparent' searchIcon={false} />
@@ -236,8 +239,8 @@ export default function MapScreen() {
 						alignItems: 'center'
 					}}
 				>
-					{loggedUserId
-						? <Button
+					{loggedUserId && isValid
+						&& <Button
 							icon='check'
 							disabled={loadingSelect}
 							color='primary'
@@ -247,19 +250,19 @@ export default function MapScreen() {
 							{loadingSelect
 								? <LoadingBlock />
 								: 'Salvar e Utilizar'}
-						</Button>
-					
-						: <Button
-							icon='arrow-right-circle'
-							disabled={loadingSelect}
-							color='default'
-							variant='filled'
-							onPress={handleContinueAddress}
-						>
-							{loadingSelect
-								? <LoadingBlock />
-								: 'Continuar'}
 						</Button>}
+					
+					{!isMinimumValid && <Button
+						icon='arrow-right-circle'
+						disabled={loadingSelect}
+						color='default'
+						variant='filled'
+						onPress={handleContinueAddress}
+					>
+						{loadingSelect
+							? <LoadingBlock />
+							: 'Continuar'}
+					</Button>}
 				</Paper>}
 
 				<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>
