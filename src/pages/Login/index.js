@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import BigHeader from '../../components/BigHeader';
 
 import LoginIllustration from '../../assets/images/login-ill.png';
+import getUserLastOrderAddress from '../../helpers/address/getUserClosestAddress';
 import logUserIn from '../../helpers/auth/logUserIn';
 import { TextField, Button } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
@@ -18,6 +19,7 @@ import FacebookButton from './FacebookButton';
 import GoogleButtton from './GoogleButtton';
 import { FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
+import { SET_SELECTED_ADDRESS } from '../../graphql/addresses'
 import { LOGIN } from '../../graphql/authentication';
 
 const validationSchema = Yup.object().shape({
@@ -37,6 +39,8 @@ export default function Login() {
 	const { params: { redirect = null, redirectParams = {} } = {} } = useRoute();
 	const navigation = useNavigation();
 	const scrollY = new Animated.Value(0);
+
+	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	
 	// Setup GQL Mutation
 	const [login] = useMutation(LOGIN);
@@ -47,20 +51,35 @@ export default function Login() {
 	}
 	
 	const caretHidden = Device.brand === 'Xiaomi';
-
+	
 	function onSubmit({ email, password }, { resetForm }) {
 		return login({ variables: { email, password } })
 			.then(async ({ data })=>{
 				resetForm();
-				await logUserIn(data.login.user, data.login.token);
-				afterLogin();
+				const { user, token } = data.login;
+
+				await logUserIn(user, token);
+				return afterLogin(user);
 			})
 			.catch(err => {
-				Alert.alert(getErrorMessage(err));
+				Alert.alert(
+					'Ops! Ocorreu um erro.',
+					getErrorMessage(err)
+				);
 			})
 	}
 
-	function afterLogin() {
+	async function afterLogin(user) {
+		const userAddress = await getUserLastOrderAddress(user);
+		if (!userAddress) {
+			return navigation.dangerouslyGetParent().reset({
+				index: 0,
+				routes: [{ name: 'AddressRoutes', params: { screen: 'SelectAddressScreen' } }]
+			});
+		} else {
+			await setSelectedAddress({ variables: { address: userAddress } })
+		}
+
 		if (redirect)
 			navigation.dangerouslyGetParent().replace(redirect, redirectParams);
 		else
