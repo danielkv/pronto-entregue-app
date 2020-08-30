@@ -21,7 +21,7 @@ export default function UserAddresses() {
 	const userId = useLoggedUserId();
 	const navigation = useNavigation();
 	
-	const { loading: loadingAddresses, error: addressesError, data: { user: { addresses = [] } = {} } = {} } = useQuery(GET_USER_ADDRESSES, { variables: { id: userId } });
+	const { loading: loadingAddresses, error: addressesError, data: { user: { addresses = [] } = {} } = {} } = useQuery(GET_USER_ADDRESSES, { variables: { id: userId }, fetchPolicy: 'cache-and-network' });
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 
 	function handleAddressPress(address) {
