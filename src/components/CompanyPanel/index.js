@@ -24,7 +24,7 @@ export default function CompanyPanel({ company }) {
 		companyBackground: company.backgroundColor
 	}
 
-	const isOpen = company?.nextClose ? moment(company.nextClose).isSameOrAfter() : false
+	const isOpen = company?.nextClose ? moment(company.nextClose).isSameOrAfter() : company.isOpen;
 
 	return (
 		<Paper style={{ paddingVertical: 20 }}>

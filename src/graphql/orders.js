@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { OPTIONS_GROUP_FRAGMENT } from './fragments';
+import { OPTIONS_GROUP_FRAGMENT, COMPANY_LIST_FRAGMENT, ADDRESS_FRAGMENT } from './fragments';
 
 
 export const ORDER_PRODUCT_RELATED_FRAGMENT = gql`
@@ -55,19 +55,11 @@ export const ORDER_FRAGMENT = gql`
 		}
 
 		company {
-			id
-			displayName
-			isOpen
-			backgroundColor
-			image
+			...CompanyListFields
+			
 			rate
 			address {
-				street
-				number
-				city
-				state
-				zipcode
-				location
+				...AddressFields
 			}
 		}
 		
@@ -92,7 +84,8 @@ export const ORDER_FRAGMENT = gql`
 		status
 		createdAt
 	}
-	
+	${COMPANY_LIST_FRAGMENT}
+	${ADDRESS_FRAGMENT}
 `;
 
 export const CHANGE_ORDER_STATUS = gql`
