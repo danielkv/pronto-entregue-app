@@ -53,7 +53,7 @@ function BigHeader({ title, image, variant='default', scrollY, imageStyle={} }) 
 		borderBottomRightRadius: borderRadius
 	}}>
 		{Boolean(image) && <BigHeaderImage style={[{ left: -40, marginTop: -35, opacity: imageOpacity }, imageStyle]} source={image} />}
-		<IconButton onPress={()=>navigation.goBack()} icon={{ name: 'chevron-left', color: '#fff', size: 28 }} />
+		{navigation.canGoBack() && <IconButton onPress={()=>navigation.goBack()} icon={{ name: 'chevron-left', color: '#fff', size: 28 }} />}
 		<BigHeaderTitle>{title}</BigHeaderTitle>
 	</BigHeaderContainer>
 }

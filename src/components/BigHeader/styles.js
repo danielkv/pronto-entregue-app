@@ -30,4 +30,5 @@ export const BigHeaderTitle = styled(Typography)`
 	font-size: 24px;
 	color: white;
 	text-align: right;
+	margin-left: auto;
 `;
