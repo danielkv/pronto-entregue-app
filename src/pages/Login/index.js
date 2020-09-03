@@ -81,9 +81,9 @@ export default function Login() {
 		}
 
 		if (redirect)
-			navigation.dangerouslyGetParent().replace(redirect, redirectParams);
+			return navigation.dangerouslyGetParent().replace(redirect, redirectParams);
 		else
-			navigation.dangerouslyGetParent().reset({
+			return navigation.dangerouslyGetParent().reset({
 				index: 0,
 				routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
 			});
