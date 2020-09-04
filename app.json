@@ -9,7 +9,7 @@
 			"ios",
 			"android"
 		],
-		"version": "1.5.0",
+		"version": "1.6.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/icon.png",
 		"splash": {
@@ -29,7 +29,7 @@
 		"ios": {
 			"supportsTablet": false,
 			"bundleIdentifier": "com.flaker.prontoentregue",
-			"buildNumber": "1.5.0",
+			"buildNumber": "1.6.0",
 			"icon": "./src/assets/ios-icon.png",
 			"infoPlist": {
 				"NSLocationWhenInUseUsageDescription": "Isso vai nos permitir mostrar os estabelecimentos mais próximos de você"
@@ -42,7 +42,7 @@
 			"useNextNotificationsApi": true,
 			"googleServicesFile": "./google-services.json",
 			"package": "com.flaker.prontoentregue",
-			"versionCode": 10,
+			"versionCode": 11,
 			"permissions": [
 				"ACCESS_COARSE_LOCATION",
 				"ACCESS_FINE_LOCATION",
