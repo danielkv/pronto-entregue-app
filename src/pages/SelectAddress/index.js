@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
+import { InteractionManager } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { useQuery } from '@apollo/react-hooks';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useFocusEffect } from '@react-navigation/core';
 
 import ErrorBlock from '../../components/ErrorBlock';
 import LoadingBlock from '../../components/LoadingBlock';
@@ -21,11 +22,17 @@ export default function SelectAddress() {
 	const { loading: loadingAddresses, error: addressesError, data: { user: { addresses = [] } = {} } = {} }
 	= useQuery(GET_USER_ADDRESSES, { skip: !userId, variables: { id: userId }, fetchPolicy: 'cache-and-network' });
 
-	useEffect(()=>{
-		if (loadingAddresses) return;
+	useFocusEffect(useCallback(()=>{
+
+		const task = InteractionManager.runAfterInteractions(() => {
+			if (loadingAddresses) return;
 		
-		if (!addresses.length) navigation.navigate('NewAddressScreen');
-	}, [loadingAddresses]);
+			if (!addresses.length) navigation.replace('NewAddressScreen');
+		});
+
+		return () => task.cancel();
+		
+	}, [loadingAddresses]));
 
 	if (!addresses.length && loadingAddresses) return <LoadingBlock />
 
