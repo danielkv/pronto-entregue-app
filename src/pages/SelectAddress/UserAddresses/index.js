@@ -20,9 +20,9 @@ export default function UserAddresses({ addresses }) {
 	function handleAddressPress(address) {
 		setSelectedAddress({ variables: { address } })
 			.then(()=>{
-				navigation.dangerouslyGetParent().reset({
+				navigation.reset({
 					index: 0,
-					routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+					routes: [{ name: 'FeedScreen' }]
 				})
 			})
 			.catch((err)=>{

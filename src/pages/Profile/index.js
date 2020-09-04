@@ -66,9 +66,9 @@ export default function Profile({ navigation }) {
 
 	async function handleLogOutUser() {
 		await logUserOut()
-		navigation.dangerouslyGetParent().reset({
+		navigation.reset({
 			index: 0,
-			routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+			routes: [{ name: 'FeedScreen' }]
 		})
 	}
 	
@@ -90,8 +90,8 @@ export default function Profile({ navigation }) {
 					<Typography variant='subtitle'>{user.email}</Typography>
 				</UserHeader>
 				<Paper>
-					<Button variant='filled' icon='user' label='Editar perfil' onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId } })} />
-					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
+					<Button variant='filled' icon='user' label='Editar perfil' onPress={()=>navigation.navigate('SubscriptionScreen', { userId: loggedUserId  })} />
+					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderListScreen')} />
 					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'FavoriteProductsScreen' })} />
 					<Button variant='filled' icon='dollar-sign' label='Meus Créditos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'CreditHistoryScreen' })} />
 					{user.role === 'deliveryMan'

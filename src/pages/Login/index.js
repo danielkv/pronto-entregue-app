@@ -72,20 +72,20 @@ export default function Login() {
 	async function afterLogin(user) {
 		const userAddress = await getUserLastOrderAddress(user);
 		if (!userAddress) {
-			return navigation.dangerouslyGetParent().reset({
+			return navigation.reset({
 				index: 0,
-				routes: [{ name: 'AddressRoutes', params: { screen: 'SelectAddressScreen' } }]
+				routes: [{ name: 'SelectAddressScreen' }]
 			});
 		} else {
 			await setSelectedAddress({ variables: { address: userAddress } })
 		}
 
 		if (redirect)
-			return navigation.dangerouslyGetParent().replace(redirect, redirectParams);
+			return navigation.replace(redirect, redirectParams);
 		else
-			return navigation.dangerouslyGetParent().reset({
+			return navigation.reset({
 				index: 0,
-				routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+				routes: [{ name: 'FeedScreen' }]
 			});
 	}
 

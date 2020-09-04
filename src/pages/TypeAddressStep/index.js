@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function TypeAddressStep() {
-	const { params: { address = null, redirect = { screen: 'HomeRoutes', params: { screen: 'FeedScreen' } } } = {} } = useRoute();
+	const { params: { address = null, redirect = { screen: 'FeedScreen' } } = {} } = useRoute();
 
 	const navigation = useNavigation();
 	const [searchAddress] = useMutation(SEARCH_ADDRESS);
@@ -49,7 +49,7 @@ export default function TypeAddressStep() {
 					return setSelectedAddress({ variables: { address: setUserAddress } })
 				})
 				.then(()=>{
-					navigation.dangerouslyGetParent().reset({
+					navigation.reset({
 						index: 0,
 						routes: [{ name: redirect.screen, params: redirect.params }]
 					})
@@ -79,31 +79,19 @@ export default function TypeAddressStep() {
 
 	// ------- END OF FUNCIONS -------
 	//console.log(MaskService.toMask('zip-code', '8860000'));
-	const initialValues = __DEV__ && !address ? {
-		street: 'Rua João Quartieiro',
-		number: '43',
-		district: 'Centro',
-		zipcode: '88960-000',
-		complement: 'casa',
-		reference: 'Ritmi',
-		
-		name: '',
-		city: 'Sombrio',
-		state: 'SC',
-		location: null,
-	} : {
-		street: address.street || '',
-		number: String(address.number) || '',
-		district: address.district || '',
-		zipcode: address.zipcode ? MaskService.toMask('zip-code', String(address.zipcode)) : '',
+	const initialValues = {
+		street: address?.street || '',
+		number: address?.number ? String(address.number) : '',
+		district: address?.district || '',
+		zipcode: address?.zipcode ? MaskService.toMask('zip-code', String(address.zipcode)) : '',
 
 		complement: '',
 		reference: '',
 		
-		name: address.name || '',
-		city: address.city || '',
-		state: address.state || '',
-		location: address.location || null
+		name: address?.name || '',
+		city: address?.city || '',
+		state: address?.state || '',
+		location: address?.location || null
 	};
 
 	const initialErrors = {};

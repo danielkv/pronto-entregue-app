@@ -13,7 +13,7 @@ import { ButtonTitle, ButtonSubtitle, ButtonImage, ButtonContainer } from './sty
 
 // import { Container } from './styles';
 
-function SplashLogin() {
+function SelectLogin() {
 	const { palette } = useTheme();
 	const [show, setShow] = useState(false);
 	const transitionRef = useRef();
@@ -56,17 +56,17 @@ function SplashLogin() {
 				</Paper>
 				{show &&
 				<View style={{ flex: 1 }}>
-					<ButtonContainer onPress={()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen' })}>
+					<ButtonContainer onPress={()=>navigation.navigate('LoginScreen')}>
 						<ButtonImage style={{ left: -40, marginTop: -35 }} source={LoginIllustration} />
 						<ButtonTitle>Fazer login</ButtonTitle>
 						<ButtonSubtitle>Já tenho uma conta</ButtonSubtitle>
 					</ButtonContainer>
-					<ButtonContainer onPress={()=>navigation.navigate('AuthenticationRoutes', { screen: 'SubscriptionScreen' })}>
+					<ButtonContainer onPress={()=>navigation.navigate('SubscriptionScreen')}>
 						<ButtonImage source={SubscribeIllustration} />
 						<ButtonTitle>Cadastrar</ButtonTitle>
 						<ButtonSubtitle>Não tenho uma conta</ButtonSubtitle>
 					</ButtonContainer>
-					<ButtonContainer onPress={()=>navigation.navigate('AddressRoutes', { screen: 'NewAddressScreen' })}>
+					<ButtonContainer onPress={()=>navigation.navigate('NewAddressScreen')}>
 						<ButtonImage source={SearchIllustration} />
 						<ButtonTitle>Procurar produtos</ButtonTitle>
 						<ButtonSubtitle>Depois eu crio a conta</ButtonSubtitle>
@@ -78,4 +78,4 @@ function SplashLogin() {
 	);
 }
 
-export default SplashLogin;
+export default SelectLogin;

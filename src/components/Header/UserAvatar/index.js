@@ -26,7 +26,7 @@ export default function UserAvatar() {
 		loadingUser
 			? <ActivityIndicator color={palette.primary.main} />
 			: (
-				<TouchableOpacity onPress={()=>{if (selectedAddress) navigation.navigate('ProfileRoutes', { screen: 'ProfileScreen' })}}>
+				<TouchableOpacity onPress={()=>{if (selectedAddress) navigation.navigate('ProfileScreen')}}>
 					<Avatar
 						image={user?.image || ''}
 						alt={user?.fullName || ''}

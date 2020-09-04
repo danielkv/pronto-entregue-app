@@ -3,6 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 
+import { useNavigation } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 
@@ -14,6 +15,7 @@ import UserAvatar from './UserAvatar';
 
 export default function Header({ variant='solid', showBackButton=true, rigthContent=true, searchIcon=true, profileAvatar=true }) {
 	const iconsColor = variant === 'transparent' ? '#fff' : '#655A51';
+	const navigation = useNavigation();
 	const insets = useSafeArea();
 
 	const ContainerComponent = variant == 'transparent'

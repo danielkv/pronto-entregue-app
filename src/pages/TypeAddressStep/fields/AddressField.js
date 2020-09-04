@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { InteractionManager } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
@@ -23,7 +24,11 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 	const [block, setBlock] = useState(false);
 
 	useFocusEffect(useCallback(()=>{
-		focusFirstField(false)
+		const task = InteractionManager.runAfterInteractions(() => {
+			focusFirstField(false)
+		});
+
+		return () => task.cancel();
 	}, []))
 
 	function validate () {

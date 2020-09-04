@@ -6,13 +6,12 @@ import { IconButton } from '../../../react-native-ui';
 
 export default function BackButton({ color }) {
 	const navigation = useNavigation();
-	const parentState = navigation?.dangerouslyGetParent?.()?.canGoBack?.() ?? false;
 	const navigationState = navigation?.canGoBack?.() ?? false;
 
-	const canGoBack = parentState || navigationState;
+	const canGoBack = navigationState;
 	
 	function handlePressBackButton () {
-		if (navigation.dangerouslyGetParent().canGoBack() || navigation.canGoBack())
+		if (navigation.canGoBack())
 			navigation.goBack();
 	}
 

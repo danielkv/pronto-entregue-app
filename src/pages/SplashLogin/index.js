@@ -19,7 +19,7 @@ import SelectLogin from './selectLogin';
 
 import { SET_SELECTED_ADDRESS } from '../../graphql/addresses';
 
-export default function LocationAccess() {
+export default function SplashLogin() {
 	const opacity = new Animated.Value(1);
 	const { palette } = useTheme();
 	const navigation = useNavigation();
@@ -38,7 +38,6 @@ export default function LocationAccess() {
 
 	useEffect(()=>{
 		setupUpdates()
-
 		init()
 	}, [])
 	
@@ -81,7 +80,7 @@ export default function LocationAccess() {
 
 				// get user's address
 				userAddress = await getUserLastOrderAddress(user);
-				if (!userAddress) return navigation.replace('AddressRoutes', { screen: 'NewAddressScreen' });
+				if (!userAddress) return navigation.replace('NewAddressScreen');
 			} else {
 				userAddress = await getLocalSavedAddress()
 
@@ -93,14 +92,14 @@ export default function LocationAccess() {
 			await setSelectedAddress({ variables: { address: userAddress } });
 			
 			// navigate to feed
-			return navigation.replace('HomeRoutes', { screen: 'FeedScreen' });
+			return navigation.replace('FeedScreen');
 		} catch (err) {
 			Alert.alert(
 				'Ops, Ocorreu um erro!',
 				getErrorMessage(err),
 				[
 					{ text: 'Tentar novamente', onPress: init },
-					{ text: 'Cancelar', onPress: ()=>{ logUserOut(); resetAddress(); showSplashLogin(); } }
+					{ text: 'Tentar', onPress: ()=>{ logUserOut(); resetAddress(); showSplashLogin(); } }
 				]
 			);
 		}
@@ -113,7 +112,7 @@ export default function LocationAccess() {
 					'Há uma nova versão disponível',
 					'Para ter uma melhor experiência, você precisa reiniciar o app',
 					[
-						{ text: 'Sim (Isso irá limpar sua cesta)', onPress: ()=>Updates.reloadAsync() }
+						{ text: 'Ok (Isso irá limpar sua cesta)', onPress: ()=>Updates.reloadAsync() }
 					]
 				)
 			}

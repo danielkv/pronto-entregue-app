@@ -44,13 +44,13 @@ export default function SelectAddress() {
 					variant='filled'
 					color='primary'
 					icon='plus'
-					onPress={()=>navigation.navigate('AddressRoutes', { screen: 'NewAddressScreen' })}
+					onPress={()=>navigation.navigate('NewAddressScreen')}
 				/>
 			</Paper>
 
 			{loadingAddresses
 				? <LoadingBlock />
-				: Boolean(addresses.length) && <UserAddresses />}
+				: Boolean(addresses.length) && <UserAddresses addresses={addresses} />}
 
 			{Boolean(addressesError) && <ErrorBlock error={getErrorMessage(addressesError)} />}
 		</ScrollView>

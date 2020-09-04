@@ -49,7 +49,7 @@ export default function CouponBlock() {
 		if (loggedUserId)
 			setModalOpen(true);
 		else
-			navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'HomeRoutes', redirectParams: { screen: 'CartScreen' } } });
+			navigation.navigate('LoginScreen', {  redirect: 'CartScreen' });
 	}
 
 	function handleCheckCoupon(name, order) {

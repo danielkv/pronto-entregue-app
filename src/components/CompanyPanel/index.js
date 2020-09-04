@@ -28,7 +28,7 @@ export default function CompanyPanel({ company }) {
 
 	return (
 		<Paper style={{ paddingVertical: 20 }}>
-			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('HomeRoutes', { screen: 'CompanyScreen', params: routeState })}>
+			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('CompanyScreen', routeState)}>
 				<Image
 					source={{ uri: company.image }}
 					style={{

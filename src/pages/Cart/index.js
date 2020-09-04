@@ -89,7 +89,7 @@ export default function Cart({ navigation }) {
 
 				navigation.navigate('PaymentScreen');
 			} else {
-				navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: {  redirect: 'HomeRoutes', redirectParams: { screen: 'CartScreen' } } });
+				navigation.navigate('LoginScreen', { redirect: 'CartScreen' });
 			}
 		} catch (err) {
 			switch (err.type) {
@@ -97,14 +97,14 @@ export default function Cart({ navigation }) {
 					Alert.alert(
 						'Complete seu cadastro',
 						getErrorMessage(err.message),
-						[{ text: 'Arrumar isso agora', onPress: ()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId, redirect: { name: 'CartRoutes', params: { screen: 'CartScreen' } } } }) }]
+						[{ text: 'Arrumar isso agora', onPress: ()=>navigation.navigate('SubscriptionScreen', { userId: loggedUserId, redirect: { name: 'CartScreen' } }) }]
 					);
 					break;
 				case 'ADDRESS_NOT_CREATED':
 					Alert.alert(
 						'Verificar endereço',
 						getErrorMessage(err.message),
-						[{ text: 'Verificar', onPress: ()=>navigation.navigate('AddressRoutes', { screen: 'TypeAddressScreen', params: { address: _.cloneDeep(selectedAddress), redirect: { screen: 'CartRoutes', params: { screen: 'PaymentScreen' } } } }) }],
+						[{ text: 'Verificar', onPress: ()=>navigation.navigate('TypeAddressScreen', { address: _.cloneDeep(selectedAddress), redirect: { screen: 'PaymentScreen' } }) }],
 					);
 					break;
 				default:

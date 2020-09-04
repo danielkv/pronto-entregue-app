@@ -33,7 +33,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function TypeAddress() {
-	const { params: { address = null, redirect = { screen: 'HomeRoutes', params: { screen: 'FeedScreen' } } } = {} } = useRoute();
+	const { params: { address = null, redirect = { screen: 'FeedScreen' } } = {} } = useRoute();
 
 	const navigation = useNavigation();
 	const scrollY = new Animated.Value(0);
@@ -74,9 +74,9 @@ export default function TypeAddress() {
 	function setAddress(address) {
 		return setSelectedAddress({ variables: { address } })
 			.then(()=>{
-				navigation.dangerouslyGetParent().reset({
+				navigation.reset({
 					index: 0,
-					routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+					routes: [{ name: 'FeedScreen' }]
 				})
 			});
 	}
