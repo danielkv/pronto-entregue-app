@@ -9,6 +9,7 @@
 			"ios",
 			"android"
 		],
+		"experiments": {"redesignedLogBox": true},
 		"version": "1.6.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/icon.png",
