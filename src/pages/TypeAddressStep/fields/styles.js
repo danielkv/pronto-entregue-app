@@ -20,7 +20,7 @@ export const FieldWrapper = styled.View`
 	margin-bottom: 35px;
 `;
 export const HelperWrapper = styled.View`
-	
+	margin-right: 55px;
 `;
 
 export const FieldLabel = styled(Typography)`
@@ -57,6 +57,9 @@ export const FieldFooter = styled.View`
 	margin-top:15px;
 	flex-direction: row;
 	justify-content: space-evenly;
+	position: absolute;
+	bottom: 15px;
+	right: 20px;
 `;
 export const Line = styled(Typography)`
 	margin-top:3px;

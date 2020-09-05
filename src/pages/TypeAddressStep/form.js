@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import { useSafeArea } from 'react-native-safe-area-context';
 
 import { useRoute } from '@react-navigation/core';
@@ -9,6 +10,7 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import { Typography, useTheme } from '../../react-native-ui';
 import AddressField from './fields/AddressField';
 import CheckAddress from './fields/CheckAddress';
+import { FieldInput } from './fields/styles';
 import Navigator from './Navigator';
 
 const Stack = createStackNavigator();
@@ -17,6 +19,11 @@ export default function AddressForm({ redirect }) {
 	const routes = ['nameField', 'streetNumberField', 'districtField', 'complementField', 'referenceField', 'cityStateZipcodeField', 'checkAddress'];
 	const { palette } = useTheme();
 	const insets = useSafeArea();
+
+	const inputs = {
+		number: (props) => <FieldInput {...props} keyboardType='numeric' />,
+		zipcode: (props) => <TextInputMask customTextInput={FieldInput} {...props} type='zip-code' />
+	}
 	
 	const { state: { index = 0 } = {} } = useRoute();
 
@@ -36,6 +43,7 @@ export default function AddressForm({ redirect }) {
 			headerMode='float'
 			tabBar={()=><View />}
 			screenOptions={{
+				tabBar: false,
 				headerTintColor: '#fff',
 				headerStyle: { height: 70 + insets.top, backgroundColor: palette.primary.main },
 				headerTitle: handleHeaderTitle,
@@ -64,6 +72,7 @@ export default function AddressForm({ redirect }) {
 						{...props}
 						labels={['Digite o nome da rua/avenida', 'E o número']}
 						fields={['street', 'number']}
+						inputs={inputs}
 						description='Caso sua casa não tenha número, preencha com "0".'
 						currentRoute={index}
 						routes={routes}
@@ -114,6 +123,7 @@ export default function AddressForm({ redirect }) {
 						{...props}
 						labels={['Digite a cidade', 'Estado', 'CEP']}
 						fields={['city', 'state', 'zipcode']}
+						inputs={inputs}
 						description='Para finalizar verifique a cidade, estado e CEP de onde quer receber seu pedido.'
 						currentRoute={index}
 						routes={routes}

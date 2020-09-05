@@ -74,7 +74,7 @@ function CheckAddress({ redirect }) {
 				</HelperWrapper>
 			</Paper>
 
-			<FieldFooter>
+			<FieldFooter style={{ position: 'relative', right: 0, bottom: 0 }}>
 				<Button
 					style={{ root: { flex: 1 }, text: { fontSize: 14 } }}
 					icon={isSubmitting ? null : { name: validAddress ? 'check' : 'map-pin' }}

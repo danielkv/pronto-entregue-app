@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, View } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/core';
 import { useFormikContext } from 'formik';
 
-import { FormHelperText, Button, Icon } from '../../../react-native-ui';
+import { FormHelperText, Icon, IconButton } from '../../../react-native-ui';
 import {
 	FieldContainer,
 	FieldPanel,
@@ -18,7 +18,7 @@ import {
 	Field
 } from './styles'
 
-function AddressField({ labels, fields, helperText, description, navigation, routes, currentRoute }) {
+function AddressField({ labels, inputs, fields, helperText, description, navigation, routes, currentRoute }) {
 	const refs = {};
 	const { values, errors, handleChange } = useFormikContext();
 	const [block, setBlock] = useState(false);
@@ -59,6 +59,8 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 		if (firstFieldRef?.focus) {
 			if (!firstFieldRef.isFocused())
 				firstFieldRef.focus();
+			else
+				firstFieldRef.blur();
 		}
 	}
 
@@ -82,43 +84,61 @@ function AddressField({ labels, fields, helperText, description, navigation, rou
 		}
 	}
 
-	return (
-		<FieldContainer bounces={false} keyboardDismissMode='none' keyboardShouldPersistTaps='never'>
-			<FieldPanel onPress={()=>focusFirstField(true)}>
-				<Icon name='edit-2' style={{ root: { position: 'absolute', right: 20, top: 20 } }} />
-				<FieldWrapper>
-					{fields.map((field, index)=>
-						<Field key={index}>
-							<FieldLabel>{labels[index]}</FieldLabel>
-							<FieldInput
-								ref={ref => { refs[field]= ref; }}
-								onChangeText={handleChange(field)}
-								onSubmitEditing={nextField(index)}
-								blurOnSubmit={isLastScreen(routes, currentRoute) && isLastField(index) ? true : false}
-								value={values[field]}
-							/>
-							{Boolean(errors[field]) && <FormHelperText error>{errors[field]}</FormHelperText>}
-						</Field>
-					)}
-				</FieldWrapper>
+	function returnField(field, index) {
+		const props = {
+			ref: ref => { refs[field]= ref; },
+			onChangeText: handleChange(field),
+			onSubmitEditing: nextField(index),
+			blurOnSubmit: isLastScreen(routes, currentRoute) && isLastField(index) ? true : false,
+			value: values[field]
+		}
+		
+		const fn = inputs?.[field];
 
-				<HelperWrapper>
-					{Boolean(helperText) && <FieldHelper>{helperText}</FieldHelper>}
-					{Boolean(description) && <FieldDescription>{description}</FieldDescription>}
-				</HelperWrapper>
-			</FieldPanel>
+		if (fn && typeof fn === 'function')
+			return fn(props)
+		else
+			return <FieldInput {...props} />
+	}
+
+	return (
+		<View>
+			<FieldContainer bounces={false} keyboardDismissMode='none' keyboardShouldPersistTaps='never'>
+				<FieldPanel onPress={()=>focusFirstField(true)}>
+					<Icon name='edit-2' style={{ root: { position: 'absolute', right: 20, top: 20 } }} />
+					<FieldWrapper>
+						{fields.map((field, index)=>
+							<Field key={index}>
+								<FieldLabel>{labels[index]}</FieldLabel>
+								{returnField(field, index)}
+								{Boolean(errors[field]) && <FormHelperText error>{errors[field]}</FormHelperText>}
+							</Field>
+						)}
+					</FieldWrapper>
+
+					<HelperWrapper>
+						{Boolean(helperText) && <FieldHelper>{helperText}</FieldHelper>}
+						{Boolean(description) && <FieldDescription>{description}</FieldDescription>}
+					</HelperWrapper>
+				</FieldPanel>
+			</FieldContainer>
 			<FieldFooter>
-				<Button
-					style={{ root: { flex: 1 }, text: { fontSize: 14 } }}
-					icon='chevron-right'
-					onPress={goToNext}
-					variant='filled'
-					color='primary'
-				>
-					Próximo
-				</Button>
+				<IconButton icon={{ name: 'chevron-right', size: 30 }} style={{
+					button: { height: 60, width: 60 }, root: {
+						shadowColor: "#000",
+						shadowOffset: {
+							width: 0,
+							height: 5,
+						},
+						shadowOpacity: 0.34,
+						shadowRadius: 6.27,
+
+						elevation: 10
+					}
+				}} color='primary' variant='filled' onPress={goToNext} />
 			</FieldFooter>
-		</FieldContainer>);
+		</View>
+	);
 }
 
 export default AddressField;
