@@ -82,7 +82,6 @@ export default function TypeAddress() {
 	}
 
 	// ------- END OF FUNCIONS -------
-	//console.log(MaskService.toMask('zip-code', '8860000'));
 	const initialValues = __DEV__ && !address ? {
 		street: 'Rua João Quartieiro',
 		number: '43',

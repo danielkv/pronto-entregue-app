@@ -21,6 +21,7 @@ import { Container, PointerContainer, PinShadow } from './styles';
 
 import { SET_SELECTED_ADDRESS, SET_USER_ADDRESS, SEARCH_LOCATION } from '../../graphql/addresses';
 
+
 const clearCamera = {
 	center: {},
 	pitch: 0,
@@ -64,7 +65,7 @@ export default function MapScreen() {
 	function handleMapReady() {
 		setScreenWidth(dimensionWidth)
 
-		if (address) {
+		if (address?.location) {
 			const coords = addressToCamera(address).center;
 			moveCameraTo({ coords });
 		}
@@ -81,13 +82,14 @@ export default function MapScreen() {
 			})
 			.catch(err => {
 				Alert.alert('Ocorreu um erro', err.message, [
-					{ text: 'Tentar novamente', onPress: centerUserLocation }
+					{ text: 'Tentar novamente', onPress: centerUserLocation },
+					{ text: 'Encontrar local' },
 				])
 			});
 	}
 
 	useEffect(()=>{
-		if (address) return setLoadingLocation(false);
+		if (address.location) return setLoadingLocation(false);
 
 		centerUserLocation()
 	}, [address])
@@ -165,8 +167,6 @@ export default function MapScreen() {
 			// if address is not enough to get data
 			if (!normalizedAddress.city || !normalizedAddress.state || !normalizedAddress.location)
 				return navigation.navigate('TypeAddressScreen', { address: normalizedAddress })
-
-			//console.log(normalizedAddress);
 			
 			await setSelectedAddress({ variables: { address: normalizedAddress } })
 				.then(()=>{
@@ -252,17 +252,26 @@ export default function MapScreen() {
 								: 'Salvar e Utilizar'}
 						</Button>}
 					
-					{!isMinimumValid && <Button
-						icon='arrow-right-circle'
-						disabled={loadingSelect}
-						color='default'
-						variant='filled'
-						onPress={handleContinueAddress}
-					>
-						{loadingSelect
-							? <LoadingBlock />
-							: 'Continuar'}
-					</Button>}
+					{!isMinimumValid
+						? <Button
+							icon={!loadingSelect && 'arrow-right-circle'}
+							disabled={loadingSelect}
+							color='default'
+							variant='filled'
+							onPress={handleContinueAddress}
+						>
+							{loadingSelect
+								? <LoadingBlock />
+								: 'Continuar'}
+						</Button>
+						: <Button
+							icon={!loadingSelect && 'arrow-left-circle'}
+							color='default'
+							variant='outlined'
+							onPress={()=>navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
+							label='Digitar outro endereço'
+						/>
+					}
 				</Paper>}
 
 				<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>

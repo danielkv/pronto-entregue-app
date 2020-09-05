@@ -5,6 +5,7 @@ import { MaskService } from 'react-native-masked-text'
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/core';
 import { Formik } from 'formik';
+import _ from 'lodash';
 import * as Yup from 'yup';
 
 import { sanitizeAddress } from '../../controller/address';
@@ -70,7 +71,22 @@ export default function TypeAddressStep() {
 				if (searchAddress.length) address.location = searchAddress[0].location
 
 				const addressToSend = sanitizeAddress(address)
-				navigation.navigate('MapScreen', { address: addressToSend })
+				const alertMessage = {}
+				
+				if (address.location) {
+					alertMessage.title = 'Encontramos você!';
+					alertMessage.message = 'Achamos a localização a partir do endereço digitado, na próxima tela, verifique se o marcador está no local correto.';
+					alertMessage.button = 'Verificar'
+				}else {
+					alertMessage.title = 'Localização não encontrada';
+					alertMessage.message = 'Não encontramos a localização a partir do endereço digitado, na próxima tela, posicione o marcador no local correto.';
+					alertMessage.button = 'OK'
+				}
+				
+				Alert.alert(
+					alertMessage.title,
+					alertMessage.message,
+					[{ text: alertMessage.button, onPress: ()=>navigation.navigate('MapScreen', { address: _.cloneDeep(addressToSend) }) }])
 			})
 			.catch((err)=>{
 				Alert.alert('Ops, ocorreu um erro', getErrorMessage(err))
@@ -78,8 +94,19 @@ export default function TypeAddressStep() {
 	}
 
 	// ------- END OF FUNCIONS -------
-	//console.log(MaskService.toMask('zip-code', '8860000'));
-	const initialValues = {
+	const initialValues = __DEV__ && !address ? {
+		street: 'Rua João Quartieiro',
+		number: '43',
+		district: 'Centro',
+		zipcode: '88960-000',
+		complement: 'casa',
+		reference: 'Ritmi',
+		
+		name: '',
+		city: 'Sombrio',
+		state: 'SC',
+		location: null,
+	} : {
 		street: address?.street || '',
 		number: address?.number ? String(address.number) : '',
 		district: address?.district || '',

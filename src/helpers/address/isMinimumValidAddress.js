@@ -14,6 +14,6 @@ export default function isMinimumValidAddress(address) {
 		
 		&& _.isArray(address.location)
 
-		&& address.city
-		&& address.state
+		&& Boolean(address.city
+		&& address.state)
 }
