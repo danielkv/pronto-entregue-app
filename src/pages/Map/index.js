@@ -44,24 +44,25 @@ const dimensionWidth = Math.round(Dimensions.get('window').width);
 const paddingOffset = 20;
 
 export default function MapScreen() {
-	const { params: { address = null, redirect = { screen: 'FeedScreen' } } = {} } = useRoute();
-	
+	const { params: { address = {}, redirect = { screen: 'FeedScreen' } } = {} } = useRoute();
+
 	const navigation = useNavigation();
 	const { palette } = useTheme();
 	const MapRef = useRef();
 	const [loadingLocation, setLoadingLocation] = useState(true);
 	const apolloClient = useApolloClient();
 
-	const [screenWidth, setScreenWidth] = useState(()=>dimensionWidth-1);
+	const [screenWidth, setScreenWidth] = useState(() => dimensionWidth - 1);
 	const [mapPadding, setMapPadding] = useState(215);
 	const [loadingSelect, setLoadingSelect] = useState(false);
+	const [hasLocation, setHasLocation] = useState(false);
 
 	const loggedUserId = useLoggedUserId();
 	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	const [createUserAddress] = useMutation(SET_USER_ADDRESS);
 
 	const [camera, setCamera] = useState(null);
-	
+
 	function handleMapReady() {
 		setScreenWidth(dimensionWidth)
 
@@ -77,7 +78,7 @@ export default function MapScreen() {
 			.then(location => {
 				moveCameraTo(location)
 			})
-			.then(()=>{
+			.then(() => {
 				setLoadingLocation(false);
 			})
 			.catch(err => {
@@ -88,13 +89,30 @@ export default function MapScreen() {
 			});
 	}
 
-	useEffect(()=>{
-		if (address.location) return setLoadingLocation(false);
+	useEffect(() => {
+		if (address?.location) {
+			setLoadingLocation(false);
+			setHasLocation(true)
+			return;
+		}
 
-		centerUserLocation()
+		console.log()
+
+		//centerUserLocation()
 	}, [address])
 
-	function moveCameraTo(location, zoom=18) {
+	function handleUserChangeLocation({ nativeEvent: { coordinate } }) {
+		if (address?.location || hasLocation) return;
+		if (!coordinate?.latitude || !coordinate?.longitude) return;
+
+		moveCameraTo({ coords: coordinate });
+		setHasLocation(true);
+		setLoadingLocation(false);
+	}
+
+	function moveCameraTo(location, zoom = 18) {
+		if (!location?.coords?.latitude || !location?.coords?.longitude) return;
+
 		const newCamera = camera ? cloneDeep(camera) : cloneDeep(clearCamera)
 		newCamera.center = { latitude: location.coords.latitude, longitude: location.coords.longitude };
 		newCamera.zoom = zoom;
@@ -102,7 +120,7 @@ export default function MapScreen() {
 		MapRef.current.animateCamera(newCamera);
 	}
 
-	function addressToCamera (address, zoom=18) {
+	function addressToCamera(address, zoom = 18) {
 		const { location } = address;
 		const newCamera = cloneDeep(clearCamera)
 		newCamera.center = { latitude: location[0], longitude: location[1] };
@@ -119,7 +137,7 @@ export default function MapScreen() {
 	function changeAddressPoint(newRegion) {
 		setCamera({ ...camera, center: newRegion })
 	}
-	
+
 	function handleRegionChange(newRegion) {
 		changeAddressPoint(newRegion);
 	}
@@ -131,12 +149,12 @@ export default function MapScreen() {
 
 			setLoadingSelect(true);
 			const normalizedAddress = sanitizeAddress({ ...address, location: cameraToLocation(camera) });
-						
+
 			return createUserAddress({ variables: { userId: loggedUserId, addressData: normalizedAddress } })
-				.then(({ data: { setUserAddress } })=>{
+				.then(({ data: { setUserAddress } }) => {
 					return setSelectedAddress({ variables: { address: setUserAddress } })
 				})
-				.then(()=>{
+				.then(() => {
 					navigation.reset({
 						index: 0,
 						routes: [{ name: redirect.screen, params: redirect.params }]
@@ -157,19 +175,19 @@ export default function MapScreen() {
 			const location = cameraToLocation(camera)
 			let normalizedAddress = {};
 
-			if (address) {
+			if (isMinimumValidAddress(address)) {
 				normalizedAddress = sanitizeAddress({ ...address, location });
 			} else {
 				const { data: { searchLocation: addressFound } } = await apolloClient.mutate({ mutation: SEARCH_LOCATION, variables: { location } });
 				normalizedAddress = sanitizeAddress({ ...addressFound, location });
 			}
-				
+
 			// if address is not enough to get data
 			if (!normalizedAddress.city || !normalizedAddress.state || !normalizedAddress.location)
 				return navigation.navigate('TypeAddressScreen', { address: normalizedAddress })
-			
+
 			await setSelectedAddress({ variables: { address: normalizedAddress } })
-				.then(()=>{
+				.then(() => {
 					navigation.reset({
 						index: 0,
 						routes: [{ name: redirect.screen, params: redirect.params }]
@@ -199,7 +217,9 @@ export default function MapScreen() {
 					showsUserLocation={true}
 					userLocationAnnotationTitle='Meu local atual'
 					scrollEnabled={!loadingLocation}
-					
+
+					onUserLocationChange={handleUserChangeLocation}
+
 					initialCamera={initialCamera}
 					provider={PROVIDER_GOOGLE}
 					style={[styles.mapStyle, { width: screenWidth }]}
@@ -213,12 +233,12 @@ export default function MapScreen() {
 				/>
 				{loadingLocation
 					? <ActivityIndicator color={palette.primary.main} />
-					: <PointerContainer style={{ marginTop: 10 -mapPadding }}>
+					: <PointerContainer style={{ marginTop: 10 - mapPadding }}>
 						<PinShadow />
 						<Icon name='map-pin' size={60} color={palette.primary.main} />
 					</PointerContainer>}
 				{!loadingLocation && <Paper
-					onLayout={(event)=>{
+					onLayout={(event) => {
 						const { height } = event.nativeEvent.layout;
 						setMapPadding(height + paddingOffset);
 					}}
@@ -251,7 +271,7 @@ export default function MapScreen() {
 								? <LoadingBlock />
 								: 'Salvar e Utilizar'}
 						</Button>}
-					
+
 					{!isMinimumValid
 						? <Button
 							icon={!loadingSelect && 'arrow-right-circle'}
@@ -268,7 +288,7 @@ export default function MapScreen() {
 							icon={!loadingSelect && 'arrow-left-circle'}
 							color='default'
 							variant='outlined'
-							onPress={()=>navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
+							onPress={() => navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
 							label='Digitar outro endereço'
 						/>
 					}
@@ -289,8 +309,8 @@ export default function MapScreen() {
 		</View>
 	);
 }
-			
-			
+
+
 const styles = StyleSheet.create({
 	mapStyle: {
 		...StyleSheet.absoluteFillObject

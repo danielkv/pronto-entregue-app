@@ -12,7 +12,7 @@ import {
 	ModalBadgeContainer,
 } from './styles';
 
-export default function Panel({ children, title, handleCancel, handleConfirm, badgeText, HeaderRight, confirmButton=true }) {
+export default function Panel({ children, title, handleCancel, handleConfirm, badgeText, HeaderRight, confirmButton = true }) {
 	const RenderHeaderRight = () => {
 		if (HeaderRight) return <HeaderRight />;
 
@@ -30,7 +30,7 @@ export default function Panel({ children, title, handleCancel, handleConfirm, ba
 
 				<HeaderRightContainer>
 					{!!badgeText
-						&&	(
+						&& (
 							<ModalBadgeContainer>
 								<Chip
 									style={{ root: { height: 24, paddingHorizontal: 10 }, text: { fontSize: 13 } }}

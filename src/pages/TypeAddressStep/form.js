@@ -24,7 +24,7 @@ export default function AddressForm({ redirect }) {
 		number: (props) => <FieldInput {...props} keyboardType='numeric' />,
 		zipcode: (props) => <TextInputMask customTextInput={FieldInput} {...props} type='zip-code' />
 	}
-	
+
 	const { state: { index = 0 } = {} } = useRoute();
 
 	function handleHeaderTitle(info) {
@@ -41,7 +41,7 @@ export default function AddressForm({ redirect }) {
 	return (
 		<Stack.Navigator
 			headerMode='float'
-			tabBar={()=><View />}
+			tabBar={() => <View />}
 			screenOptions={{
 				tabBar: false,
 				headerTintColor: '#fff',
@@ -51,10 +51,10 @@ export default function AddressForm({ redirect }) {
 				headerBackTitleVisible: false,
 				cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 			}}
-			//swipeEnabled={false}
+		//swipeEnabled={false}
 		>
 			<Stack.Screen name='nameField' options={{ title: 'Nome' }}>
-				{(props)=>
+				{(props) =>
 					<AddressField
 						{...props}
 						labels={['Dê um nome para seu endereço']}
@@ -67,7 +67,7 @@ export default function AddressForm({ redirect }) {
 			</Stack.Screen>
 
 			<Stack.Screen name='streetNumberField' options={{ title: 'Rua / nº' }}>
-				{(props)=>
+				{(props) =>
 					<AddressField
 						{...props}
 						labels={['Digite o nome da rua/avenida', 'E o número']}
@@ -80,7 +80,7 @@ export default function AddressForm({ redirect }) {
 			</Stack.Screen>
 
 			<Stack.Screen name='districtField' options={{ title: 'Bairro' }}>
-				{(props)=>
+				{(props) =>
 					<AddressField
 						{...props}
 						labels={['Qual o nome do bairro?']}
@@ -92,7 +92,7 @@ export default function AddressForm({ redirect }) {
 			</Stack.Screen>
 
 			<Stack.Screen name='complementField' options={{ title: 'Complemento' }}>
-				{(props)=>
+				{(props) =>
 					<AddressField
 						{...props}
 						labels={['Complemento']}
@@ -105,7 +105,7 @@ export default function AddressForm({ redirect }) {
 			</Stack.Screen>
 
 			<Stack.Screen name='referenceField' options={{ title: 'Ponto de referência' }}>
-				{(props)=>
+				{(props) =>
 					<AddressField
 						{...props}
 						labels={['Ponto de referência']}
@@ -116,9 +116,9 @@ export default function AddressForm({ redirect }) {
 						routes={routes}
 					/>}
 			</Stack.Screen>
-				
+
 			<Stack.Screen name='cityStateZipcodeField' options={{ title: 'Cidade / Estado' }}>
-				{(props)=>
+				{(props) =>
 					<AddressField
 						{...props}
 						labels={['Digite a cidade', 'Estado', 'CEP']}
@@ -130,7 +130,7 @@ export default function AddressForm({ redirect }) {
 					/>}
 			</Stack.Screen>
 
-			<Stack.Screen  name='checkAddress' options={{ title: 'Verificar dados' }}>
+			<Stack.Screen name='checkAddress' options={{ title: 'Verificar dados' }}>
 				{props => <CheckAddress {...props} redirect={redirect} />}
 			</Stack.Screen>
 		</Stack.Navigator>

@@ -21,18 +21,18 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 	const [search, setSearch] = useState('');
 	const { palette } = useTheme();
 
-	useEffect(()=>{
+	useEffect(() => {
 		return () => {
 			setOptionGroup(null);
 			setSearch('');
 		}
 	}, []);
 
-	useEffect(()=>{
+	useEffect(() => {
 		if (optionGroupModal) setOptionGroup(cloneDeep(optionGroupModal));
 	}, [optionGroupModal]);
 
-	const price = useMemo(()=>{
+	const price = useMemo(() => {
 		return calculateOptionsGroupPrice(optionGroup);
 	}, [optionGroup, calculateOptionsGroupPrice]);
 
@@ -40,7 +40,7 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 		try {
 			const optionIndex = optionGroup.options.findIndex(opt => optionId === opt.id);
 			const newState = getGroupNewState(optionGroup, optionIndex)
-			
+
 			setOptionGroup(newState);
 		} catch (err) {
 			Alert.alert('Opa! Acho que você não pode fazer isso', err.message)
@@ -53,7 +53,7 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 		<Panel
 			title={optionGroup.name}
 			handleCancel={closeModal}
-			handleConfirm={()=>confirmModal(optionGroup)}
+			handleConfirm={() => confirmModal(optionGroup)}
 			badgeText={BRL(price).format()}
 		>
 			{optionGroup.options.length >= 10 && (
@@ -62,12 +62,12 @@ export default function Modal({ optionGroup: optionGroupModal, closeModal, confi
 						label='Buscar'
 						style={{ inputContainer: { backgroundColor: palette.background.main } }}
 						placeholderTextColor='#D1C6B1'
-						onChangeText={(text)=>{ setSearch(text.toLowerCase()) }}
+						onChangeText={(text) => { setSearch(text.toLowerCase()) }}
 					/>
 				</SearchContainer>
 			)}
 			<OptionsContainer>
-				{optionGroup.options.filter(opt=>opt.name.toLowerCase().search(search) !== -1).map((option, optionIndex)=>(
+				{optionGroup.options.filter(opt => opt.name.toLowerCase().search(search) !== -1).map((option, optionIndex) => (
 					<Option
 						key={optionIndex}
 						option={option}
