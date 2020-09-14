@@ -16,7 +16,7 @@ import { FooterContainer, FooterContent } from './style';
 
 export default function CompanyPanel({ company }) {
 	const navigation = useNavigation();
-	
+
 	const routeState = {
 		companyId: company.id,
 		companyName: company.displayName,
@@ -24,11 +24,11 @@ export default function CompanyPanel({ company }) {
 		companyBackground: company.backgroundColor
 	}
 
-	const isOpen = company?.nextClose ? moment(company.nextClose).isSameOrAfter() : false
+	const isOpen = company?.nextClose ? moment(company.nextClose).isSameOrAfter() : company.isOpen;
 
 	return (
 		<Paper style={{ paddingVertical: 20 }}>
-			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>navigation.push('HomeRoutes', { screen: 'CompanyScreen', params: routeState })}>
+			<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.push('HomeRoutes', { screen: 'CompanyScreen', params: routeState })}>
 				<Image
 					source={{ uri: company.image }}
 					style={{
@@ -38,7 +38,7 @@ export default function CompanyPanel({ company }) {
 						resizeMode: 'cover'
 					}}
 				/>
-				
+
 				<View style={{ marginLeft: 10 }}>
 					<View style={{ flexDirection: 'row', marginBottom: 5 }}>
 						{Boolean(company && !isOpen) && <ClosedCompanyChip allowBuyClosed={company?.allowBuyClosed} />}
