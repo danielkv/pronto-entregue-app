@@ -21,11 +21,11 @@ export default function DeliveryItem({ item: delivery }) {
 	const colors = DeliveryController.statusColors(delivery.status);
 	const loggedUserId = useLoggedUserId();
 
-	const [setDeliveryMan, { loading: loadingSetDeliveryMen }] =useMutation(SET_DELIVERY_MAN, { variables: { deliveryId: delivery.id, userId: loggedUserId } });
+	const [setDeliveryMan, { loading: loadingSetDeliveryMen }] = useMutation(SET_DELIVERY_MAN, { variables: { deliveryId: delivery.id, userId: loggedUserId } });
 
 	function handleSetDeliveryMan() {
 		return setDeliveryMan()
-			.catch((err)=>{
+			.catch((err) => {
 				Alert.alert('Ops! Algo deu errado', getErrorMessage(err));
 			})
 	}
@@ -46,8 +46,8 @@ export default function DeliveryItem({ item: delivery }) {
 	const isDeliveryManOfThis = delivery?.deliveryMan?.user.id === loggedUserId;
 
 	return (
-		
-		<Paper style={{ marginTop: 10, marginBottom: 10, padding: 15, position: 'relative', backgroundColor: isDeliveryManOfThis ? 'white': '#d8d0c0' }} elevation={0}>
+
+		<Paper style={{ marginTop: 10, marginBottom: 10, padding: 15, position: 'relative', backgroundColor: isDeliveryManOfThis ? 'white' : '#d8d0c0' }} elevation={0}>
 			<View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<Chip style={{ root: { height: 30 }, text: { fontSize: 13 } }} label={`#${delivery.id}`} color='secondary' />
@@ -69,21 +69,29 @@ export default function DeliveryItem({ item: delivery }) {
 							<Typography style={{ fontSize: 14 }}><Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 14 }}>Contato remetente:</Typography> {delivery.senderContact}</Typography>
 						</View>}
 						<View>
-							<Typography style={{ fontFamily: 'Roboto-Bold',fontSize: 16 }}>Entregar à:</Typography>
-							<Typography style={{ fontSize: 14 }}>{delivery.receiverName}</Typography>
-							<Typography style={{ fontSize: 14 }}>{delivery.receiverContact}</Typography>
+							<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>Entregar à:</Typography>
+							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+								<Typography style={{ fontSize: 14 }}>{delivery.receiverName}</Typography>
+								<Button
+									icon={{ name: 'phone', size: 14 }}
+									fullWidth={false} style={{ marginLeft: 5, fontSize: 14 }}
+									onPress={() => Linking.openURL(`tel:${delivery.receiverContact}`)}
+								>
+									{delivery.receiverContact}
+								</Button>
+							</View>
 						</View>
 					</>
 				)}
 			</View>
 
 			{Boolean(delivery.order && delivery.deliveryMan) && <OrderInfo order={delivery.order} />}
-			
+
 			<View>
-				<TouchableOpacity onPress={()=>handleOpenAddress('Retirada', delivery.from.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15, marginBottom: 10 }}>
+				<TouchableOpacity onPress={() => handleOpenAddress('Retirada', delivery.from.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15, marginBottom: 10 }}>
 					<DeliveryAddress address={delivery.from} title='Retirada' />
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=>handleOpenAddress('Entrega', delivery.to.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15 }}>
+				<TouchableOpacity onPress={() => handleOpenAddress('Entrega', delivery.to.location)} style={{ padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 15 }}>
 					<DeliveryAddress address={delivery.to} title='Entrega' />
 				</TouchableOpacity>
 				<View style={{ flexDirection: 'row', marginTop: 6, alignItems: 'center', justifyContent: 'flex-end' }}>
