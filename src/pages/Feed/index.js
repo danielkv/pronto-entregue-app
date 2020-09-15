@@ -27,14 +27,14 @@ export default function Feed() {
 	const { palette } = useTheme();
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { data: { productsOnSale = [], bestSellers = [], companies = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location, pagination: { page: 0, rowsPerPage: 15 } }, fetchPolicy: 'no-cache' });
+	const { data: { productsOnSale = [], bestSellers = [], companies = [] } = {}, error: feedError, loading: loadingFeed, refetch } = useQuery(LOAD_FEED, { variables: { onSaleLimit: 5, bestSellersLimit: 8, location, pagination: { page: 0, rowsPerPage: 24 } }, fetchPolicy: 'no-cache' });
 
 	const feedIsEmpty = !productsOnSale.length && !bestSellers.length;
 
 	function handleRefresh() {
 		setRefreshing(true);
 		refetch()
-			.finally(()=>setRefreshing(false));
+			.finally(() => setRefreshing(false));
 	}
 
 	return (
@@ -62,10 +62,10 @@ export default function Feed() {
 					</>
 				)
 			}
-			
+
 			<Footer>
 				<View style={{ marginBottom: 25 }}>
-					<Button icon='message-circle' variant='outlined' onPress={()=>navigation.navigate('SuggestCompany')} color='primary'>Indique um estabelecimento</Button>
+					<Button icon='message-circle' variant='outlined' onPress={() => navigation.navigate('SuggestCompany')} color='primary'>Indique um estabelecimento</Button>
 				</View>
 				<Image source={logoResource} resizeMode='contain' style={{ height: 130, width: 150 }} />
 			</Footer>
