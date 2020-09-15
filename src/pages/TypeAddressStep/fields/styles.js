@@ -27,7 +27,7 @@ export const FieldLabel = styled(Typography)`
 	font-size: 16px;
 	margin-bottom: 6px;
 	text-transform: uppercase;
-	color: ${({ theme })=> theme.palette.background.dark};
+	color: ${({ theme }) => theme.palette.background.dark};
 `;
 
 export const Field = styled.View`
@@ -58,7 +58,7 @@ export const FieldFooter = styled.View`
 	flex-direction: row;
 	justify-content: space-evenly;
 	position: absolute;
-	bottom: 15px;
+	bottom: -35px;
 	right: 20px;
 `;
 export const Line = styled(Typography)`

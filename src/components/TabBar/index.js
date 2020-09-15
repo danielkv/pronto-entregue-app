@@ -8,16 +8,16 @@ import { Badge } from '../../react-native-ui';
 import MenuItem from './MenuItem';
 import { Container } from './styles';
 
-import  { GET_CART } from '../../graphql/cart';
+import { GET_CART } from '../../graphql/cart';
 
 export default function TabBar({ navigation, ...restProps }) {
 	const loggedUserId = useLoggedUserId();
 	const [showTabBar, setShowTabBar] = useState(false);
 	const [routeName, setRouteName] = useState('')
 	const { location = null } = useSelectedAddress();
-		
+
 	const { data: { cartItems } } = useQuery(GET_CART);
-	
+
 	function handleOrderListPress() {
 		if (loggedUserId)
 			navigation.navigate('OrderListScreen')
@@ -26,34 +26,34 @@ export default function TabBar({ navigation, ...restProps }) {
 				'Para ver seu pedidos, você tem que estar logado.',
 				'Quer fazer isso agora?',
 				[
-					{ text: 'Sim', onPress: ()=>navigation.navigate('LoginScreen', { redirect: 'OrderListScreen' }) },
+					{ text: 'Sim', onPress: () => navigation.navigate('LoginScreen', { redirect: 'OrderListScreen' }) },
 					{ text: 'Não' }
 				]
 			);
 		}
 	}
 
-	useEffect(()=>{
+	useEffect(() => {
 		if (!navigation) return;
 
 		const unsubscribe = navigation.addListener('state', () => {
 			const options = navigation.getCurrentOptions();
 
-			setRouteName(options.selectedMenu);
+			setRouteName(options?.selectedMenu || '');
 			setShowTabBar(!(options.tabBar === false));
 		});
 
 		return unsubscribe;
-		
+
 	}, [navigation])
-		
+
 	if (!showTabBar || !location) return false;
-	
+
 	return (
 		<Container {...restProps} >
-			<MenuItem selected={routeName === 'Home'} icon='home' label='Home' onPress={()=>navigation.navigate('FeedScreen')} />
+			<MenuItem selected={routeName === 'Home'} icon='home' label='Home' onPress={() => navigation.navigate('FeedScreen')} />
 			<Badge color='primary' badgeContent={cartItems.length} style={{ badge: { marginTop: 5, marginRight: 8 } }}>
-				<MenuItem selected={routeName === 'Cart'} icon='shopping-bag' label='Cesta' onPress={()=>navigation.navigate('CartScreen')} />
+				<MenuItem selected={routeName === 'Cart'} icon='shopping-bag' label='Cesta' onPress={() => navigation.navigate('CartScreen')} />
 			</Badge>
 			<MenuItem selected={routeName === 'Order'} icon='list' label='Meus Pedidos' onPress={handleOrderListPress} />
 		</Container>

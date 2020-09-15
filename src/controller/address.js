@@ -1,6 +1,6 @@
 import { toString, toInteger, isInteger } from 'lodash';
 
-export function createEmptyAddress () {
+export function createEmptyAddress() {
 	return {
 		name: '',
 		street: '',
@@ -37,7 +37,7 @@ export function sanitizeAddress(result) {
 		number: toInteger(result.number) || '',
 		complement: result.complement || '',
 		reference: result.reference || '',
-		zipcode: isInteger(result.zipcode) ? result.zipcode : toInteger(result.zipcode.replace(/[\D]/g, '')),
+		zipcode: !result.zipcode || isInteger(result.zipcode) ? result.zipcode : toInteger(result.zipcode.replace(/[\D]/g, '')),
 		district: result.district || '',
 		city: result.city || '',
 		state: result.state || '',

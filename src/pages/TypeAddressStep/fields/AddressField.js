@@ -23,7 +23,7 @@ function AddressField({ labels, inputs, fields, helperText, description, navigat
 	const { values, errors, handleChange } = useFormikContext();
 	const [block, setBlock] = useState(false);
 
-	useFocusEffect(useCallback(()=>{
+	useFocusEffect(useCallback(() => {
 		const task = InteractionManager.runAfterInteractions(() => {
 			focusFirstField(false)
 		});
@@ -31,21 +31,21 @@ function AddressField({ labels, inputs, fields, helperText, description, navigat
 		return () => task.cancel();
 	}, []))
 
-	function validate () {
+	function validate() {
 		return fields.some(f => Boolean(errors[f]));
 	}
 
 	function goToNext() {
 		if (block) return;
-		if (validate())	return;
+		if (validate()) return;
 
 		setBlock(true);
-		navigation.navigate(routes[currentRoute+1])
-		
-		return setTimeout(()=>setBlock(false), 1000);
+		navigation.navigate(routes[currentRoute + 1])
+
+		return setTimeout(() => setBlock(false), 1000);
 	}
 
-	function focusFirstField(force=true) {
+	function focusFirstField(force = true) {
 		const firstField = fields.find((field) => {
 			const fieldRef = refs[field];
 
@@ -55,7 +55,7 @@ function AddressField({ labels, inputs, fields, helperText, description, navigat
 		})
 
 		const firstFieldRef = firstField ? refs[firstField] : force ? refs[fields[0]] : null;
-		
+
 		if (firstFieldRef?.focus) {
 			if (!firstFieldRef.isFocused())
 				firstFieldRef.focus();
@@ -65,18 +65,18 @@ function AddressField({ labels, inputs, fields, helperText, description, navigat
 	}
 
 	function isLastField(fieldIndex) {
-		return fieldIndex >= fields.length -1
+		return fieldIndex >= fields.length - 1
 	}
 
 	function isLastScreen(routes, currentIndex) {
-		return currentIndex >= routes.length -1
+		return currentIndex >= routes.length - 1
 	}
 
 	const nextField = (fieldIndex) => () => {
 		if (isLastField(fieldIndex))
 			goToNext()
 		else {
-			const nextField = fields[fieldIndex+1]
+			const nextField = fields[fieldIndex + 1]
 			const nextFieldRef = refs[nextField];
 
 			if (nextFieldRef?.focus)
@@ -86,13 +86,13 @@ function AddressField({ labels, inputs, fields, helperText, description, navigat
 
 	function returnField(field, index) {
 		const props = {
-			ref: ref => { refs[field]= ref; },
+			ref: ref => { refs[field] = ref; },
 			onChangeText: handleChange(field),
 			onSubmitEditing: nextField(index),
 			blurOnSubmit: isLastScreen(routes, currentRoute) && isLastField(index) ? true : false,
 			value: values[field]
 		}
-		
+
 		const fn = inputs?.[field];
 
 		if (fn && typeof fn === 'function')
@@ -104,10 +104,10 @@ function AddressField({ labels, inputs, fields, helperText, description, navigat
 	return (
 		<View>
 			<FieldContainer bounces={false} keyboardDismissMode='none' keyboardShouldPersistTaps='never'>
-				<FieldPanel onPress={()=>focusFirstField(true)}>
+				<FieldPanel onPress={() => focusFirstField(true)}>
 					<Icon name='edit-2' style={{ root: { position: 'absolute', right: 20, top: 20 } }} />
 					<FieldWrapper>
-						{fields.map((field, index)=>
+						{fields.map((field, index) =>
 							<Field key={index}>
 								<FieldLabel>{labels[index]}</FieldLabel>
 								{returnField(field, index)}

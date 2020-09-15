@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Alert, View, Dimensions, ActivityIndicator } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useRoute, useNavigation } from '@react-navigation/core';
@@ -20,6 +21,7 @@ import { getErrorMessage } from '../../utils/errors';
 import { Container, PointerContainer, PinShadow } from './styles';
 
 import { SET_SELECTED_ADDRESS, SET_USER_ADDRESS, SEARCH_LOCATION } from '../../graphql/addresses';
+import { add } from 'react-native-reanimated';
 
 
 const clearCamera = {
@@ -72,6 +74,19 @@ export default function MapScreen() {
 		}
 	}
 
+	async function askLocationPermission() {
+		// checks if app has permission to access location
+		try {
+			const { status } = await Location.requestPermissionsAsync();
+			if (status !== 'granted') throw new Error('A permissão para acessar a localização foi negada')
+		} catch (err) {
+			Alert.alert('Ocorreu um erro', err.message, [
+				{ text: 'Tentar novamente', onPress: askLocationPermission },
+				{ text: 'Encontrar local' },
+			])
+		}
+	}
+
 	function centerUserLocation() {
 		setLoadingLocation(true)
 		return getLocation()
@@ -96,12 +111,15 @@ export default function MapScreen() {
 			return;
 		}
 
-		console.log()
-
-		//centerUserLocation()
 	}, [address])
 
+	useEffect(() => {
+		askLocationPermission()
+	}, [])
+
 	function handleUserChangeLocation({ nativeEvent: { coordinate } }) {
+		//console.log(coordinate)
+
 		if (address?.location || hasLocation) return;
 		if (!coordinate?.latitude || !coordinate?.longitude) return;
 
@@ -174,13 +192,16 @@ export default function MapScreen() {
 
 			const location = cameraToLocation(camera)
 			let normalizedAddress = {};
+			let finalAddress = address;
 
-			if (isMinimumValidAddress(address)) {
-				normalizedAddress = sanitizeAddress({ ...address, location });
-			} else {
+			if (!isMinimumValidAddress(finalAddress)) {
 				const { data: { searchLocation: addressFound } } = await apolloClient.mutate({ mutation: SEARCH_LOCATION, variables: { location } });
-				normalizedAddress = sanitizeAddress({ ...addressFound, location });
+				console.log(addressFound)
+				if (!isMinimumValidAddress(addressFound)) throw new Error('Não foi encontrado nenhum endereço nessa localização');
+				finalAddress = addressFound;
 			}
+
+			normalizedAddress = sanitizeAddress({ ...finalAddress, location });
 
 			// if address is not enough to get data
 			if (!normalizedAddress.city || !normalizedAddress.state || !normalizedAddress.location)
@@ -195,13 +216,20 @@ export default function MapScreen() {
 				});
 
 		} catch (err) {
-			Alert.alert(getErrorMessage(err));
+			Alert.alert(
+				'Ops, tivemos um problema!',
+				getErrorMessage(err),
+				[
+					{ text: 'Tentar outra localização' },
+					{ text: 'Digitar endereço', onPress: () => navigation.navigate('TypeAddressScreen', { screen: 'nameField' }) }
+				]
+			);
 		} finally {
 			setLoadingSelect(false);
 		}
 	}
 
-	const isMinimumValid = isMinimumValidAddress(address);
+	//const isMinimumValid = isMinimumValidAddress(address);
 	const isValid = isValidAddress(address);
 
 	return (
@@ -214,10 +242,10 @@ export default function MapScreen() {
 					showsTraffic={false}
 					ref={MapRef}
 					showsMyLocationButton={false}
-					showsUserLocation={true}
 					userLocationAnnotationTitle='Meu local atual'
 					scrollEnabled={!loadingLocation}
 
+					showsUserLocation={true}
 					onUserLocationChange={handleUserChangeLocation}
 
 					initialCamera={initialCamera}
@@ -259,6 +287,13 @@ export default function MapScreen() {
 						alignItems: 'center'
 					}}
 				>
+					<Button
+						icon={!loadingSelect && 'arrow-left-circle'}
+						color='default'
+						variant='outlined'
+						onPress={() => navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
+						label='Digitar outro endereço'
+					/>
 					{loggedUserId && isValid
 						&& <Button
 							icon='check'
@@ -272,8 +307,8 @@ export default function MapScreen() {
 								: 'Salvar e Utilizar'}
 						</Button>}
 
-					{!isMinimumValid
-						? <Button
+					{camera?.center &&
+						<Button
 							icon={!loadingSelect && 'arrow-right-circle'}
 							disabled={loadingSelect}
 							color='default'
@@ -283,15 +318,7 @@ export default function MapScreen() {
 							{loadingSelect
 								? <LoadingBlock />
 								: 'Continuar'}
-						</Button>
-						: <Button
-							icon={!loadingSelect && 'arrow-left-circle'}
-							color='default'
-							variant='outlined'
-							onPress={() => navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
-							label='Digitar outro endereço'
-						/>
-					}
+						</Button>}
 				</Paper>}
 
 				<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>
