@@ -78,6 +78,18 @@ export const ORDER_CRATED_FRAGMENT = gql`
 			state
 			location
 		}
+		delivery {
+			id
+			status
+			deliveryMan {
+				user {
+					fullName
+					phones: metas(type: "phone") {
+						value
+					}
+				}
+			}
+		}
 	}
 	${ORDER_CREATED_PRODUCT}
 `;
