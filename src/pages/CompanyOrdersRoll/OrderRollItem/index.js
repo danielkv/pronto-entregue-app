@@ -71,42 +71,27 @@ export default function OrderRollItem({ item: order, handleOpenModalStatus, orde
 
 						<OrderType order={order} />
 
-						{/* <View style={{ marginTop: 10, position: 'relative' }}>
+						<View style={{ marginTop: 10, position: 'relative' }}>
 
-							{order.type === 'takeout'
-								? <Typography>Retirada no Balcão</Typography>
-								: (
-									<View>
-										<DeliveryAddress address={order.address} />
-										<View style={{ marginTop: 10 }}>
-											<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>Pagamento:</Typography>
-											<View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-												<View style={{ alignItems: 'center', flexDirection: 'row' }}>
-													<Image style={{ marginRight: 5, width: 20, height: 30, resizeMode: 'contain' }} source={{ uri: order.paymentMethod.image }} />
-													<Typography variant='subtitle'>{`${order.paymentMethod.displayName}`}</Typography>
-												</View>
-												<View style={{ alignItems: 'flex-end' }}>
-													{!!order.discount && (
-														<>
-															<Typography variant='subtitle' style={{ fontSize: 13 }}>{BRL(orderTotal).format()}</Typography>
-															<Typography variant='subtitle' style={{ fontSize: 13 }}>{`${order.creditHistory ? 'Créditos: ' : 'Descontos: '}${BRL(order.discount).format()}`}</Typography>
-														</>)}
-													<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>{BRL(order.price).format()}</Typography>
-												</View>
-											</View>
-										</View>
-										{Boolean(order.message) && (
-											<View style={{ marginTop: 10 }}>
-												<Typography style={{ fontFamily: 'Roboto-Bold' }}>
-													Observações:
-													<Typography variant='subtitle'>{order.message}</Typography>
-												</Typography>
+							<View style={{ marginTop: 10 }}>
+								<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>Pagamento:</Typography>
+								<View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
 
-											</View>
-										)}
+									{Boolean(order.paymentMethod) && <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+										<Image style={{ marginRight: 5, width: 20, height: 30, resizeMode: 'contain' }} source={{ uri: order.paymentMethod.image }} />
+										<Typography variant='subtitle'>{`${order.paymentMethod.displayName}`}</Typography>
+									</View>}
+									<View style={{ alignItems: 'flex-end' }}>
+										{!!order.discount && (
+											<>
+												<Typography variant='subtitle' style={{ fontSize: 13 }}>{BRL(orderTotal).format()}</Typography>
+												<Typography variant='subtitle' style={{ fontSize: 13 }}>{`${order.creditHistory ? 'Créditos: ' : 'Descontos: '}${BRL(order.discount).format()}`}</Typography>
+											</>)}
+										<Typography style={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}>{BRL(order.price).format()}</Typography>
 									</View>
-								)}
-						</View> */}
+								</View>
+							</View>
+						</View>
 					</View>
 				</View>
 				: <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}>

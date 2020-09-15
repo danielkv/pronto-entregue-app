@@ -9,11 +9,16 @@ export const ORDER_CREATED_PRODUCT = gql`
 		price
 		message
 		quantity
-		
+
 		productRelated {
 			id
 			sku
 			description
+
+			category {
+				id
+				name
+			}
 		}
 		
 		optionsGroups {
@@ -40,6 +45,7 @@ export const ORDER_CRATED_FRAGMENT = gql`
 		status
 		message
 		createdAt
+		
 		user {
 			id
 			fullName
