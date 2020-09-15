@@ -4,21 +4,23 @@ import { TextInputMask } from 'react-native-masked-text';
 import { useSafeArea } from 'react-native-safe-area-context';
 
 import { useRoute } from '@react-navigation/core';
-//import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+//import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import { Typography, useTheme } from '../../react-native-ui';
 import AddressField from './fields/AddressField';
 import CheckAddress from './fields/CheckAddress';
 import { FieldInput } from './fields/styles';
 import Navigator from './Navigator';
+import BackButton from '../../components/NewHeader/BackButton';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function AddressForm({ redirect }) {
 	const routes = ['nameField', 'streetNumberField', 'districtField', 'complementField', 'referenceField', 'cityStateZipcodeField', 'checkAddress'];
+	const routeNames = ['Nome', 'Rua / nº', 'Bairro', 'Complemento', 'Referência', 'Cidade / Estado', ''];
 	const { palette } = useTheme();
-	const insets = useSafeArea();
+	//const insets = useSafeArea();
 
 	const inputs = {
 		number: (props) => <FieldInput {...props} keyboardType='numeric' />,
@@ -31,7 +33,7 @@ export default function AddressForm({ redirect }) {
 		return (
 			<View>
 				<Typography style={{ color: info.tintColor, textAlign: 'center', fontFamily: 'Roboto-Bold', fontSize: 18 }}>
-					{info.children}
+					{routeNames[index]}
 				</Typography>
 				<Navigator routes={routes} index={index} />
 			</View>
@@ -40,8 +42,19 @@ export default function AddressForm({ redirect }) {
 
 	return (
 		<Stack.Navigator
+			screenOptions={({ navigation }) => ({
+				tabBar: false,
+				headerTintColor: '#fff',
+				headerTitle: 'teste',
+				headerStyle: { backgroundColor: palette.primary.main },
+				headerCenter: handleHeaderTitle,
+				headerTitleAlign: 'center',
+				headerBackTitleVisible: false,
+				headerLeft: () => <BackButton navigation={navigation} color='#fff' />
+
+			})}
+		/* 	
 			headerMode='float'
-			tabBar={() => <View />}
 			screenOptions={{
 				tabBar: false,
 				headerTintColor: '#fff',
@@ -49,11 +62,10 @@ export default function AddressForm({ redirect }) {
 				headerTitle: handleHeaderTitle,
 				headerTitleAlign: 'center',
 				headerBackTitleVisible: false,
-				cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-			}}
-		//swipeEnabled={false}
+				//cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+			}} */
 		>
-			<Stack.Screen name='nameField' options={{ title: 'Nome' }}>
+			<Stack.Screen name='nameField' options={{ title: 'Nome', headerTitle: 'asd' }}>
 				{(props) =>
 					<AddressField
 						{...props}
