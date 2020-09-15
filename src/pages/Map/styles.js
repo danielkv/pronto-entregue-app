@@ -2,10 +2,10 @@ import styled from 'styled-components/native';
 
 export const PointerContainer = styled.View`
 	position: absolute;
-	top: 50%;
+	/*top: 50%;
 	left: 50%;
 	margin-left: -36px;
-	margin-top:-58px;
+	margin-top:-58px; */
 	align-items: center;
 	flex-direction:column-reverse;
 	z-index: 0;

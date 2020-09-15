@@ -1,15 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, View } from 'react-native'
 
 import 'moment/locale/pt-br';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { enableScreens } from 'react-native-screens';
 import * as Notifications from 'expo-notifications';
 
 import ConnectionInfoPanel from './components/ConnectionInfoPanel';
 import FontLoader from './components/FontLoader';
-import Header from './components/Header';
 import TabBar from './components/TabBar';
 
 import { useLoggedUserId } from './controller/hooks';
@@ -39,8 +40,15 @@ import SuggestCompany from './pages/SuggestCompany';
 import TypeAddress from './pages/TypeAddressStep';
 import { useTheme } from './react-native-ui';
 import NavigatorTheme from './theme/navigator';
+import { headerTheme } from './theme/header';
+import UserAvatar from './components/NewHeader/UserAvatar';
+import SearchButton from './components/SearchButton';
+import { StatusBar } from 'expo-status-bar';
+import BackButton from './components/NewHeader/BackButton';
 
-const Stack = createStackNavigator();
+//const Stack = createStackNavigator();
+enableScreens();
+const Stack = createNativeStackNavigator();
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -63,30 +71,37 @@ export default function SplashScreen() {
 		responseReceiveNotificationHandler(notification, rootNavigation.current)
 	}
 
-	useEffect(()=>{
+	useEffect(() => {
 		if (!loggedUserId) return;
 
 		const receiveNotificationListener = Notifications.addNotificationReceivedListener(handleReceiveListener);
 		const responseNotificationListener = Notifications.addNotificationResponseReceivedListener(handleResponseListener);
-		return ()=> {
+		return () => {
 			receiveNotificationListener.remove();
 			responseNotificationListener.remove();
 		}
 	}, [loggedUserId])
 
-	function handleStateChange () {
+	function handleStateChange() {
 		setNavigationRef(rootNavigation.current);
 	}
 
 	return (
 		<KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
 			<FontLoader>
+				<StatusBar style='dark' />
 				<NavigationContainer onReady={handleStateChange} ref={rootNavigation} theme={NavigatorTheme}>
 					<Stack.Navigator
 						initialRouteName='SplashLoginScreen'
-						screenOptions={{ header: Header }}
-						headerMode='screen'
-						mode='card'
+						screenOptions={({ navigation }) => ({
+							...headerTheme,
+							headerRight: () => (<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+								<SearchButton navigation={navigation} />
+								<UserAvatar navigation={navigation} />
+							</View>),
+							headerLeft: () => (<BackButton navigation={navigation} />)
+						})}
+
 					>
 						<Stack.Screen name='SplashLoginScreen' component={SplashLogin} options={{ cardStyle: { backgroundColor: palette.primary.main }, headerShown: false, tabBar: false }} />
 
@@ -97,24 +112,24 @@ export default function SplashScreen() {
 						<Stack.Screen name='FeedScreen' component={Feed} options={{ showBackButton: false, selectedMenu: 'Home' }} />
 						<Stack.Screen name='SearchScreen' component={Search} />
 						<Stack.Screen name='SectionCompaniesScreen' component={SectionCompanies} />
-						<Stack.Screen name='CompanyScreen' component={Company} options={{ headerTransparent: true }} />
-						<Stack.Screen name='ProductScreen' component={Product} options={{ headerTransparent: true }} />
+						<Stack.Screen name='CompanyScreen' component={Company} options={{ headerShown: false }} />
+						<Stack.Screen name='ProductScreen' component={Product} options={{ headerShown: false }} />
 						<Stack.Screen name='SuggestCompany' component={SuggestCompany} />
-				
+
 						<Stack.Screen name='ProfileScreen' component={Profile} />
 						<Stack.Screen name='ProfileTabsScreen' component={ProfileTabs} />
 						<Stack.Screen name='OrdersRollScreen' component={OrdersRoll} />
 						<Stack.Screen name='DeliveriesScreen' component={Deliveries} />
 						<Stack.Screen name='ListDeliveriesScreen' component={ListDeliveries} />
-				
+
 						<Stack.Screen name='CartScreen' component={Cart} options={{ selectedMenu: 'Cart' }} />
-						<Stack.Screen name='PaymentScreen' component={Payment} options={{ selectedMenu: 'Cart' }}  />
+						<Stack.Screen name='PaymentScreen' component={Payment} options={{ selectedMenu: 'Cart' }} />
 
 						<Stack.Screen name='OrderListScreen' component={OrderList} options={{ selectedMenu: 'Order' }} />
 						<Stack.Screen name='OrderScreen' component={Order} options={{ selectedMenu: 'Order' }} />
 
 						<Stack.Screen options={{ headerShown: true }} name='SelectAddressScreen' component={SelectAddress} />
-						<Stack.Screen name='NewAddressScreen' component={NewAddress} options={{ headerShown: false }}  />
+						<Stack.Screen name='NewAddressScreen' component={NewAddress} options={{ headerShown: false }} />
 						<Stack.Screen name='MapScreen' component={Map} options={{ headerShown: false, tabBar: false }} />
 						<Stack.Screen name='TypeAddressScreen' component={TypeAddress} options={{ headerShown: false, tabBar: false }} />
 					</Stack.Navigator>

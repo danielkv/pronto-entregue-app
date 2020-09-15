@@ -11,9 +11,10 @@ import { IconButton } from "../../react-native-ui";
 import BackButton from './BackButton';
 import { RigthContent } from './styles';
 import UserAvatar from './UserAvatar';
+import SearchButton from '../SearchButton';
 
 
-export default function Header({ variant='solid', showBackButton=true, rigthContent=true, searchIcon=true, profileAvatar=true }) {
+export default function Header({ variant = 'solid', showBackButton = true, rigthContent = true, searchIcon = true, profileAvatar = true }) {
 	const iconsColor = variant === 'transparent' ? '#fff' : '#655A51';
 	const navigation = useNavigation();
 	const insets = useSafeArea();
@@ -29,12 +30,10 @@ export default function Header({ variant='solid', showBackButton=true, rigthCont
 		alignItems: 'center',
 		paddingHorizontal: 15,
 		paddingTop: insets.top,
-		
-		
 	}
 
 	const bgStyle = {
-		height: 70 + insets.top,
+		height: 55 + insets.top,
 		position: variant == 'transparent' ? 'absolute' : 'relative',
 		top: 0,
 		left: 0,
@@ -43,20 +42,20 @@ export default function Header({ variant='solid', showBackButton=true, rigthCont
 	}
 
 	if (variant !== 'transparent') bgStyle.backgroundColor = '#EFE8DA'
-	
+
 	return (
 		<View style={bgStyle}>
 			<ContainerComponent
 				style={style}
-				colors={['#000d', '#0000']}
+				colors={['#000f', '#0000']}
 			>
 				<StatusBar style={variant === 'transparent' ? 'light' : 'dark'} />
-				{showBackButton && <BackButton color={iconsColor} />}
+				{showBackButton && <BackButton navigation={navigation} color={iconsColor} />}
 
 				{rigthContent && <RigthContent>
-					{searchIcon && <IconButton style={{ root: { marginRight: 10 } }} onPress={()=>navigation.navigate('SearchScreen')} icon={{ name: 'search', color: iconsColor }} />}
+					{searchIcon && <SearchButton navigation={navigation} iconsColor={iconsColor} />}
 					{/* <IconButton onPress={()=>{}} icon={{ name: 'bell', color: iconsColor }} /> */}
-					{profileAvatar && <UserAvatar />}
+					{profileAvatar && <UserAvatar navigation={navigation} />}
 				</RigthContent>}
 			</ContainerComponent>
 		</View>

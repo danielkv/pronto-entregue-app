@@ -21,8 +21,6 @@ import { getErrorMessage } from '../../utils/errors';
 import { Container, PointerContainer, PinShadow } from './styles';
 
 import { SET_SELECTED_ADDRESS, SET_USER_ADDRESS, SEARCH_LOCATION } from '../../graphql/addresses';
-import { add } from 'react-native-reanimated';
-
 
 const clearCamera = {
 	center: {},
@@ -75,14 +73,19 @@ export default function MapScreen() {
 	}
 
 	async function askLocationPermission() {
-		// checks if app has permission to access location
+
 		try {
+			// checks if app has permission to access location
 			const { status } = await Location.requestPermissionsAsync();
 			if (status !== 'granted') throw new Error('A permissão para acessar a localização foi negada')
+
+			// checks if user has location enabled
+			const locationEnabled = await Location.hasServicesEnabledAsync();
+			if (!locationEnabled) throw new Error('Sua localização não está ativa, ative-a para buscarmos o endereço mais próximo de você.')
 		} catch (err) {
 			Alert.alert('Ocorreu um erro', err.message, [
 				{ text: 'Tentar novamente', onPress: askLocationPermission },
-				{ text: 'Encontrar local' },
+				{ text: 'Encontrar local', onPress: () => setLoadingLocation(false) },
 			])
 		}
 	}
@@ -99,7 +102,7 @@ export default function MapScreen() {
 			.catch(err => {
 				Alert.alert('Ocorreu um erro', err.message, [
 					{ text: 'Tentar novamente', onPress: centerUserLocation },
-					{ text: 'Encontrar local' },
+					{ text: 'Encontrar local', onPress: () => setLoadingLocation(false) },
 				])
 			});
 	}
@@ -229,7 +232,6 @@ export default function MapScreen() {
 		}
 	}
 
-	//const isMinimumValid = isMinimumValidAddress(address);
 	const isValid = isValidAddress(address);
 
 	return (
@@ -259,78 +261,77 @@ export default function MapScreen() {
 						bottom: mapPadding
 					}}
 				/>
-				{loadingLocation
-					? <ActivityIndicator color={palette.primary.main} />
-					: <PointerContainer style={{ marginTop: 10 - mapPadding }}>
-						<PinShadow />
-						<Icon name='map-pin' size={60} color={palette.primary.main} />
-					</PointerContainer>}
-				{!loadingLocation && <Paper
-					onLayout={(event) => {
-						const { height } = event.nativeEvent.layout;
-						setMapPadding(height + paddingOffset);
-					}}
-					style={{
-						shadowColor: "#000",
-						shadowOffset: {
-							width: 0,
-							height: 2,
-						},
-						shadowOpacity: 0.25,
-						shadowRadius: 3.84,
+				<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+					{loadingLocation
+						? <ActivityIndicator color={palette.primary.main} />
+						: <PointerContainer>
+							<PinShadow />
+							<Icon style={{ root: { marginTop: -58 } }} name='map-pin' size={60} color={palette.primary.main} />
+						</PointerContainer>}
+				</View>
+				<View>
+					{!loadingLocation && <Paper
+						onLayout={(event) => {
+							const { height } = event.nativeEvent.layout;
+							setMapPadding(height + paddingOffset);
+						}}
+						style={{
+							shadowColor: "#000",
+							shadowOffset: {
+								width: 0,
+								height: 2,
+							},
+							shadowOpacity: 0.25,
+							shadowRadius: 3.84,
 
-						elevation: 5,
-						position: 'absolute',
-						bottom: 10,
-						left: 10,
-						right: 10,
-						alignItems: 'center'
-					}}
-				>
-					<Button
-						icon={!loadingSelect && 'arrow-left-circle'}
-						color='default'
-						variant='outlined'
-						onPress={() => navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
-						label='Digitar outro endereço'
-					/>
-					{loggedUserId && isValid
-						&& <Button
-							icon='check'
-							disabled={loadingSelect}
-							color='primary'
-							variant='filled'
-							onPress={handleSaveAddress}
-						>
-							{loadingSelect
-								? <LoadingBlock />
-								: 'Salvar e Utilizar'}
-						</Button>}
-
-					{camera?.center &&
+							elevation: 5
+						}}
+					>
 						<Button
-							icon={!loadingSelect && 'arrow-right-circle'}
-							disabled={loadingSelect}
+							icon={!loadingSelect && 'arrow-left-circle'}
 							color='default'
-							variant='filled'
-							onPress={handleContinueAddress}
-						>
-							{loadingSelect
-								? <LoadingBlock />
-								: 'Continuar'}
-						</Button>}
-				</Paper>}
-
-				<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute' }}>
-					{!loadingLocation &&
-						<IconButton
-							icon={{ name: 'crosshairs-gps', type: 'material-community' }}
-							onPress={centerUserLocation}
-							disabled={loadingLocation}
-							variant='filled'
-							color='primary'
+							variant='outlined'
+							onPress={() => navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
+							label='Digitar outro endereço'
 						/>
-					}
+						{loggedUserId && isValid
+							&& <Button
+								icon='check'
+								disabled={loadingSelect}
+								color='primary'
+								variant='filled'
+								onPress={handleSaveAddress}
+							>
+								{loadingSelect
+									? <LoadingBlock />
+									: 'Salvar e Utilizar'}
+							</Button>}
+
+						{camera?.center &&
+							<Button
+								icon={!loadingSelect && 'arrow-right-circle'}
+								disabled={loadingSelect}
+								color='default'
+								variant='filled'
+								onPress={handleContinueAddress}
+							>
+								{loadingSelect
+									? <LoadingBlock />
+									: 'Continuar'}
+							</Button>}
+					</Paper>}
+
+					<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute', zIndex: 999 }}>
+						{!loadingLocation &&
+							<IconButton
+								icon={{ name: 'crosshairs-gps', type: 'material-community' }}
+								onPress={centerUserLocation}
+								disabled={loadingLocation}
+								variant='filled'
+								color='primary'
+							/>
+						}
+					</View>
 				</View>
 			</Container>
 		</View>

@@ -12,13 +12,14 @@ import Routes from './routes';
 import apolloClient from './services/apolloClient';
 import { Container } from './styles';
 import theme from './theme';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // set global error handler
 setGlobalhandler();
 
 export default function App() {
 
-	useEffect(()=>{
+	useEffect(() => {
 		getLastError()
 	}, []);
 
@@ -27,9 +28,11 @@ export default function App() {
 			<ThemeProvider theme={theme}>
 				<StyledThemeProvider theme={theme}>
 					<StatusBar style='light' animated />
-					<Container>
-						<Routes />
-					</Container>
+					<SafeAreaProvider>
+						<Container>
+							<Routes />
+						</Container>
+					</SafeAreaProvider>
 				</StyledThemeProvider>
 			</ThemeProvider>
 		</ApolloProvider>
