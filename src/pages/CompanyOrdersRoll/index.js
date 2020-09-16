@@ -34,33 +34,33 @@ export default function OrdersRoll() {
 	const [setSelectedCompany] = useMutation(SET_SELECTED_COMPANY);
 	const [changeOrderStatus] = useMutation(CHANGE_ORDER_STATUS)
 
-	const { data: { company: { orders = [] } = {} } = {}, loading: loadingRollOrders, refetch = null } = useQuery(GET_ORDER_ROLL, { notifyOnNetworkStatusChange: true, fetchPolicy: 'cache-and-network',  variables: { companyId: selectedCompany, filter: { status: { '$not': ['canceled', 'delivered'] } }, pagination: { page: 0, rowsPerPage } } });
+	const { data: { company: { orders = [] } = {} } = {}, loading: loadingRollOrders, refetch = null } = useQuery(GET_ORDER_ROLL, { notifyOnNetworkStatusChange: true, fetchPolicy: 'cache-and-network', variables: { companyId: selectedCompany, filter: { status: { '$not': ['canceled', 'delivered'] } }, pagination: { page: 0, rowsPerPage } } });
 	const { data: { user: { companies = [] } = {} } = {}, loading: loadingCompanies } = useQuery(GET_USER_COMPANIES, { variables: { id: loggedUserId } });
 
-	useEffect(()=>{
+	useEffect(() => {
 		if (!companies.length) return;
 
 		if (!selectedCompany) setSelectedCompany({ variables: { companyId: companies[0].id } })
 	}, [companies])
 
-	useEffect(()=>{
+	useEffect(() => {
 		navigation.setParams({ refetchOrders: false });
 
 		if (!refetchOrders || !selectedCompany) return;
 
 		handleRefetchOrders();
-		
-	
+
+
 	}, [refetchOrders])
 
 	function handleRefetchOrders() {
 		if (refetch) return refetch();
 	}
-	
+
 	function onRefresh() {
 		if (refetch) {
 			setRefreshing(true);
-			return refetch().finally(()=>setRefreshing(false))
+			return refetch().finally(() => setRefreshing(false))
 		}
 	}
 
@@ -98,7 +98,7 @@ export default function OrdersRoll() {
 		const order = orders[selectedOrder];
 		setLoadingUpdateStatus(newStatus);
 		changeOrderStatus({ variables: { id: order.id, newStatus } })
-			.catch((err)=>{
+			.catch((err) => {
 				Alert.alert('Ops, ocorreu um erro!', getErrorMessage(err));
 			})
 			.finally(handleCloseModalStatus)
@@ -110,7 +110,7 @@ export default function OrdersRoll() {
 	}
 	function handleCloseModalStatus() {
 		setModalStatusVisible(false);
-		setTimeout(()=>{
+		setTimeout(() => {
 			setSelectedOrder(null);
 			setLoadingUpdateStatus(null);
 		}, 250);
@@ -145,9 +145,9 @@ export default function OrdersRoll() {
 							{OrderController.availableStatus(orders[selectedOrder]).map(status => (
 								<Button
 									key={status.slug}
-									onPress={()=>handleSetStatus(status.slug)}
-									variant={status.slug===orders[selectedOrder].status ? 'filled' : 'outlined'}
-									color={status.slug===orders[selectedOrder].status ? 'secondary' : 'default'}
+									onPress={() => handleSetStatus(status.slug)}
+									variant={status.slug === orders[selectedOrder].status ? 'filled' : 'outlined'}
+									color={status.slug === orders[selectedOrder].status ? 'secondary' : 'default'}
 									icon={loadingUpdateStatus !== status.slug && status.Icon}
 									label={status.label}
 								>
@@ -179,8 +179,8 @@ export default function OrdersRoll() {
 							>
 								<ScrollView>
 									<Paper>
-										{companies.map(company =>(
-											<CompanyMenuItem selected={selectedCompany===company.id} key={company.id} onPress={()=>handleSetCompany(company.id)}>
+										{companies.map(company => (
+											<CompanyMenuItem selected={selectedCompany === company.id} key={company.id} onPress={() => handleSetCompany(company.id)}>
 												<Typography style={{ textAlign: 'center', fontSize: 16 }}>{company.displayName}</Typography>
 											</CompanyMenuItem>
 										))}
@@ -196,7 +196,7 @@ export default function OrdersRoll() {
 			</View>
 			{loadingRollOrders && !refreshing && <LoadingBlock />}
 			{orders.map((order, index) => (
-				<OrderRollItem key={order.id} orderIndex={index} item={order} handleOpenModalStatus={handleOpenModalStatus}  />
+				<OrderRollItem key={order.id} orderIndex={index} item={order} handleOpenModalStatus={handleOpenModalStatus} />
 			))}
 		</ScrollView>
 	);

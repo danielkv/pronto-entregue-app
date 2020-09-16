@@ -37,9 +37,9 @@ export default function Order() {
 			[
 				{
 					text: 'Sim',
-					onPress: ()=> {
+					onPress: () => {
 						cancelOrder()
-							.catch((err)=>{
+							.catch((err) => {
 								Alert.alert(
 									'Ocorreu um erro',
 									getErrorMessage(err)
@@ -55,7 +55,7 @@ export default function Order() {
 	function onRefresh() {
 		setRefreshing(true);
 		refetch()
-			.finally(()=>setRefreshing(false));
+			.finally(() => setRefreshing(false));
 	}
 
 	if (loadingOrder) return <LoadingBlock />
@@ -101,23 +101,23 @@ export default function Order() {
 						</View>
 					</View>
 				)}
-				
+
 				<BlocksContainer>
 					<Blocks order={order} />
 				</BlocksContainer>
 
 				<CompanyPanel company={order.company} />
-				
+
 				<Paper>
 					<Typography variant='title' style={{ marginBottom: 20 }}>Itens</Typography>
-					{order.products.map((item, index)=>(
+					{order.products.map((item, index) => (
 						<Fragment key={item.id}>
 							{index > 0 && <Divider />}
 							<CartItem item={item} />
 						</Fragment>
 					))}
 				</Paper>
-				
+
 				{Boolean(order.message) && <Paper>
 					<Typography variant='title' style={{ marginBottom: 20 }}>Observações</Typography>
 					<Typography variant='text'>{order.message}</Typography>
@@ -130,7 +130,7 @@ export default function Order() {
 							: 'Cancelar Pedido'}
 					</Button>
 				)}
-				
+
 			</Container>
 		</ScrollView>
 	);

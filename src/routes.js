@@ -3,14 +3,19 @@ import { KeyboardAvoidingView, View } from 'react-native'
 
 import 'moment/locale/pt-br';
 
+import { enableScreens } from 'react-native-screens';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { enableScreens } from 'react-native-screens';
 import * as Notifications from 'expo-notifications';
+import { StatusBar } from 'expo-status-bar';
 
 import ConnectionInfoPanel from './components/ConnectionInfoPanel';
 import FontLoader from './components/FontLoader';
+import BackButton from './components/NewHeader/BackButton';
+import UserAvatar from './components/NewHeader/UserAvatar';
+import SearchButton from './components/SearchButton';
 import TabBar from './components/TabBar';
 
 import { useLoggedUserId } from './controller/hooks';
@@ -39,12 +44,10 @@ import Subscription from './pages/Subscription';
 import SuggestCompany from './pages/SuggestCompany';
 import TypeAddress from './pages/TypeAddressStep';
 import { useTheme } from './react-native-ui';
-import NavigatorTheme from './theme/navigator';
 import { headerTheme } from './theme/header';
-import UserAvatar from './components/NewHeader/UserAvatar';
-import SearchButton from './components/SearchButton';
-import { StatusBar } from 'expo-status-bar';
-import BackButton from './components/NewHeader/BackButton';
+import NavigatorTheme from './theme/navigator';
+
+
 
 //const Stack = createStackNavigator();
 enableScreens();

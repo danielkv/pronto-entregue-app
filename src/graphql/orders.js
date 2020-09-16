@@ -50,6 +50,7 @@ export const ORDER_FRAGMENT = gql`
 		}
 
 		address {
+			id
 			street
 			number
 		}
