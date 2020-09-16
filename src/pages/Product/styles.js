@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { vw } from 'react-native-expo-viewport-units';
 
 import { Typography } from '../../react-native-ui';
 
@@ -9,7 +10,7 @@ export const ProductContainer = styled.ScrollView`
 	flex:1;
 `;
 export const HeaderContainer = styled.View`
-	height:350px;
+	height:${vw(100)}px;
 	margin-bottom: -45px;
 `;
 export const HeaderImageBackgroundContainer = styled.ImageBackground`

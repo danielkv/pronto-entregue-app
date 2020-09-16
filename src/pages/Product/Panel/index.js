@@ -33,7 +33,7 @@ function Panel({ optionsGroups, onItemSelect }) {
 	}
 
 	const handleConfirmModal = useCallback((newOptionGroup) => {
-		const groupIndex = optionsGroups.findIndex(group=>group.id === newOptionGroup.id);
+		const groupIndex = optionsGroups.findIndex(group => group.id === newOptionGroup.id);
 		optionsGroups[groupIndex] = newOptionGroup;
 		onItemSelect(optionsGroups);
 		handleCloseModal();
@@ -41,7 +41,7 @@ function Panel({ optionsGroups, onItemSelect }) {
 
 	return (
 		<Container>
-			{optionsGroups.map((group, groupIndex)=>(
+			{optionsGroups.map((group, groupIndex) => (
 				<Group
 					key={groupIndex}
 					group={group}
@@ -50,7 +50,7 @@ function Panel({ optionsGroups, onItemSelect }) {
 			))}
 			<Modal
 				isVisible={modalOpen}
-				onModalHide={()=>setSelectedOptionGroup(null)}
+				onModalHide={() => setSelectedOptionGroup(null)}
 				onSwipeComplete={handleCloseModal}
 				onBackButtonPress={handleCloseModal}
 				onBackdropPress={handleCloseModal}
@@ -59,6 +59,7 @@ function Panel({ optionsGroups, onItemSelect }) {
 				style={{ marginLeft: vw(10), marginRight: 0, marginTop: modalMarginTop, marginBottom: modalMarginBottom }}
 				swipeDirection='right'
 				propagateSwipe
+
 			>
 				<GroupModal optionGroup={selectedOptionGroup} confirmModal={handleConfirmModal} closeModal={handleCloseModal} />
 			</Modal>

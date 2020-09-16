@@ -50,6 +50,7 @@ export const ORDER_FRAGMENT = gql`
 		}
 
 		address {
+			id
 			street
 			number
 		}
@@ -84,7 +85,6 @@ export const ORDER_FRAGMENT = gql`
 		status
 		createdAt
 	}
-
 	${COMPANY_LIST_FRAGMENT}
 	${ADDRESS_FRAGMENT}
 `;

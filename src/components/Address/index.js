@@ -24,6 +24,7 @@ export default function Address({ divider=false, onPress, item: address }) {
 						{!!address?.name && <Typography variant='h4'>{address.name}</Typography>}
 						{!!address?.street && <Typography variant='h4' style={{ fontFamily: "Roboto-Bold" }}>{`${address.street}${address.number ? `, ${address.number}` : ''}`}</Typography>}
 						{!!address?.complement && <Typography variant='subtitle'>{address.complement}</Typography>}
+						{!!address?.reference && <Typography variant='subtitle'>{address.reference}</Typography>}
 						{!!address?.district && <Typography variant='subtitle'>{address.district}</Typography>}
 						{!!address?.city && <Typography variant='subtitle'>{`${address.city} ${address.state}`}</Typography>}
 						{!!address?.zipcode && <Typography variant='subtitle'>{address.zipcode}</Typography>}

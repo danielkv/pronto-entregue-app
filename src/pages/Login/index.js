@@ -1,5 +1,6 @@
 import React from 'react';
-import { Alert, ActivityIndicator, Platform } from 'react-native';
+import { Alert, ActivityIndicator, Platform, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { useMutation } from '@apollo/react-hooks';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7,14 +8,18 @@ import * as Device from 'expo-device';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import logoResource from '../../assets/images/logo-vertical-v2.png';
-import { TextField, Button, Typography } from '../../react-native-ui';
-import { logUserIn } from '../../services/init';
+import BigHeader from '../../components/BigHeader';
+
+import LoginIllustration from '../../assets/images/login-ill.png';
+import getUserLastOrderAddress from '../../helpers/address/getUserClosestAddress';
+import logUserIn from '../../helpers/auth/logUserIn';
+import { TextField, Button } from '../../react-native-ui';
 import { getErrorMessage } from '../../utils/errors';
 import FacebookButton from './FacebookButton';
 import GoogleButtton from './GoogleButtton';
-import { Container, FormContainer, LogoImage, InputsContainer, ButtonsContainer, ContainerScroll } from './styles';
+import { FormContainer, InputsContainer, ButtonsContainer } from './styles';
 
+import { SET_SELECTED_ADDRESS } from '../../graphql/addresses'
 import { LOGIN } from '../../graphql/authentication';
 
 const validationSchema = Yup.object().shape({
@@ -33,6 +38,9 @@ const initialValues = {
 export default function Login() {
 	const { params: { redirect = null, redirectParams = {} } = {} } = useRoute();
 	const navigation = useNavigation();
+	const scrollY = new Animated.Value(0);
+
+	const [setSelectedAddress] = useMutation(SET_SELECTED_ADDRESS);
 	
 	// Setup GQL Mutation
 	const [login] = useMutation(LOGIN);
@@ -43,26 +51,41 @@ export default function Login() {
 	}
 	
 	const caretHidden = Device.brand === 'Xiaomi';
-
+	
 	function onSubmit({ email, password }, { resetForm }) {
 		return login({ variables: { email, password } })
 			.then(async ({ data })=>{
 				resetForm();
-				await logUserIn(data.login.user, data.login.token);
-				afterLogin();
+				const { user, token } = data.login;
+
+				await logUserIn(user, token);
+				return afterLogin(user);
 			})
 			.catch(err => {
-				Alert.alert(getErrorMessage(err));
+				Alert.alert(
+					'Ops! Ocorreu um erro.',
+					getErrorMessage(err)
+				);
 			})
 	}
 
-	function afterLogin() {
-		if (redirect)
-			navigation.dangerouslyGetParent().replace(redirect, redirectParams);
-		else
-			navigation.dangerouslyGetParent().reset({
+	async function afterLogin(user) {
+		const userAddress = await getUserLastOrderAddress(user);
+		if (!userAddress) {
+			return navigation.reset({
 				index: 0,
-				routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+				routes: [{ name: 'SelectAddressScreen' }]
+			});
+		} else {
+			await setSelectedAddress({ variables: { address: userAddress } })
+		}
+
+		if (redirect)
+			return navigation.replace(redirect, redirectParams);
+		else
+			return navigation.reset({
+				index: 0,
+				routes: [{ name: 'FeedScreen' }]
 			});
 	}
 
@@ -75,15 +98,20 @@ export default function Login() {
 	});
 
 	return (
-		<ContainerScroll keyboardShouldPersistTaps='handled'>
-			<Container>
-				<LogoImage source={logoResource} />
+		<View style={{ flex: 1 }}>
+			<Animated.ScrollView
+				scrollEventThrottle={16}
+				style={{ flex: 1 }}
+				keyboardShouldPersistTaps='handled'
+				contentContainerStyle={{ paddingBottom: 50, paddingTop: 210 }}
+				onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
+			>
 				<FormContainer>
 					<InputsContainer>
-						<Typography variant='h1' style={{ marginBottom: 10 }}>Faça o Login!</Typography>
 						<TextField
 							caretHidden={caretHidden}
 							label='Email'
+							autoFocus
 							keyboardType='email-address'
 							autoCapitalize='none'
 							autoCompleteType='email'
@@ -148,7 +176,9 @@ export default function Login() {
 						)}
 					</ButtonsContainer>
 				</FormContainer>
-			</Container>
-		</ContainerScroll>
+
+			</Animated.ScrollView>
+			<BigHeader title='Fazer login' image={LoginIllustration} scrollY={scrollY} />
+		</View>
 	);
 }

@@ -33,6 +33,7 @@ import {
 import { ADD_CART_ITEM } from '../../graphql/cart';
 import { LOAD_COMPANY } from '../../graphql/companies';
 import { LOAD_PRODUCT } from '../../graphql/products';
+import Header from '../../components/NewHeader';
 
 export default function Product() {
 	const { params: { productId, productName, productImage, productDescription, companyId } } = useRoute();
@@ -45,7 +46,7 @@ export default function Product() {
 	const [quantity, setQuantity] = useState(1);
 	const [addCartItem, { loadingAddToCart }] = useMutation(ADD_CART_ITEM);
 
-	const totalPrice = useMemo(()=>{
+	const totalPrice = useMemo(() => {
 		if (product) return calculateProductPrice(product, true) * quantity;
 
 		return 0;
@@ -54,11 +55,11 @@ export default function Product() {
 	const { data: productData, loading: loadingProduct, error: productError, refetch } = useQuery(LOAD_PRODUCT, { variables: { id: productId } });
 	const { data: { company = null } = {}, loading: loadingCompany, error: companyError } = useQuery(LOAD_COMPANY, { variables: { id: companyId, location } });
 
-	useEffect(()=>{
+	useEffect(() => {
 		if (productError) setProduct(null);
 		else if (productData) setProduct(cloneDeep(productData.product));
 	}, [productData, loadingProduct, productError]);
-	
+
 	const resetProduct = () => {
 		setProduct(cloneDeep(productData.product));
 		setQuantity(1);
@@ -76,15 +77,15 @@ export default function Product() {
 		setProduct(newProduct);
 	}, [product, setProduct]);
 
-	const handleCartButtonPress = (force=false) => () => {
+	const handleCartButtonPress = (force = false) => () => {
 		// sanitize product data 
 		const sanitizedProduct = sanitizeCartData({ ...product, company, message, quantity });
-		
+
 		try {
 			if (checkProductRules({ company, product }, force)) {
 				// Add cart Item
 				addCartItem({ variables: { data: sanitizedProduct } })
-					.then(()=>{
+					.then(() => {
 						resetProduct();
 						Toast.show('Produto adicionado à cesta');
 					})
@@ -92,7 +93,7 @@ export default function Product() {
 		} catch (err) {
 			if (err.type === 'CartValidationError')
 				Alert.alert(err.title, err.message, [
-					{ text: 'Sim', onPress: ()=>handleCartButtonPress(true)() },
+					{ text: 'Sim', onPress: () => handleCartButtonPress(true)() },
 					{ text: 'Cancelar' },
 				]);
 			else
@@ -103,95 +104,98 @@ export default function Product() {
 	function onRefresh() {
 		setRefreshing(true);
 		refetch()
-			.finally(()=>setRefreshing(false));
+			.finally(() => setRefreshing(false));
 	}
 
 	if (productError) return <ErrorBlock error={getErrorMessage(productError)} />
 
 	return (
-		<ProductContainer
-			refreshControl={<RefreshControl tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}
-		>
-			<HeaderContainer>
-				<HeaderImageBackgroundContainer source={{ uri: productImage }}>
-					<LinearGradient
-						colors={['#0000', '#000f']}
-						style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
-					>
-						{Boolean(!loadingProduct && product) && <View style={{ flexDirection: 'row' }}>
-							{/* <IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} /> */}
-							<FavoriteButton product={product} />
-						</View>}
-							
-						{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 30, marginTop: 8 }, text: { fontSize: 14 } }} color='secondary' />}
+		<View style={{ flex: 1 }}>
+			<Header variant='transparent' />
+			<ProductContainer
+				refreshControl={<RefreshControl progressViewOffset={55} tintColor={palette.primary.main} colors={[palette.primary.main]} refreshing={refreshing} onRefresh={onRefresh} />}
+			>
+				<HeaderContainer>
+					<HeaderImageBackgroundContainer source={{ uri: productImage }}>
+						<LinearGradient
+							colors={['#0000', '#000f']}
+							style={{ justifyContent: 'flex-end', paddingTop: 45, paddingBottom: 60, paddingHorizontal: 35 }}
+						>
+							{Boolean(!loadingProduct && product) && <View style={{ flexDirection: 'row' }}>
+								{/* <IconButton icon={{ name: 'share-2', color: 'white' }} onPress={handleShare} /> */}
+								<FavoriteButton product={product} />
+							</View>}
 
-						<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontFamily: 'Roboto-Bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
+							{Boolean(product?.sale?.progress) && <Chip label='PROMOÇÃO' style={{ root: { height: 30, marginTop: 8 }, text: { fontSize: 14 } }} color='secondary' />}
 
-						<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
+							<Typography style={{ marginTop: 4, fontSize: 22, color: '#fff', fontFamily: 'Roboto-Bold', textShadowColor: '#000c', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 12 }}>{productName}</Typography>
 
-						{product?.scheduleEnabled && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
-							<Icon name='calendar' type='material-community' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }}/>
-							<Typography style={{ fontSize: 12, color: '#EFCA2E' }}>Esse produto é produzido sob encomenda, você pode agendar o recebimento ou retirada ao finalizar a cesta</Typography>
-						</View>}
-					</LinearGradient>
-				</HeaderImageBackgroundContainer>
-			</HeaderContainer>
+							<Typography style={{ marginTop: 3, color: 'white', textShadowColor: '#000a', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 8 }}>{product?.description || productDescription}</Typography>
 
-			{Boolean(!loadingCompany && !companyError && company) && <CompanyPanel company={company} />}
+							{product?.scheduleEnabled && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
+								<Icon name='calendar' type='material-community' color='#EFCA2E' style={{ root: { margin: 0, marginRight: 10 } }} />
+								<Typography style={{ fontSize: 12, color: '#EFCA2E' }}>Esse produto é produzido sob encomenda, você pode agendar o recebimento ou retirada ao finalizar a cesta</Typography>
+							</View>}
+						</LinearGradient>
+					</HeaderImageBackgroundContainer>
+				</HeaderContainer>
 
-			<Paper>
-				{loadingProduct || !product
-					? <LoadingBlock />
-					: (
-						<>
-							{product.type === 'inline'
-								? <Inline optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />
-								: <Panel optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />}
+				{Boolean(!loadingCompany && !companyError && company) && <CompanyPanel company={company} />}
 
-							<Typography style={{ marginTop: 20, marginBottom: 10 }}>Observações</Typography>
-							<TextField
-								style={{
-									inputContainer: { backgroundColor: palette.background.main, height: 180 }
-								}}
-								onChangeText={(text)=>setMessage(text)}
-								value={message}
-								textAlignVertical='top'
-								multiline
-								numberOfLines={8}
-							/>
-						</>
-					)
-				}
+				<Paper>
+					{loadingProduct || !product
+						? <LoadingBlock />
+						: (
+							<>
+								{product.type === 'inline'
+									? <Inline optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />
+									: <Panel optionsGroups={product.optionsGroups} onItemSelect={handleItemSelect} />}
 
-			</Paper>
+								<Typography style={{ marginTop: 20, marginBottom: 10 }}>Observações</Typography>
+								<TextField
+									style={{
+										inputContainer: { backgroundColor: palette.background.main, height: 180 }
+									}}
+									onChangeText={(text) => setMessage(text)}
+									value={message}
+									textAlignVertical='top'
+									multiline
+									numberOfLines={8}
+								/>
+							</>
+						)
+					}
+
+				</Paper>
 
 
-			{Boolean(!loadingProduct || product) && <Paper style={{ backgroundColor: '#111' }}>
-				<QuantityContainer>
-					<QuantityTitle>Quantidade</QuantityTitle>
+				{Boolean(!loadingProduct || product) && <Paper style={{ backgroundColor: '#111' }}>
+					<QuantityContainer>
+						<QuantityTitle>Quantidade</QuantityTitle>
 
-					<TouchableOpacity
-						disabled={loadingAddToCart}
-						onPress={()=>{
-							if (quantity > 1) setQuantity(quantity - 1);
-						}}
-					>
-						<Icon name='minus-circle' color='#fff' />
-					</TouchableOpacity>
-					
-					<Quantity>{quantity.toString()}</Quantity>
+						<TouchableOpacity
+							disabled={loadingAddToCart}
+							onPress={() => {
+								if (quantity > 1) setQuantity(quantity - 1);
+							}}
+						>
+							<Icon name='minus-circle' color='#fff' />
+						</TouchableOpacity>
 
-					<TouchableOpacity
-						disabled={loadingAddToCart}
-						onPress={()=> {
-							setQuantity(quantity + 1);
-						}}
-					>
-						<Icon name='plus-circle' color='#fff' />
-					</TouchableOpacity>
-				</QuantityContainer>
-				<CartButton disabled={loadingAddToCart || refreshing} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='shopping-bag' />
-			</Paper>}
-		</ProductContainer>
+						<Quantity>{quantity.toString()}</Quantity>
+
+						<TouchableOpacity
+							disabled={loadingAddToCart}
+							onPress={() => {
+								setQuantity(quantity + 1);
+							}}
+						>
+							<Icon name='plus-circle' color='#fff' />
+						</TouchableOpacity>
+					</QuantityContainer>
+					<CartButton disabled={loadingAddToCart || refreshing} title='Adicionar à cesta' forceShowPrice onPress={handleCartButtonPress(false)} price={totalPrice} icon='shopping-bag' />
+				</Paper>}
+			</ProductContainer>
+		</View>
 	);
 }

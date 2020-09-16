@@ -15,6 +15,7 @@ export interface TextFieldStyles {
 
 interface TextFieldVariantStyles {
 	root?: StyleProp<ViewStyle>,
+	label?: StyleProp<ViewStyle>
 	inputContainer?: StyleProp<ViewStyle>,
 	text?: StyleProp<TextStyle>,
 }

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleProp, ViewStyle, TextStyle, TouchableOpacityProps } from 'react-native';
+import { StyleProp, ViewStyle, TextStyle, TouchableOpacityProps, TouchableWithoutFeedbackProps } from 'react-native';
 
 import { Color, IconInComponentType } from '../theme/types';
 
@@ -23,9 +23,10 @@ interface ButtonVariantStyles {
 	text?: StyleProp<TextStyle>,
 }
 
-export interface ButtonProps extends Omit<ButtonType, 'style'>, Omit<TouchableOpacityProps, 'style'> {
+export interface ButtonProps extends Omit<ButtonType, 'style'>, Omit<TouchableWithoutFeedbackProps, 'style'> {
 	label?: string
-	children?: string | ReactNode,
+	disabled?: boolean
+	children?: string | ReactNode
 	helperText?: string,
 	icon?: IconInComponentType
 	style?: ButtonVariantStyles

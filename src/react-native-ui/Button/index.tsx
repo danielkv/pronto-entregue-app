@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableWithoutFeedback } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { merge, cloneDeep } from 'lodash';
 
@@ -57,17 +58,19 @@ export default function Button(props: ButtonProps) {
 
 	return (
 		<View style={styles.root}>
-			<TouchableOpacity {...props} style={styles.button}>
-				{Boolean(IconComponent) && IconComponent}
-				{
-					props.children
-						? typeof props.children === 'string'
-							? <Typography variant='button' style={styles.text}>{props.children}</Typography>
-							: props.children
-						: <Typography variant='button' style={styles.text}>{props.label}</Typography>
-				}
-			</TouchableOpacity>
-			{Boolean(props.helperText)&& <FormHelperText>{props.helperText}</FormHelperText>}
+			<TouchableWithoutFeedback {...props}>
+				<RectButton style={styles.button}>
+					{Boolean(IconComponent) && IconComponent}
+					{
+						props.children
+							? typeof props.children === 'string'
+								? <Typography variant='button' style={styles.text}>{props.children}</Typography>
+								: props.children
+							: <Typography variant='button' style={styles.text}>{props.label}</Typography>
+					}
+				</RectButton>
+			</TouchableWithoutFeedback>
+			{Boolean(props.helperText) && <FormHelperText>{props.helperText}</FormHelperText>}
 		</View>
 	)
 }

@@ -1,46 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 import { useQuery } from '@apollo/react-hooks';
-import { useNavigation, useRoute } from '@react-navigation/core';
 
-import { useLoggedUserId } from '../../controller/hooks';
+import { useLoggedUserId, useSelectedAddress } from '../../controller/hooks';
 import { Badge } from '../../react-native-ui';
 import MenuItem from './MenuItem';
 import { Container } from './styles';
 
-import  { GET_CART } from '../../graphql/cart';
+import { GET_CART } from '../../graphql/cart';
 
-export default function TabBar(props) {
-	const navigation = useNavigation();
+export default function TabBar({ navigation, ...restProps }) {
 	const loggedUserId = useLoggedUserId();
-	const { name: routeName } = useRoute();
+	const [showTabBar, setShowTabBar] = useState(false);
+	const [routeName, setRouteName] = useState('')
+	const { location = null } = useSelectedAddress();
 
 	const { data: { cartItems } } = useQuery(GET_CART);
 
 	function handleOrderListPress() {
 		if (loggedUserId)
-			navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })
+			navigation.navigate('OrderListScreen')
 		else {
 			Alert.alert(
 				'Para ver seu pedidos, você tem que estar logado.',
 				'Quer fazer isso agora?',
 				[
-					{ text: 'Sim', onPress: ()=>navigation.navigate('AuthenticationRoutes', { screen: 'LoginScreen', params: { redirect: 'OrderRoutes', redirectParams: { screen: 'OrderListScreen' } } }) },
+					{ text: 'Sim', onPress: () => navigation.navigate('LoginScreen', { redirect: 'OrderListScreen' }) },
 					{ text: 'Não' }
 				]
 			);
 		}
 	}
 
+	useEffect(() => {
+		if (!navigation) return;
+
+		const unsubscribe = navigation.addListener('state', () => {
+			const options = navigation.getCurrentOptions();
+
+			setRouteName(options?.selectedMenu || '');
+			setShowTabBar(!(options.tabBar === false));
+		});
+
+		return unsubscribe;
+
+	}, [navigation])
+
+	if (!showTabBar || !location) return false;
+
 	return (
-		<Container {...props} >
-			<MenuItem selected={routeName === 'HomeRoutes'} icon='home' label='Home' onPress={()=>navigation.navigate('HomeRoutes', { screen: 'FeedScreen' })} />
+		<Container {...restProps} >
+			<MenuItem selected={routeName === 'Home'} icon='home' label='Home' onPress={() => navigation.navigate('FeedScreen')} />
 			<Badge color='primary' badgeContent={cartItems.length} style={{ badge: { marginTop: 5, marginRight: 8 } }}>
-				<MenuItem selected={routeName === 'CartRoutes'} icon='shopping-bag' label='Cesta' onPress={()=>navigation.navigate('CartRoutes', { screen: 'CartScreen' })} />
+				<MenuItem selected={routeName === 'Cart'} icon='shopping-bag' label='Cesta' onPress={() => navigation.navigate('CartScreen')} />
 			</Badge>
-			<MenuItem selected={routeName === 'OrderRoutes'} icon='list' label='Meus Pedidos' onPress={handleOrderListPress} />
-			{/* <MenuItem selected={routeName === 'SettingsRoutes'} icon='settings' label='Opções' screenName='HomeRoutes' /> */}
+			<MenuItem selected={routeName === 'Order'} icon='list' label='Meus Pedidos' onPress={handleOrderListPress} />
 		</Container>
 	);
 }

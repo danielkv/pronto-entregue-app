@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { LIST_PRODUCT_FRAGMENT } from './fragments';
+import { LIST_PRODUCT_FRAGMENT, ADDRESS_FRAGMENT } from './fragments';
 
 
 export const GET_USER_ADDRESSES = gql`
@@ -8,19 +8,22 @@ export const GET_USER_ADDRESSES = gql`
 		user (id: $id)  {
 			id
 			addresses {
-				id
-				name
-				street
-				number
-				complement
-				zipcode
-				district
-				city
-				state
-				location
+				...AddressFields
 			}
 		}
 	}
+
+	${ADDRESS_FRAGMENT}
+`;
+
+export const GET_USER_LAST_ORDER_ADDRESS = gql`
+	query GetLastOrderAddress ($userId: ID!) {
+		getLastOrderAddress (userId: $userId)  {
+			...AddressFields
+		}
+	}
+
+	${ADDRESS_FRAGMENT}
 `;
 
 export const GET_USER_FAVORITE_PRODUCTS = gql`

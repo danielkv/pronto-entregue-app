@@ -11,8 +11,8 @@ import * as Permissions from 'expo-permissions';
 import LoadingBlock from '../../components/LoadingBlock';
 
 import { useLoggedUserId } from '../../controller/hooks';
+import logUserOut from '../../helpers/auth/logUserOut';
 import { Avatar, Paper, Typography, Button, useTheme, IconButton } from '../../react-native-ui';
-import { logUserOut } from '../../services/init';
 import {
 	ContainerScroll,
 	UserHeader,
@@ -26,7 +26,7 @@ export default function Profile({ navigation }) {
 	const { data: { user = null } = {}, loading: loadingUser } = useQuery(GET_USER, { variables: { id: loggedUserId }, fetchPolicy: 'cache-and-network' });
 	const { data: { user: { companies = [] } = {} } = {} } = useQuery(GET_USER_COMPANIES, { variables: { id: loggedUserId } });
 	const [updateUserImage, { loading: loadingUpdateUserImage }] = useMutation(UPDATE_USER_IMAGE, { variables: { userId: loggedUserId } });
-	
+
 	async function getCameraRollPermission() {
 		if (Constants.platform.ios) {
 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -35,15 +35,15 @@ export default function Profile({ navigation }) {
 			}
 		}
 	}
-	
+
 	async function pickImage() {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			//allowsEditing: true,
-			aspect: [1,1],
+			aspect: [1, 1],
 			quality: 1
 		});
-		
+
 		if (!result.cancelled) {
 			const fileExt = result.uri.substr(-3);
 			const image = new ReactNativeFile({
@@ -51,30 +51,30 @@ export default function Profile({ navigation }) {
 				type: `image/${fileExt === 'jpg' ? 'jpeg' : fileExt}`,
 				name: user.fullName
 			})
-			
+
 			await updateUserImage({ variables: { image } })
 		}
 	}
-	
-	function handleUserAvatarPress () {
+
+	function handleUserAvatarPress() {
 		getCameraRollPermission()
 			.then(pickImage)
-			.catch((err)=>{
+			.catch((err) => {
 				Alert.alert('Hmm! Houve um pequeno problema', err.message)
 			})
 	}
 
 	async function handleLogOutUser() {
 		await logUserOut()
-		navigation.dangerouslyGetParent().reset({
+		navigation.reset({
 			index: 0,
-			routes: [{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } }]
+			routes: [{ name: 'FeedScreen' }]
 		})
 	}
-	
+
 	if (loadingUser) return <LoadingBlock />
 	if (!user) return false;
-	
+
 	return (
 		<ContainerScroll>
 			<View>
@@ -90,32 +90,30 @@ export default function Profile({ navigation }) {
 					<Typography variant='subtitle'>{user.email}</Typography>
 				</UserHeader>
 				<Paper>
-					<Button variant='filled' icon='user' label='Editar perfil' onPress={()=>navigation.navigate('ProfileRoutes', { screen: 'SubscriptionScreen', params: { userId: loggedUserId } })} />
-					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={()=>navigation.navigate('OrderRoutes', { screen: 'OrderListScreen' })} />
-					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'FavoriteProductsScreen' })} />
-					<Button variant='filled' icon='dollar-sign' label='Meus Créditos' onPress={()=>navigation.navigate('ProfileTabsScreen', { screen: 'CreditHistoryScreen' })} />
+					<Button variant='filled' icon='user' label='Editar perfil' onPress={() => navigation.navigate('SubscriptionScreen', { userId: loggedUserId })} />
+					<Button variant='filled' icon='list' label='Meus Pedidos' onPress={() => navigation.navigate('OrderListScreen')} />
+					<Button variant='filled' icon='heart' label='Meus Produtos favoritos' onPress={() => navigation.navigate('ProfileTabsScreen', { screen: 'FavoriteProductsScreen' })} />
+					<Button variant='filled' icon='dollar-sign' label='Meus Créditos' onPress={() => navigation.navigate('ProfileTabsScreen', { screen: 'CreditHistoryScreen' })} />
+					<Button variant='filled' icon='map-pin' label='Meus Endereços' onPress={() => navigation.navigate('SelectAddressScreen')} />
 					{user.role === 'deliveryMan'
 						&& <Button
 							variant='filled'
 							icon={{ name: 'racing-helmet', type: 'material-community' }}
 							label='Entregas'
 							color='secondary'
-							onPress={()=>navigation.navigate('DeliveriesScreen')}
-						/>
-					}
+							onPress={() => navigation.navigate('DeliveriesScreen')}
+						/>}
 					{Boolean(companies.length)
 						&& <Button
 							variant='filled'
 							icon='inbox'
 							label='Pedidos da empresa'
 							color='secondary'
-							onPress={()=>navigation.navigate('OrdersRollScreen')}
-						/>
-					}
+							onPress={() => navigation.navigate('OrdersRollScreen')}
+						/>}
 					<Button variant='outlined' icon='log-out' label='Sair' onPress={handleLogOutUser} />
 				</Paper>
 			</View>
 		</ContainerScroll>
 	);
 }
-	

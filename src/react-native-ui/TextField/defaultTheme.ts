@@ -7,14 +7,19 @@ export default<TextFieldType> {
 			root: {
 				marginVertical: 5,
 			},
+			label: {
+				marginTop: 4,
+				fontSize: 13,
+				color: '#aaa'
+			},
 			inputContainer: {
 				backgroundColor: '#ffffff',
-				borderRadius: 25,
-				height: 50,
+				borderRadius: 15,
+				height: 70,
 				border: 0,
 				paddingHorizontal: 20,
 				paddingVertical: 10,
-				flexDirection: 'row',
+				flexDirection: 'column',
 				alignItems: 'stretch',
 				justifyContent: 'space-between'
 			},

@@ -46,11 +46,11 @@ export default function Payment({ navigation }) {
 		
 		createOrder({ variables: { data: sanitizedCart } })
 			.then(async ({ data: { createOrder } }) => {
-				navigation.dangerouslyGetParent().reset({
+				navigation.reset({
 					index: 1,
 					routes: [
-						{ name: 'HomeRoutes', params: { screen: 'FeedScreen' } },
-						{ name: 'OrderRoutes', params: { screen: 'OrderScreen', params: { orderId: createOrder.id } } }
+						{ name: 'FeedScreen' },
+						{ name: 'OrderScreen', params: { orderId: createOrder.id } }
 					]
 				})
 				cancelCart();
