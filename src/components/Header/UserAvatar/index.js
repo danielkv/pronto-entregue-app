@@ -3,7 +3,6 @@ import { ActivityIndicator, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useQuery } from '@apollo/react-hooks';
-import { useNavigation } from '@react-navigation/core';
 
 import { useLoggedUserId, useSelectedAddress } from '../../../controller/hooks';
 import { Avatar, useTheme } from '../../../react-native-ui';

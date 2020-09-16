@@ -1,5 +1,3 @@
-import { AsyncStorage } from "react-native";
-
 import client from "../../services/apolloClient";
 import getLocalSavedAddress from "./getLocalSavedAddress";
 

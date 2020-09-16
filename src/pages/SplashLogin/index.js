@@ -36,12 +36,12 @@ export default function SplashLogin() {
 		</Transition.Together>
 	)
 
-	useEffect(()=>{
+	useEffect(() => {
 		setupUpdates()
 		init()
 	}, [])
-	
-	useEffect(()=>{
+
+	useEffect(() => {
 		animateLogo();
 	}, [])
 
@@ -50,12 +50,12 @@ export default function SplashLogin() {
 			duration: 800,
 			toValue: 0.3,
 			easing: Easing.ease
-		}).start(()=>{
+		}).start(() => {
 			Animated.timing(opacity, {
 				duration: 800,
 				toValue: 1,
 				easing: Easing.ease
-			}).start(()=>{
+			}).start(() => {
 				animateLogo();
 			});
 		});
@@ -90,7 +90,7 @@ export default function SplashLogin() {
 
 			// set user address
 			await setSelectedAddress({ variables: { address: userAddress } });
-			
+
 			// navigate to feed
 			return navigation.replace('FeedScreen');
 		} catch (err) {
@@ -99,20 +99,20 @@ export default function SplashLogin() {
 				getErrorMessage(err),
 				[
 					{ text: 'Tentar novamente', onPress: init },
-					{ text: 'Tentar', onPress: ()=>{ logUserOut(); resetAddress(); showSplashLogin(); } }
+					{ text: 'Começar de novo', onPress: () => { logUserOut(); resetAddress(); showSplashLogin(); } }
 				]
 			);
 		}
 	}
 
 	function setupUpdates() {
-		Updates.addListener(({ type })=>{
+		Updates.addListener(({ type }) => {
 			if (type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
 				Alert.alert(
 					'Há uma nova versão disponível',
 					'Para ter uma melhor experiência, você precisa reiniciar o app',
 					[
-						{ text: 'Ok (Isso irá limpar sua cesta)', onPress: ()=>Updates.reloadAsync() }
+						{ text: 'Ok (Isso irá limpar sua cesta)', onPress: () => Updates.reloadAsync() }
 					]
 				)
 			}
