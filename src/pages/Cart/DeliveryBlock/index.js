@@ -31,7 +31,7 @@ export default function DeliveryBlock() {
 	const modalMarginTop = Platform.OS === 'android' ? 0 : insets.top;
 	const modalMarginBottom = Platform.OS === 'android' ? 0 : insets.bottom;
 
-	
+
 	const { data: { cartDelivery, cartCompany, cartCoupon }, error: cartError } = useQuery(GET_CART);
 
 	const pickupOnly = cartCompany?.delivery && !cartCompany?.pickup;
@@ -39,31 +39,31 @@ export default function DeliveryBlock() {
 	const [setDelivery, { loading: loadingDelivery }] = useMutation(SET_CART_DELIVERY);
 	const [cancelCart] = useMutation(CANCEL_CART);
 
-	const handleOpenDeliveryModal = ()=>{
+	const handleOpenDeliveryModal = () => {
 		setDeliveryModalOpen(true);
 	}
-	const handleCloseDeliveryModal = useCallback(()=>{
+	const handleCloseDeliveryModal = useCallback(() => {
 		setDeliveryModalOpen(false);
 	});
 
-	function handleConfirmDeliveryModal({ type, address, force=false }) {
+	function handleConfirmDeliveryModal({ type, address, force = false }) {
 		if (force && pickupOnly) return cancelCart();
 
 		return setDelivery({ variables: { type, address, force } })
-			.then(()=>{
+			.then(() => {
 				setDeliveryModalOpen(false)
 			})
 			.catch((err) => {
 				const error = extractFirstError(err);
 				if (error.code === 'DELIVERY_LOCATION') {
-					if (cartCompany.pickup){
+					if (cartCompany.pickup) {
 						Alert.alert(error.message, 'Deseja retirar o pedido no balcão ou limpar sua cesta?', [
-							{ text: 'Retirar no balcão', onPress: ()=>handleConfirmDeliveryModal({ type: 'takeout' }) },
-							{ text: 'Limpar cesta', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
+							{ text: 'Retirar no balcão', onPress: () => handleConfirmDeliveryModal({ type: 'takeout' }) },
+							{ text: 'Limpar cesta', onPress: () => handleConfirmDeliveryModal({ type, address, force: true }).then(() => navigation.navigate('FeedScreen')) },
 						])
 					} else {
 						Alert.alert(error.message, 'Realmente deseja alterar o endereço e limpar a cesta?', [
-							{ text: 'Sim', onPress: ()=>handleConfirmDeliveryModal({ type, address, force: true }).then(()=>navigation.navigate('FeedScreen')) },
+							{ text: 'Sim', onPress: () => handleConfirmDeliveryModal({ type, address, force: true }).then(() => navigation.navigate('FeedScreen')) },
 							{ text: 'Não' }
 						])
 					}
@@ -73,15 +73,15 @@ export default function DeliveryBlock() {
 			});
 	}
 
-	useEffect(()=>{
+	useEffect(() => {
 		if (!cartCompany?.id || loadingDelivery) return;
 
 		if (cartCompany.pickup && !cartCompany.delivery) handleConfirmDeliveryModal({ type: 'takeout' })
 		else handleConfirmDeliveryModal({ type: 'delivery', address: selectedAddress })
-	}, [])
+	}, [selectedAddress])
 
 	if (cartError) return <ErrorBlock error={getErrorMessage(cartError)} />
-		
+
 	return (
 		<View>
 			<TouchableOpacity disabled={loadingDelivery} onPress={handleOpenDeliveryModal}>
@@ -105,7 +105,7 @@ export default function DeliveryBlock() {
 						{cartCoupon?.freeDelivery
 							? <Chip style={{ root: { height: 30 } }} color='secondary' label='Cupom: entrega grátis' />
 							: !!(cartDelivery && cartDelivery.price)
-								&& <Typography>{BRL(cartDelivery.price).format()}</Typography>}
+							&& <Typography>{BRL(cartDelivery.price).format()}</Typography>}
 					</CardContent>
 				</Paper>
 			</TouchableOpacity>

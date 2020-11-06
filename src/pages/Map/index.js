@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Alert, View, Dimensions, ActivityIndicator } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import * as Location from 'expo-location';
 
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useRoute, useNavigation } from '@react-navigation/core';
+import * as Location from 'expo-location';
 import { cloneDeep } from 'lodash';
 
 import LoadingBlock from '../../components/LoadingBlock';
@@ -294,8 +294,9 @@ export default function MapScreen() {
 							onPress={() => navigation.navigate('TypeAddressScreen', { screen: 'nameField' })}
 							label='Digitar outro endereço'
 						/>
+
 						{loggedUserId && isValid
-							&& <Button
+							? <Button
 								icon='check'
 								disabled={loadingSelect}
 								color='primary'
@@ -304,21 +305,20 @@ export default function MapScreen() {
 							>
 								{loadingSelect
 									? <LoadingBlock />
-									: 'Salvar e Utilizar'}
-							</Button>}
-
-						{camera?.center &&
-							<Button
-								icon={!loadingSelect && 'arrow-right-circle'}
-								disabled={loadingSelect}
-								color='default'
-								variant='filled'
-								onPress={handleContinueAddress}
-							>
-								{loadingSelect
-									? <LoadingBlock />
-									: 'Continuar'}
-							</Button>}
+									: 'Salvar e utilizar esse endereço'}
+							</Button>
+							: (camera?.center &&
+								<Button
+									icon={!loadingSelect && 'arrow-right-circle'}
+									disabled={loadingSelect}
+									color='default'
+									variant='filled'
+									onPress={handleContinueAddress}
+								>
+									{loadingSelect
+										? <LoadingBlock />
+										: 'Utilizar esse endereço'}
+								</Button>)}
 					</Paper>}
 
 					<View style={{ right: 20, bottom: mapPadding + 20, position: 'absolute', zIndex: 999 }}>
