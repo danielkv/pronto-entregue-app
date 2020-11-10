@@ -13,7 +13,7 @@ class OrderControl {
 			} else {
 				status.push('preparing')
 			}
-			
+
 			status = [...status, ...this.getOrderTypesStatus(order.type)]
 		}
 
@@ -40,9 +40,11 @@ class OrderControl {
 
 	statusIcon(status) {
 		// isIn: [['waiting', 'preparing', 'delivery', 'delivered', 'canceled']],
-		switch(status) {
+		switch (status) {
 			case 'accepted':
 				return { name: 'check', color: '#363E5E' };
+			case 'paymentPending':
+				return { name: 'alert-circle', color: '#363E5E' }
 			case 'waiting':
 				return { type: 'material-community', name: 'clock', color: '#363E5E' }
 			case 'scheduled':
@@ -65,10 +67,12 @@ class OrderControl {
 
 	statusLabel(status) {
 		// isIn: [['waiting', 'preparing', 'delivering', 'delivered', 'canceled']],
-			
-		switch(status) {
+
+		switch (status) {
 			case 'accepted':
 				return 'Abrir';
+			case 'paymentPending':
+				return 'Pagamento pendente';
 			case 'waiting':
 				return 'Aguardando';
 			case 'scheduled':
@@ -87,9 +91,9 @@ class OrderControl {
 				return 'Cancelar';
 			default: return '';
 		}
-		
+
 	}
-	
+
 	statusColors(status) {
 		switch (status) {
 			case 'delivered':
@@ -111,6 +115,11 @@ class OrderControl {
 				return {
 					background: '#f44336',
 					text: '#fff'
+				};
+			case 'paymentPending':
+				return {
+					background: '#f1ca0d',
+					text: '#333'
 				};
 			case 'preparing':
 			case 'waiting':

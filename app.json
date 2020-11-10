@@ -3,6 +3,7 @@
 		"name": "Pronto, Entregue!",
 		"slug": "pronto-entregue",
 		"privacy": "unlisted",
+		"scheme": "prontoentregue",
 		"backgroundColor": "#EFE8DA",
 		"primaryColor": "#EFE8DA",
 		"platforms": [

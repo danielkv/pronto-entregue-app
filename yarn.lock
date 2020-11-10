@@ -3560,6 +3560,14 @@ expo-constants@~9.0.0:
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.0.0.tgz#35c600079ee91d38fe4f56375caae6e90f122fdd"
   integrity sha512-1kqZMM8Ez5JT3sTEx8I69fP6NYFLOJjeM6Z63dD/m2NiwvzSADiO5+BhghnWNGN1L3bxbgOjXS6EHtS7CdSfxA==
 
+expo-constants@~9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.2.0.tgz#e86a38793deaff9018878afac65bce2543c80a4c"
+  integrity sha512-WKwiEMvBgPrEPEyZKm21UUB2KWQux9OCWf6ZDORLTln7kO3rsbaJEprfWUWTP7AxyaLMYfN+/0WFHjZc25SZWQ==
+  dependencies:
+    fbjs "1.0.0"
+    uuid "^3.3.2"
+
 expo-device@~2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/expo-device/-/expo-device-2.2.1.tgz#469fd2a8f5d87793ebda2c49d6ce008460af0078"
@@ -3622,6 +3630,15 @@ expo-linear-gradient@~8.2.1:
   integrity sha512-GY0N4DDxuIeFALtcLUmHyy/yS3uPvd7R03Qmch+vZKEL7pH+h8qAeuYpSiUXEWRqsMZf2DSMBxOhVFjyg/X7DA==
   dependencies:
     prop-types "15.7.2"
+
+expo-linking@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/expo-linking/-/expo-linking-1.0.5.tgz#c6999c8a245de8bec3936d02d95382804d8ae2ec"
+  integrity sha512-LH26/ilFU0rCdsO1SJbNqoii3jTBqHdEfSloXhEb73aKdQT2BG6z5IjFIQXV2RiCmxNJbotdbfXyWSPqPoCEwg==
+  dependencies:
+    expo-constants "~9.2.0"
+    qs "^6.5.0"
+    url-parse "^1.4.4"
 
 expo-linking@~1.0.3:
   version "1.0.3"

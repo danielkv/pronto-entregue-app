@@ -4,15 +4,15 @@
 const gateways = {
 	money: require('./Money').default,
 	delivery: require('./Delivery').default,
-	//app: require('./App')	
+	app: require('./PicPay').default
 }
 
-export function createGateway({ method, cart }) {
+export function createGateway({ method, cart, createOrder, afterFinishOrder }) {
 	try {
 		const gt = gateways[method.type];
-		if (!gt) throw new Error ('Esse gateway não existe');
-		return new gt({ cart, method });
-	} catch  (err) {
+		if (!gt) throw new Error('Esse gateway não existe');
+		return new gt({ cart, method, createOrder, afterFinishOrder });
+	} catch (err) {
 		console.error(err);
 	}
 }

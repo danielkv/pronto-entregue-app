@@ -16,10 +16,11 @@ import { GET_COMPANY_PAYMENT_METHODS } from '../../../../graphql/companies';
 
 export default function PaymentModal({ confirmModal, closeModal, company, setUseCredits, cartUseCredits, creditBalance }) {
 	const { palette } = useTheme();
-	
+
 	const { data: cart } = useQuery(GET_CART);
 	const { data: { company: { appMethods = [], moneyMethods = [], deliveryMethods = [] } = {} } = {}, loading: loadingPaymentMethods, error } = useQuery(GET_COMPANY_PAYMENT_METHODS, {
 		variables: { id: company.id }
+
 	});
 
 	const onPressPayment = (method) => {
@@ -41,7 +42,7 @@ export default function PaymentModal({ confirmModal, closeModal, company, setUse
 			confirmButton={false}
 			title='Forma de pagamento'
 			handleCancel={closeModal}
-			HeaderRight={()=>(<View />)}
+			HeaderRight={() => (<View />)}
 		>
 			{loadingPaymentMethods
 				? <LoadingBlock />
@@ -101,7 +102,7 @@ export default function PaymentModal({ confirmModal, closeModal, company, setUse
 									})}
 								</View>
 							</>
-				
+
 						)}
 					</>
 				)}

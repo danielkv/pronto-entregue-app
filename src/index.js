@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ApolloProvider } from '@apollo/react-hooks';
 import { StatusBar } from 'expo-status-bar';
@@ -12,7 +13,6 @@ import Routes from './routes';
 import apolloClient from './services/apolloClient';
 import { Container } from './styles';
 import theme from './theme';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // set global error handler
 setGlobalhandler();
