@@ -1,13 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, View } from 'react-native'
-
 import 'moment/locale/pt-br';
 
+import React, { useRef, useEffect, useState } from 'react';
+import { KeyboardAvoidingView, View } from 'react-native'
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
 import { StatusBar } from 'expo-status-bar';
 

@@ -21,17 +21,18 @@ export function responseReceiveNotificationHandler(notificationResponse, navigat
 	const { notification } = notificationResponse;
 	const { data } = notification.request.content;
 
+
 	if (data.redirect) navigation.navigate(data.redirect);
 
 	// alert on [received | selected]
 	const alertOn = data.alertOn || ['received'];
 	if (data.alertData && alertOn.includes('selected')) {
-		notificationAlert({ ...data.alertData, redirect: data.redirect }, navigation)
+		notificationAlert({ ...data.alertData, redirect: data.redirect, delay: 500 }, navigation)
 	}
 }
 
 function notificationAlert(data, navigation) {
-	const { cancelable = true, title, body, redirect, openButtonText = 'Abrir' } = data;
+	const { cancelable = true, title, body, redirect, openButtonText = 'Abrir', delay = 0 } = data;
 	const buttons = [];
 
 	if (redirect) {
@@ -41,12 +42,15 @@ function notificationAlert(data, navigation) {
 			buttons.unshift({ text: 'OK', style: 'cancel' })
 	}
 
-	Alert.alert(
-		title,
-		body,
-		buttons,
-		{ cancelable }
-	);
+
+	setTimeout(() => {
+		Alert.alert(
+			title,
+			body,
+			buttons,
+			{ cancelable }
+		);
+	}, delay)
 }
 
 export async function registerForPushNotifications(userId) {
