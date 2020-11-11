@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Alert, Image, View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/core';
 import * as Linking from 'expo-linking'
 
 import { Typography, Paper, Button, Chip } from '../../react-native-ui';
@@ -13,15 +14,15 @@ import { REQUES_PIC_PAY_PAYMENT, CHECK_PIC_PAY_PAYMENT } from './graphql/payment
 
 export default class PicPay {
 
-	constructor({ cart, method, createOrder, afterFinishOrder }) {
+	constructor({ cart: order, method }) {
 		this.payment = null
-		this.order = null;
+		this.order = order;
 
-		this.afterFinishOrder = afterFinishOrder;
-		this.cart = cart;
 		this.method = method;
-		this.createOrder = createOrder;
-		this.showPaymentButton = false;
+	}
+
+	onSubmit(cart) {
+		return { ...cart, status: 'paymentPending' }
 	}
 
 	Option = ({ onPress }) => {
@@ -35,26 +36,40 @@ export default class PicPay {
 		);
 	}
 
+	afterFinishOrder(navigation, order) {
+		navigation.reset({
+			index: 1,
+			routes: [
+				{ name: 'FeedScreen' },
+				{ name: 'OrderScreen', params: { orderId: order.id } },
+				{ name: 'MakePaymentScreen', params: { order } }
+			]
+		})
+	}
+
 	Page = () => {
+		return (
+			<Paper style={{ alignItems: "center" }}>
+				<Image source={{ uri: this.method.image }} style={{ width: 100, height: 80, resizeMode: 'contain' }} />
+				<Typography style={{ textAlign: "center" }} variant='title'>{this.method.displayName}</Typography>
+				<Typography style={{ textAlign: "center" }} variant='subtitle'>PicPay</Typography>
+			</Paper>
+		);
+	}
+
+	PageMakePayment = () => {
 		const [loading, setLoading] = useState(false);
-
-		const getOrder = async () => {
-			if (this.order) return this.order;
-
-			const { data: { createOrder: order } } = await this.createOrder({ variables: { data: { ...this.cart, status: 'paymentPending' } } })
-			this.order = order
-
-			return order;
-		}
+		const navigation = useNavigation();
 
 		const requestPayment = async () => {
 			try {
 				setLoading(true)
 
-				const order = await getOrder();
-				if (!this.payment?.paymentUrl) this.payment = await this.requestPayment(order);
+				if (!this.payment?.paymentUrl) this.payment = await this.requestPayment(this.order);
 
 				Linking.openURL(this.payment.paymentUrl);
+
+				navigation.replace('OrderScreen', { orderId: this.order.id })
 			} catch (err) {
 				Alert.alert('Ops! Algo deu errado', getErrorMessage(err));
 			} finally {
@@ -71,7 +86,7 @@ export default class PicPay {
 					<Typography style={{ textAlign: "center" }} variant='subtitle'>Pagamento digital PicPay</Typography>
 				</View>
 				<View style={{ marginTop: 30 }} >
-					<Chip style={{ root: { alignSelf: 'center' } }} label={`Valor Total: ${BRL(this.cart.price).format()}`} />
+					<Chip style={{ root: { alignSelf: 'center' } }} label={`Valor Total: ${BRL(this.order.price).format()}`} />
 				</View>
 				<View style={{ marginTop: 30, }}>
 					{loading
@@ -87,7 +102,7 @@ export default class PicPay {
 
 	async requestPayment(order) {
 		const companyId = order.company.id;
-		const userId = this.cart.userId;
+		const userId = this.order.userId;
 		const payment = {
 			orderId: order.id,
 			value: order.price,
@@ -100,7 +115,7 @@ export default class PicPay {
 		return data.requestPicPayPayment;
 	}
 
-	// if is paid finishes payment
+	/* // if is paid finishes payment
 	async checkPayment(orderId) {
 		const { data: { checkPicPayPayment }, errors } = await apolloClient.mutate({ mutation: CHECK_PIC_PAY_PAYMENT, variables: { orderId } })
 
@@ -109,5 +124,5 @@ export default class PicPay {
 		// paid statuses
 		const completeStatus = ['paid', 'completed', 'chargeback'];
 		if (completeStatus.includes(checkPicPayPayment.status)) 
-	}
+	} */
 }

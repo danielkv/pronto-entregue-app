@@ -24,12 +24,14 @@ export const ORDER_FRAGMENT = gql`
 		price
 		type
 		message
+		userId
 		deliveryPrice
 		scheduledTo
 		discount
 		paymentFee
 		paymentMethod {
 			id
+			image
 			displayName
 			type
 		}

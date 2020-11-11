@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity, View, Platform, Linking } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { useNavigation } from '@react-navigation/core';
 import moment from 'moment';
 
 import Address from '../../../components/Address';
@@ -22,11 +23,12 @@ import {
 export default function Blocks({ order }) {
 	const { palette } = useTheme();
 	const [addressModalOpen, setAddressModalOpen] = useState(false);
+	const navigation = useNavigation();
 
-	function handleCloseAddressModal () {
+	function handleCloseAddressModal() {
 		setAddressModalOpen(false);
 	}
-	function handleOpenAddressModal () {
+	function handleOpenAddressModal() {
 		setAddressModalOpen(true);
 	}
 
@@ -42,7 +44,7 @@ export default function Blocks({ order }) {
 
 		Linking.openURL(url);
 	}
-	
+
 	const totalOrder = order.price + order.discount;
 	const displayDate = moment(order.createdAt).format('DD/MM/YY HH:mm');
 
@@ -75,28 +77,56 @@ export default function Blocks({ order }) {
 				</Block>
 			</BlocksRow>
 			<BlocksRow>
-				<Block>
-					<BlockHeader>
-						<BlockIcon><Icon name='credit-card' color={palette.primary.main} /></BlockIcon>
-						<BlockTitle>Pagamento</BlockTitle>
-					</BlockHeader>
-					<BlockFooter>
-						{order.paymentMethod
-							? (
-								<>
-									{Boolean(order.creditHistory) && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>Créditos +</Typography>}
-									{order.paymentMethod.type !== 'app' && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Na entrega</Typography>}
-									<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
-								</>
-							)
-							: Boolean(order.creditHistory) &&
+				{order.status === 'paymentPending' && order.paymentMethod.type === 'app'
+					? <TouchableOpacity style={{ width: '47%' }} onPress={() => navigation.navigate('MakePaymentScreen', { order })}>
+						<Block style={{ width: '100%' }}>
+							<BlockHeader>
+								<BlockIcon><Icon name='credit-card' color={palette.primary.main} /></BlockIcon>
+								<BlockTitle>Pagamento</BlockTitle>
+							</BlockHeader>
+							<BlockFooter>
+								{order.paymentMethod
+									? (
+										<>
+											{Boolean(order.creditHistory) && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>Créditos +</Typography>}
+											<View style={{ alignItems: 'flex-end' }}>
+												<Icon name='alert-circle' size={20} color='#f1ca0d' style={{ root: { margin: 0 } }} />
+											</View>
+											<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
+											<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 11 }}>Pressione para pagar</Typography>
+										</>
+									)
+									: Boolean(order.creditHistory) &&
+									<>
+										<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Créditos</Typography>
+										<BlockInfo>{BRL(Math.abs(order.creditHistory.value)).format()}</BlockInfo>
+									</>
+								}
+							</BlockFooter>
+						</Block>
+					</TouchableOpacity>
+					: <Block>
+						<BlockHeader>
+							<BlockIcon><Icon name='credit-card' color={palette.primary.main} /></BlockIcon>
+							<BlockTitle>Pagamento</BlockTitle>
+						</BlockHeader>
+						<BlockFooter>
+							{order.paymentMethod
+								? (
+									<>
+										{Boolean(order.creditHistory) && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>Créditos +</Typography>}
+										<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
+										{order.paymentMethod.type !== 'app' && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Na entrega</Typography>}
+									</>
+								)
+								: Boolean(order.creditHistory) &&
 								<>
 									<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Créditos</Typography>
 									<BlockInfo>{BRL(Math.abs(order.creditHistory.value)).format()}</BlockInfo>
 								</>
-						}
-					</BlockFooter>
-				</Block>
+							}
+						</BlockFooter>
+					</Block>}
 				{order.type === 'takeout'
 					? (
 						<TouchableOpacity style={{ width: '47%' }} onPress={handleOpenAddressModal}>

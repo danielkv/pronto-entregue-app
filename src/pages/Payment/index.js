@@ -35,14 +35,18 @@ export default function Payment({ navigation }) {
 		]
 	});
 
-	function handleAfterFinishOrder(order) {
-		navigation.reset({
-			index: 1,
-			routes: [
-				{ name: 'FeedScreen' },
-				{ name: 'OrderScreen', params: { orderId: order.id } }
-			]
-		})
+	async function handleAfterFinishOrder(order) {
+		if (Gateway && Gateway.afterFinishOrder && typeof Gateway.afterFinishOrder === 'function') {
+			await Promise.resolve(Gateway.afterFinishOrder(navigation, order))
+		} else {
+			navigation.reset({
+				index: 1,
+				routes: [
+					{ name: 'FeedScreen' },
+					{ name: 'OrderScreen', params: { orderId: order.id } }
+				]
+			})
+		}
 		cancelCart();
 	}
 
@@ -52,7 +56,7 @@ export default function Payment({ navigation }) {
 		let cartResult = cart;
 
 		if (Gateway && Gateway.onSubmit && typeof Gateway.onSubmit === 'function') {
-			cartResult = await Promise.resolve(Gateway.onSubmit())
+			cartResult = await Promise.resolve(Gateway.onSubmit(cart))
 		}
 
 		createOrder({ variables: { data: cartResult } })
@@ -79,16 +83,16 @@ export default function Payment({ navigation }) {
 				{(!!cartData.cartPayment && !!cartData.cartPayment.displayName) && <Gateway.Page />}
 			</ScrollView>
 
-			{Gateway.showPaymentButton === true &&
-				<CartButtonContainer>
-					<CartButton
-						title='Finalizar pedido'
-						icon='check'
-						forceShowPrice
-						price={cartData.cartPrice}
-						onPress={() => handleFinishOrder(sanitizedCart)}
-					/>
-				</CartButtonContainer>}
+
+			<CartButtonContainer>
+				<CartButton
+					title='Finalizar pedido'
+					icon='check'
+					forceShowPrice
+					price={cartData.cartPrice}
+					onPress={() => handleFinishOrder(sanitizedCart)}
+				/>
+			</CartButtonContainer>
 		</Container>
 	);
 }

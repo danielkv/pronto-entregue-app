@@ -28,6 +28,7 @@ import Feed from './pages/Feed';
 import ForgotPassword from './pages/ForgotPassword';
 import ListDeliveries from './pages/ListDeliveries';
 import Login from './pages/Login';
+import MakePayment from './pages/MakePayment';
 import Map from './pages/Map';
 import NewAddress from './pages/NewAddress';
 import Order from './pages/Order';
@@ -127,6 +128,7 @@ export default function SplashScreen() {
 
 						<Stack.Screen name='CartScreen' component={Cart} options={{ selectedMenu: 'Cart' }} />
 						<Stack.Screen name='PaymentScreen' component={Payment} options={{ selectedMenu: 'Cart' }} />
+						<Stack.Screen name='MakePaymentScreen' component={MakePayment} options={{ selectedMenu: 'Cart' }} />
 
 						<Stack.Screen name='OrderListScreen' component={OrderList} options={{ selectedMenu: 'Order' }} />
 						<Stack.Screen name='OrderScreen' component={Order} options={{ selectedMenu: 'Order' }} />
