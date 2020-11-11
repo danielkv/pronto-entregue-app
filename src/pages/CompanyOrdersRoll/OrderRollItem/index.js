@@ -3,8 +3,6 @@ import { View, Image } from 'react-native';
 
 import moment from 'moment'
 
-import DeliveryAddress from '../../../components/DeliveryAddress'
-
 import OrderController from '../../../controller/order'
 import { Chip, Typography, Paper, Divider, IconButton, Icon, useTheme } from '../../../react-native-ui'
 import { BRL } from '../../../utils/currency'
@@ -91,6 +89,11 @@ export default function OrderRollItem({ item: order, handleOpenModalStatus, orde
 									</View>
 								</View>
 							</View>
+						</View>
+
+						<View style={{ marginTop: 10 }}>
+							<Typography style={{ fontSize: 16, fontFamily: 'Roboto-Bold' }}>Observações:</Typography>
+							<Typography>{order.message.trim()}</Typography>
 						</View>
 					</View>
 				</View>

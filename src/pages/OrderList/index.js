@@ -55,7 +55,7 @@ export default function OrderList() {
 	function onRefresh() {
 		setRefreshing(true);
 		refetch()
-			.finally(()=>setRefreshing(false));
+			.finally(() => setRefreshing(false));
 	}
 
 	if (loadingOrders && !orders.length && !called) return <LoadingBlock />;
@@ -76,7 +76,7 @@ export default function OrderList() {
 				))}
 				{loadingOrders
 					? <LoadingBlock />
-					: (page < (countOrders / rowsPerPage)) && <Button variant='outlined' color='primary' style={{ root: { marginTop: 15 } }} onPress={()=>{loadMore(page+1)}}>Carregar mais</Button>}
+					: (page < (countOrders / rowsPerPage)) && <Button variant='outlined' color='primary' style={{ root: { marginTop: 15 } }} onPress={() => { loadMore(page + 1) }}>Carregar mais</Button>}
 			</Paper>
 		</ScrollView>
 	);
