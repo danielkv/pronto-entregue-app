@@ -116,7 +116,7 @@ export default function Blocks({ order }) {
 									<>
 										{Boolean(order.creditHistory) && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 12 }}>Créditos +</Typography>}
 										<BlockInfo>{order.paymentMethod.displayName}</BlockInfo>
-										{order.paymentMethod.type !== 'app' && <Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>Na entrega</Typography>}
+										<Typography variant='subtitle' style={{ textAlign: 'right', fontSize: 13 }}>{order.paymentMethod.type === 'app' ? 'Pagamento aprovado' : 'Na entrega'}</Typography>
 									</>
 								)
 								: Boolean(order.creditHistory) &&

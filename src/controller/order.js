@@ -88,7 +88,7 @@ class OrderControl {
 			case 'delivered':
 				return 'Entregue';
 			case 'canceled':
-				return 'Cancelar';
+				return 'Cancelado';
 			default: return '';
 		}
 
