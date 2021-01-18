@@ -30,6 +30,7 @@ export default function App() {
 					<StatusBar style='light' animated />
 					<SafeAreaProvider>
 						<Container>
+							
 							<Routes />
 						</Container>
 					</SafeAreaProvider>
